@@ -1,8 +1,10 @@
-import React from 'react';
+import React from 'react/addons';
 import blacklist from 'blacklist';
-import Portal from './Portal';
+import Fade from './Fade';
 import Icon from './Icon';
+import Portal from './Portal';
 
+const Transition = React.addons.TransitionGroup;
 const BODY = document.getElementsByTagName('body')[0];
 
 var Lightbox = React.createClass({
@@ -79,46 +81,60 @@ var Lightbox = React.createClass({
 
 	renderArrowPrev () {
 		if (this.state.currentImage === 0) return;
-		// <Transition transitionName="react-transitiongroup-fade">
-		// 	{(this.state.currentImage > 0) && <button type="button" style={Object.assign({}, styles.arrow, styles.arrowPrev)} onClick={this.gotoPrevious} className="octicon octicon-chevron-left" />}
-		// </Transition>
+
 		return (
-			<button type="button" style={Object.assign({}, styles.arrow, styles.arrowPrev)} onClick={this.gotoPrevious}>
-				<Icon type="arrowLeft" />
-			</button>
+			<Fade key="arrowPrev">
+				<button type="button" style={Object.assign({}, styles.arrow, styles.arrowPrev)} onClick={this.gotoPrevious}>
+					<Icon type="arrowLeft" />
+				</button>
+			</Fade>
 		);
 	},
 	renderArrowNext () {
 		if (this.state.currentImage === (this.props.images.length - 1)) return;
-		// <Transition transitionName="react-transitiongroup-fade">
-		// 	{(this.state.currentImage < (this.props.images.length - 1)) && <button type="button" style={Object.assign({}, styles.arrow, styles.arrowNext)} onClick={this.gotoNext} className="octicon octicon-chevron-right" />}
-		// </Transition>
+
 		return (
-			<button type="button" style={Object.assign({}, styles.arrow, styles.arrowNext)} onClick={this.gotoNext} className="octicon octicon-chevron-right">
-				<Icon type="arrowRight" />
-			</button>
+			<Fade key="arrowNext">
+				<button type="button" style={Object.assign({}, styles.arrow, styles.arrowNext)} onClick={this.gotoNext} className="octicon octicon-chevron-right">
+					<Icon type="arrowRight" />
+				</button>
+			</Fade>
 		);
 	},
 	renderBackdrop () {
 		if (!this.props.isOpen) return;
 
-		return <div key="backdrop" style={styles.backdrop} onClick={this.props.backdropClosesModal ? this.props.onCancel : null} />;
+		return (
+			<Fade key="backdrop">
+				<div key="backdrop" style={styles.backdrop} onClick={this.props.backdropClosesModal ? this.props.onCancel : null} />
+			</Fade>
+		);
 	},
 	renderCloseButton () {
 		if (!this.props.showCloseButton) return;
 
-		return <button key="close" style={styles.close} onClick={this.props.onCancel}>Close</button>;
+		return (
+			<Fade key="closeButton">
+				<button style={styles.close} onClick={this.props.onCancel}>Close</button>
+			</Fade>
+		);
 	},
 	renderDialog () {
 		if (!this.props.isOpen) return;
 
 		return (
-			<div key="dialog" style={Object.assign({}, styles.dialog, { height: this.props.height, width: this.props.width })}>
+			<Fade key="dialog" style={Object.assign({}, styles.dialog, { height: this.props.height, width: this.props.width })}>
 				{this.renderImages()}
-				{this.renderArrowPrev()}
-				{this.renderArrowNext()}
-				{this.renderCloseButton()}
-			</div>
+				<Transition component="div">
+					{this.renderArrowPrev()}
+				</Transition>
+				<Transition component="div">
+					{this.renderArrowNext()}
+				</Transition>
+				<Transition component="div">
+					{this.renderCloseButton()}
+				</Transition>
+			</Fade>
 		);
 	},
 	renderImages () {
@@ -126,12 +142,12 @@ var Lightbox = React.createClass({
 		let { currentImage } = this.state;
 		if (!images || !images.length) return;
 
-		// <Transition transitionName="react-transitiongroup-fade" style={styles.imageContainer} component="div">
-		// 	<img key={'image' + currentImage} src={images[currentImage]} style={styles.image} />
-		// </Transition>
-
 		return (
-			<img key={'image' + currentImage} src={images[currentImage]} style={styles.image} />
+			<Transition component="div">
+				<Fade key={'image' + currentImage}>
+					<img src={images[currentImage]} style={styles.image} />
+				</Fade>
+			</Transition>
 		);
 	},
 	render () {
@@ -139,8 +155,12 @@ var Lightbox = React.createClass({
 
 		return (
 			<Portal {...props}>
-				{this.renderDialog()}
-				{this.renderBackdrop()}
+				<Transition component="div">
+					{this.renderDialog()}
+				</Transition>
+				<Transition component="div">
+					{this.renderBackdrop()}
+				</Transition>
 			</Portal>
 		);
 	}
@@ -189,6 +209,7 @@ const styles = {
 		border: 'none',
 		bottom: -32,
 		color: 'white',
+		cursor: 'pointer',
 		fontSize: 16,
 		height: 32,
 		left: 0,
@@ -203,7 +224,6 @@ const styles = {
 		width: 100,
 	},
 	dialog: {
-		// backgroundColor: 'rgba(255,255,255,0.26)',
 		left: 0,
 		lineHeight: 1,
 		marginLeft: 'auto',

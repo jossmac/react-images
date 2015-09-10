@@ -1,8 +1,8 @@
-import React from 'react';
+import React from 'react/addons';
 module.exports = React.createClass({
 	displayName: 'Portal',
-	render: () => null,
 	portalElement: null,
+	render: () => null,
 	componentDidMount() {
 		var p = this.props.portalId && document.getElementById(this.props.portalId);
 		if (!p) {

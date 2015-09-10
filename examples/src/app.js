@@ -1,6 +1,6 @@
 /* eslint react/prop-types: 0 */
 
-import React from 'react';
+import React from 'react/addons';
 import Standard from './components/Standard';
 
 const IMAGES = [
@@ -27,8 +27,6 @@ const IMAGES = [
 ];
 
 React.render(
-	<div>
-		<Standard images={IMAGES} />
-	</div>,
+	<Standard images={IMAGES} />,
 	document.getElementById('example')
 );

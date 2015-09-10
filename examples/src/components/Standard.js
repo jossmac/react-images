@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react/addons';
 import Lightbox from 'react-images';
 
 var Standard = React.createClass({
@@ -43,7 +43,6 @@ var Standard = React.createClass({
 	render () {
 		return (
 			<div>
-				<h2>Standard</h2>
 				{this.renderGallery()}
 				<Lightbox
 					images={this.props.images}
@@ -51,6 +50,9 @@ var Standard = React.createClass({
 					isOpen={this.state.lightboxIsOpen}
 					onCancel={this.closeLightbox}
 				/>
+				<div className="hint">
+					Images courtesy of <a href="http://www.fillmurray.com" target="_blank">http://www.fillmurray.com</a>
+				</div>
 			</div>
 		);
 	}
