@@ -12,7 +12,7 @@ var Standard = React.createClass({
 		};
 	},
 
-	openLightbox (index) {
+	openLightbox (index, event) {
 		event.preventDefault();
 		this.setState({
 			lightboxIsOpen: true,
