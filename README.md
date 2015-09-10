@@ -1,8 +1,22 @@
 # React Images
 
-A simple, responsive lightbox component for displaying an array of images
+A simple, responsive lightbox component for displaying an array of images.
 
-### Options
+
+## Demo & Examples
+
+Live demo: [jossmac.github.io/react-images](http://jossmac.github.io/react-images/)
+
+To build the examples locally, run:
+
+```
+npm install
+npm start
+```
+
+Then open [`localhost:8000`](http://localhost:8000) in a browser.
+
+## Options
 
 	Property			|	Type		|	Description
 :-----------------------|:--------------|:--------------------------------
