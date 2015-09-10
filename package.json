@@ -9,6 +9,9 @@
     "type": "git",
     "url": "https://github.com/jossmac/react-images.git"
   },
+  "dependencies": {
+    "blacklist": "^1.1.2"
+  },
   "devDependencies": {
     "babel": "^5.8.21",
     "babel-eslint": "^4.0.10",
