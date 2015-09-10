@@ -12,8 +12,8 @@
 
 @heading-color:                  black;
 @text-color:                     #333;
-@link-color:                     #007eff;
-@gutter:                         30px;
+@link-color:                     #7ED321;
+@gutter:                         20px;
 
 
 
@@ -62,7 +62,7 @@ h1, h2, h3, h4, h5, h6,
 }
 
 h1, .h1 {
-	font-size: 3em;
+	font-size: 2em;
 }
 h2, .h2 {
 	font-size: 2em;
@@ -90,6 +90,21 @@ h6, .h6 {
 
 // common
 
+.page-wrapper {
+	-ms-flex-direction: column;
+	-webkit-flex-direction: column;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+.page-body {
+	flex-grow: 1;
+}
+
+// common
+
 .page-body,
 .page-footer,
 .page-header {
@@ -106,7 +121,6 @@ h6, .h6 {
 		color: white;
 	}
 	p {
-		font-size: 1.2em;
 		margin: 0;
 	}
 	a {
@@ -149,8 +163,7 @@ h6, .h6 {
 // footer
 
 .page-footer {
-	background-color: #fafafa;
-	// border-top: 1px solid #eee;
+	border-top: 1px solid rgba(0, 0, 0, 0.05);
 	color: #999;
 	padding: @gutter 0;
 	text-align: center;
