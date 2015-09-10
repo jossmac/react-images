@@ -7,7 +7,7 @@ body {
   padding: 0;
 }
 a {
-  color: #7ed321;
+  color: #00d7ff;
   text-decoration: none;
 }
 a:hover {
@@ -80,8 +80,8 @@ h6,
   padding: 20px 0;
 }
 .page-header {
-  background-color: #7ed321;
-  color: #dff4c8;
+  background-color: #00d7ff;
+  color: #bff5ff;
 }
 .page-header h1,
 .page-header h2,
@@ -103,7 +103,7 @@ h6,
   text-decoration: none;
 }
 .page-subheader {
-  background-color: #f2fbe9;
+  background-color: #e6fbff;
   line-height: 20px;
   padding: 20px 0;
 }
@@ -111,13 +111,13 @@ h6,
   float: right;
 }
 .page-subheader__link {
-  border-bottom: 1px solid rgba(126, 211, 33, 0.3);
+  border-bottom: 1px solid rgba(0, 215, 255, 0.3);
   outline: none;
   text-decoration: none;
 }
 .page-subheader__link:hover,
 .page-subheader__link:focus {
-  border-bottom-color: #7ed321;
+  border-bottom-color: #00d7ff;
   outline: none;
   text-decoration: none;
 }
