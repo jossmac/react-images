@@ -11,7 +11,6 @@ var Standard = React.createClass({
 			lightboxIsOpen: false,
 		};
 	},
-
 	openLightbox (index, event) {
 		event.preventDefault();
 		this.setState({
@@ -51,6 +50,7 @@ var Standard = React.createClass({
 					initialImage={this.state.lightboxInitialImage}
 					isOpen={this.state.lightboxIsOpen}
 					onClose={this.closeLightbox}
+					/* styles={Lightbox.extendStyles({ image: { border: '5px solid pink'} })} */
 				/>
 			</div>
 		);

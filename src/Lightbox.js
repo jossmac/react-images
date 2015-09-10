@@ -23,6 +23,17 @@ var Lightbox = React.createClass({
 		styles: React.PropTypes.object,
 		width: React.PropTypes.number,
 	},
+	statics: {
+		extendStyles(styles) {
+			let extStyles = Object.assign({}, defaultStyles);
+			for (var key in extStyles) {
+				if (key in styles) {
+					extStyles[key] = Object.assign({}, defaultStyles[key], styles[key]);
+				}
+			}
+			return extStyles;
+		}
+	},
 	getDefaultProps () {
 		return {
 			backdropClosesModal: true,
