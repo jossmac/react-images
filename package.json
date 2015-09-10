@@ -1,6 +1,6 @@
 {
   "name": "react-images",
-  "version": "0.6.7",
+  "version": "0.0.3",
   "description": "A simple, responsive lightbox component for displaying an array of images with React.js",
   "main": "lib/Lightbox.js",
   "author": "Joss Mackison",
@@ -8,10 +8,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/jossmac/react-images.git"
-  },
-  "dependencies": {
-    "blacklist": "^1.1.2",
-    "react-motion": "^0.2.7"
   },
   "devDependencies": {
     "babel": "^5.8.21",
