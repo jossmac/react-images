@@ -15,11 +15,11 @@
     "eslint": "^1.2.1",
     "eslint-plugin-react": "^3.2.3",
     "gulp": "^3.9.0",
-    "react": ">=0.13.3 || ^0.14.0-beta3",
+    "react": ">=0.13.3 || ^0.14.0-alpha",
     "react-component-gulp-tasks": "^0.7.0"
   },
   "peerDependencies": {
-    "react": ">=0.13.3 || ^0.14.0-beta3"
+    "react": ">=0.13.3 || ^0.14.0-alpha"
   },
   "browserify-shim": {
     "react": "global:React"
