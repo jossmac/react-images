@@ -21977,13 +21977,12 @@ var Lightbox = _reactAddons2['default'].createClass({
 	displayName: 'Lightbox',
 	propTypes: {
 		backdropClosesModal: _reactAddons2['default'].PropTypes.bool,
-		className: _reactAddons2['default'].PropTypes.string,
 		enableKeyboardInput: _reactAddons2['default'].PropTypes.bool,
 		initialImage: _reactAddons2['default'].PropTypes.number,
 		height: _reactAddons2['default'].PropTypes.number,
 		images: _reactAddons2['default'].PropTypes.array,
 		isOpen: _reactAddons2['default'].PropTypes.bool,
-		onCancel: _reactAddons2['default'].PropTypes.func,
+		onClose: _reactAddons2['default'].PropTypes.func,
 		showCloseButton: _reactAddons2['default'].PropTypes.bool,
 		width: _reactAddons2['default'].PropTypes.number
 	},
@@ -22025,7 +22024,7 @@ var Lightbox = _reactAddons2['default'].createClass({
 		} else if (event.keyCode === 39) {
 			this.gotoNext();
 		} else if (event.keyCode === 27) {
-			this.props.onCancel();
+			this.props.onClose();
 		} else {
 			return false;
 		}
@@ -22066,7 +22065,7 @@ var Lightbox = _reactAddons2['default'].createClass({
 			{ key: 'arrowNext' },
 			_reactAddons2['default'].createElement(
 				'button',
-				{ type: 'button', style: _extends({}, styles.arrow, styles.arrowNext), onClick: this.gotoNext, className: 'octicon octicon-chevron-right' },
+				{ type: 'button', style: _extends({}, styles.arrow, styles.arrowNext), onClick: this.gotoNext },
 				_reactAddons2['default'].createElement(_Icon2['default'], { type: 'arrowRight' })
 			)
 		);
@@ -22077,7 +22076,7 @@ var Lightbox = _reactAddons2['default'].createClass({
 		return _reactAddons2['default'].createElement(
 			_Fade2['default'],
 			{ key: 'backdrop' },
-			_reactAddons2['default'].createElement('div', { key: 'backdrop', style: styles.backdrop, onClick: this.props.backdropClosesModal ? this.props.onCancel : null })
+			_reactAddons2['default'].createElement('div', { key: 'backdrop', style: styles.backdrop, onClick: this.props.backdropClosesModal ? this.props.onClose : null })
 		);
 	},
 	renderCloseButton: function renderCloseButton() {
@@ -22088,7 +22087,7 @@ var Lightbox = _reactAddons2['default'].createClass({
 			{ key: 'closeButton' },
 			_reactAddons2['default'].createElement(
 				'button',
-				{ style: styles.close, onClick: this.props.onCancel },
+				{ style: styles.close, onClick: this.props.onClose },
 				'Close'
 			)
 		);
@@ -22134,7 +22133,7 @@ var Lightbox = _reactAddons2['default'].createClass({
 		);
 	},
 	render: function render() {
-		var props = (0, _blacklist2['default'])(this.props, 'backdropClosesModal', 'initialImage', 'height', 'images', 'isOpen', 'onCancel', 'showCloseButton', 'width');
+		var props = (0, _blacklist2['default'])(this.props, 'backdropClosesModal', 'initialImage', 'height', 'images', 'isOpen', 'onClose', 'showCloseButton', 'width');
 
 		return _reactAddons2['default'].createElement(
 			_Portal2['default'],
