@@ -12,9 +12,10 @@ var taskConfig = {
 		dist: 'examples/dist',
 		standalone: true,
 		files: [
-			'index.html',
-			'standalone.html',
-			'.gitignore'
+			'.gitignore',
+			'.npmignore',
+			'favicon.ico',
+			'index.html'
 		],
 		scripts: [
 			'app.js'
