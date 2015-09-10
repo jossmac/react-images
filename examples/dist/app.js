@@ -42,7 +42,6 @@ var Standard = _reactAddons2['default'].createClass({
 			lightboxIsOpen: false
 		};
 	},
-
 	openLightbox: function openLightbox(index, event) {
 		event.preventDefault();
 		this.setState({
@@ -90,6 +89,7 @@ var Standard = _reactAddons2['default'].createClass({
 				initialImage: this.state.lightboxInitialImage,
 				isOpen: this.state.lightboxIsOpen,
 				onClose: this.closeLightbox
+				/* styles={Lightbox.extendStyles({ image: { border: '5px solid pink'} })} */
 			})
 		);
 	}
