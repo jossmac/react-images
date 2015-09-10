@@ -22155,6 +22155,17 @@ var Lightbox = _reactAddons2['default'].createClass({
 		styles: _reactAddons2['default'].PropTypes.object,
 		width: _reactAddons2['default'].PropTypes.number
 	},
+	statics: {
+		extendStyles: function extendStyles(styles) {
+			var extStyles = _extends({}, _stylesDefault2['default']);
+			for (var key in extStyles) {
+				if (key in styles) {
+					extStyles[key] = _extends({}, _stylesDefault2['default'][key], styles[key]);
+				}
+			}
+			return extStyles;
+		}
+	},
 	getDefaultProps: function getDefaultProps() {
 		return {
 			backdropClosesModal: true,
