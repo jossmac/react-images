@@ -22271,7 +22271,7 @@ var styles = {
 		lineHeight: 1,
 		marginLeft: 'auto',
 		marginRight: 'auto',
-		maxHeight: '100%',
+		maxHeight: '80%',
 		maxWidth: '100%',
 		position: 'fixed',
 		right: 0,

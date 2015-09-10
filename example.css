@@ -7,7 +7,7 @@ body {
   padding: 0;
 }
 a {
-  color: #007eff;
+  color: #7ed321;
   text-decoration: none;
 }
 a:hover {
@@ -17,7 +17,7 @@ a:hover {
   margin-left: auto;
   margin-right: auto;
   max-width: 400px;
-  padding: 0 30px;
+  padding: 0 20px;
 }
 h1,
 h2,
@@ -39,7 +39,7 @@ h6,
 }
 h1,
 .h1 {
-  font-size: 3em;
+  font-size: 2em;
 }
 h2,
 .h2 {
@@ -62,14 +62,26 @@ h6,
 .h6 {
   font-size: .75em;
 }
+.page-wrapper {
+  -ms-flex-direction: column;
+  -webkit-flex-direction: column;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.page-body {
+  flex-grow: 1;
+}
 .page-body,
 .page-footer,
 .page-header {
-  padding: 30px 0;
+  padding: 20px 0;
 }
 .page-header {
-  background-color: #007eff;
-  color: #bfdfff;
+  background-color: #7ed321;
+  color: #dff4c8;
 }
 .page-header h1,
 .page-header h2,
@@ -77,7 +89,6 @@ h6,
   color: white;
 }
 .page-header p {
-  font-size: 1.2em;
   margin: 0;
 }
 .page-header a {
@@ -92,34 +103,34 @@ h6,
   text-decoration: none;
 }
 .page-subheader {
-  background-color: #e6f2ff;
+  background-color: #f2fbe9;
   line-height: 20px;
-  padding: 30px 0;
+  padding: 20px 0;
 }
 .page-subheader__button {
   float: right;
 }
 .page-subheader__link {
-  border-bottom: 1px solid rgba(0, 126, 255, 0.3);
+  border-bottom: 1px solid rgba(126, 211, 33, 0.3);
   outline: none;
   text-decoration: none;
 }
 .page-subheader__link:hover,
 .page-subheader__link:focus {
-  border-bottom-color: #007eff;
+  border-bottom-color: #7ed321;
   outline: none;
   text-decoration: none;
 }
 .page-footer {
-  background-color: #fafafa;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
   color: #999;
-  padding: 30px 0;
+  padding: 20px 0;
   text-align: center;
 }
 @media (min-width: 480px) {
   .page-body,
   .page-header {
-    padding: 60px 0;
+    padding: 40px 0;
   }
   .page-header {
     font-size: 1.4em;

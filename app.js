@@ -52,8 +52,7 @@ var Standard = _reactAddons2['default'].createClass({
 	},
 	closeLightbox: function closeLightbox() {
 		this.setState({
-			lightboxIsOpen: false,
-			lightboxInitialImage: null
+			lightboxIsOpen: false
 		});
 	},
 	renderGallery: function renderGallery() {
@@ -75,15 +74,8 @@ var Standard = _reactAddons2['default'].createClass({
 		return _reactAddons2['default'].createElement(
 			'div',
 			null,
-			this.renderGallery(),
-			_reactAddons2['default'].createElement(_reactImages2['default'], {
-				images: this.props.images,
-				initialImage: this.state.lightboxInitialImage,
-				isOpen: this.state.lightboxIsOpen,
-				onClose: this.closeLightbox
-			}),
 			_reactAddons2['default'].createElement(
-				'div',
+				'p',
 				{ className: 'hint' },
 				'Images courtesy of ',
 				_reactAddons2['default'].createElement(
@@ -91,7 +83,14 @@ var Standard = _reactAddons2['default'].createClass({
 					{ href: 'http://www.fillmurray.com', target: '_blank' },
 					'http://www.fillmurray.com'
 				)
-			)
+			),
+			this.renderGallery(),
+			_reactAddons2['default'].createElement(_reactImages2['default'], {
+				images: this.props.images,
+				initialImage: this.state.lightboxInitialImage,
+				isOpen: this.state.lightboxIsOpen,
+				onClose: this.closeLightbox
+			})
 		);
 	}
 });
