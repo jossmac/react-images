@@ -5,6 +5,8 @@ var Standard = React.createClass({
 	displayName: 'Standard',
 	propTypes: {
 		images: React.PropTypes.array,
+		heading: React.PropTypes.string,
+		sepia: React.PropTypes.bool,
 	},
 	getInitialState () {
 		return {
@@ -40,17 +42,15 @@ var Standard = React.createClass({
 	},
 	render () {
 		return (
-			<div>
-				<p className="hint">
-					Images courtesy of <a href="http://www.fillmurray.com" target="_blank">http://www.fillmurray.com</a>
-				</p>
+			<div className="section">
+				<h2>{this.props.heading}</h2>
 				{this.renderGallery()}
 				<Lightbox
 					images={this.props.images}
 					initialImage={this.state.lightboxInitialImage}
 					isOpen={this.state.lightboxIsOpen}
 					onClose={this.closeLightbox}
-					/* styles={Lightbox.extendStyles({ image: { border: '5px solid pink'} })} */
+					styles={this.props.styles}
 				/>
 			</div>
 		);

@@ -1,7 +1,9 @@
 /* eslint react/prop-types: 0 */
 
 import React from 'react/addons';
-import Standard from './components/Standard';
+import Lightbox from 'react-images';
+import Button from './components/Button';
+import Gallery from './components/Gallery';
 
 const IMAGES = [
 	'http://www.fillmurray.com/400/600',
@@ -26,7 +28,28 @@ const IMAGES = [
 	'http://www.fillmurray.com/602/402',
 ];
 
+const styles = Lightbox.extendStyles({
+	image: {
+		border: '10px solid white',
+		borderRadius: 10,
+		WebkitFilter: 'sepia(100%)',
+		filter: 'sepia(100%)',
+	},
+	arrow: {
+		backgroundColor: 'rgba(0,0,0,0.1)',
+		borderRadius: 10,
+	},
+});
+
 React.render(
-	<Standard images={IMAGES} />,
+	<div>
+		<Gallery heading="Gallery" images={IMAGES} />
+		<Gallery heading="Custom Styles" images={IMAGES} styles={styles} />
+		<Button heading="Launch with a button" images={IMAGES} />
+		<hr />
+		<p className="hint">
+			Images courtesy of <a href="http://www.fillmurray.com" target="_blank">http://www.fillmurray.com</a>
+		</p>
+	</div>,
 	document.getElementById('example')
 );
