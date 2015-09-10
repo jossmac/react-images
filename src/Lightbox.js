@@ -11,13 +11,12 @@ var Lightbox = React.createClass({
 	displayName: 'Lightbox',
 	propTypes: {
 		backdropClosesModal: React.PropTypes.bool,
-		className: React.PropTypes.string,
 		enableKeyboardInput: React.PropTypes.bool,
 		initialImage: React.PropTypes.number,
 		height: React.PropTypes.number,
 		images: React.PropTypes.array,
 		isOpen: React.PropTypes.bool,
-		onCancel: React.PropTypes.func,
+		onClose: React.PropTypes.func,
 		showCloseButton: React.PropTypes.bool,
 		width: React.PropTypes.number,
 	},
@@ -59,7 +58,7 @@ var Lightbox = React.createClass({
 		} else if (event.keyCode === 39) {
 			this.gotoNext();
 		} else if (event.keyCode === 27) {
-			this.props.onCancel();
+			this.props.onClose();
 		} else {
 			return false;
 		}
@@ -95,7 +94,7 @@ var Lightbox = React.createClass({
 
 		return (
 			<Fade key="arrowNext">
-				<button type="button" style={Object.assign({}, styles.arrow, styles.arrowNext)} onClick={this.gotoNext} className="octicon octicon-chevron-right">
+				<button type="button" style={Object.assign({}, styles.arrow, styles.arrowNext)} onClick={this.gotoNext}>
 					<Icon type="arrowRight" />
 				</button>
 			</Fade>
@@ -106,7 +105,7 @@ var Lightbox = React.createClass({
 
 		return (
 			<Fade key="backdrop">
-				<div key="backdrop" style={styles.backdrop} onClick={this.props.backdropClosesModal ? this.props.onCancel : null} />
+				<div key="backdrop" style={styles.backdrop} onClick={this.props.backdropClosesModal ? this.props.onClose : null} />
 			</Fade>
 		);
 	},
@@ -115,7 +114,7 @@ var Lightbox = React.createClass({
 
 		return (
 			<Fade key="closeButton">
-				<button style={styles.close} onClick={this.props.onCancel}>Close</button>
+				<button style={styles.close} onClick={this.props.onClose}>Close</button>
 			</Fade>
 		);
 	},
@@ -151,7 +150,7 @@ var Lightbox = React.createClass({
 		);
 	},
 	render () {
-		let props = blacklist(this.props, 'backdropClosesModal', 'initialImage', 'height', 'images', 'isOpen', 'onCancel', 'showCloseButton', 'width');
+		let props = blacklist(this.props, 'backdropClosesModal', 'initialImage', 'height', 'images', 'isOpen', 'onClose', 'showCloseButton', 'width');
 
 		return (
 			<Portal {...props}>

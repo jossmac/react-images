@@ -48,7 +48,7 @@ var Standard = React.createClass({
 					images={this.props.images}
 					initialImage={this.state.lightboxInitialImage}
 					isOpen={this.state.lightboxIsOpen}
-					onCancel={this.closeLightbox}
+					onClose={this.closeLightbox}
 				/>
 				<div className="hint">
 					Images courtesy of <a href="http://www.fillmurray.com" target="_blank">http://www.fillmurray.com</a>
