@@ -1,0 +1,49 @@
+{
+  "name": "react-images",
+  "version": "0.6.7",
+  "description": "A simple, responsive lightbox component for displaying an array of images with React.js",
+  "main": "lib/Lightbox.js",
+  "author": "Joss Mackison",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jossmac/react-images.git"
+  },
+  "dependencies": {
+    "blacklist": "^1.1.2",
+    "react-motion": "^0.2.7"
+  },
+  "devDependencies": {
+    "babel": "^5.8.21",
+    "babel-eslint": "^4.0.10",
+    "eslint": "^1.2.1",
+    "eslint-plugin-react": "^3.2.3",
+    "gulp": "^3.9.0",
+    "react": ">=0.13.3 || ^0.14.0-beta3",
+    "react-component-gulp-tasks": "^0.7.0"
+  },
+  "peerDependencies": {
+    "react": ">=0.13.3 || ^0.14.0-beta3"
+  },
+  "browserify-shim": {
+    "react": "global:React"
+  },
+  "scripts": {
+    "build": "gulp clean && NODE_ENV=production gulp build",
+    "bump": "gulp bump",
+    "bump:major": "gulp bump:major",
+    "bump:minor": "gulp bump:minor",
+    "examples": "gulp dev:server",
+    "lint": "eslint .",
+    "publish:examples": "gulp publish:examples",
+    "release": "gulp release",
+    "start": "gulp dev",
+    "watch": "gulp watch:lib"
+  },
+  "keywords": [
+    "react",
+    "react-component",
+    "lightbox",
+    "images"
+  ]
+}
