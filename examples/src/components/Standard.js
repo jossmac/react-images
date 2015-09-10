@@ -22,7 +22,6 @@ var Standard = React.createClass({
 	closeLightbox () {
 		this.setState({
 			lightboxIsOpen: false,
-			lightboxInitialImage: null,
 		});
 	},
 	renderGallery () {
@@ -43,6 +42,9 @@ var Standard = React.createClass({
 	render () {
 		return (
 			<div>
+				<p className="hint">
+					Images courtesy of <a href="http://www.fillmurray.com" target="_blank">http://www.fillmurray.com</a>
+				</p>
 				{this.renderGallery()}
 				<Lightbox
 					images={this.props.images}
@@ -50,9 +52,6 @@ var Standard = React.createClass({
 					isOpen={this.state.lightboxIsOpen}
 					onClose={this.closeLightbox}
 				/>
-				<div className="hint">
-					Images courtesy of <a href="http://www.fillmurray.com" target="_blank">http://www.fillmurray.com</a>
-				</div>
 			</div>
 		);
 	}
