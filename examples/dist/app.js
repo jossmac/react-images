@@ -43,7 +43,7 @@ var Standard = _reactAddons2['default'].createClass({
 		};
 	},
 
-	openLightbox: function openLightbox(index) {
+	openLightbox: function openLightbox(index, event) {
 		event.preventDefault();
 		this.setState({
 			lightboxIsOpen: true,
