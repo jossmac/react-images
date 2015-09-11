@@ -43,6 +43,7 @@ const styles = Lightbox.extendStyles({
 
 React.render(
 	<div>
+		<p style={{ marginBottom: 40 }}>Use your keyboard to navigate <kbd>left</kbd> <kbd>right</kbd> <kbd>esc</kbd> &mdash; Also, try resizing your browser window.</p>
 		<Gallery heading="Gallery" images={IMAGES} />
 		<Gallery heading="Custom Styles" images={IMAGES} styles={styles} />
 		<Button heading="Launch with a button" images={IMAGES} />
