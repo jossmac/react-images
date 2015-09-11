@@ -39,6 +39,29 @@ var styles = _reactImages2['default'].extendStyles({
 _reactAddons2['default'].render(_reactAddons2['default'].createElement(
 	'div',
 	null,
+	_reactAddons2['default'].createElement(
+		'p',
+		{ style: { marginBottom: 40 } },
+		'Use your keyboard to navigate ',
+		_reactAddons2['default'].createElement(
+			'kbd',
+			null,
+			'left'
+		),
+		' ',
+		_reactAddons2['default'].createElement(
+			'kbd',
+			null,
+			'right'
+		),
+		' ',
+		_reactAddons2['default'].createElement(
+			'kbd',
+			null,
+			'esc'
+		),
+		' — Also, try resizing your browser window.'
+	),
 	_reactAddons2['default'].createElement(_componentsGallery2['default'], { heading: 'Gallery', images: IMAGES }),
 	_reactAddons2['default'].createElement(_componentsGallery2['default'], { heading: 'Custom Styles', images: IMAGES, styles: styles }),
 	_reactAddons2['default'].createElement(_componentsButton2['default'], { heading: 'Launch with a button', images: IMAGES }),
@@ -184,6 +207,7 @@ var Standard = _reactAddons2['default'].createClass({
 	propTypes: {
 		images: _reactAddons2['default'].PropTypes.array,
 		heading: _reactAddons2['default'].PropTypes.string,
+		subheading: _reactAddons2['default'].PropTypes.string,
 		sepia: _reactAddons2['default'].PropTypes.bool
 	},
 	getInitialState: function getInitialState() {
@@ -222,10 +246,15 @@ var Standard = _reactAddons2['default'].createClass({
 		return _reactAddons2['default'].createElement(
 			'div',
 			{ className: 'section' },
-			_reactAddons2['default'].createElement(
+			this.props.heading && _reactAddons2['default'].createElement(
 				'h2',
 				null,
 				this.props.heading
+			),
+			this.props.subheading && _reactAddons2['default'].createElement(
+				'p',
+				null,
+				this.props.subheading
 			),
 			this.renderGallery(),
 			_reactAddons2['default'].createElement(_reactImages2['default'], {
