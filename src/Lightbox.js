@@ -78,16 +78,25 @@ var Lightbox = React.createClass({
 			return false;
 		}
 	},
-	gotoPrevious () {
+	close () {
+		this.props.backdropClosesModal && this.props.onClose && this.props.onClose();
+	},
+	gotoPrevious (event) {
 		if (this.state.currentImage === 0) return;
-
+		if (event) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
 		this.setState({
 			currentImage: this.state.currentImage - 1,
 		});
 	},
-	gotoNext () {
+	gotoNext (event) {
 		if (this.state.currentImage === (this.props.images.length - 1)) return;
-
+		if (event) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
 		this.setState({
 			currentImage: this.state.currentImage + 1,
 		});
@@ -98,7 +107,7 @@ var Lightbox = React.createClass({
 
 		return (
 			<Fade key="arrowPrev">
-				<button type="button" style={Object.assign({}, this.props.styles.arrow, this.props.styles.arrowPrev)} onClick={this.gotoPrevious}>
+				<button type="button" style={Object.assign({}, this.props.styles.arrow, this.props.styles.arrowPrev)} onClick={this.gotoPrevious} onTouchEnd={this.gotoPrevious}>
 					<Icon type="arrowLeft" />
 				</button>
 			</Fade>
@@ -109,7 +118,7 @@ var Lightbox = React.createClass({
 
 		return (
 			<Fade key="arrowNext">
-				<button type="button" style={Object.assign({}, this.props.styles.arrow, this.props.styles.arrowNext)} onClick={this.gotoNext}>
+				<button type="button" style={Object.assign({}, this.props.styles.arrow, this.props.styles.arrowNext)} onClick={this.gotoNext} onTouchEnd={this.gotoNext}>
 					<Icon type="arrowRight" />
 				</button>
 			</Fade>
@@ -120,7 +129,7 @@ var Lightbox = React.createClass({
 
 		return (
 			<Fade key="backdrop">
-				<div key="backdrop" style={this.props.styles.backdrop} onClick={this.props.backdropClosesModal ? this.props.onClose : null} />
+				<div key="backdrop" style={this.props.styles.backdrop} onTouchEnd={this.close} onClick={this.close} />
 			</Fade>
 		);
 	},
@@ -137,7 +146,7 @@ var Lightbox = React.createClass({
 		if (!this.props.isOpen) return;
 
 		return (
-			<Fade key="dialog" style={Object.assign({}, this.props.styles.dialog, { height: this.props.height, width: this.props.width })}>
+			<Fade key="dialog" onTouchEnd={this.close} onClick={this.close} style={Object.assign({}, this.props.styles.dialog, { height: this.props.height, width: this.props.width })}>
 				{this.renderImages()}
 				<Transition component="div">
 					{this.renderArrowPrev()}
@@ -159,7 +168,7 @@ var Lightbox = React.createClass({
 		return (
 			<Transition component="div">
 				<Fade key={'image' + currentImage}>
-					<img src={images[currentImage]} style={this.props.styles.image} />
+					<img src={images[currentImage]} style={this.props.styles.image} onTouchEnd={e => e.stopPropagation()} onClick={e => e.stopPropagation()} />
 				</Fade>
 			</Transition>
 		);

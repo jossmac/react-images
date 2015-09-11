@@ -9,7 +9,6 @@ const styles = {
 		right: 0,
 		outline: 'none',
 		padding: '0 2%',
-		pointerEvents: 'all',
 		position: 'absolute',
 		top: 0,
 		width: '10%',
@@ -50,7 +49,6 @@ const styles = {
 		marginRight: 'auto',
 		outline: 'none',
 		padding: 0,
-		pointerEvents: 'all',
 		position: 'absolute',
 		right: 0,
 		textAlign: 'center',
@@ -64,7 +62,6 @@ const styles = {
 		marginRight: 'auto',
 		maxHeight: '80%',
 		maxWidth: '100%',
-		pointerEvents: 'none',
 		position: 'fixed',
 		right: 0,
 		top: '50%',
@@ -79,7 +76,6 @@ const styles = {
 		boxShadow: '0 1px 4px rgba(0,0,0,0.25)',
 		maxHeight: '100%',
 		maxWidth: '80%',
-		pointerEvents: 'all',
 		position: 'absolute',
 
 		// center the image within the dialog
