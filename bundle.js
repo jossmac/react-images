@@ -22017,7 +22017,6 @@ var styles = {
 		right: 0,
 		outline: 'none',
 		padding: '0 2%',
-		pointerEvents: 'all',
 		position: 'absolute',
 		top: 0,
 		width: '10%',
@@ -22058,7 +22057,6 @@ var styles = {
 		marginRight: 'auto',
 		outline: 'none',
 		padding: 0,
-		pointerEvents: 'all',
 		position: 'absolute',
 		right: 0,
 		textAlign: 'center',
@@ -22072,7 +22070,6 @@ var styles = {
 		marginRight: 'auto',
 		maxHeight: '80%',
 		maxWidth: '100%',
-		pointerEvents: 'none',
 		position: 'fixed',
 		right: 0,
 		top: '50%',
@@ -22087,7 +22084,6 @@ var styles = {
 		boxShadow: '0 1px 4px rgba(0,0,0,0.25)',
 		maxHeight: '100%',
 		maxWidth: '80%',
-		pointerEvents: 'all',
 		position: 'absolute',
 
 		// center the image within the dialog
@@ -22214,16 +22210,25 @@ var Lightbox = _reactAddons2['default'].createClass({
 			return false;
 		}
 	},
-	gotoPrevious: function gotoPrevious() {
+	close: function close() {
+		this.props.backdropClosesModal && this.props.onClose && this.props.onClose();
+	},
+	gotoPrevious: function gotoPrevious(event) {
 		if (this.state.currentImage === 0) return;
-
+		if (event) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
 		this.setState({
 			currentImage: this.state.currentImage - 1
 		});
 	},
-	gotoNext: function gotoNext() {
+	gotoNext: function gotoNext(event) {
 		if (this.state.currentImage === this.props.images.length - 1) return;
-
+		if (event) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
 		this.setState({
 			currentImage: this.state.currentImage + 1
 		});
@@ -22237,7 +22242,7 @@ var Lightbox = _reactAddons2['default'].createClass({
 			{ key: 'arrowPrev' },
 			_reactAddons2['default'].createElement(
 				'button',
-				{ type: 'button', style: _extends({}, this.props.styles.arrow, this.props.styles.arrowPrev), onClick: this.gotoPrevious },
+				{ type: 'button', style: _extends({}, this.props.styles.arrow, this.props.styles.arrowPrev), onClick: this.gotoPrevious, onTouchEnd: this.gotoPrevious },
 				_reactAddons2['default'].createElement(_Icon2['default'], { type: 'arrowLeft' })
 			)
 		);
@@ -22250,7 +22255,7 @@ var Lightbox = _reactAddons2['default'].createClass({
 			{ key: 'arrowNext' },
 			_reactAddons2['default'].createElement(
 				'button',
-				{ type: 'button', style: _extends({}, this.props.styles.arrow, this.props.styles.arrowNext), onClick: this.gotoNext },
+				{ type: 'button', style: _extends({}, this.props.styles.arrow, this.props.styles.arrowNext), onClick: this.gotoNext, onTouchEnd: this.gotoNext },
 				_reactAddons2['default'].createElement(_Icon2['default'], { type: 'arrowRight' })
 			)
 		);
@@ -22261,7 +22266,7 @@ var Lightbox = _reactAddons2['default'].createClass({
 		return _reactAddons2['default'].createElement(
 			_Fade2['default'],
 			{ key: 'backdrop' },
-			_reactAddons2['default'].createElement('div', { key: 'backdrop', style: this.props.styles.backdrop, onClick: this.props.backdropClosesModal ? this.props.onClose : null })
+			_reactAddons2['default'].createElement('div', { key: 'backdrop', style: this.props.styles.backdrop, onTouchEnd: this.close, onClick: this.close })
 		);
 	},
 	renderCloseButton: function renderCloseButton() {
@@ -22282,7 +22287,7 @@ var Lightbox = _reactAddons2['default'].createClass({
 
 		return _reactAddons2['default'].createElement(
 			_Fade2['default'],
-			{ key: 'dialog', style: _extends({}, this.props.styles.dialog, { height: this.props.height, width: this.props.width }) },
+			{ key: 'dialog', onTouchEnd: this.close, onClick: this.close, style: _extends({}, this.props.styles.dialog, { height: this.props.height, width: this.props.width }) },
 			this.renderImages(),
 			_reactAddons2['default'].createElement(
 				Transition,
@@ -22313,7 +22318,11 @@ var Lightbox = _reactAddons2['default'].createClass({
 			_reactAddons2['default'].createElement(
 				_Fade2['default'],
 				{ key: 'image' + currentImage },
-				_reactAddons2['default'].createElement('img', { src: images[currentImage], style: this.props.styles.image })
+				_reactAddons2['default'].createElement('img', { src: images[currentImage], style: this.props.styles.image, onTouchEnd: function (e) {
+						return e.stopPropagation();
+					}, onClick: function (e) {
+						return e.stopPropagation();
+					} })
 			)
 		);
 	},
