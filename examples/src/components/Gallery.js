@@ -6,6 +6,7 @@ var Standard = React.createClass({
 	propTypes: {
 		images: React.PropTypes.array,
 		heading: React.PropTypes.string,
+		subheading: React.PropTypes.string,
 		sepia: React.PropTypes.bool,
 	},
 	getInitialState () {
@@ -43,7 +44,8 @@ var Standard = React.createClass({
 	render () {
 		return (
 			<div className="section">
-				<h2>{this.props.heading}</h2>
+				{this.props.heading && <h2>{this.props.heading}</h2>}
+				{this.props.subheading && <p>{this.props.subheading}</p>}
 				{this.renderGallery()}
 				<Lightbox
 					images={this.props.images}
