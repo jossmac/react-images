@@ -3,6 +3,28 @@
 A simple, responsive lightbox component for displaying an array of images.
 
 
+## Quick start
+
+```jsx
+import React from 'react';
+import Lightbox from 'react-images';
+
+export default class Sample extends React.Component {
+  render() {
+    return (
+      <Lightbox
+      	images={['http://example.com/img1.jpg', 'http://example.com/img2.jpg']}
+      	initialImage={0}
+      	isOpen={this.props.isOpen}
+      	onClose={this.props.onClose}
+      	styles={this.props.styles}
+      />
+    );
+  }
+}
+```
+
+
 ## Demo & Examples
 
 Live demo: [jossmac.github.io/react-images](http://jossmac.github.io/react-images/)
