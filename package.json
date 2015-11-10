@@ -24,7 +24,7 @@
     "react-component-gulp-tasks": "^0.7.0"
   },
   "peerDependencies": {
-    "react": ">=0.14",
+    "react": ">=0.14"
   },
   "browserify-shim": {
     "react": "global:React"
