@@ -1,4 +1,4 @@
-import React from 'react/addons';
+import React from 'react';
 
 var Fade = React.createClass({
 	getDefaultProps () {
@@ -25,11 +25,11 @@ var Fade = React.createClass({
 	componentDidLeave: function () {
 	},
 	_showElement: function () {
-		var el = this.refs.element.getDOMNode();
+		var el = this.refs.element;
 		el.style.opacity = 1;
 	},
 	_hideElement: function () {
-		var el = this.refs.element.getDOMNode();
+		var el = this.refs.element;
 		el.style.opacity = 0;
 	},
 	render: function () {

@@ -1,12 +1,12 @@
-import React from 'react/addons';
+import React from 'react';
 import blacklist from 'blacklist';
 import Fade from './Fade';
 import Icon from './Icon';
 import Portal from './Portal';
 
 import defaultStyles from './styles/default';
+import Transition from 'react-addons-transition-group';
 
-const Transition = React.addons.TransitionGroup;
 const BODY = document.getElementsByTagName('body')[0];
 
 var Lightbox = React.createClass({
@@ -148,13 +148,13 @@ var Lightbox = React.createClass({
 		return (
 			<Fade key="dialog" onTouchEnd={this.close} onClick={this.close} style={Object.assign({}, this.props.styles.dialog, { height: this.props.height, width: this.props.width })}>
 				{this.renderImages()}
-				<Transition component="div">
+				<Transition transitionName="div" component="div">
 					{this.renderArrowPrev()}
 				</Transition>
-				<Transition component="div">
+				<Transition transitionName="div" component="div">
 					{this.renderArrowNext()}
 				</Transition>
-				<Transition component="div">
+				<Transition transitionName="div" component="div">
 					{this.renderCloseButton()}
 				</Transition>
 			</Fade>
@@ -166,7 +166,7 @@ var Lightbox = React.createClass({
 		if (!images || !images.length) return;
 
 		return (
-			<Transition component="div">
+			<Transition transitionName="div" component="div">
 				<Fade key={'image' + currentImage}>
 					<img src={images[currentImage]} style={this.props.styles.image} onTouchEnd={e => e.stopPropagation()} onClick={e => e.stopPropagation()} />
 				</Fade>
@@ -178,10 +178,10 @@ var Lightbox = React.createClass({
 
 		return (
 			<Portal {...props}>
-				<Transition component="div">
+				<Transition transitionName="div" component="div">
 					{this.renderDialog()}
 				</Transition>
-				<Transition component="div">
+				<Transition transitionName="div" component="div">
 					{this.renderBackdrop()}
 				</Transition>
 			</Portal>
