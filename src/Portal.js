@@ -1,4 +1,5 @@
-import React from 'react/addons';
+import React from 'react';
+import {render} from 'react-dom';
 module.exports = React.createClass({
 	displayName: 'Portal',
 	portalElement: null,
@@ -19,6 +20,6 @@ module.exports = React.createClass({
 		document.body.removeChild(this.portalElement);
 	},
 	componentDidUpdate() {
-		React.render(<div {...this.props}>{this.props.children}</div>, this.portalElement);
+		render(<div {...this.props}>{this.props.children}</div>, this.portalElement);
 	}
 });

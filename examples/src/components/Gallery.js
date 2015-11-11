@@ -1,4 +1,4 @@
-import React from 'react/addons';
+import React from 'react';
 import Lightbox from 'react-images';
 
 var Standard = React.createClass({

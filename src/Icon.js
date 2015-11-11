@@ -1,4 +1,4 @@
-import React from 'react/addons';
+import React from 'react';
 import icons from './icons';
 
 module.exports = React.createClass({

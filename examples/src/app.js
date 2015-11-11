@@ -1,6 +1,7 @@
 /* eslint react/prop-types: 0 */
 
-import React from 'react/addons';
+import React from 'react';
+import {render} from 'react-dom';
 import Lightbox from 'react-images';
 import Button from './components/Button';
 import Gallery from './components/Gallery';
@@ -41,7 +42,7 @@ const styles = Lightbox.extendStyles({
 	},
 });
 
-React.render(
+render(
 	<div>
 		<p style={{ marginBottom: 40 }}>Use your keyboard to navigate <kbd>left</kbd> <kbd>right</kbd> <kbd>esc</kbd> &mdash; Also, try resizing your browser window.</p>
 		<Gallery heading="Gallery" images={IMAGES} />
