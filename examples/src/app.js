@@ -29,7 +29,7 @@ const IMAGES = [
 	'https://c2.staticflickr.com/8/7581/16129016486_085eb8dedd_c.jpg',
 ];
 
-const THUMBS = [
+const THUMBNAILS = [
 	'https://c1.staticflickr.com/9/8383/8517694980_21bef8e9fc_s.jpg',
         'https://c1.staticflickr.com/9/8379/8516580741_058e7c7317_s.jpg',
         'https://c1.staticflickr.com/9/8509/8517695778_f08f11150f_s.jpg',
@@ -67,8 +67,8 @@ const styles = Lightbox.extendStyles({
 render(
 	<div>
 		<p style={{ marginBottom: 40 }}>Use your keyboard to navigate <kbd>left</kbd> <kbd>right</kbd> <kbd>esc</kbd> &mdash; Also, try resizing your browser window.</p>
-		<Gallery heading="Gallery" images={IMAGES} thumbs={THUMBS} />
-		<Gallery heading="Custom Styles" images={IMAGES} thumbs={THUMBS} styles={styles} />
+		<Gallery heading="Gallery" images={IMAGES} thumbnails={THUMBNAILS} />
+		<Gallery heading="Custom Styles" images={IMAGES} thumbnails={THUMBNAILS} styles={styles} />
 		<Button heading="Launch with a button" images={IMAGES} />
 		<hr />
 		<p className="hint">

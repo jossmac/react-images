@@ -5,7 +5,7 @@ var Standard = React.createClass({
 	displayName: 'Standard',
 	propTypes: {
 		images: React.PropTypes.array,
-		thumbs: React.PropTypes.array,
+		thumbnails: React.PropTypes.array,
 		heading: React.PropTypes.string,
 		subheading: React.PropTypes.string,
 		sepia: React.PropTypes.bool,
@@ -28,12 +28,12 @@ var Standard = React.createClass({
 		});
 	},
 	renderGallery () {
-		if (!this.props.thumbs) return;
+		if (!this.props.thumbnails) return;
 
 		let gallery = this.props.images.map((url, i) => {
 			return (
 				<a key={i} href={url} onClick={this.openLightbox.bind(this, i)} style={Object.assign({}, styles.thumbnail)}>
-				    <img src={this.props.thumbs[i]} width={styles.thumbnail.size} height={styles.thumbnail.size} />
+				    <img src={this.props.thumbnails[i]} width={styles.thumbnail.size} height={styles.thumbnail.size} />
 				</a>
 			);
 		});
