@@ -28,7 +28,7 @@ const styles = {
 		left: 0,
 	},
 	backdrop: {
-		backgroundColor: 'rgba(0,0,0,0.66)',
+		backgroundColor: 'rgba(0,0,0,0.76)',
 		bottom: 0,
 		left: 0,
 		position: 'fixed',

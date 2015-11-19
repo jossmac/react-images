@@ -28,10 +28,11 @@ var Standard = React.createClass({
 	},
 	renderGallery () {
 		if (!this.props.images) return;
-
-		let gallery = this.props.images.map((url, i) => {
+		let gallery = this.props.images.map((obj, i) => {
 			return (
-				<a key={i} href={url} onClick={this.openLightbox.bind(this, i)} style={Object.assign({}, styles.thumbnail, { backgroundImage: `url(${url})` })} />
+				<a key={i} href={obj.src} onClick={this.openLightbox.bind(this, i)} style={Object.assign({}, styles.thumbnail)}>
+				    <img src={obj.thumbnail} width={styles.thumbnail.size} height={styles.thumbnail.size} />
+				</a>
 			);
 		});
 
@@ -53,6 +54,7 @@ var Standard = React.createClass({
 					isOpen={this.state.lightboxIsOpen}
 					onClose={this.closeLightbox}
 					styles={this.props.styles}
+					width={1200}
 				/>
 			</div>
 		);

@@ -165,10 +165,18 @@ var Lightbox = React.createClass({
 		let { currentImage } = this.state;
 		if (!images || !images.length) return;
 
+	        if (images[currentImage].srcset){
+		    // if srcset is provided
+		    var img = <img src={images[currentImage].src} srcSet={images[currentImage].srcset.join()} sizes={parseInt(this.props.styles.image.maxWidth)+'vw'} style={this.props.styles.image} onTouchEnd={e => e.stopPropagation()} onClick={e => e.stopPropagation()} />
+		}
+		else{
+		    var img = <img src={images[currentImage].src} style={this.props.styles.image} onTouchEnd={e => e.stopPropagation()} onClick={e => e.stopPropagation()} />
+
+		}
 		return (
 			<Transition transitionName="div" component="div">
 				<Fade key={'image' + currentImage}>
-					<img src={images[currentImage]} style={this.props.styles.image} onTouchEnd={e => e.stopPropagation()} onClick={e => e.stopPropagation()} />
+				    {img}
 				</Fade>
 			</Transition>
 		);
