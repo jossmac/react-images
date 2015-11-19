@@ -6,8 +6,6 @@ import Lightbox from 'react-images';
 import Button from './components/Button';
 import Gallery from './components/Gallery';
 
-
-
 const IMAGES = [
     {    
 	src: 'https://c1.staticflickr.com/9/8383/8517694980_21bef8e9fc_c.jpg',
