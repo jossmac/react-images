@@ -154,3 +154,21 @@ h6,
   margin: 15px 0;
   color: #666;
 }
+kbd {
+  background-color: #fafafa;
+  border-radius: 3px;
+  border: 1px solid #cccccc;
+  border-bottom-color: #c2c2c2;
+  border-top-color: #d6d6d6;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.12), 0 2px 0 0 rgba(255, 255, 255, 0.7) inset;
+  color: #666;
+  display: inline-block;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+  font-size: .85em;
+  font-weight: 500;
+  line-height: inherit;
+  padding: 1px 4px;
+  white-space: nowrap;
+  position: relative;
+  top: -1px;
+}
