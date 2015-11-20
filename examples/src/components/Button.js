@@ -27,7 +27,7 @@ var Standard = React.createClass({
 		return (
 			<div className="section">
 				<h2>{this.props.heading}</h2>
-				<button onClick={this.openLightbox.bind(this, 0)}>Sure, why not?</button>
+				<button onClick={(event) => this.openLightbox(0, event)}>Sure, why not?</button>
 				<Lightbox
 					images={this.props.images}
 					initialImage={this.state.lightboxInitialImage}

@@ -30,7 +30,7 @@ var Standard = React.createClass({
 		if (!this.props.images) return;
 		let gallery = this.props.images.map((obj, i) => {
 			return (
-				<a key={i} href={obj.src} onClick={this.openLightbox.bind(this, i)} style={Object.assign({}, styles.thumbnail)}>
+				<a key={i} href={obj.src} onClick={(event) => this.openLightbox(i, event)} style={Object.assign({}, styles.thumbnail)}>
 				    <img src={obj.thumbnail} width={styles.thumbnail.size} height={styles.thumbnail.size} />
 				</a>
 			);
