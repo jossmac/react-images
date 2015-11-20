@@ -129,9 +129,12 @@ var Lightbox = _react2['default'].createClass({
 		enableKeyboardInput: _react2['default'].PropTypes.bool,
 		initialImage: _react2['default'].PropTypes.number,
 		height: _react2['default'].PropTypes.number,
-		images: _react2['default'].PropTypes.array,
+		images: _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.shape({
+			src: _react2['default'].PropTypes.string.isRequired,
+			srcset: _react2['default'].PropTypes.array
+		})).isRequired,
 		isOpen: _react2['default'].PropTypes.bool,
-		onClose: _react2['default'].PropTypes.func,
+		onClose: _react2['default'].PropTypes.func.isRequired,
 		showCloseButton: _react2['default'].PropTypes.bool,
 		styles: _react2['default'].PropTypes.object,
 		width: _react2['default'].PropTypes.number
@@ -294,7 +297,6 @@ var Lightbox = _react2['default'].createClass({
 		if (!images || !images.length) return;
 
 		if (images[currentImage].srcset) {
-			// if srcset is provided
 			var img = _react2['default'].createElement('img', { src: images[currentImage].src, srcSet: images[currentImage].srcset.join(), sizes: parseInt(this.props.styles.image.maxWidth) + 'vw', style: this.props.styles.image, onTouchEnd: function (e) {
 					return e.stopPropagation();
 				}, onClick: function (e) {
