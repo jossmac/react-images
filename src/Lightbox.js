@@ -18,8 +18,7 @@ var Lightbox = React.createClass({
 		height: React.PropTypes.number,
 		images: React.PropTypes.arrayOf(
 			React.PropTypes.shape({
-				src: React.PropTypes.string,
-				thumbnail: React.PropTypes.string,
+				src: React.PropTypes.string.isRequired,
 				srcset: React.PropTypes.array,
 			})
 		).isRequired,
@@ -171,18 +170,15 @@ var Lightbox = React.createClass({
 		let { currentImage } = this.state;
 		if (!images || !images.length) return;
 
-	        if (images[currentImage].srcset){
-		    // if srcset is provided
-		    var img = <img src={images[currentImage].src} srcSet={images[currentImage].srcset.join()} sizes={parseInt(this.props.styles.image.maxWidth)+'vw'} style={this.props.styles.image} onTouchEnd={e => e.stopPropagation()} onClick={e => e.stopPropagation()} />
-		}
-		else{
-		    var img = <img src={images[currentImage].src} style={this.props.styles.image} onTouchEnd={e => e.stopPropagation()} onClick={e => e.stopPropagation()} />
-
+		if (images[currentImage].srcset) {
+			var img = <img src={images[currentImage].src} srcSet={images[currentImage].srcset.join()} sizes={parseInt(this.props.styles.image.maxWidth)+'vw'} style={this.props.styles.image} onTouchEnd={e => e.stopPropagation()} onClick={e => e.stopPropagation()} />
+		} else {
+			var img = <img src={images[currentImage].src} style={this.props.styles.image} onTouchEnd={e => e.stopPropagation()} onClick={e => e.stopPropagation()} />
 		}
 		return (
 			<Transition transitionName="div" component="div">
 				<Fade key={'image' + currentImage}>
-				    {img}
+					{img}
 				</Fade>
 			</Transition>
 		);
