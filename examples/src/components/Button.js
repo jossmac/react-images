@@ -23,21 +23,6 @@ var Standard = React.createClass({
 			lightboxIsOpen: false,
 		});
 	},
-	renderButton () {
-		if (!this.props.images) return;
-
-		let gallery = this.props.images.map((url, i) => {
-			return (
-				<a key={i} href={url} onClick={this.openLightbox.bind(this, i)} style={Object.assign({}, styles.thumbnail, { backgroundImage: `url(${url})` })} />
-			);
-		});
-
-		return (
-			<div style={styles.gallery}>
-				{gallery}
-			</div>
-		);
-	},
 	render () {
 		return (
 			<div className="section">
