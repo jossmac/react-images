@@ -16,7 +16,13 @@ var Lightbox = React.createClass({
 		enableKeyboardInput: React.PropTypes.bool,
 		initialImage: React.PropTypes.number,
 		height: React.PropTypes.number,
-		images: React.PropTypes.array,
+		images: React.PropTypes.arrayOf(
+			React.PropTypes.shape({
+				src: React.PropTypes.string,
+				thumbnail: React.PropTypes.string,
+				srcset: React.PropTypes.array,
+			})
+		).isRequired,
 		isOpen: React.PropTypes.bool,
 		onClose: React.PropTypes.func.isRequired,
 		showCloseButton: React.PropTypes.bool,
