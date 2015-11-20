@@ -18,7 +18,7 @@ var Lightbox = React.createClass({
 		height: React.PropTypes.number,
 		images: React.PropTypes.array,
 		isOpen: React.PropTypes.bool,
-		onClose: React.PropTypes.func,
+		onClose: React.PropTypes.func.isRequired,
 		showCloseButton: React.PropTypes.bool,
 		styles: React.PropTypes.object,
 		width: React.PropTypes.number,
