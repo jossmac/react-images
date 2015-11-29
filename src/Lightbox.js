@@ -7,26 +7,27 @@ import Portal from './Portal';
 import defaultStyles from './styles/default';
 import Transition from 'react-addons-transition-group';
 
-const BODY = document.getElementsByTagName('body')[0];
+const { PropTypes } = React;
+const BODY = document.body;
 
 var Lightbox = React.createClass({
 	displayName: 'Lightbox',
 	propTypes: {
-		backdropClosesModal: React.PropTypes.bool,
-		enableKeyboardInput: React.PropTypes.bool,
-		initialImage: React.PropTypes.number,
-		height: React.PropTypes.number,
-		images: React.PropTypes.arrayOf(
-			React.PropTypes.shape({
-				src: React.PropTypes.string.isRequired,
-				srcset: React.PropTypes.array,
+		backdropClosesModal: PropTypes.bool,
+		enableKeyboardInput: PropTypes.bool,
+		initialImage: PropTypes.number,
+		height: PropTypes.number,
+		images: PropTypes.arrayOf(
+			PropTypes.shape({
+				src: PropTypes.string.isRequired,
+				srcset: PropTypes.array,
 			})
 		).isRequired,
-		isOpen: React.PropTypes.bool,
-		onClose: React.PropTypes.func.isRequired,
-		showCloseButton: React.PropTypes.bool,
-		styles: React.PropTypes.object,
-		width: React.PropTypes.number,
+		isOpen: PropTypes.bool,
+		onClose: PropTypes.func.isRequired,
+		showCloseButton: PropTypes.bool,
+		styles: PropTypes.object,
+		width: PropTypes.number,
 	},
 	statics: {
 		extendStyles(styles) {
