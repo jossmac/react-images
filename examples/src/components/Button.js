@@ -12,7 +12,6 @@ var Button = React.createClass({
 		};
 	},
 	gotoPrevious (event) {
-		if (this.state.currentImage === 0) return;
 		if (event) {
 			event.preventDefault();
 			event.stopPropagation();
@@ -22,7 +21,6 @@ var Button = React.createClass({
 		});
 	},
 	gotoNext (event) {
-		if (this.state.currentImage === (this.props.images.length - 1)) return;
 		if (event) {
 			event.preventDefault();
 			event.stopPropagation();

@@ -70,11 +70,20 @@ var Lightbox = React.createClass({
 		}
 	},
 
+
+	gotoPrev (event) {
+		if (this.props.currentImage === 0) return;
+		this.props.onClickPrev();
+	},
+	gotoNext (event) {
+		if (this.props.currentImage === (this.props.images.length - 1)) return;
+		this.props.onClickNext();
+	},
 	handleKeyboardInput (event) {
 		if (event.keyCode === 37) {
-			this.props.onClickPrev();
+			this.gotoPrev();
 		} else if (event.keyCode === 39) {
-			this.props.onClickNext();
+			this.gotoNext();
 		} else if (event.keyCode === 27) {
 			this.props.onClose();
 		} else {
@@ -90,7 +99,7 @@ var Lightbox = React.createClass({
 
 		return (
 			<Fade key="arrowPrev">
-				<button type="button" style={Object.assign({}, this.props.styles.arrow, this.props.styles.arrowPrev)} onClick={this.props.onClickPrev} onTouchEnd={this.props.onClickPrev}>
+				<button type="button" style={Object.assign({}, this.props.styles.arrow, this.props.styles.arrowPrev)} onClick={this.gotoPrev} onTouchEnd={this.gotoPrev}>
 					<Icon type="arrowLeft" />
 				</button>
 			</Fade>
@@ -101,7 +110,7 @@ var Lightbox = React.createClass({
 
 		return (
 			<Fade key="arrowNext">
-				<button type="button" style={Object.assign({}, this.props.styles.arrow, this.props.styles.arrowNext)} onClick={this.props.onClickNext} onTouchEnd={this.props.onClickNext}>
+				<button type="button" style={Object.assign({}, this.props.styles.arrow, this.props.styles.arrowNext)} onClick={this.gotoNext} onTouchEnd={this.gotoNext}>
 					<Icon type="arrowRight" />
 				</button>
 			</Fade>
