@@ -13,11 +13,11 @@ export default class Sample extends React.Component {
   render() {
     return (
       <Lightbox
-      	images={['http://example.com/img1.jpg', 'http://example.com/img2.jpg']}
-      	initialImage={0}
-      	isOpen={this.props.isOpen}
-      	onClose={this.props.onClose}
-      	styles={this.props.styles}
+        images={[{ src: 'http://example.com/img1.jpg' }, { src: 'http://example.com/img2.jpg' }]}
+        isOpen={this.state.lightboxIsOpen}
+        onClickPrev={this.gotoPrevious}
+        onClickNext={this.gotoNext}
+        onClose={this.closeLightbox}
       />
     );
   }
@@ -40,36 +40,34 @@ Then open [`localhost:8000`](http://localhost:8000) in a browser.
 
 Example using srcset:
 ```jsx
-      <Lightbox
-      	images={this.props.images}
-      	initialImage={0}
-      	isOpen={this.props.isOpen}
-      	onClose={this.props.onClose}
-      	styles={this.props.styles}
-      />
+<Lightbox
+  images={LIGHTBOX_IMAGE_SET}
+  onClickPrev={this.gotoPrevious}
+  onClickNext={this.gotoNext}
+  onClose={this.closeLightbox}
+/>
 
-    // images props defined elsewhere in your code
-    const IMAGES = [
-	{           
-	    src: 'http://example.com/example/img1.jpg',
-	    srcset: [
-			'http://example.com/example/img1_1024.jpg 1024w',
-			'http://example.com/example/img1_800.jpg 800w',
-			'http://example.com/example/img1_500.jpg 500w',
-			'http://example.com/example/img1_320.jpg 320w',
-		    ],
-	},  
-	{           
-	    src: 'http://example.com/example/img2.jpg',
-	    srcset: [       
-			'http://example.com/example/img2_1024.jpg 1024w',
-			'http://example.com/example/img2_800.jpg 800w',
-			'http://example.com/example/img2_500.jpg 500w',
-			'http://example.com/example/img2_320.jpg 320w',
-		    ]       
-	} 
-    ];
- 
+const LIGHTBOX_IMAGE_SET = [
+  {
+    src: 'http://example.com/example/img1.jpg',
+    srcset: [
+      'http://example.com/example/img1_1024.jpg 1024w',
+      'http://example.com/example/img1_800.jpg 800w',
+      'http://example.com/example/img1_500.jpg 500w',
+      'http://example.com/example/img1_320.jpg 320w',
+    ],
+  },
+  {
+    src: 'http://example.com/example/img2.jpg',
+    srcset: [
+      'http://example.com/example/img2_1024.jpg 1024w',
+      'http://example.com/example/img2_800.jpg 800w',
+      'http://example.com/example/img2_500.jpg 500w',
+      'http://example.com/example/img2_320.jpg 320w',
+    ],
+  }
+];
+
 ```
 
 Notes on srcset support:
@@ -83,66 +81,16 @@ Read more about the srcset and sizes attributes here: [https://ericportis.com/po
 
 ## Options
 
-<table><thead>
-<tr>
-<th align="left">Property</th>
-<th align="left">Type</th>
-<th align="left">Default</th>
-<th align="left">Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td align="left">backdropClosesModal</td>
-<td align="left">bool</td>
-<td align="left">true</td>
-<td align="left">Allow users to exit the lightbox by clicking the backdrop</td>
-</tr>
-<tr>
-<td align="left">enableKeyboardInput</td>
-<td align="left">bool</td>
-<td align="left">true</td>
-<td align="left">Supports keyboard input - <code>esc</code>, <code>arrow left</code>, and <code>arrow right</code></td>
-</tr>
-<tr>
-<td align="left">initialImage</td>
-<td align="left">number</td>
-<td align="left">0</td>
-<td align="left">The index of the first image to display</td>
-</tr>
-<tr>
-<td align="left">height</td>
-<td align="left">number</td>
-<td align="left">600</td>
-<td align="left">Maximum height of the carousel; defaults to 600px</td>
-</tr>
-<tr>
-<td align="left">images</td>
-<td align="left">array</td>
-<td align="left">undefined</td>
-<td align="left">An array of objects containing valid src and srcset values of img element</td>
-</tr>
-<tr>
-<td align="left">isOpen</td>
-<td align="left">bool</td>
-<td align="left">false</td>
-<td align="left">Whether or not the lightbox is displayed</td>
-</tr>
-<tr>
-<td align="left">onClose</td>
-<td align="left">func</td>
-<td align="left">undefined</td>
-<td align="left">Handle closing of the lightbox</td>
-</tr>
-<tr>
-<td align="left">showCloseButton</td>
-<td align="left">bool</td>
-<td align="left">false</td>
-<td align="left">Optionally display a close button under the carousel</td>
-</tr>
-<tr>
-<td align="left">width</td>
-<td align="left">number</td>
-<td align="left">900</td>
-<td align="left">Maximum width of the carousel; defaults to 900px</td>
-</tr>
-</tbody></table>
+Property	|	Type		|	Default		|	Description
+:-----------------------|:--------------|:--------------|:--------------------------------
+backdropClosesModal	|	bool	|	true	|	Allow users to exit the lightbox by clicking the backdrop
+enableKeyboardInput | bool  | true  | Supports keyboard input - <code>esc</code>, <code>arrow left</code>, and <code>arrow right</code>
+currentImage  | number  | 0 | The index of the image to display initially
+height | number | 600 | Maximum height of the carousel; defaults to 600px
+images  | array | undefined | Required. An array of objects containing valid src and srcset values of img element
+isOpen  | bool  | false | Whether or not the lightbox is displayed
+onClickPrev | func | undefined | Required. Fired on request of the previous image
+onClickNext | func | undefined | Required. Fired on request of the next image
+onClose | func | undefined | Required. Handle closing of the lightbox
+showCloseButton | bool  | false | Optionally display a close button under the carousel
+width | number  | 900 | Maximum width of the carousel; defaults to 900px
