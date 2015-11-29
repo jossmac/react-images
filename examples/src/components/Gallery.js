@@ -28,20 +28,12 @@ var Gallery = React.createClass({
 			lightboxIsOpen: false,
 		});
 	},
-	gotoPrevious (event) {
-		if (event) {
-			event.preventDefault();
-			event.stopPropagation();
-		}
+	gotoPrevious () {
 		this.setState({
 			currentImage: this.state.currentImage - 1,
 		});
 	},
-	gotoNext (event) {
-		if (event) {
-			event.preventDefault();
-			event.stopPropagation();
-		}
+	gotoNext () {
 		this.setState({
 			currentImage: this.state.currentImage + 1,
 		});

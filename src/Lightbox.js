@@ -73,10 +73,18 @@ var Lightbox = React.createClass({
 
 	gotoPrev (event) {
 		if (this.props.currentImage === 0) return;
+		if (event) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
 		this.props.onClickPrev();
 	},
 	gotoNext (event) {
 		if (this.props.currentImage === (this.props.images.length - 1)) return;
+		if (event) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
 		this.props.onClickNext();
 	},
 	handleKeyboardInput (event) {
