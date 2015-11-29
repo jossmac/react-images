@@ -73,6 +73,7 @@ const styles = {
 		transform:       'translateY(-50%)',
 	},
 	image: {
+		backgroundColor: 'white',
 		boxShadow: '0 1px 4px rgba(0,0,0,0.25)',
 		maxHeight: '100%',
 		maxWidth: '80%',
