@@ -5,14 +5,8 @@ module.exports = React.createClass({
 	portalElement: null,
 	render: () => null,
 	componentDidMount() {
-		var p = this.props.portalId && document.getElementById(this.props.portalId);
-		if (!p) {
-			var p = document.createElement('div');
-			if (this.props.portalId) {
-				p.id = this.props.portalId;
-			}
-			document.body.appendChild(p);
-		}
+		var p = document.createElement('div');
+		document.body.appendChild(p);
 		this.portalElement = p;
 		this.componentDidUpdate();
 	},
