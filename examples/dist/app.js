@@ -306,20 +306,12 @@ var Gallery = _react2['default'].createClass({
 			lightboxIsOpen: false
 		});
 	},
-	gotoPrevious: function gotoPrevious(event) {
-		if (event) {
-			event.preventDefault();
-			event.stopPropagation();
-		}
+	gotoPrevious: function gotoPrevious() {
 		this.setState({
 			currentImage: this.state.currentImage - 1
 		});
 	},
-	gotoNext: function gotoNext(event) {
-		if (event) {
-			event.preventDefault();
-			event.stopPropagation();
-		}
+	gotoNext: function gotoNext() {
 		this.setState({
 			currentImage: this.state.currentImage + 1
 		});
