@@ -120,24 +120,28 @@ var _reactAddonsTransitionGroup = require('react-addons-transition-group');
 
 var _reactAddonsTransitionGroup2 = _interopRequireDefault(_reactAddonsTransitionGroup);
 
-var BODY = document.getElementsByTagName('body')[0];
+var PropTypes = _react2['default'].PropTypes;
+
+var BODY = document.body;
 
 var Lightbox = _react2['default'].createClass({
 	displayName: 'Lightbox',
 	propTypes: {
-		backdropClosesModal: _react2['default'].PropTypes.bool,
-		enableKeyboardInput: _react2['default'].PropTypes.bool,
-		initialImage: _react2['default'].PropTypes.number,
-		height: _react2['default'].PropTypes.number,
-		images: _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.shape({
-			src: _react2['default'].PropTypes.string.isRequired,
-			srcset: _react2['default'].PropTypes.array
+		backdropClosesModal: PropTypes.bool,
+		currentImage: PropTypes.number,
+		enableKeyboardInput: PropTypes.bool,
+		height: PropTypes.number,
+		images: PropTypes.arrayOf(PropTypes.shape({
+			src: PropTypes.string.isRequired,
+			srcset: PropTypes.array
 		})).isRequired,
-		isOpen: _react2['default'].PropTypes.bool,
-		onClose: _react2['default'].PropTypes.func.isRequired,
-		showCloseButton: _react2['default'].PropTypes.bool,
-		styles: _react2['default'].PropTypes.object,
-		width: _react2['default'].PropTypes.number
+		isOpen: PropTypes.bool,
+		onClickNext: PropTypes.func.isRequired,
+		onClickPrev: PropTypes.func.isRequired,
+		onClose: PropTypes.func.isRequired,
+		showCloseButton: PropTypes.bool,
+		styles: PropTypes.object,
+		width: PropTypes.number
 	},
 	statics: {
 		extendStyles: function extendStyles(styles) {
@@ -154,20 +158,15 @@ var Lightbox = _react2['default'].createClass({
 		return {
 			backdropClosesModal: true,
 			enableKeyboardInput: true,
-			initialImage: 0,
+			currentImage: 0,
 			height: 600,
 			styles: _stylesDefault2['default'],
 			width: 900
 		};
 	},
-	getInitialState: function getInitialState() {
-		return {
-			currentImage: this.props.initialImage
-		};
-	},
 	componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 		this.setState({
-			currentImage: nextProps.initialImage
+			currentImage: nextProps.currentImage
 		});
 
 		if (nextProps.isOpen && nextProps.enableKeyboardInput) {
@@ -183,9 +182,17 @@ var Lightbox = _react2['default'].createClass({
 		}
 	},
 
+	gotoPrev: function gotoPrev(event) {
+		if (this.props.currentImage === 0) return;
+		this.props.onClickPrev();
+	},
+	gotoNext: function gotoNext(event) {
+		if (this.props.currentImage === this.props.images.length - 1) return;
+		this.props.onClickNext();
+	},
 	handleKeyboardInput: function handleKeyboardInput(event) {
 		if (event.keyCode === 37) {
-			this.gotoPrevious();
+			this.gotoPrev();
 		} else if (event.keyCode === 39) {
 			this.gotoNext();
 		} else if (event.keyCode === 27) {
@@ -197,42 +204,22 @@ var Lightbox = _react2['default'].createClass({
 	close: function close() {
 		this.props.backdropClosesModal && this.props.onClose && this.props.onClose();
 	},
-	gotoPrevious: function gotoPrevious(event) {
-		if (this.state.currentImage === 0) return;
-		if (event) {
-			event.preventDefault();
-			event.stopPropagation();
-		}
-		this.setState({
-			currentImage: this.state.currentImage - 1
-		});
-	},
-	gotoNext: function gotoNext(event) {
-		if (this.state.currentImage === this.props.images.length - 1) return;
-		if (event) {
-			event.preventDefault();
-			event.stopPropagation();
-		}
-		this.setState({
-			currentImage: this.state.currentImage + 1
-		});
-	},
 
 	renderArrowPrev: function renderArrowPrev() {
-		if (this.state.currentImage === 0) return;
+		if (this.props.currentImage === 0) return;
 
 		return _react2['default'].createElement(
 			_Fade2['default'],
 			{ key: 'arrowPrev' },
 			_react2['default'].createElement(
 				'button',
-				{ type: 'button', style: _extends({}, this.props.styles.arrow, this.props.styles.arrowPrev), onClick: this.gotoPrevious, onTouchEnd: this.gotoPrevious },
+				{ type: 'button', style: _extends({}, this.props.styles.arrow, this.props.styles.arrowPrev), onClick: this.gotoPrev, onTouchEnd: this.gotoPrev },
 				_react2['default'].createElement(_Icon2['default'], { type: 'arrowLeft' })
 			)
 		);
 	},
 	renderArrowNext: function renderArrowNext() {
-		if (this.state.currentImage === this.props.images.length - 1) return;
+		if (this.props.currentImage === this.props.images.length - 1) return;
 
 		return _react2['default'].createElement(
 			_Fade2['default'],
@@ -291,8 +278,9 @@ var Lightbox = _react2['default'].createClass({
 		);
 	},
 	renderImages: function renderImages() {
-		var images = this.props.images;
-		var currentImage = this.state.currentImage;
+		var _props = this.props;
+		var images = _props.images;
+		var currentImage = _props.currentImage;
 
 		if (!images || !images.length) return;
 
@@ -320,7 +308,7 @@ var Lightbox = _react2['default'].createClass({
 		);
 	},
 	render: function render() {
-		var props = (0, _blacklist2['default'])(this.props, 'backdropClosesModal', 'initialImage', 'height', 'images', 'isOpen', 'onClose', 'showCloseButton', 'width');
+		var props = (0, _blacklist2['default'])(this.props, 'backdropClosesModal', 'currentImage', 'enableKeyboardInput', 'height', 'images', 'isOpen', 'onClickNext', 'onClickPrev', 'onClose', 'showCloseButton', 'styles', 'width');
 
 		return _react2['default'].createElement(
 			_Portal2['default'],
@@ -361,14 +349,8 @@ module.exports = _react2['default'].createClass({
 		return null;
 	},
 	componentDidMount: function componentDidMount() {
-		var p = this.props.portalId && document.getElementById(this.props.portalId);
-		if (!p) {
-			var p = document.createElement('div');
-			if (this.props.portalId) {
-				p.id = this.props.portalId;
-			}
-			document.body.appendChild(p);
-		}
+		var p = document.createElement('div');
+		document.body.appendChild(p);
 		this.portalElement = p;
 		this.componentDidUpdate();
 	},
@@ -484,6 +466,7 @@ var styles = {
 		transform: 'translateY(-50%)'
 	},
 	image: {
+		backgroundColor: 'white',
 		boxShadow: '0 1px 4px rgba(0,0,0,0.25)',
 		maxHeight: '100%',
 		maxWidth: '80%',
