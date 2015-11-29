@@ -161,8 +161,8 @@ var _reactImages = require('react-images');
 
 var _reactImages2 = _interopRequireDefault(_reactImages);
 
-var Standard = _react2['default'].createClass({
-	displayName: 'Standard',
+var Button = _react2['default'].createClass({
+	displayName: 'Button',
 	propTypes: {
 		images: _react2['default'].PropTypes.array
 	},
@@ -171,11 +171,29 @@ var Standard = _react2['default'].createClass({
 			lightboxIsOpen: false
 		};
 	},
+	gotoPrevious: function gotoPrevious(event) {
+		if (event) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+		this.setState({
+			currentImage: this.state.currentImage - 1
+		});
+	},
+	gotoNext: function gotoNext(event) {
+		if (event) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+		this.setState({
+			currentImage: this.state.currentImage + 1
+		});
+	},
 	openLightbox: function openLightbox(index, event) {
 		event.preventDefault();
 		this.setState({
-			lightboxIsOpen: true,
-			lightboxInitialImage: index
+			currentImage: index,
+			lightboxIsOpen: true
 		});
 	},
 	closeLightbox: function closeLightbox() {
@@ -203,8 +221,10 @@ var Standard = _react2['default'].createClass({
 			),
 			_react2['default'].createElement(_reactImages2['default'], {
 				images: this.props.images,
-				initialImage: this.state.lightboxInitialImage,
+				currentImage: this.state.currentImage,
 				isOpen: this.state.lightboxIsOpen,
+				onClickPrev: this.gotoPrevious,
+				onClickNext: this.gotoNext,
 				onClose: this.closeLightbox,
 				styles: this.props.styles
 			})
@@ -242,7 +262,7 @@ var styles = {
 	}
 };
 
-module.exports = Standard;
+module.exports = Button;
 
 },{"react":undefined,"react-images":undefined}],3:[function(require,module,exports){
 'use strict';
@@ -259,8 +279,8 @@ var _reactImages = require('react-images');
 
 var _reactImages2 = _interopRequireDefault(_reactImages);
 
-var Standard = _react2['default'].createClass({
-	displayName: 'Standard',
+var Gallery = _react2['default'].createClass({
+	displayName: 'Gallery',
 	propTypes: {
 		images: _react2['default'].PropTypes.array,
 		heading: _react2['default'].PropTypes.string,
@@ -269,19 +289,39 @@ var Standard = _react2['default'].createClass({
 	},
 	getInitialState: function getInitialState() {
 		return {
-			lightboxIsOpen: false
+			lightboxIsOpen: false,
+			currentImage: 0
 		};
 	},
 	openLightbox: function openLightbox(index, event) {
 		event.preventDefault();
 		this.setState({
-			lightboxIsOpen: true,
-			lightboxInitialImage: index
+			currentImage: index,
+			lightboxIsOpen: true
 		});
 	},
 	closeLightbox: function closeLightbox() {
 		this.setState({
+			currentImage: 0,
 			lightboxIsOpen: false
+		});
+	},
+	gotoPrevious: function gotoPrevious(event) {
+		if (event) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+		this.setState({
+			currentImage: this.state.currentImage - 1
+		});
+	},
+	gotoNext: function gotoNext(event) {
+		if (event) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+		this.setState({
+			currentImage: this.state.currentImage + 1
 		});
 	},
 	renderGallery: function renderGallery() {
@@ -320,9 +360,11 @@ var Standard = _react2['default'].createClass({
 			),
 			this.renderGallery(),
 			_react2['default'].createElement(_reactImages2['default'], {
+				currentImage: this.state.currentImage,
 				images: this.props.images,
-				initialImage: this.state.lightboxInitialImage,
 				isOpen: this.state.lightboxIsOpen,
+				onClickPrev: this.gotoPrevious,
+				onClickNext: this.gotoNext,
 				onClose: this.closeLightbox,
 				styles: this.props.styles,
 				width: 1200
@@ -361,6 +403,6 @@ var styles = {
 	}
 };
 
-module.exports = Standard;
+module.exports = Gallery;
 
 },{"react":undefined,"react-images":undefined}]},{},[1]);
