@@ -14,8 +14,8 @@ var Lightbox = React.createClass({
 	displayName: 'Lightbox',
 	propTypes: {
 		backdropClosesModal: PropTypes.bool,
+		currentImage: PropTypes.number,
 		enableKeyboardInput: PropTypes.bool,
-		initialImage: PropTypes.number,
 		height: PropTypes.number,
 		images: PropTypes.arrayOf(
 			PropTypes.shape({
@@ -24,6 +24,8 @@ var Lightbox = React.createClass({
 			})
 		).isRequired,
 		isOpen: PropTypes.bool,
+		onClickNext: PropTypes.func.isRequired,
+		onClickPrev: PropTypes.func.isRequired,
 		onClose: PropTypes.func.isRequired,
 		showCloseButton: PropTypes.bool,
 		styles: PropTypes.object,
@@ -44,20 +46,15 @@ var Lightbox = React.createClass({
 		return {
 			backdropClosesModal: true,
 			enableKeyboardInput: true,
-			initialImage: 0,
+			currentImage: 0,
 			height: 600,
 			styles: defaultStyles,
 			width: 900,
 		};
 	},
-	getInitialState () {
-		return {
-			currentImage: this.props.initialImage
-		};
-	},
 	componentWillReceiveProps (nextProps) {
 		this.setState({
-			currentImage: nextProps.initialImage
+			currentImage: nextProps.currentImage
 		});
 
 		if (nextProps.isOpen && nextProps.enableKeyboardInput) {
@@ -75,9 +72,9 @@ var Lightbox = React.createClass({
 
 	handleKeyboardInput (event) {
 		if (event.keyCode === 37) {
-			this.gotoPrevious();
+			this.props.onClickPrev();
 		} else if (event.keyCode === 39) {
-			this.gotoNext();
+			this.props.onClickNext();
 		} else if (event.keyCode === 27) {
 			this.props.onClose();
 		} else {
@@ -87,44 +84,24 @@ var Lightbox = React.createClass({
 	close () {
 		this.props.backdropClosesModal && this.props.onClose && this.props.onClose();
 	},
-	gotoPrevious (event) {
-		if (this.state.currentImage === 0) return;
-		if (event) {
-			event.preventDefault();
-			event.stopPropagation();
-		}
-		this.setState({
-			currentImage: this.state.currentImage - 1,
-		});
-	},
-	gotoNext (event) {
-		if (this.state.currentImage === (this.props.images.length - 1)) return;
-		if (event) {
-			event.preventDefault();
-			event.stopPropagation();
-		}
-		this.setState({
-			currentImage: this.state.currentImage + 1,
-		});
-	},
 
 	renderArrowPrev () {
-		if (this.state.currentImage === 0) return;
+		if (this.props.currentImage === 0) return;
 
 		return (
 			<Fade key="arrowPrev">
-				<button type="button" style={Object.assign({}, this.props.styles.arrow, this.props.styles.arrowPrev)} onClick={this.gotoPrevious} onTouchEnd={this.gotoPrevious}>
+				<button type="button" style={Object.assign({}, this.props.styles.arrow, this.props.styles.arrowPrev)} onClick={this.props.onClickPrev} onTouchEnd={this.props.onClickPrev}>
 					<Icon type="arrowLeft" />
 				</button>
 			</Fade>
 		);
 	},
 	renderArrowNext () {
-		if (this.state.currentImage === (this.props.images.length - 1)) return;
+		if (this.props.currentImage === (this.props.images.length - 1)) return;
 
 		return (
 			<Fade key="arrowNext">
-				<button type="button" style={Object.assign({}, this.props.styles.arrow, this.props.styles.arrowNext)} onClick={this.gotoNext} onTouchEnd={this.gotoNext}>
+				<button type="button" style={Object.assign({}, this.props.styles.arrow, this.props.styles.arrowNext)} onClick={this.props.onClickNext} onTouchEnd={this.props.onClickNext}>
 					<Icon type="arrowRight" />
 				</button>
 			</Fade>
@@ -167,8 +144,7 @@ var Lightbox = React.createClass({
 		);
 	},
 	renderImages () {
-		let { images } = this.props;
-		let { currentImage } = this.state;
+		let { images, currentImage } = this.props;
 		if (!images || !images.length) return;
 
 		if (images[currentImage].srcset) {
@@ -185,7 +161,20 @@ var Lightbox = React.createClass({
 		);
 	},
 	render () {
-		let props = blacklist(this.props, 'backdropClosesModal', 'initialImage', 'height', 'images', 'isOpen', 'onClose', 'showCloseButton', 'width');
+		let props = blacklist(this.props, {
+			'backdropClosesModal' = true,
+			'currentImage' = true,
+			'enableKeyboardInput' = true,
+			'height' = true,
+			'images' = true,
+			'isOpen' = true,
+			'onClickNext' = true,
+			'onClickPrev' = true,
+			'onClose' = true,
+			'showCloseButton' = true,
+			'styles' = true,
+			'width' = true,
+		});
 
 		return (
 			<Portal {...props}>

@@ -1,8 +1,8 @@
 import React from 'react';
 import Lightbox from 'react-images';
 
-var Standard = React.createClass({
-	displayName: 'Standard',
+var Button = React.createClass({
+	displayName: 'Button',
 	propTypes: {
 		images: React.PropTypes.array,
 	},
@@ -11,11 +11,31 @@ var Standard = React.createClass({
 			lightboxIsOpen: false,
 		};
 	},
+	gotoPrevious (event) {
+		if (this.state.currentImage === 0) return;
+		if (event) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+		this.setState({
+			currentImage: this.state.currentImage - 1,
+		});
+	},
+	gotoNext (event) {
+		if (this.state.currentImage === (this.props.images.length - 1)) return;
+		if (event) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+		this.setState({
+			currentImage: this.state.currentImage + 1,
+		});
+	},
 	openLightbox (index, event) {
 		event.preventDefault();
 		this.setState({
+			currentImage: index,
 			lightboxIsOpen: true,
-			lightboxInitialImage: index,
 		});
 	},
 	closeLightbox () {
@@ -30,8 +50,10 @@ var Standard = React.createClass({
 				<button onClick={(event) => this.openLightbox(0, event)}>Sure, why not?</button>
 				<Lightbox
 					images={this.props.images}
-					initialImage={this.state.lightboxInitialImage}
+					currentImage={this.state.currentImage}
 					isOpen={this.state.lightboxIsOpen}
+					onClickPrev={this.gotoPrevious}
+					onClickNext={this.gotoNext}
 					onClose={this.closeLightbox}
 					styles={this.props.styles}
 				/>
@@ -70,4 +92,4 @@ const styles = {
 	},
 };
 
-module.exports = Standard;
+module.exports = Button;

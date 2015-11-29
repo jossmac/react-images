@@ -1,8 +1,8 @@
 import React from 'react';
 import Lightbox from 'react-images';
 
-var Standard = React.createClass({
-	displayName: 'Standard',
+var Gallery = React.createClass({
+	displayName: 'Gallery',
 	propTypes: {
 		images: React.PropTypes.array,
 		heading: React.PropTypes.string,
@@ -12,18 +12,40 @@ var Standard = React.createClass({
 	getInitialState () {
 		return {
 			lightboxIsOpen: false,
+			currentImage: 0,
 		};
 	},
 	openLightbox (index, event) {
 		event.preventDefault();
 		this.setState({
+			currentImage: index,
 			lightboxIsOpen: true,
-			lightboxInitialImage: index,
 		});
 	},
 	closeLightbox () {
 		this.setState({
+			currentImage: 0,
 			lightboxIsOpen: false,
+		});
+	},
+	gotoPrevious (event) {
+		if (this.state.currentImage === 0) return;
+		if (event) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+		this.setState({
+			currentImage: this.state.currentImage - 1,
+		});
+	},
+	gotoNext (event) {
+		if (this.state.currentImage === (this.props.images.length - 1)) return;
+		if (event) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+		this.setState({
+			currentImage: this.state.currentImage + 1,
 		});
 	},
 	renderGallery () {
@@ -31,7 +53,7 @@ var Standard = React.createClass({
 		let gallery = this.props.images.map((obj, i) => {
 			return (
 				<a key={i} href={obj.src} onClick={(event) => this.openLightbox(i, event)} style={Object.assign({}, styles.thumbnail)}>
-				    <img src={obj.thumbnail} width={styles.thumbnail.size} height={styles.thumbnail.size} />
+					<img src={obj.thumbnail} width={styles.thumbnail.size} height={styles.thumbnail.size} />
 				</a>
 			);
 		});
@@ -49,9 +71,11 @@ var Standard = React.createClass({
 				{this.props.subheading && <p>{this.props.subheading}</p>}
 				{this.renderGallery()}
 				<Lightbox
+					currentImage={this.state.currentImage}
 					images={this.props.images}
-					initialImage={this.state.lightboxInitialImage}
 					isOpen={this.state.lightboxIsOpen}
+					onClickPrev={this.gotoPrevious}
+					onClickNext={this.gotoNext}
 					onClose={this.closeLightbox}
 					styles={this.props.styles}
 					width={1200}
@@ -91,4 +115,4 @@ const styles = {
 	},
 };
 
-module.exports = Standard;
+module.exports = Gallery;
