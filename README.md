@@ -38,6 +38,40 @@ npm start
 
 Then open [`localhost:8000`](http://localhost:8000) in a browser.
 
+Example using caption for the first image:
+
+```jsx
+<Lightbox
+  images={LIGHTBOX_IMAGE_SET}
+  onClickPrev={this.gotoPrevious}
+  onClickNext={this.gotoNext}
+  onClose={this.closeLightbox}
+/>
+
+const LIGHTBOX_IMAGE_SET = [
+  {
+    src: 'http://example.com/example/img1.jpg',
+    srcset: [
+      'http://example.com/example/img1_1024.jpg 1024w',
+      'http://example.com/example/img1_800.jpg 800w',
+      'http://example.com/example/img1_500.jpg 500w',
+      'http://example.com/example/img1_320.jpg 320w',
+    ],
+    caption: 'Lorem ipsum',
+  },
+  {
+    src: 'http://example.com/example/img2.jpg',
+    srcset: [
+      'http://example.com/example/img2_1024.jpg 1024w',
+      'http://example.com/example/img2_800.jpg 800w',
+      'http://example.com/example/img2_500.jpg 500w',
+      'http://example.com/example/img2_320.jpg 320w',
+    ],
+  }
+];
+
+```
+
 Example using srcset:
 ```jsx
 <Lightbox
