@@ -16,6 +16,7 @@ const IMAGES = [
 			'https://c1.staticflickr.com/9/8383/8517694980_21bef8e9fc.jpg 500w',
 			'https://c1.staticflickr.com/9/8383/8517694980_21bef8e9fc_n.jpg 320w'
 		],
+    caption: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
 	},
 	{
 	src: 'https://c1.staticflickr.com/9/8379/8516580741_058e7c7317_c.jpg',
@@ -25,7 +26,8 @@ const IMAGES = [
 			'https://c1.staticflickr.com/9/8379/8516580741_058e7c7317_c.jpg 800w',
 			'https://c1.staticflickr.com/9/8379/8516580741_058e7c7317.jpg 500w',
 			'https://c1.staticflickr.com/9/8379/8516580741_058e7c7317_n.jpg 320w'
-		]
+		],
+    caption: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
 	},
 	{
 	src: 'https://c1.staticflickr.com/9/8509/8517695778_f08f11150f_c.jpg',
