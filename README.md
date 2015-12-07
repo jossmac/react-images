@@ -38,6 +38,8 @@ npm start
 
 Then open [`localhost:8000`](http://localhost:8000) in a browser.
 
+### Using srcset
+
 Example using srcset:
 ```jsx
 <Lightbox
@@ -78,6 +80,43 @@ Another thing to note is that 'h' or height in the srcset attribute does not yet
 
 Read more about the srcset and sizes attributes here: [https://ericportis.com/posts/2014/srcset-sizes/](https://ericportis.com/posts/2014/srcset-sizes/).
 
+### Adding Captions
+
+Example using caption for the first image:
+
+```jsx
+<Lightbox
+  images={LIGHTBOX_IMAGE_SET}
+  onClickPrev={this.gotoPrevious}
+  onClickNext={this.gotoNext}
+  onClose={this.closeLightbox}
+/>
+
+const LIGHTBOX_IMAGE_SET = [
+  {
+    src: 'http://example.com/example/img1.jpg',
+    srcset: [
+      'http://example.com/example/img1_1024.jpg 1024w',
+      'http://example.com/example/img1_800.jpg 800w',
+      'http://example.com/example/img1_500.jpg 500w',
+      'http://example.com/example/img1_320.jpg 320w',
+    ],
+    caption: 'Lorem ipsum',
+  },
+  {
+    src: 'http://example.com/example/img2.jpg',
+    srcset: [
+      'http://example.com/example/img2_1024.jpg 1024w',
+      'http://example.com/example/img2_800.jpg 800w',
+      'http://example.com/example/img2_500.jpg 500w',
+      'http://example.com/example/img2_320.jpg 320w',
+    ],
+  }
+];
+
+```
+
+Note that the caption is an entirely optional property, as can be seen in the first gallery on the [example page](http://jossmac.github.io/react-images/). The first image has a single line caption, the second demonstrates multiline, and the remaining images are without captions, entirely.
 
 ## Options
 

@@ -21,6 +21,7 @@ var Lightbox = React.createClass({
 			PropTypes.shape({
 				src: PropTypes.string.isRequired,
 				srcset: PropTypes.array,
+				caption: PropTypes.string
 			})
 		).isRequired,
 		isOpen: PropTypes.bool,
@@ -162,6 +163,8 @@ var Lightbox = React.createClass({
 	},
 	renderImages () {
 		let { images, currentImage } = this.props;
+		let caption = images[currentImage].caption || "";
+
 		if (!images || !images.length) return;
 
 		if (images[currentImage].srcset) {
@@ -173,6 +176,7 @@ var Lightbox = React.createClass({
 			<Transition transitionName="div" component="div">
 				<Fade key={'image' + currentImage}>
 					{img}
+					<p style={this.props.styles.caption}>{caption}</p>
 				</Fade>
 			</Transition>
 		);

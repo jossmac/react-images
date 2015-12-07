@@ -95,6 +95,22 @@ const styles = {
 		userSelect:         'none',
 
 	},
+	caption: {
+		position: 'absolute',
+
+		// placed under the image
+		bottom: '-45px',
+
+		// center the caption within the dialog
+		left: '50%',
+		WebkitTransform: 'translate(-50%, 50%)',
+		MozTransform:    'translate(-50%, 50%)',
+		msTransform:     'translate(-50%, 50%)',
+		transform:       'translate(-50%, 50%)',
+
+		// visibility
+		color: 'white',
+	},
 };
 
 export default styles;
