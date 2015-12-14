@@ -8,7 +8,7 @@ import defaultStyles from './styles/default';
 import Transition from 'react-addons-transition-group';
 
 const { PropTypes } = React;
-const BODY = document.body;
+const BODY = process.browser ? document.body : null;
 
 var Lightbox = React.createClass({
 	displayName: 'Lightbox',
@@ -64,10 +64,12 @@ var Lightbox = React.createClass({
 			window.removeEventListener('keydown', this.handleKeyboardInput);
 		}
 
-		if (nextProps.isOpen) {
-			BODY.style.overflow = 'hidden';
-		} else {
-			BODY.style.overflow = null;
+		if (BODY != null) {
+			if (nextProps.isOpen) {
+				BODY.style.overflow = 'hidden';
+			} else {
+				BODY.style.overflow = null;
+			}
 		}
 	},
 
