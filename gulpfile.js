@@ -14,6 +14,7 @@ var taskConfig = {
 		files: [
 			'.gitignore',
 			'.npmignore',
+            'images/*',
 			'favicon.ico',
 			'index.html'
 		],
