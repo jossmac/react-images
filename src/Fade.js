@@ -3,7 +3,9 @@ import React from 'react';
 var Fade = React.createClass({
 	getDefaultProps () {
 		return {
-			duration: 200
+			component: 'div',
+			duration: 200,
+			ref: 'element'
 		};
 	},
 	componentWillAppear: function (callback) {
@@ -33,13 +35,19 @@ var Fade = React.createClass({
 		el.style.opacity = 0;
 	},
 	render: function () {
-		let style = {
+		let props = Object.assign({}, this.props);
+		const style = {
 			opacity: 0,
 			WebkitTransition: `opacity ${this.props.duration}ms ease-out`,
 			msTransition:     `opacity ${this.props.duration}ms ease-out`,
 			transition:       `opacity ${this.props.duration}ms ease-out`,
 		}
-		return <div ref="element" {...this.props} style={Object.assign({}, style, this.props.style)} />;
+		props.style = Object.assign(style, this.props.style)
+		return React.createElement(
+			this.props.component,
+			props,
+			this.props.children
+		);
 	}
 });
 

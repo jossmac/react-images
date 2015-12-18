@@ -1,5 +1,18 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import blacklist from 'blacklist';
+import classSet from 'classnames';
+import useSheet from 'react-jss';
+import jss from 'jss';
+import camelCase from 'jss-camel-case';
+import px from 'jss-px';
+import nested from 'jss-nested';
+import vendorPrefixer from 'jss-vendor-prefixer';
+
+jss.use(camelCase());
+jss.use(nested());
+jss.use(px());
+jss.use(vendorPrefixer());
+
 import Fade from './Fade';
 import Icon from './Icon';
 import Portal from './Portal';
@@ -7,79 +20,46 @@ import Portal from './Portal';
 import defaultStyles from './styles/default';
 import Transition from 'react-addons-transition-group';
 
-const { PropTypes } = React;
-const BODY = document.body;
-
-var Lightbox = React.createClass({
-	displayName: 'Lightbox',
-	propTypes: {
-		backdropClosesModal: PropTypes.bool,
-		currentImage: PropTypes.number,
-		enableKeyboardInput: PropTypes.bool,
-		height: PropTypes.number,
-		images: PropTypes.arrayOf(
-			PropTypes.shape({
-				src: PropTypes.string.isRequired,
-				srcset: PropTypes.array,
-				caption: PropTypes.string
-			})
-		).isRequired,
-		isOpen: PropTypes.bool,
-		onClickNext: PropTypes.func.isRequired,
-		onClickPrev: PropTypes.func.isRequired,
-		onClose: PropTypes.func.isRequired,
-		showCloseButton: PropTypes.bool,
-		styles: PropTypes.object,
-		width: PropTypes.number,
-	},
-	statics: {
-		extendStyles(styles) {
-			let extStyles = Object.assign({}, defaultStyles);
-			for (var key in extStyles) {
-				if (key in styles) {
-					extStyles[key] = Object.assign({}, defaultStyles[key], styles[key]);
-				}
+class Lightbox extends Component {
+	static theme(themeStyles) {
+		let extStyles = Object.assign({}, defaultStyles);
+		for (var key in extStyles) {
+			if (key in themeStyles) {
+				extStyles[key] = Object.assign({}, defaultStyles[key], themeStyles[key]);
 			}
-			return extStyles;
 		}
-	},
-	getDefaultProps () {
-		return {
-			backdropClosesModal: true,
-			enableKeyboardInput: true,
-			currentImage: 0,
-			height: 600,
-			styles: defaultStyles,
-			width: 900,
-		};
-	},
-	componentWillReceiveProps (nextProps) {
-		this.setState({
-			currentImage: nextProps.currentImage
-		});
+		return extStyles;
+	}
+	constructor() {
+		super();
 
+		this.close = this.close.bind(this);
+		this.gotoNext = this.gotoNext.bind(this);
+		this.gotoPrev = this.gotoPrev.bind(this);
+		this.handleImageClick = this.handleImageClick.bind(this);
+		this.handleKeyboardInput = this.handleKeyboardInput.bind(this);
+		this.handleResize = this.handleResize.bind(this);
+	}
+	componentWillReceiveProps (nextProps) {
 		if (nextProps.isOpen && nextProps.enableKeyboardInput) {
-			window.addEventListener('keydown', this.handleKeyboardInput);
+			if (typeof window !== 'undefined') window.addEventListener('keydown', this.handleKeyboardInput);
+			if (typeof window !== 'undefined') window.addEventListener('resize', this.handleResize);
+			this.handleResize();
 		} else {
-			window.removeEventListener('keydown', this.handleKeyboardInput);
+			if (typeof window !== 'undefined') window.removeEventListener('keydown', this.handleKeyboardInput);
+			if (typeof window !== 'undefined') window.removeEventListener('resize', this.handleResize);
 		}
 
 		if (nextProps.isOpen) {
-			BODY.style.overflow = 'hidden';
+			document.body ? document.body.style.overflow = 'hidden' : null;
 		} else {
-			BODY.style.overflow = null;
+			document.body ? document.body.style.overflow = null : null;
 		}
-	},
+	}
 
-
-	gotoPrev (event) {
-		if (this.props.currentImage === 0) return;
-		if (event) {
-			event.preventDefault();
-			event.stopPropagation();
-		}
-		this.props.onClickPrev();
-	},
+	close () {
+		this.props.backdropClosesModal && this.props.onClose && this.props.onClose();
+	}
 	gotoNext (event) {
 		if (this.props.currentImage === (this.props.images.length - 1)) return;
 		if (event) {
@@ -87,7 +67,22 @@ var Lightbox = React.createClass({
 			event.stopPropagation();
 		}
 		this.props.onClickNext();
-	},
+	}
+	gotoPrev (event) {
+		if (this.props.currentImage === 0) return;
+		if (event) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+		this.props.onClickPrev();
+	}
+	handleImageClick (e) {
+		e.stopPropagation();
+		if (!this.props.onClickShowNextImage) return;
+
+		this.gotoNext();
+
+	}
 	handleKeyboardInput (event) {
 		if (event.keyCode === 37) {
 			this.gotoPrev();
@@ -98,103 +93,167 @@ var Lightbox = React.createClass({
 		} else {
 			return false;
 		}
-	},
-	close () {
-		this.props.backdropClosesModal && this.props.onClose && this.props.onClose();
-	},
+	}
+	handleResize () {
+		this.setState({
+			windowHeight: (typeof window !== 'undefined') ? window.innerHeight : 0
+		});
+	}
 
-	renderArrowPrev () {
-		if (this.props.currentImage === 0) return;
-
-		return (
-			<Fade key="arrowPrev">
-				<button type="button" style={Object.assign({}, this.props.styles.arrow, this.props.styles.arrowPrev)} onClick={this.gotoPrev} onTouchEnd={this.gotoPrev}>
-					<Icon type="arrowLeft" />
-				</button>
-			</Fade>
-		);
-	},
 	renderArrowNext () {
 		if (this.props.currentImage === (this.props.images.length - 1)) return;
+		const { classes } = this.props.sheet;
+		const elementClass = classSet(classes.arrow, classes.arrowNext);
 
 		return (
-			<Fade key="arrowNext">
-				<button type="button" style={Object.assign({}, this.props.styles.arrow, this.props.styles.arrowNext)} onClick={this.gotoNext} onTouchEnd={this.gotoNext}>
-					<Icon type="arrowRight" />
-				</button>
-			</Fade>
+			<button title="Next (Right arrow key)" type="button" className={elementClass} onClick={this.gotoNext} onTouchEnd={this.gotoNext}>
+				<Icon type="arrowRight" />
+			</button>
 		);
-	},
-	renderBackdrop () {
-		if (!this.props.isOpen) return;
+	}
+	renderArrowPrev () {
+		if (this.props.currentImage === 0) return;
+		const { classes } = this.props.sheet;
+		const elementClass = classSet(classes.arrow, classes.arrowPrev);
 
 		return (
-			<Fade key="backdrop">
-				<div key="backdrop" style={this.props.styles.backdrop} onTouchEnd={this.close} onClick={this.close} />
-			</Fade>
+			<button title="Previous (Left arrow key)" type="button" className={elementClass} onClick={this.gotoPrev} onTouchEnd={this.gotoPrev}>
+				<Icon type="arrowLeft" />
+			</button>
 		);
-	},
+	}
 	renderCloseButton () {
 		if (!this.props.showCloseButton) return;
+		const { classes } = this.props.sheet;
 
 		return (
-			<Fade key="closeButton">
-				<button style={this.props.styles.close} onClick={this.props.onClose}>Close</button>
-			</Fade>
+			<div className={classes.closeBar}>
+				<button title="Close (Esc)" className={classes.closeButton} onClick={this.props.onClose}>
+					<Icon type="close" />
+				</button>
+			</div>
 		);
-	},
+	}
+	renderBackdrop () {
+		if (!this.props.isOpen) return;
+		const { classes } = this.props.sheet;
+
+		return (
+			<Fade key="backdrop" duration={200} className={classes.backdrop} onTouchEnd={this.close} onClick={this.close} />
+		);
+	}
 	renderDialog () {
 		if (!this.props.isOpen) return;
+		const { classes } = this.props.sheet;
 
 		return (
-			<Fade key="dialog" onTouchEnd={this.close} onClick={this.close} style={Object.assign({}, this.props.styles.dialog, { height: this.props.height, width: this.props.width })}>
-				{this.renderImages()}
-				<Transition transitionName="div" component="div">
-					{this.renderArrowPrev()}
-				</Transition>
-				<Transition transitionName="div" component="div">
-					{this.renderArrowNext()}
-				</Transition>
-				<Transition transitionName="div" component="div">
-					{this.renderCloseButton()}
-				</Transition>
+			<Fade key="dialog" duration={250} className={classes.container}>
+				<span className={classes.contentHeightShim} />
+				<div className={classes.content}>
+					<div className={classes.stage}>
+						{this.renderCloseButton()}
+						{this.renderImages()}
+						<span className={classes.figureShadow} />
+					</div>
+				</div>
+				{this.renderArrowPrev()}
+				{this.renderArrowNext()}
 			</Fade>
 		);
-	},
+	}
+	renderFooter (caption) {
+		const { currentImage, images, showImageCount } = this.props;
+		const { classes } = this.props.sheet;
+
+		if (!caption && !showImageCount) return;
+
+		const imageCount = showImageCount ? <div className={classes.footerCount}>{currentImage + 1} of {images.length}</div> : null;
+		const figcaption = caption ? <figcaption className={classes.footerCaption}>{caption}</figcaption> : null;
+
+		return (
+			<div className={classes.footer}>
+				{imageCount}
+				{figcaption}
+			</div>
+		);
+	}
 	renderImages () {
-		let { images, currentImage } = this.props;
-		let caption = images[currentImage].caption || "";
+		const { images, currentImage } = this.props;
+		const { classes } = this.props.sheet;
+		const { windowHeight } = this.state;
 
 		if (!images || !images.length) return;
 
+		let srcset, sizes;
 		if (images[currentImage].srcset) {
-			var img = <img src={images[currentImage].src} srcSet={images[currentImage].srcset.join()} sizes={parseInt(this.props.styles.image.maxWidth)+'vw'} style={this.props.styles.image} onTouchEnd={e => e.stopPropagation()} onClick={e => e.stopPropagation()} />
-		} else {
-			var img = <img src={images[currentImage].src} style={this.props.styles.image} onTouchEnd={e => e.stopPropagation()} onClick={e => e.stopPropagation()} />
+			srcset = images[currentImage].srcset.join();
+			sizes = '100vw';
 		}
-		return (
-			<Transition transitionName="div" component="div">
-				<Fade key={'image' + currentImage}>
-					{img}
-					<p style={this.props.styles.caption}>{caption}</p>
-				</Fade>
-			</Transition>
-		);
-	},
-	render () {
-		let props = blacklist(this.props, 'backdropClosesModal', 'currentImage', 'enableKeyboardInput', 'height', 'images', 'isOpen', 'onClickNext', 'onClickPrev', 'onClose', 'showCloseButton', 'styles', 'width');
 
 		return (
-			<Portal {...props}>
-				<Transition transitionName="div" component="div">
-					{this.renderDialog()}
-				</Transition>
+			<figure key={'image' + currentImage} className={classes.figure} style={{ maxWidth: this.props.width }}>
+				<img
+					className={classes.image}
+					onClick={this.handleImageClick}
+					onTouchEnd={this.handleImageClick}
+					sizes={sizes}
+					src={images[currentImage].src}
+					srcSet={srcset}
+					style={{
+						cursor: this.props.onClickShowNextImage ? 'pointer' : 'auto',
+						maxHeight: windowHeight
+					}}
+				/>
+				{this.renderFooter(images[currentImage].caption)}
+			</figure>
+		);
+	}
+	render () {
+		const { classes } = this.props.sheet;
+		const props = blacklist(this.props, 'backdropClosesModal', 'currentImage', 'enableKeyboardInput', 'images', 'isOpen', 'onClickNext', 'onClickPrev', 'onClose', 'showCloseButton', 'width');
+		const portalStyles = this.props.isOpen ? classes.portal : {};
+
+		return (
+			<Portal {...props} className={portalStyles}>
 				<Transition transitionName="div" component="div">
 					{this.renderBackdrop()}
+				</Transition>
+				<Transition transitionName="div" component="div">
+					{this.renderDialog()}
 				</Transition>
 			</Portal>
 		);
 	}
-});
+};
 
-module.exports = Lightbox;
+Lightbox.displayName = 'Lightbox';
+Lightbox.propTypes = {
+	backdropClosesModal: PropTypes.bool,
+	currentImage: PropTypes.number,
+	enableKeyboardInput: PropTypes.bool,
+	images: PropTypes.arrayOf(
+		PropTypes.shape({
+			src: PropTypes.string.isRequired,
+			srcset: PropTypes.array,
+			caption: PropTypes.string
+		})
+	).isRequired,
+	isOpen: PropTypes.bool,
+	onClickShowNextImage: PropTypes.bool,
+	onClickNext: PropTypes.func.isRequired,
+	onClickPrev: PropTypes.func.isRequired,
+	onClose: PropTypes.func.isRequired,
+	showCloseButton: PropTypes.bool,
+	showImageCount: PropTypes.bool,
+	width: PropTypes.number,
+};
+Lightbox.defaultProps = {
+	enableKeyboardInput: true,
+	currentImage: 0,
+	onClickShowNextImage: true,
+	showCloseButton: true,
+	showImageCount: true,
+	width: 900,
+};
+
+export default useSheet(Lightbox, defaultStyles);

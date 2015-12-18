@@ -1,49 +1,49 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import Lightbox from 'react-images';
 
-var Gallery = React.createClass({
-	displayName: 'Gallery',
-	propTypes: {
-		images: React.PropTypes.array,
-		heading: React.PropTypes.string,
-		subheading: React.PropTypes.string,
-		sepia: React.PropTypes.bool,
-	},
-	getInitialState () {
-		return {
+class Gallery extends Component {
+	constructor() {
+		super();
+
+		this.state = {
 			lightboxIsOpen: false,
 			currentImage: 0,
 		};
-	},
+
+		this.closeLightbox = this.closeLightbox.bind(this);
+		this.gotoNext = this.gotoNext.bind(this);
+		this.gotoPrevious = this.gotoPrevious.bind(this);
+		this.openLightbox = this.openLightbox.bind(this);
+	}
 	openLightbox (index, event) {
 		event.preventDefault();
 		this.setState({
 			currentImage: index,
 			lightboxIsOpen: true,
 		});
-	},
+	}
 	closeLightbox () {
 		this.setState({
 			currentImage: 0,
 			lightboxIsOpen: false,
 		});
-	},
+	}
 	gotoPrevious () {
 		this.setState({
 			currentImage: this.state.currentImage - 1,
 		});
-	},
+	}
 	gotoNext () {
 		this.setState({
 			currentImage: this.state.currentImage + 1,
 		});
-	},
+	}
 	renderGallery () {
 		if (!this.props.images) return;
 		let gallery = this.props.images.map((obj, i) => {
 			return (
-				<a key={i} href={obj.src} onClick={(event) => this.openLightbox(i, event)} style={Object.assign({}, styles.thumbnail)}>
-					<img src={obj.thumbnail} width={styles.thumbnail.size} height={styles.thumbnail.size} />
+				<a key={i} href={obj.src} onClick={(event) => this.openLightbox(i, event)} style={styles.thumbnail}>
+					<img src={obj.thumbnail} style={styles.thumbnailImage} width={styles.thumbnail.size} height={styles.thumbnail.size} />
 				</a>
 			);
 		});
@@ -53,7 +53,7 @@ var Gallery = React.createClass({
 				{gallery}
 			</div>
 		);
-	},
+	}
 	render () {
 		return (
 			<div className="section">
@@ -67,15 +67,22 @@ var Gallery = React.createClass({
 					onClickPrev={this.gotoPrevious}
 					onClickNext={this.gotoNext}
 					onClose={this.closeLightbox}
-					styles={this.props.styles}
-					width={1200}
+					theme={this.props.theme}
 				/>
 			</div>
 		);
 	}
-});
+};
 
-const THUMBNAIL_SIZE = 58;
+Gallery.displayName = 'Gallery';
+Gallery.propTypes = {
+	images: PropTypes.array,
+	heading: PropTypes.string,
+	subheading: PropTypes.string,
+	sepia: PropTypes.bool,
+};
+
+const THUMBNAIL_SIZE = 72;
 
 const styles = {
 	gallery: {
@@ -94,15 +101,17 @@ const styles = {
 	},
 	thumbnailImage: {
 		display: 'block',
-		height: THUMBNAIL_SIZE,
-		left: '50%',
-		position: 'relative',
-
-		WebkitTransform: 'translateX(-50%)',
-		MozTransform:    'translateX(-50%)',
-		msTransform:     'translateX(-50%)',
-		transform:       'translateX(-50%)',
+		height: 'auto',
+		maxWidth: '100%',
+		// height: THUMBNAIL_SIZE,
+		// left: '50%',
+		// position: 'relative',
+		//
+		// WebkitTransform: 'translateX(-50%)',
+		// MozTransform:    'translateX(-50%)',
+		// msTransform:     'translateX(-50%)',
+		// transform:       'translateX(-50%)',
 	},
 };
 
-module.exports = Gallery;
+export default Gallery;

@@ -1,4 +1,5 @@
 module.exports = {
 	arrowLeft: require('./arrowLeft'),
-	arrowRight: require('./arrowRight')
+	arrowRight: require('./arrowRight'),
+	close: require('./close'),
 };
