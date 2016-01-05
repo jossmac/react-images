@@ -8,7 +8,8 @@
 	- Moved away from CSS transforms for centering
 	- Improved responsiveness, performance
 * Update example images to Gratisography
-* Add captions to images thanks to @ko
+* Optional captions below images thanks to @ko
+* Optional count below images e.g. "3 of 12"
 * Move close button top right of frame, and replace with × icon
 
 ## v0.2.1 / 2015-11-29
