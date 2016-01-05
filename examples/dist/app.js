@@ -30,27 +30,12 @@ function capitalizeFirstLetter(str) {
 var IMAGE_NAMES = ['cat', 'cats', 'chameleon', 'dog', 'ducks', 'goat', 'ostrich', 'pigeon', 'pigs', 'seagulls', 'wasp', 'yawn'];
 var IMAGES = IMAGE_NAMES.map(function (img) {
 	return {
-		src: '/images/800-' + img + '.jpg',
-		thumbnail: '/images/thumbnail-' + img + '.jpg',
-		srcset: ['/images/1024-' + img + '.jpg 1024w', '/images/800-' + img + '.jpg 800w', '/images/500-' + img + '.jpg 500w', '/images/320-' + img + '.jpg 320w'],
+		src: './images/800-' + img + '.jpg',
+		thumbnail: './images/thumbnail-' + img + '.jpg',
+		srcset: ['./images/1024-' + img + '.jpg 1024w', './images/800-' + img + '.jpg 800w', './images/500-' + img + '.jpg 500w', './images/320-' + img + '.jpg 320w'],
 		caption: capitalizeFirstLetter(img)
 	};
 });
-
-console.log('Lightbox.theme', _reactImages2['default'].theme);
-
-// const theme = Lightbox.theme({
-// 	image: {
-// 		border: '10px solid white',
-// 		border1Radius: 10,
-// 		WebkitFilter: 'sepia(100%)',
-// 		filter: 'sepia(100%)',
-// 	},
-// 	arrow: {
-// 		backgroundColor: 'rgba(0,0,0,0.1)',
-// 		borderRadius: 10,
-// 	},
-// });
 
 (0, _reactDom.render)(_react2['default'].createElement(
 	'div',
