@@ -72,11 +72,12 @@ const styles = {
 	},
 	figure: {
 		lineHeight: 1,
+		minHeight: 200,
+		minWidth: 300,
 		margin: 0,
 		textAlign: 'center',
 	},
 	figureShadow: {
-		background: '#444',
 		bottom: GAP_BOTTOM,
 		boxShadow: '0 0 8px -2px rgba(0,0,0,.6)',
 		display: 'block',
@@ -150,12 +151,13 @@ const styles = {
 		background: 'none',
 		border: 'none',
 		cursor: 'pointer',
-		height: CLOSE_SIZE,
+		height: CLOSE_SIZE + 20,
 		outline: 'none',
-		padding: 0,
+		padding: 10,
 		position: 'relative',
-		top: 10,
-		width: CLOSE_SIZE,
+		right: -10,
+		top: 0,
+		width: CLOSE_SIZE + 20,
 	},
 };
 
