@@ -102,6 +102,8 @@ var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_ag
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+exports.theme = theme;
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
@@ -172,18 +174,15 @@ _jss2['default'].use((0, _jssVendorPrefixer2['default'])());
 var Lightbox = (function (_Component) {
 	_inherits(Lightbox, _Component);
 
-	_createClass(Lightbox, null, [{
-		key: 'theme',
-		value: function theme(themeStyles) {
-			var extStyles = _extends({}, _stylesDefault2['default']);
-			for (var key in extStyles) {
-				if (key in themeStyles) {
-					extStyles[key] = _extends({}, _stylesDefault2['default'][key], themeStyles[key]);
-				}
-			}
-			return extStyles;
-		}
-	}]);
+	// static theme(themeStyles) {
+	// 	let extStyles = Object.assign({}, defaultStyles);
+	// 	for (var key in extStyles) {
+	// 		if (key in themeStyles) {
+	// 			extStyles[key] = Object.assign({}, defaultStyles[key], themeStyles[key]);
+	// 		}
+	// 	}
+	// 	return extStyles;
+	// }
 
 	function Lightbox() {
 		_classCallCheck(this, Lightbox);
@@ -471,8 +470,20 @@ Lightbox.defaultProps = {
 	width: 900
 };
 
+function theme(themeStyles) {
+	var extStyles = _extends({}, _stylesDefault2['default']);
+	for (var key in extStyles) {
+		if (key in themeStyles) {
+			extStyles[key] = _extends({}, _stylesDefault2['default'][key], themeStyles[key]);
+		}
+	}
+	return extStyles;
+}
+
+;
+
+// console.log('Lightbox.theme', Lightbox.theme);
 exports['default'] = (0, _reactJss2['default'])(Lightbox, _stylesDefault2['default']);
-module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./Fade":1,"./Icon":2,"./Portal":4,"./styles/default":9,"blacklist":undefined,"classnames":undefined,"jss":undefined,"jss-camel-case":undefined,"jss-nested":undefined,"jss-px":undefined,"jss-vendor-prefixer":undefined,"react-addons-transition-group":undefined,"react-jss":undefined}],4:[function(require,module,exports){
@@ -616,11 +627,12 @@ var styles = {
 	},
 	figure: {
 		lineHeight: 1,
+		minHeight: 200,
+		minWidth: 300,
 		margin: 0,
 		textAlign: 'center'
 	},
 	figureShadow: {
-		background: '#444',
 		bottom: GAP_BOTTOM,
 		boxShadow: '0 0 8px -2px rgba(0,0,0,.6)',
 		display: 'block',
@@ -694,12 +706,13 @@ var styles = {
 		background: 'none',
 		border: 'none',
 		cursor: 'pointer',
-		height: CLOSE_SIZE,
+		height: CLOSE_SIZE + 20,
 		outline: 'none',
-		padding: 0,
+		padding: 10,
 		position: 'relative',
-		top: 10,
-		width: CLOSE_SIZE
+		right: -10,
+		top: 0,
+		width: CLOSE_SIZE + 20
 	}
 };
 
