@@ -201,9 +201,7 @@ class Lightbox extends Component {
 
 		return (
 			<Portal>
-				<Transition component="div">
-					{this.renderDialog()}
-				</Transition>
+				{this.renderDialog()}
 			</Portal>
 		);
 	}
