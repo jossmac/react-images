@@ -1,6 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import blacklist from 'blacklist';
-import classSet from 'classnames';
 import useSheet from 'react-jss';
 import jss from 'jss';
 import camelCase from 'jss-camel-case';
@@ -103,10 +101,9 @@ class Lightbox extends Component {
 	renderArrowNext () {
 		if (this.props.currentImage === (this.props.images.length - 1)) return;
 		const { classes } = this.props.sheet;
-		const elementClass = classSet(classes.arrow, classes.arrowNext);
 
 		return (
-			<button title="Next (Right arrow key)" type="button" className={elementClass} onClick={this.gotoNext} onTouchEnd={this.gotoNext}>
+			<button title="Next (Right arrow key)" type="button" className={`${classes.arrow} ${classes.arrowNext}`} onClick={this.gotoNext} onTouchEnd={this.gotoNext}>
 				<Icon type="arrowRight" />
 			</button>
 		);
@@ -114,10 +111,9 @@ class Lightbox extends Component {
 	renderArrowPrev () {
 		if (this.props.currentImage === 0) return;
 		const { classes } = this.props.sheet;
-		const elementClass = classSet(classes.arrow, classes.arrowPrev);
 
 		return (
-			<button title="Previous (Left arrow key)" type="button" className={elementClass} onClick={this.gotoPrev} onTouchEnd={this.gotoPrev}>
+			<button title="Previous (Left arrow key)" type="button" className={`${classes.arrow} ${classes.arrowPrev}`} onClick={this.gotoPrev} onTouchEnd={this.gotoPrev}>
 				<Icon type="arrowLeft" />
 			</button>
 		);
@@ -202,11 +198,10 @@ class Lightbox extends Component {
 	}
 	render () {
 		const { classes } = this.props.sheet;
-		const props = blacklist(this.props, 'backdropClosesModal', 'currentImage', 'enableKeyboardInput', 'images', 'isOpen', 'onClickNext', 'onClickPrev', 'onClose', 'showCloseButton', 'width');
 
 		return (
-			<Portal {...props}>
-				<Transition transitionName="div" component="div">
+			<Portal>
+				<Transition component="div">
 					{this.renderDialog()}
 				</Transition>
 			</Portal>
