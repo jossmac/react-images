@@ -17,9 +17,9 @@
     "jss-nested": "^1.0.1",
     "jss-px": "^1.0.0",
     "jss-vendor-prefixer": "^1.0.1",
-    "react": "^0.14.3",
+    "react": "^0.14.6",
     "react-addons-transition-group": "^0.14.2",
-    "react-dom": "^0.14.3",
+    "react-dom": "^0.14.6",
     "react-jss": "^2.0.1"
   },
   "devDependencies": {
