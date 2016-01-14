@@ -156,33 +156,13 @@ var GAP_TOP = 40;
 
 var styles = {
 	// SCENE
-	portal: {
-		backfaceVisibility: 'hidden',
-		height: '100%',
-		left: 0,
-		outline: 0,
-		overflowX: 'hidden',
-		overflowY: 'auto',
-		position: 'fixed',
-		top: 0,
-		width: '100%',
-		zIndex: 999
-	},
-	backdrop: {
-		backgroundColor: 'rgba(0,0,0,0.8)',
-		bottom: 0,
-		left: 0,
-		position: 'fixed',
-		right: 0,
-		top: 0,
-		zIndex: 1000
-	},
 	container: {
+		backgroundColor: 'rgba(0,0,0,0.8)',
 		boxSizing: 'border-box',
 		height: '100%',
 		left: 0,
 		padding: '0 10px',
-		position: 'absolute',
+		position: 'fixed',
 		textAlign: 'center',
 		top: 0,
 		width: '100%',
@@ -539,14 +519,6 @@ var Lightbox = (function (_Component) {
 			);
 		}
 	}, {
-		key: 'renderBackdrop',
-		value: function renderBackdrop() {
-			if (!this.props.isOpen) return;
-			var classes = this.props.sheet.classes;
-
-			return _react2['default'].createElement(_Fade2['default'], { key: 'backdrop', duration: 200, className: classes.backdrop, onTouchEnd: this.close, onClick: this.close });
-		}
-	}, {
 		key: 'renderDialog',
 		value: function renderDialog() {
 			if (!this.props.isOpen) return;
@@ -644,16 +616,10 @@ var Lightbox = (function (_Component) {
 			var classes = this.props.sheet.classes;
 
 			var props = (0, _blacklist2['default'])(this.props, 'backdropClosesModal', 'currentImage', 'enableKeyboardInput', 'images', 'isOpen', 'onClickNext', 'onClickPrev', 'onClose', 'showCloseButton', 'width');
-			var portalStyles = this.props.isOpen ? classes.portal : {};
 
 			return _react2['default'].createElement(
 				_Portal2['default'],
-				_extends({}, props, { className: portalStyles }),
-				_react2['default'].createElement(
-					_reactAddonsTransitionGroup2['default'],
-					{ transitionName: 'div', component: 'div' },
-					this.renderBackdrop()
-				),
+				props,
 				_react2['default'].createElement(
 					_reactAddonsTransitionGroup2['default'],
 					{ transitionName: 'div', component: 'div' },
