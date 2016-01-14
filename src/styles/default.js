@@ -5,33 +5,13 @@ const GAP_TOP = 40;
 
 const styles = {
 	// SCENE
-	portal: {
-		backfaceVisibility: 'hidden',
-		height: '100%',
-		left: 0,
-		outline: 0,
-		overflowX: 'hidden',
-		overflowY: 'auto',
-		position: 'fixed',
-		top: 0,
-		width: '100%',
-		zIndex: 999,
-	},
-	backdrop: {
-		backgroundColor: 'rgba(0,0,0,0.8)',
-		bottom: 0,
-		left: 0,
-		position: 'fixed',
-		right: 0,
-		top: 0,
-		zIndex: 1000,
-	},
 	container: {
+		backgroundColor: 'rgba(0,0,0,0.8)',
 		boxSizing: 'border-box',
 		height: '100%',
 		left: 0,
 		padding: '0 10px',
-		position: 'absolute',
+		position: 'fixed',
 		textAlign: 'center',
 		top: 0,
 		width: '100%',

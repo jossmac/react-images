@@ -134,14 +134,6 @@ class Lightbox extends Component {
 			</div>
 		);
 	}
-	renderBackdrop () {
-		if (!this.props.isOpen) return;
-		const { classes } = this.props.sheet;
-
-		return (
-			<Fade key="backdrop" duration={200} className={classes.backdrop} onTouchEnd={this.close} onClick={this.close} />
-		);
-	}
 	renderDialog () {
 		if (!this.props.isOpen) return;
 		const { classes } = this.props.sheet;
@@ -211,13 +203,9 @@ class Lightbox extends Component {
 	render () {
 		const { classes } = this.props.sheet;
 		const props = blacklist(this.props, 'backdropClosesModal', 'currentImage', 'enableKeyboardInput', 'images', 'isOpen', 'onClickNext', 'onClickPrev', 'onClose', 'showCloseButton', 'width');
-		const portalStyles = this.props.isOpen ? classes.portal : {};
 
 		return (
-			<Portal {...props} className={portalStyles}>
-				<Transition transitionName="div" component="div">
-					{this.renderBackdrop()}
-				</Transition>
+			<Portal {...props}>
 				<Transition transitionName="div" component="div">
 					{this.renderDialog()}
 				</Transition>
