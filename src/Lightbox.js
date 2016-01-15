@@ -16,12 +16,11 @@ import Icon from './Icon';
 import Portal from './Portal';
 
 import defaultStyles from './styles/default';
-import Transition from 'react-addons-transition-group';
 
 class Lightbox extends Component {
 	static theme(themeStyles) {
 		let extStyles = Object.assign({}, defaultStyles);
-		for (var key in extStyles) {
+		for (let key in extStyles) {
 			if (key in themeStyles) {
 				extStyles[key] = Object.assign({}, defaultStyles[key], themeStyles[key]);
 			}

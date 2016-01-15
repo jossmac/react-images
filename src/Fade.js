@@ -1,40 +1,38 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 
-var Fade = React.createClass({
-	getDefaultProps () {
-		return {
-			component: 'div',
-			duration: 200,
-			ref: 'element'
-		};
-	},
-	componentWillAppear: function (callback) {
+class Fade extends Component {
+	constructor () {
+		super();
+		this._showElement = this._showElement.bind(this);
+		this._hideElement = this._hideElement.bind(this);
+	}
+	componentWillAppear (callback) {
 		setTimeout(callback, 1); // need at least one tick to fire transition
-	},
-	componentDidAppear: function () {
+	}
+	componentDidAppear () {
 		this._showElement();
-	},
-	componentWillEnter: function (callback) {
+	}
+	componentWillEnter (callback) {
 		setTimeout(callback, 1);
-	},
-	componentDidEnter: function () {
+	}
+	componentDidEnter () {
 		this._showElement();
-	},
-	componentWillLeave: function (callback) {
+	}
+	componentWillLeave (callback) {
 		this._hideElement();
 		setTimeout(callback, this.props.duration);
-	},
-	componentDidLeave: function () {
-	},
-	_showElement: function () {
-		var el = this.refs.element;
+	}
+	componentDidLeave () {
+	}
+	_showElement () {
+		const el = this.refs.element;
 		el.style.opacity = 1;
-	},
-	_hideElement: function () {
-		var el = this.refs.element;
+	}
+	_hideElement () {
+		const el = this.refs.element;
 		el.style.opacity = 0;
-	},
-	render: function () {
+	}
+	render () {
 		let props = Object.assign({}, this.props);
 		const style = {
 			opacity: 0,
@@ -49,6 +47,12 @@ var Fade = React.createClass({
 			this.props.children
 		);
 	}
-});
+};
 
-module.exports = Fade;
+Fade.defaultProps = {
+	component: 'div',
+	duration: 200,
+	ref: 'element'
+};
+
+export default Fade;
