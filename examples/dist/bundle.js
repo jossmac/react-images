@@ -1,70 +1,125 @@
 require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
+Object.defineProperty(exports, '__esModule', {
+	value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var Fade = _react2['default'].createClass({
-	displayName: 'Fade',
+var Fade = (function (_Component) {
+	_inherits(Fade, _Component);
 
-	getDefaultProps: function getDefaultProps() {
-		return {
-			component: 'div',
-			duration: 200,
-			ref: 'element'
-		};
-	},
-	componentWillAppear: function componentWillAppear(callback) {
-		setTimeout(callback, 1); // need at least one tick to fire transition
-	},
-	componentDidAppear: function componentDidAppear() {
-		this._showElement();
-	},
-	componentWillEnter: function componentWillEnter(callback) {
-		setTimeout(callback, 1);
-	},
-	componentDidEnter: function componentDidEnter() {
-		this._showElement();
-	},
-	componentWillLeave: function componentWillLeave(callback) {
-		this._hideElement();
-		setTimeout(callback, this.props.duration);
-	},
-	componentDidLeave: function componentDidLeave() {},
-	_showElement: function _showElement() {
-		var el = this.refs.element;
-		el.style.opacity = 1;
-	},
-	_hideElement: function _hideElement() {
-		var el = this.refs.element;
-		el.style.opacity = 0;
-	},
-	render: function render() {
-		var props = _extends({}, this.props);
-		var style = {
-			opacity: 0,
-			WebkitTransition: 'opacity ' + this.props.duration + 'ms ease-out',
-			msTransition: 'opacity ' + this.props.duration + 'ms ease-out',
-			transition: 'opacity ' + this.props.duration + 'ms ease-out'
-		};
-		props.style = _extends(style, this.props.style);
-		return _react2['default'].createElement(this.props.component, props, this.props.children);
+	function Fade() {
+		_classCallCheck(this, Fade);
+
+		_get(Object.getPrototypeOf(Fade.prototype), 'constructor', this).call(this);
+		this._showElement = this._showElement.bind(this);
+		this._hideElement = this._hideElement.bind(this);
 	}
-});
 
-module.exports = Fade;
+	_createClass(Fade, [{
+		key: 'componentWillAppear',
+		value: function componentWillAppear(callback) {
+			setTimeout(callback, 1); // need at least one tick to fire transition
+		}
+	}, {
+		key: 'componentDidAppear',
+		value: function componentDidAppear() {
+			this._showElement();
+		}
+	}, {
+		key: 'componentWillEnter',
+		value: function componentWillEnter(callback) {
+			setTimeout(callback, 1);
+		}
+	}, {
+		key: 'componentDidEnter',
+		value: function componentDidEnter() {
+			this._showElement();
+		}
+	}, {
+		key: 'componentWillLeave',
+		value: function componentWillLeave(callback) {
+			this._hideElement();
+			setTimeout(callback, this.props.duration);
+		}
+	}, {
+		key: 'componentDidLeave',
+		value: function componentDidLeave() {}
+	}, {
+		key: '_showElement',
+		value: function _showElement() {
+			var el = this.refs.element;
+			el.style.opacity = 1;
+		}
+	}, {
+		key: '_hideElement',
+		value: function _hideElement() {
+			var el = this.refs.element;
+			el.style.opacity = 0;
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var props = _extends({}, this.props);
+			var style = {
+				opacity: 0,
+				WebkitTransition: 'opacity ' + this.props.duration + 'ms ease-out',
+				msTransition: 'opacity ' + this.props.duration + 'ms ease-out',
+				transition: 'opacity ' + this.props.duration + 'ms ease-out'
+			};
+			props.style = _extends(style, this.props.style);
+			return _react2['default'].createElement(this.props.component, props, this.props.children);
+		}
+	}]);
+
+	return Fade;
+})(_react.Component);
+
+;
+
+Fade.defaultProps = {
+	component: 'div',
+	duration: 200,
+	ref: 'element'
+};
+
+exports['default'] = Fade;
+module.exports = exports['default'];
 
 },{"react":undefined}],2:[function(require,module,exports){
 'use strict';
 
+Object.defineProperty(exports, '__esModule', {
+	value: true
+});
+
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var _react = require('react');
 
@@ -74,52 +129,110 @@ var _icons = require('./icons');
 
 var _icons2 = _interopRequireDefault(_icons);
 
-module.exports = _react2['default'].createClass({
-	displayName: 'Icon',
-	propTypes: {
-		type: _react2['default'].PropTypes.oneOf(Object.keys(_icons2['default']))
-	},
-	render: function render() {
-		return _react2['default'].createElement('span', _extends({ dangerouslySetInnerHTML: { __html: _icons2['default'][this.props.type] } }, this.props));
+var Icon = (function (_Component) {
+	_inherits(Icon, _Component);
+
+	function Icon() {
+		_classCallCheck(this, Icon);
+
+		_get(Object.getPrototypeOf(Icon.prototype), 'constructor', this).apply(this, arguments);
 	}
-});
+
+	_createClass(Icon, [{
+		key: 'render',
+		value: function render() {
+			return _react2['default'].createElement('span', _extends({ dangerouslySetInnerHTML: { __html: _icons2['default'][this.props.type] } }, this.props));
+		}
+	}]);
+
+	return Icon;
+})(_react.Component);
+
+;
+
+Icon.propTypes = {
+	type: _react2['default'].PropTypes.oneOf(Object.keys(_icons2['default']))
+};
+
+exports['default'] = Icon;
+module.exports = exports['default'];
 
 },{"./icons":7,"react":undefined}],3:[function(require,module,exports){
 'use strict';
 
+Object.defineProperty(exports, '__esModule', {
+	value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactAddonsTransitionGroup = require('react-addons-transition-group');
+
+var _reactAddonsTransitionGroup2 = _interopRequireDefault(_reactAddonsTransitionGroup);
+
 var _reactDom = require('react-dom');
 
-module.exports = _react2['default'].createClass({
-	displayName: 'Portal',
-	portalElement: null,
-	render: function render() {
-		return null;
-	},
-	componentDidMount: function componentDidMount() {
-		var p = document.createElement('div');
-		document.body.appendChild(p);
-		this.portalElement = p;
-		this.componentDidUpdate();
-	},
-	componentWillUnmount: function componentWillUnmount() {
-		document.body.removeChild(this.portalElement);
-	},
-	componentDidUpdate: function componentDidUpdate() {
-		(0, _reactDom.render)(_react2['default'].createElement(
-			'div',
-			this.props,
-			this.props.children
-		), this.portalElement);
-	}
-});
+var Portal = (function (_Component) {
+	_inherits(Portal, _Component);
 
-},{"react":undefined,"react-dom":undefined}],4:[function(require,module,exports){
+	function Portal() {
+		_classCallCheck(this, Portal);
+
+		_get(Object.getPrototypeOf(Portal.prototype), 'constructor', this).call(this);
+		this.portalElement = null;
+	}
+
+	_createClass(Portal, [{
+		key: 'render',
+		value: function render() {
+			return null;
+		}
+	}, {
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			var p = document.createElement('div');
+			document.body.appendChild(p);
+			this.portalElement = p;
+			this.componentDidUpdate();
+		}
+	}, {
+		key: 'componentWillUnmount',
+		value: function componentWillUnmount() {
+			document.body.removeChild(this.portalElement);
+		}
+	}, {
+		key: 'componentDidUpdate',
+		value: function componentDidUpdate() {
+			(0, _reactDom.render)(_react2['default'].createElement(
+				_reactAddonsTransitionGroup2['default'],
+				_extends({}, this.props, { component: 'div' }),
+				this.props.children
+			), this.portalElement);
+		}
+	}]);
+
+	return Portal;
+})(_react.Component);
+
+exports['default'] = Portal;
+;
+module.exports = exports['default'];
+
+},{"react":undefined,"react-addons-transition-group":undefined,"react-dom":undefined}],4:[function(require,module,exports){
 'use strict';
 
 module.exports = '<svg fill="white" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100%" height="100%" viewBox="0 0 512 512" xml:space="preserve">' + '<path d="M213.7,256L213.7,256L213.7,256L380.9,81.9c4.2-4.3,4.1-11.4-0.2-15.8l-29.9-30.6c-4.3-4.4-11.3-4.5-15.5-0.2L131.1,247.9 c-2.2,2.2-3.2,5.2-3,8.1c-0.1,3,0.9,5.9,3,8.1l204.2,212.7c4.2,4.3,11.2,4.2,15.5-0.2l29.9-30.6c4.3-4.4,4.4-11.5,0.2-15.8 L213.7,256z"/>' + '</svg>';
@@ -178,10 +291,8 @@ var styles = {
 	contentHeightShim: {
 		display: 'inline-block',
 		height: '100%',
+		lineHeight: 0,
 		verticalAlign: 'middle'
-	},
-	stage: {
-		lineHeight: 0
 	},
 
 	// IMAGES
@@ -308,8 +419,6 @@ var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_ag
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-exports.theme = theme;
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
@@ -319,14 +428,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
-
-var _blacklist = require('blacklist');
-
-var _blacklist2 = _interopRequireDefault(_blacklist);
-
-var _classnames = require('classnames');
-
-var _classnames2 = _interopRequireDefault(_classnames);
 
 var _reactJss = require('react-jss');
 
@@ -368,10 +469,6 @@ var _stylesDefault = require('./styles/default');
 
 var _stylesDefault2 = _interopRequireDefault(_stylesDefault);
 
-var _reactAddonsTransitionGroup = require('react-addons-transition-group');
-
-var _reactAddonsTransitionGroup2 = _interopRequireDefault(_reactAddonsTransitionGroup);
-
 _jss2['default'].use((0, _jssCamelCase2['default'])());
 _jss2['default'].use((0, _jssNested2['default'])());
 _jss2['default'].use((0, _jssPx2['default'])());
@@ -380,15 +477,18 @@ _jss2['default'].use((0, _jssVendorPrefixer2['default'])());
 var Lightbox = (function (_Component) {
 	_inherits(Lightbox, _Component);
 
-	// static theme(themeStyles) {
-	// 	let extStyles = Object.assign({}, defaultStyles);
-	// 	for (var key in extStyles) {
-	// 		if (key in themeStyles) {
-	// 			extStyles[key] = Object.assign({}, defaultStyles[key], themeStyles[key]);
-	// 		}
-	// 	}
-	// 	return extStyles;
-	// }
+	_createClass(Lightbox, null, [{
+		key: 'theme',
+		value: function theme(themeStyles) {
+			var extStyles = _extends({}, _stylesDefault2['default']);
+			for (var key in extStyles) {
+				if (key in themeStyles) {
+					extStyles[key] = _extends({}, _stylesDefault2['default'][key], themeStyles[key]);
+				}
+			}
+			return extStyles;
+		}
+	}]);
 
 	function Lightbox() {
 		_classCallCheck(this, Lightbox);
@@ -423,7 +523,9 @@ var Lightbox = (function (_Component) {
 		}
 	}, {
 		key: 'close',
-		value: function close() {
+		value: function close(e) {
+			if (e.target.id !== 'react-images-container') return;
+
 			this.props.backdropClosesModal && this.props.onClose && this.props.onClose();
 		}
 	}, {
@@ -480,11 +582,9 @@ var Lightbox = (function (_Component) {
 			if (this.props.currentImage === this.props.images.length - 1) return;
 			var classes = this.props.sheet.classes;
 
-			var elementClass = (0, _classnames2['default'])(classes.arrow, classes.arrowNext);
-
 			return _react2['default'].createElement(
 				'button',
-				{ title: 'Next (Right arrow key)', type: 'button', className: elementClass, onClick: this.gotoNext, onTouchEnd: this.gotoNext },
+				{ title: 'Next (Right arrow key)', type: 'button', className: classes.arrow + ' ' + classes.arrowNext, onClick: this.gotoNext, onTouchEnd: this.gotoNext },
 				_react2['default'].createElement(_Icon2['default'], { type: 'arrowRight' })
 			);
 		}
@@ -494,11 +594,9 @@ var Lightbox = (function (_Component) {
 			if (this.props.currentImage === 0) return;
 			var classes = this.props.sheet.classes;
 
-			var elementClass = (0, _classnames2['default'])(classes.arrow, classes.arrowPrev);
-
 			return _react2['default'].createElement(
 				'button',
-				{ title: 'Previous (Left arrow key)', type: 'button', className: elementClass, onClick: this.gotoPrev, onTouchEnd: this.gotoPrev },
+				{ title: 'Previous (Left arrow key)', type: 'button', className: classes.arrow + ' ' + classes.arrowPrev, onClick: this.gotoPrev, onTouchEnd: this.gotoPrev },
 				_react2['default'].createElement(_Icon2['default'], { type: 'arrowLeft' })
 			);
 		}
@@ -526,18 +624,14 @@ var Lightbox = (function (_Component) {
 
 			return _react2['default'].createElement(
 				_Fade2['default'],
-				{ key: 'dialog', duration: 250, className: classes.container },
+				{ id: 'react-images-container', key: 'dialog', duration: 250, className: classes.container, onClick: this.close, onTouchEnd: this.close },
 				_react2['default'].createElement('span', { className: classes.contentHeightShim }),
 				_react2['default'].createElement(
 					'div',
 					{ className: classes.content },
-					_react2['default'].createElement(
-						'div',
-						{ className: classes.stage },
-						this.renderCloseButton(),
-						this.renderImages(),
-						_react2['default'].createElement('span', { className: classes.figureShadow })
-					)
+					this.renderCloseButton(),
+					this.renderImages(),
+					_react2['default'].createElement('span', { className: classes.figureShadow })
 				),
 				this.renderArrowPrev(),
 				this.renderArrowNext()
@@ -615,16 +709,10 @@ var Lightbox = (function (_Component) {
 		value: function render() {
 			var classes = this.props.sheet.classes;
 
-			var props = (0, _blacklist2['default'])(this.props, 'backdropClosesModal', 'currentImage', 'enableKeyboardInput', 'images', 'isOpen', 'onClickNext', 'onClickPrev', 'onClose', 'showCloseButton', 'width');
-
 			return _react2['default'].createElement(
 				_Portal2['default'],
-				props,
-				_react2['default'].createElement(
-					_reactAddonsTransitionGroup2['default'],
-					{ transitionName: 'div', component: 'div' },
-					this.renderDialog()
-				)
+				null,
+				this.renderDialog()
 			);
 		}
 	}]);
@@ -662,19 +750,7 @@ Lightbox.defaultProps = {
 	width: 900
 };
 
-function theme(themeStyles) {
-	var extStyles = _extends({}, _stylesDefault2['default']);
-	for (var key in extStyles) {
-		if (key in themeStyles) {
-			extStyles[key] = _extends({}, _stylesDefault2['default'][key], themeStyles[key]);
-		}
-	}
-	return extStyles;
-}
-
-;
-
-// console.log('Lightbox.theme', Lightbox.theme);
 exports['default'] = (0, _reactJss2['default'])(Lightbox, _stylesDefault2['default']);
+module.exports = exports['default'];
 
-},{"./Fade":1,"./Icon":2,"./Portal":3,"./styles/default":8,"blacklist":undefined,"classnames":undefined,"jss":undefined,"jss-camel-case":undefined,"jss-nested":undefined,"jss-px":undefined,"jss-vendor-prefixer":undefined,"react":undefined,"react-addons-transition-group":undefined,"react-jss":undefined}]},{},[]);
+},{"./Fade":1,"./Icon":2,"./Portal":3,"./styles/default":8,"jss":undefined,"jss-camel-case":undefined,"jss-nested":undefined,"jss-px":undefined,"jss-vendor-prefixer":undefined,"react":undefined,"react-jss":undefined}]},{},[]);
