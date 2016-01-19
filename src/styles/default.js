@@ -27,10 +27,8 @@ const styles = {
 	contentHeightShim: {
 		display: 'inline-block',
 		height: '100%',
-		verticalAlign: 'middle',
-	},
-	stage: {
 		lineHeight: 0,
+		verticalAlign: 'middle',
 	},
 
 	// IMAGES

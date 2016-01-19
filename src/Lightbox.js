@@ -137,11 +137,9 @@ class Lightbox extends Component {
 			<Fade key="dialog" duration={250} className={classes.container}>
 				<span className={classes.contentHeightShim} />
 				<div className={classes.content}>
-					<div className={classes.stage}>
-						{this.renderCloseButton()}
-						{this.renderImages()}
-						<span className={classes.figureShadow} />
-					</div>
+					{this.renderCloseButton()}
+					{this.renderImages()}
+					<span className={classes.figureShadow} />
 				</div>
 				{this.renderArrowPrev()}
 				{this.renderArrowNext()}
