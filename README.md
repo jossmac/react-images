@@ -122,14 +122,13 @@ Note that the caption is an entirely optional property, as can be seen in the fi
 
 Property	|	Type		|	Default		|	Description
 :-----------------------|:--------------|:--------------|:--------------------------------
-backdropClosesModal	|	bool	|	true	|	Allow users to exit the lightbox by clicking the backdrop
+backdropClosesModal	|	bool	|	false	|	Allow users to exit the lightbox by clicking the backdrop
 enableKeyboardInput | bool  | true  | Supports keyboard input - <code>esc</code>, <code>arrow left</code>, and <code>arrow right</code>
 currentImage  | number  | 0 | The index of the image to display initially
-height | number | 600 | Maximum height of the carousel; defaults to 600px
 images  | array | undefined | Required. An array of objects containing valid src and srcset values of img element
 isOpen  | bool  | false | Whether or not the lightbox is displayed
 onClickPrev | func | undefined | Required. Fired on request of the previous image
 onClickNext | func | undefined | Required. Fired on request of the next image
 onClose | func | undefined | Required. Handle closing of the lightbox
-showCloseButton | bool  | false | Optionally display a close button under the carousel
+showCloseButton | bool  | true | Optionally display a close button under the carousel
 width | number  | 900 | Maximum width of the carousel; defaults to 900px
