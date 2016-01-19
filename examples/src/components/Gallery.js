@@ -40,7 +40,7 @@ class Gallery extends Component {
 	}
 	renderGallery () {
 		if (!this.props.images) return;
-		let gallery = this.props.images.map((obj, i) => {
+		const gallery = this.props.images.map((obj, i) => {
 			return (
 				<a key={i} href={obj.src} onClick={(event) => this.openLightbox(i, event)} style={styles.thumbnail}>
 					<img src={obj.thumbnail} style={styles.thumbnailImage} width={styles.thumbnail.size} height={styles.thumbnail.size} />
