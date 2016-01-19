@@ -54,7 +54,9 @@ class Lightbox extends Component {
 		}
 	}
 
-	close () {
+	close (e) {
+		if (e.target.id !== 'react-images-container') return;
+
 		this.props.backdropClosesModal && this.props.onClose && this.props.onClose();
 	}
 	gotoNext (event) {
@@ -134,7 +136,7 @@ class Lightbox extends Component {
 		const { classes } = this.props.sheet;
 
 		return (
-			<Fade key="dialog" duration={250} className={classes.container}>
+			<Fade id="react-images-container" key="dialog" duration={250} className={classes.container} onClick={this.close} onTouchEnd={this.close}>
 				<span className={classes.contentHeightShim} />
 				<div className={classes.content}>
 					{this.renderCloseButton()}
