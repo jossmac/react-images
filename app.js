@@ -15,10 +15,6 @@ var _reactImages = require('react-images');
 
 var _reactImages2 = _interopRequireDefault(_reactImages);
 
-var _componentsButton = require('./components/Button');
-
-var _componentsButton2 = _interopRequireDefault(_componentsButton);
-
 var _componentsGallery = require('./components/Gallery');
 
 var _componentsGallery2 = _interopRequireDefault(_componentsGallery);
@@ -76,123 +72,7 @@ var IMAGES = IMAGE_NAMES.map(function (img) {
 	)
 ), document.getElementById('example'));
 
-},{"./components/Button":2,"./components/Gallery":3,"react":undefined,"react-dom":undefined,"react-images":undefined}],2:[function(require,module,exports){
-'use strict';
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactImages = require('react-images');
-
-var _reactImages2 = _interopRequireDefault(_reactImages);
-
-var Button = _react2['default'].createClass({
-	displayName: 'Button',
-	propTypes: {
-		images: _react2['default'].PropTypes.array
-	},
-	getInitialState: function getInitialState() {
-		return {
-			lightboxIsOpen: false
-		};
-	},
-	gotoPrevious: function gotoPrevious(event) {
-		if (event) {
-			event.preventDefault();
-			event.stopPropagation();
-		}
-		this.setState({
-			currentImage: this.state.currentImage - 1
-		});
-	},
-	gotoNext: function gotoNext(event) {
-		if (event) {
-			event.preventDefault();
-			event.stopPropagation();
-		}
-		this.setState({
-			currentImage: this.state.currentImage + 1
-		});
-	},
-	openLightbox: function openLightbox(index, event) {
-		event.preventDefault();
-		this.setState({
-			currentImage: index,
-			lightboxIsOpen: true
-		});
-	},
-	closeLightbox: function closeLightbox() {
-		this.setState({
-			lightboxIsOpen: false
-		});
-	},
-	render: function render() {
-		var _this = this;
-
-		return _react2['default'].createElement(
-			'div',
-			{ className: 'section' },
-			_react2['default'].createElement(
-				'h2',
-				null,
-				this.props.heading
-			),
-			_react2['default'].createElement(
-				'button',
-				{ onClick: function (event) {
-						return _this.openLightbox(0, event);
-					} },
-				'Sure, why not?'
-			),
-			_react2['default'].createElement(_reactImages2['default'], {
-				images: this.props.images,
-				currentImage: this.state.currentImage,
-				isOpen: this.state.lightboxIsOpen,
-				onClickPrev: this.gotoPrevious,
-				onClickNext: this.gotoNext,
-				onClose: this.closeLightbox,
-				styles: this.props.styles
-			})
-		);
-	}
-});
-
-var THUMBNAIL_SIZE = 58;
-
-var styles = {
-	gallery: {
-		marginLeft: -5,
-		marginRight: -5,
-		overflow: 'hidden'
-	},
-	thumbnail: {
-		backgroundSize: 'cover',
-		borderRadius: 3,
-		float: 'left',
-		height: THUMBNAIL_SIZE,
-		margin: 5,
-		overflow: 'hidden',
-		width: THUMBNAIL_SIZE
-	},
-	thumbnailImage: {
-		display: 'block',
-		height: THUMBNAIL_SIZE,
-		left: '50%',
-		position: 'relative',
-
-		WebkitTransform: 'translateX(-50%)',
-		MozTransform: 'translateX(-50%)',
-		msTransform: 'translateX(-50%)',
-		transform: 'translateX(-50%)'
-	}
-};
-
-module.exports = Button;
-
-},{"react":undefined,"react-images":undefined}],3:[function(require,module,exports){
+},{"./components/Gallery":2,"react":undefined,"react-dom":undefined,"react-images":undefined}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
