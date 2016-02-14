@@ -130,5 +130,6 @@ isOpen  | bool  | false | Whether or not the lightbox is displayed
 onClickPrev | func | undefined | Required. Fired on request of the previous image
 onClickNext | func | undefined | Required. Fired on request of the next image
 onClose | func | undefined | Required. Handle closing of the lightbox
-showCloseButton | bool  | true | Optionally display a close button under the carousel
+showCloseButton | bool  | true | Optionally display a close "X" button in top right corner
+showImageCount | bool  | true | Optionally display image index, e.g., "3 of 20"
 width | number  | 900 | Maximum width of the carousel; defaults to 900px
