@@ -48,9 +48,9 @@ class Lightbox extends Component {
 		}
 
 		if (nextProps.isOpen) {
-			document.body ? document.body.style.overflow = 'hidden' : null;
+			document.body ? document.body.style.overflow = 'hidden' : null ;
 		} else {
-			document.body ? document.body.style.overflow = null : null;
+			document.body ? document.body.style.overflow = 'auto' : null;
 		}
 	}
 
