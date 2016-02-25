@@ -23,12 +23,16 @@ const IMAGES = IMAGE_NAMES.map(img => {
 		caption: capitalizeFirstLetter(img)
 	};
 });
+const IMAGES_PRELOAD = IMAGE_NAMES.map(img => {
+	return <img src={`./images/1024-${img}.jpg`} />;
+});
 
 render (
 	<div>
 		<p style={{ marginBottom: 40 }}>Use your keyboard to navigate <kbd>left</kbd> <kbd>right</kbd> <kbd>esc</kbd> &mdash; Also, try resizing your browser window.</p>
 		<Gallery images={IMAGES} />
 		<p>Images courtesy of <a href="http://gratisography.com/" target="_blank">Gratisography</a></p>
+		<div style={{ display: 'none' }}>{IMAGES_PRELOAD}</div>
 	</div>,
 	document.getElementById('example')
 );
