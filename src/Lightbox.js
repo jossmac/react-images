@@ -11,6 +11,7 @@ jss.use(nested());
 jss.use(px());
 jss.use(vendorPrefixer());
 
+import utils from './utils';
 import Fade from './Fade';
 import Icon from './Icon';
 import Portal from './Portal';
@@ -39,18 +40,18 @@ class Lightbox extends Component {
 	}
 	componentWillReceiveProps (nextProps) {
 		if (nextProps.isOpen && nextProps.enableKeyboardInput) {
-			if (typeof window !== 'undefined') window.addEventListener('keydown', this.handleKeyboardInput);
-			if (typeof window !== 'undefined') window.addEventListener('resize', this.handleResize);
+			if (utils.canUseDOM) window.addEventListener('keydown', this.handleKeyboardInput);
+			if (utils.canUseDOM) window.addEventListener('resize', this.handleResize);
 			this.handleResize();
 		} else {
-			if (typeof window !== 'undefined') window.removeEventListener('keydown', this.handleKeyboardInput);
-			if (typeof window !== 'undefined') window.removeEventListener('resize', this.handleResize);
+			if (utils.canUseDOM) window.removeEventListener('keydown', this.handleKeyboardInput);
+			if (utils.canUseDOM) window.removeEventListener('resize', this.handleResize);
 		}
 
 		if (nextProps.isOpen) {
-			document.body ? document.body.style.overflow = 'hidden' : null;
+			if (utils.canUseDOM) document.body.style.overflow = 'hidden';
 		} else {
-			document.body ? document.body.style.overflow = null : null;
+			if (utils.canUseDOM) document.body.style.overflow = null;
 		}
 	}
 
@@ -76,17 +77,19 @@ class Lightbox extends Component {
 		this.props.onClickPrev();
 	}
 	handleImageClick (e) {
-		e.stopPropagation();
 		if (!this.props.onClickShowNextImage) return;
 
-		this.gotoNext();
+		this.gotoNext(e);
 
+	}
+	handleImageLoad (e, index) {
+		// console.log('image', index, 'loaded', e);
 	}
 	handleKeyboardInput (event) {
 		if (event.keyCode === 37) {
-			this.gotoPrev();
+			this.gotoPrev(event);
 		} else if (event.keyCode === 39) {
-			this.gotoNext();
+			this.gotoNext(event);
 		} else if (event.keyCode === 27) {
 			this.props.onClose();
 		} else {
@@ -94,8 +97,9 @@ class Lightbox extends Component {
 		}
 	}
 	handleResize () {
+		if (!utils.canUseDOM) return;
 		this.setState({
-			windowHeight: (typeof window !== 'undefined') ? window.innerHeight : 0
+			windowHeight: window.innerHeight || 0
 		});
 	}
 
@@ -141,7 +145,6 @@ class Lightbox extends Component {
 				<div className={classes.content}>
 					{this.renderCloseButton()}
 					{this.renderImages()}
-					<span className={classes.figureShadow} />
 				</div>
 				{this.renderArrowPrev()}
 				{this.renderArrowNext()}
@@ -171,9 +174,11 @@ class Lightbox extends Component {
 
 		if (!images || !images.length) return;
 
+		const image = images[currentImage];
+
 		let srcset, sizes;
-		if (images[currentImage].srcset) {
-			srcset = images[currentImage].srcset.join();
+		if (image.srcset) {
+			srcset = image.srcset.join();
 			sizes = '100vw';
 		}
 
@@ -182,9 +187,10 @@ class Lightbox extends Component {
 				<img
 					className={classes.image}
 					onClick={this.handleImageClick}
+					onLoad={e => this.handleImageLoad(e, currentImage)}
 					onTouchEnd={this.handleImageClick}
 					sizes={sizes}
-					src={images[currentImage].src}
+					src={image.src}
 					srcSet={srcset}
 					style={{
 						cursor: this.props.onClickShowNextImage ? 'pointer' : 'auto',
