@@ -10,6 +10,7 @@ import React from 'react';
 import Lightbox from 'react-images';
 
 export default class Sample extends React.Component {
+  ...
   render() {
     return (
       <Lightbox
@@ -44,9 +45,7 @@ Example using srcset:
 ```jsx
 <Lightbox
   images={LIGHTBOX_IMAGE_SET}
-  onClickPrev={this.gotoPrevious}
-  onClickNext={this.gotoNext}
-  onClose={this.closeLightbox}
+  ...
 />
 
 const LIGHTBOX_IMAGE_SET = [
