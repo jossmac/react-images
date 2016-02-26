@@ -86,9 +86,7 @@ Example using caption for the first image:
 ```jsx
 <Lightbox
   images={LIGHTBOX_IMAGE_SET}
-  onClickPrev={this.gotoPrevious}
-  onClickNext={this.gotoNext}
-  onClose={this.closeLightbox}
+  ...
 />
 
 const LIGHTBOX_IMAGE_SET = [
