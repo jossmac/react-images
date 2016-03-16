@@ -5,6 +5,7 @@ import camelCase from 'jss-camel-case';
 import px from 'jss-px';
 import nested from 'jss-nested';
 import vendorPrefixer from 'jss-vendor-prefixer';
+import Swipeable from 'react-swipeable';
 
 jss.use(camelCase());
 jss.use(nested());
@@ -184,19 +185,19 @@ class Lightbox extends Component {
 
 		return (
 			<figure key={'image' + currentImage} className={classes.figure} style={{ maxWidth: this.props.width }}>
-				<img
-					className={classes.image}
-					onClick={this.handleImageClick}
-					onLoad={e => this.handleImageLoad(e, currentImage)}
-					onTouchEnd={this.handleImageClick}
-					sizes={sizes}
-					src={image.src}
-					srcSet={srcset}
-					style={{
-						cursor: this.props.onClickShowNextImage ? 'pointer' : 'auto',
-						maxHeight: windowHeight
-					}}
-				/>
+        <Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} >
+          <img className={classes.image}
+				  	onClick={this.handleImageClick}
+					  onLoad={e => this.handleImageLoad(e, currentImage)}
+					  sizes={sizes}
+					  src={image.src}
+					  srcSet={srcset}
+					  style={{
+						  cursor: this.props.onClickShowNextImage ? 'pointer' : 'auto',
+						  maxHeight: windowHeight
+            }}
+          />
+        </Swipeable>
 				{this.renderFooter(images[currentImage].caption)}
 			</figure>
 		);
