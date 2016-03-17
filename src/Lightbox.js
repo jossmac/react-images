@@ -5,6 +5,7 @@ import camelCase from 'jss-camel-case';
 import px from 'jss-px';
 import nested from 'jss-nested';
 import vendorPrefixer from 'jss-vendor-prefixer';
+import Swipeable from 'react-swipeable';
 
 jss.use(camelCase());
 jss.use(nested());
@@ -59,6 +60,7 @@ class Lightbox extends Component {
 
   close(e) {
     if (e.target.id !== 'react-images-container') return;
+
     if (this.props.backdropClosesModal && this.props.onClose) {
       this.props.onClose();
     }
@@ -84,6 +86,7 @@ class Lightbox extends Component {
 
   handleImageClick(e) {
     if (!this.props.onClickShowNextImage) return;
+
     this.gotoNext(e);
   }
 
@@ -94,12 +97,13 @@ class Lightbox extends Component {
   handleKeyboardInput(event) {
     if (event.keyCode === 37) {
       this.gotoPrev(event);
+      return true;
     } else if (event.keyCode === 39) {
       this.gotoNext(event);
+      return true;
     } else if (event.keyCode === 27) {
       this.props.onClose();
-    } else {
-      return false;
+      return true;
     }
     return false;
   }
@@ -114,11 +118,12 @@ class Lightbox extends Component {
   renderArrowNext() {
     if (this.props.currentImage === (this.props.images.length - 1)) return null;
     const { classes } = this.props.sheet;
-
     return (
-      <button title="Next (Right arrow key)" type="button"
+      <button title="Next (Right arrow key)"
+        type="button"
         className={`${classes.arrow} ${classes.arrowNext}`}
-        onClick={this.gotoNext} onTouchEnd={this.gotoNext}
+        onClick={this.gotoNext}
+        onTouchEnd={this.gotoNext}
       >
         <Icon type="arrowRight" />
       </button>
@@ -160,22 +165,22 @@ class Lightbox extends Component {
 
     return (
       <Fade id="react-images-container"
-        key="dialog" duration={250}
+        key="dialog"
+        duration={250}
         className={classes.container}
         onClick={this.close}
         onTouchEnd={this.close}
       >
-          <span className={classes.contentHeightShim} />
-          <div className={classes.content}>
-            {this.renderCloseButton()}
-            {this.renderImages()}
-          </div>
-          {this.renderArrowPrev()}
-          {this.renderArrowNext()}
+        <span className={classes.contentHeightShim} />
+        <div className={classes.content}>
+          {this.renderCloseButton()}
+          {this.renderImages()}
+        </div>
+        {this.renderArrowPrev()}
+        {this.renderArrowNext()}
       </Fade>
     );
   }
-
   renderFooter(caption) {
     const { currentImage, images, showImageCount } = this.props;
     const { classes } = this.props.sheet;
@@ -185,7 +190,6 @@ class Lightbox extends Component {
     const imageCount = showImageCount
       ? <div className={classes.footerCount}>{currentImage + 1} of {images.length}</div>
       : null;
-
     const figcaption = caption
       ? <figcaption className={classes.footerCaption}>{caption}</figcaption>
       : null;
@@ -197,7 +201,6 @@ class Lightbox extends Component {
       </div>
     );
   }
-
   renderImages() {
     const { images, currentImage } = this.props;
     const { classes } = this.props.sheet;
@@ -209,6 +212,7 @@ class Lightbox extends Component {
 
     let srcset;
     let sizes;
+
     if (image.srcset) {
       srcset = image.srcset.join();
       sizes = '100vw';
@@ -219,24 +223,23 @@ class Lightbox extends Component {
         className={classes.figure}
         style={{ maxWidth: this.props.width }}
       >
-        <img
-          className={classes.image}
-          onClick={this.handleImageClick}
-          onLoad={(e) => {this.handleImageLoad(e, currentImage);} }
-          onTouchEnd={this.handleImageClick}
-          sizes={sizes}
-          src={image.src}
-          srcSet={srcset}
-          style={{
-            cursor: this.props.onClickShowNextImage ? 'pointer' : 'auto',
-            maxHeight: windowHeight,
-          }}
-        />
+        <Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} >
+          <img className={classes.image}
+            onClick={this.handleImageClick}
+            onLoad={e => this.handleImageLoad(e, currentImage)}
+            sizes={sizes}
+            src={image.src}
+            srcSet={srcset}
+            style={{
+              cursor: this.props.onClickShowNextImage ? 'pointer' : 'auto',
+              maxHeight: windowHeight,
+            }}
+          />
+        </Swipeable>
         {this.renderFooter(images[currentImage].caption)}
       </figure>
     );
   }
-
   render() {
     return (
       <Portal>
