@@ -24,8 +24,9 @@
   "devDependencies": {
     "babel": "^5.8.21",
     "babel-eslint": "^4.0.10",
-    "eslint": "^1.2.1",
-    "eslint-plugin-react": "^3.2.3",
+    "eslint": "^2.2.0",
+    "eslint-config-airbnb": "^6.0.2",
+    "eslint-plugin-react": "^4.1.0",
     "gulp": "^3.9.0",
     "react-component-gulp-tasks": "^0.7.0"
   },
@@ -41,7 +42,7 @@
     "bump:major": "gulp bump:major",
     "bump:minor": "gulp bump:minor",
     "examples": "gulp dev:server",
-    "lint": "eslint .",
+    "lint": "eslint src/",
     "publish:examples": "gulp publish:examples",
     "release": "gulp release",
     "start": "gulp dev",
