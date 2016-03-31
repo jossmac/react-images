@@ -32,7 +32,7 @@ class Lightbox extends Component {
 
   constructor() {
     super();
-
+    this.state = {};
     this.close = this.close.bind(this);
     this.gotoNext = this.gotoNext.bind(this);
     this.gotoPrev = this.gotoPrev.bind(this);
@@ -174,7 +174,7 @@ class Lightbox extends Component {
         <span className={classes.contentHeightShim} />
         <div className={classes.content}>
           {this.renderCloseButton()}
-          {this.renderImages()}
+          {this.s()}
         </div>
         {this.renderArrowPrev()}
         {this.renderArrowNext()}
