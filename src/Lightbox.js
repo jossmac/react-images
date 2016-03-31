@@ -33,6 +33,7 @@ class Lightbox extends Component {
   constructor() {
     super();
 
+    this.state = {};
     this.close = this.close.bind(this);
     this.gotoNext = this.gotoNext.bind(this);
     this.gotoPrev = this.gotoPrev.bind(this);
