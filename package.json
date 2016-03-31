@@ -24,9 +24,9 @@
   "devDependencies": {
     "babel": "^5.8.21",
     "babel-eslint": "^4.0.10",
-    "eslint": "^2.2.0",
-    "eslint-config-airbnb": "^6.0.2",
-    "eslint-plugin-react": "^4.1.0",
+    "eslint": "2.5.1",
+    "eslint-config-keystone": "2.0.0",
+    "eslint-plugin-react": "4.2.3",
     "gulp": "^3.9.0",
     "react-component-gulp-tasks": "^0.7.0"
   },
