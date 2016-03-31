@@ -61,7 +61,7 @@ class Fade extends Component {
 Fade.propTypes = {
 	children: PropTypes.any,
 	component: PropTypes.any,
-	duration: PropTypes.integer,
+	duration: PropTypes.number,
 	style: PropTypes.object,
 };
 

@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import icons from './icons';
 
-const Icon = ({ type }) => (
+const Icon = (props) => (
 	<span
-		dangerouslySetInnerHTML={{ __html: icons[type] }}
-		{...this.props}
+		dangerouslySetInnerHTML={{ __html: icons[props.type] }}
+		{...props}
 	/>
 );
 
