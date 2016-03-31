@@ -48,6 +48,9 @@
     "start": "gulp dev",
     "watch": "gulp watch:lib"
   },
+  "bugs": {
+    "url": "https://github.com/jossmac/react-images/issues"
+  },
   "keywords": [
     "react",
     "react-component",
