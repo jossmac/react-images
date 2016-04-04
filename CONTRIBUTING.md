@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for your interest in react-images. All forms of contribution are
+Thank you for your interest in react-images. All forms of contribution are
 welcome, from issue reports to PRs and documentation / write-ups.
 
 Before you open a PR:
@@ -16,13 +16,4 @@ adding a major new use-case, add a new example demonstrating its use.
 `/src/` and `/examples/src` are included in your PR.
 * Be careful to follow the code style of the project. Run `npm run lint` after
 your changes and ensure you do not introduce any new errors or warnings.
-
-* Please [follow established coding conventions](https://github.com/keystonejs/keystone/wiki/Coding-Standards)
-(with regards to formatting, etc)
-* You can also run `npm run lint` and `npm run style` - our linter is a WIP
-but please ensure there are not more violations than before your changes.
 * All new features and changes need documentation.
-
-* _Make sure you revert your build before submitting a PR_ to reduce the change
-of conflicts. `gulp build-scripts` is run after PRs are merged and before any
-releases are made.
