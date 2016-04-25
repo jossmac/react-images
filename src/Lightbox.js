@@ -89,6 +89,7 @@ class Lightbox extends Component {
 	}
 
 	handleImageClick (e) {
+		if (this.props.onClickImage) this.props.onClickImage();
 		if (!this.props.onClickShowNextImage) return;
 
 		this.gotoNext(e);
@@ -267,6 +268,7 @@ Lightbox.propTypes = {
 		})
 	).isRequired,
 	isOpen: PropTypes.bool,
+	onClickImage: PropTypes.func,
 	onClickNext: PropTypes.func.isRequired,
 	onClickPrev: PropTypes.func.isRequired,
 	onClickShowNextImage: PropTypes.bool,
