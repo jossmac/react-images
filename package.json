@@ -15,9 +15,6 @@
     "jss-nested": "^1.0.1",
     "jss-px": "^1.0.0",
     "jss-vendor-prefixer": "^1.0.1",
-    "react": "^0.14.6",
-    "react-addons-transition-group": "^0.14.2",
-    "react-dom": "^0.14.6",
     "react-jss": "^2.0.1",
     "react-swipeable": "^3.1.0"
   },
@@ -31,7 +28,9 @@
     "react-component-gulp-tasks": "^0.7.0"
   },
   "peerDependencies": {
-    "react": ">=0.14"
+    "react": ">=0.14",
+    "react-addons-transition-group": ">=0.14",
+    "react-dom": ">=0.14",
   },
   "browserify-shim": {
     "react": "global:React"
