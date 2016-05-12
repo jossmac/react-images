@@ -88,7 +88,7 @@ class Lightbox extends Component {
 		this.props.onClickPrev();
 	}
 
-	handleImageClick (e) {
+	handleImageClick () {
 		if (!this.props.onClickImage) return;
 
 		this.props.onClickImage();

@@ -1,6 +1,5 @@
 import React from 'react';
 import { render } from 'react-dom';
-import Lightbox from 'react-images';
 import Gallery from './components/Gallery';
 
 function capitalizeFirstLetter (str) {
