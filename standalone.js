@@ -8,7 +8,7 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -92,7 +92,12 @@ var Fade = (function (_Component) {
 	return Fade;
 })(_react.Component);
 
-;
+Fade.propTypes = {
+	children: _react.PropTypes.any,
+	component: _react.PropTypes.any,
+	duration: _react.PropTypes.number,
+	style: _react.PropTypes.object
+};
 
 Fade.defaultProps = {
 	component: 'div',
@@ -114,15 +119,7 @@ Object.defineProperty(exports, '__esModule', {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var _react = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
 
@@ -132,29 +129,14 @@ var _icons = require('./icons');
 
 var _icons2 = _interopRequireDefault(_icons);
 
-var Icon = (function (_Component) {
-	_inherits(Icon, _Component);
-
-	function Icon() {
-		_classCallCheck(this, Icon);
-
-		_get(Object.getPrototypeOf(Icon.prototype), 'constructor', this).apply(this, arguments);
-	}
-
-	_createClass(Icon, [{
-		key: 'render',
-		value: function render() {
-			return _react2['default'].createElement('span', _extends({ dangerouslySetInnerHTML: { __html: _icons2['default'][this.props.type] } }, this.props));
-		}
-	}]);
-
-	return Icon;
-})(_react.Component);
-
-;
+var Icon = function Icon(props) {
+	return _react2['default'].createElement('span', _extends({
+		dangerouslySetInnerHTML: { __html: _icons2['default'][props.type] }
+	}, props));
+};
 
 Icon.propTypes = {
-	type: _react2['default'].PropTypes.oneOf(Object.keys(_icons2['default']))
+	type: _react.PropTypes.oneOf(Object.keys(_icons2['default']))
 };
 
 exports['default'] = Icon;
@@ -171,7 +153,7 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -185,13 +167,11 @@ var _react = (typeof window !== "undefined" ? window['React'] : typeof global !=
 
 var _react2 = _interopRequireDefault(_react);
 
+var _jss = require('jss');
+
 var _reactJss = require('react-jss');
 
 var _reactJss2 = _interopRequireDefault(_reactJss);
-
-var _jss = require('jss');
-
-var _jss2 = _interopRequireDefault(_jss);
 
 var _jssCamelCase = require('jss-camel-case');
 
@@ -209,6 +189,14 @@ var _jssVendorPrefixer = require('jss-vendor-prefixer');
 
 var _jssVendorPrefixer2 = _interopRequireDefault(_jssVendorPrefixer);
 
+var _reactSwipeable = require('react-swipeable');
+
+var _reactSwipeable2 = _interopRequireDefault(_reactSwipeable);
+
+var _utils = require('./utils');
+
+var _utils2 = _interopRequireDefault(_utils);
+
 var _Fade = require('./Fade');
 
 var _Fade2 = _interopRequireDefault(_Fade);
@@ -225,10 +213,14 @@ var _stylesDefault = require('./styles/default');
 
 var _stylesDefault2 = _interopRequireDefault(_stylesDefault);
 
-_jss2['default'].use((0, _jssCamelCase2['default'])());
-_jss2['default'].use((0, _jssNested2['default'])());
-_jss2['default'].use((0, _jssPx2['default'])());
-_jss2['default'].use((0, _jssVendorPrefixer2['default'])());
+var jss = (0, _jss.create)();
+exports.jss = jss;
+var useSheet = (0, _reactJss2['default'])(jss);
+exports.useSheet = useSheet;
+jss.use((0, _jssCamelCase2['default'])());
+jss.use((0, _jssNested2['default'])());
+jss.use((0, _jssPx2['default'])());
+jss.use((0, _jssVendorPrefixer2['default'])());
 
 var Lightbox = (function (_Component) {
 	_inherits(Lightbox, _Component);
@@ -257,24 +249,26 @@ var Lightbox = (function (_Component) {
 		this.handleImageClick = this.handleImageClick.bind(this);
 		this.handleKeyboardInput = this.handleKeyboardInput.bind(this);
 		this.handleResize = this.handleResize.bind(this);
+
+		this.state = {};
 	}
 
 	_createClass(Lightbox, [{
 		key: 'componentWillReceiveProps',
 		value: function componentWillReceiveProps(nextProps) {
 			if (nextProps.isOpen && nextProps.enableKeyboardInput) {
-				if (typeof window !== 'undefined') window.addEventListener('keydown', this.handleKeyboardInput);
-				if (typeof window !== 'undefined') window.addEventListener('resize', this.handleResize);
+				if (_utils2['default'].canUseDOM) window.addEventListener('keydown', this.handleKeyboardInput);
+				if (_utils2['default'].canUseDOM) window.addEventListener('resize', this.handleResize);
 				this.handleResize();
 			} else {
-				if (typeof window !== 'undefined') window.removeEventListener('keydown', this.handleKeyboardInput);
-				if (typeof window !== 'undefined') window.removeEventListener('resize', this.handleResize);
+				if (_utils2['default'].canUseDOM) window.removeEventListener('keydown', this.handleKeyboardInput);
+				if (_utils2['default'].canUseDOM) window.removeEventListener('resize', this.handleResize);
 			}
 
 			if (nextProps.isOpen) {
-				document.body ? document.body.style.overflow = 'hidden' : null;
+				if (_utils2['default'].canUseDOM) document.body.style.overflow = 'hidden';
 			} else {
-				document.body ? document.body.style.overflow = null : null;
+				if (_utils2['default'].canUseDOM) document.body.style.overflow = null;
 			}
 		}
 	}, {
@@ -282,7 +276,9 @@ var Lightbox = (function (_Component) {
 		value: function close(e) {
 			if (e.target.id !== 'react-images-container') return;
 
-			this.props.backdropClosesModal && this.props.onClose && this.props.onClose();
+			if (this.props.backdropClosesModal && this.props.onClose) {
+				this.props.onClose();
+			}
 		}
 	}, {
 		key: 'gotoNext',
@@ -307,59 +303,71 @@ var Lightbox = (function (_Component) {
 	}, {
 		key: 'handleImageClick',
 		value: function handleImageClick(e) {
-			e.stopPropagation();
-			if (!this.props.onClickShowNextImage) return;
+			if (!this.props.onClickImage) return;
 
-			this.gotoNext();
+			this.props.onClickImage();
 		}
 	}, {
 		key: 'handleKeyboardInput',
 		value: function handleKeyboardInput(event) {
 			if (event.keyCode === 37) {
-				this.gotoPrev();
+				this.gotoPrev(event);
+				return true;
 			} else if (event.keyCode === 39) {
-				this.gotoNext();
+				this.gotoNext(event);
+				return true;
 			} else if (event.keyCode === 27) {
 				this.props.onClose();
-			} else {
-				return false;
+				return true;
 			}
+			return false;
 		}
 	}, {
 		key: 'handleResize',
 		value: function handleResize() {
+			if (!_utils2['default'].canUseDOM) return;
 			this.setState({
-				windowHeight: typeof window !== 'undefined' ? window.innerHeight : 0
+				windowHeight: window.innerHeight || 0
 			});
 		}
 	}, {
 		key: 'renderArrowNext',
 		value: function renderArrowNext() {
-			if (this.props.currentImage === this.props.images.length - 1) return;
+			if (this.props.currentImage === this.props.images.length - 1) return null;
 			var classes = this.props.sheet.classes;
 
 			return _react2['default'].createElement(
 				'button',
-				{ title: 'Next (Right arrow key)', type: 'button', className: classes.arrow + ' ' + classes.arrowNext, onClick: this.gotoNext, onTouchEnd: this.gotoNext },
+				{ title: 'Next (Right arrow key)',
+					type: 'button',
+					className: classes.arrow + ' ' + classes.arrowNext,
+					onClick: this.gotoNext,
+					onTouchEnd: this.gotoNext
+				},
 				_react2['default'].createElement(_Icon2['default'], { type: 'arrowRight' })
 			);
 		}
 	}, {
 		key: 'renderArrowPrev',
 		value: function renderArrowPrev() {
-			if (this.props.currentImage === 0) return;
+			if (this.props.currentImage === 0) return null;
 			var classes = this.props.sheet.classes;
 
 			return _react2['default'].createElement(
 				'button',
-				{ title: 'Previous (Left arrow key)', type: 'button', className: classes.arrow + ' ' + classes.arrowPrev, onClick: this.gotoPrev, onTouchEnd: this.gotoPrev },
+				{ title: 'Previous (Left arrow key)',
+					type: 'button',
+					className: classes.arrow + ' ' + classes.arrowPrev,
+					onClick: this.gotoPrev,
+					onTouchEnd: this.gotoPrev
+				},
 				_react2['default'].createElement(_Icon2['default'], { type: 'arrowLeft' })
 			);
 		}
 	}, {
 		key: 'renderCloseButton',
 		value: function renderCloseButton() {
-			if (!this.props.showCloseButton) return;
+			if (!this.props.showCloseButton) return null;
 			var classes = this.props.sheet.classes;
 
 			return _react2['default'].createElement(
@@ -375,19 +383,24 @@ var Lightbox = (function (_Component) {
 	}, {
 		key: 'renderDialog',
 		value: function renderDialog() {
-			if (!this.props.isOpen) return;
+			if (!this.props.isOpen) return null;
 			var classes = this.props.sheet.classes;
 
 			return _react2['default'].createElement(
 				_Fade2['default'],
-				{ id: 'react-images-container', key: 'dialog', duration: 250, className: classes.container, onClick: this.close, onTouchEnd: this.close },
+				{ id: 'react-images-container',
+					key: 'dialog',
+					duration: 250,
+					className: classes.container,
+					onClick: this.close,
+					onTouchEnd: this.close
+				},
 				_react2['default'].createElement('span', { className: classes.contentHeightShim }),
 				_react2['default'].createElement(
 					'div',
 					{ className: classes.content },
 					this.renderCloseButton(),
-					this.renderImages(),
-					_react2['default'].createElement('span', { className: classes.figureShadow })
+					this.renderImages()
 				),
 				this.renderArrowPrev(),
 				this.renderArrowNext()
@@ -402,7 +415,7 @@ var Lightbox = (function (_Component) {
 			var showImageCount = _props.showImageCount;
 			var classes = this.props.sheet.classes;
 
-			if (!caption && !showImageCount) return;
+			if (!caption && !showImageCount) return null;
 
 			var imageCount = showImageCount ? _react2['default'].createElement(
 				'div',
@@ -433,38 +446,44 @@ var Lightbox = (function (_Component) {
 			var classes = this.props.sheet.classes;
 			var windowHeight = this.state.windowHeight;
 
-			if (!images || !images.length) return;
+			if (!images || !images.length) return null;
 
-			var srcset = undefined,
-			    sizes = undefined;
-			if (images[currentImage].srcset) {
-				srcset = images[currentImage].srcset.join();
+			var image = images[currentImage];
+
+			var srcset = undefined;
+			var sizes = undefined;
+
+			if (image.srcset) {
+				srcset = image.srcset.join();
 				sizes = '100vw';
 			}
 
 			return _react2['default'].createElement(
 				'figure',
-				{ key: 'image' + currentImage, className: classes.figure, style: { maxWidth: this.props.width } },
-				_react2['default'].createElement('img', {
-					className: classes.image,
-					onClick: this.handleImageClick,
-					onTouchEnd: this.handleImageClick,
-					sizes: sizes,
-					src: images[currentImage].src,
-					srcSet: srcset,
-					style: {
-						cursor: this.props.onClickShowNextImage ? 'pointer' : 'auto',
-						maxHeight: windowHeight
-					}
-				}),
+				{ key: 'image ' + currentImage,
+					className: classes.figure,
+					style: { maxWidth: this.props.width }
+				},
+				_react2['default'].createElement(
+					_reactSwipeable2['default'],
+					{ onSwipedLeft: this.gotoNext, onSwipedRight: this.gotoPrev },
+					_react2['default'].createElement('img', { className: classes.image,
+						onClick: this.handleImageClick,
+						sizes: sizes,
+						src: image.src,
+						srcSet: srcset,
+						style: {
+							cursor: this.props.onClickImage ? 'pointer' : 'auto',
+							maxHeight: windowHeight
+						}
+					})
+				),
 				this.renderFooter(images[currentImage].caption)
 			);
 		}
 	}, {
 		key: 'render',
 		value: function render() {
-			var classes = this.props.sheet.classes;
-
 			return _react2['default'].createElement(
 				_Portal2['default'],
 				null,
@@ -476,9 +495,8 @@ var Lightbox = (function (_Component) {
 	return Lightbox;
 })(_react.Component);
 
-;
-
 Lightbox.displayName = 'Lightbox';
+
 Lightbox.propTypes = {
 	backdropClosesModal: _react.PropTypes.bool,
 	currentImage: _react.PropTypes.number,
@@ -489,14 +507,16 @@ Lightbox.propTypes = {
 		caption: _react.PropTypes.string
 	})).isRequired,
 	isOpen: _react.PropTypes.bool,
-	onClickShowNextImage: _react.PropTypes.bool,
+	onClickImage: _react.PropTypes.func,
 	onClickNext: _react.PropTypes.func.isRequired,
 	onClickPrev: _react.PropTypes.func.isRequired,
 	onClose: _react.PropTypes.func.isRequired,
+	sheet: _react.PropTypes.object,
 	showCloseButton: _react.PropTypes.bool,
 	showImageCount: _react.PropTypes.bool,
 	width: _react.PropTypes.number
 };
+
 Lightbox.defaultProps = {
 	enableKeyboardInput: true,
 	currentImage: 0,
@@ -506,11 +526,10 @@ Lightbox.defaultProps = {
 	width: 900
 };
 
-exports['default'] = (0, _reactJss2['default'])(Lightbox, _stylesDefault2['default']);
-module.exports = exports['default'];
+exports['default'] = useSheet(Lightbox, _stylesDefault2['default']);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./Fade":1,"./Icon":2,"./Portal":4,"./styles/default":9,"jss":undefined,"jss-camel-case":undefined,"jss-nested":undefined,"jss-px":undefined,"jss-vendor-prefixer":undefined,"react-jss":undefined}],4:[function(require,module,exports){
+},{"./Fade":1,"./Icon":2,"./Portal":4,"./styles/default":9,"./utils":10,"jss":undefined,"jss-camel-case":undefined,"jss-nested":undefined,"jss-px":undefined,"jss-vendor-prefixer":undefined,"react-jss":undefined,"react-swipeable":undefined}],4:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -522,7 +541,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -551,22 +570,12 @@ var Portal = (function (_Component) {
 	}
 
 	_createClass(Portal, [{
-		key: 'render',
-		value: function render() {
-			return null;
-		}
-	}, {
 		key: 'componentDidMount',
 		value: function componentDidMount() {
 			var p = document.createElement('div');
 			document.body.appendChild(p);
 			this.portalElement = p;
 			this.componentDidUpdate();
-		}
-	}, {
-		key: 'componentWillUnmount',
-		value: function componentWillUnmount() {
-			document.body.removeChild(this.portalElement);
 		}
 	}, {
 		key: 'componentDidUpdate',
@@ -577,13 +586,26 @@ var Portal = (function (_Component) {
 				this.props.children
 			), this.portalElement);
 		}
+	}, {
+		key: 'componentWillUnmount',
+		value: function componentWillUnmount() {
+			document.body.removeChild(this.portalElement);
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			return null;
+		}
 	}]);
 
 	return Portal;
 })(_react.Component);
 
 exports['default'] = Portal;
-;
+
+Portal.propTypes = {
+	children: _react.PropTypes.any
+};
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
@@ -668,6 +690,9 @@ var styles = {
 
 	},
 	figure: {
+		backgroundImage: 'url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nNDhweCcgaGVpZ2h0PSc0OHB4JyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCIgY2xhc3M9InVpbC1kZWZhdWx0Ij48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0ibm9uZSIgY2xhc3M9ImJrIj48L3JlY3Q+PHJlY3QgIHg9JzQ2LjUnIHk9JzQwJyB3aWR0aD0nNycgaGVpZ2h0PScyMCcgcng9JzUnIHJ5PSc1JyBmaWxsPScjZmZmZmZmJyB0cmFuc2Zvcm09J3JvdGF0ZSgwIDUwIDUwKSB0cmFuc2xhdGUoMCAtMzApJz4gIDxhbmltYXRlIGF0dHJpYnV0ZU5hbWU9J29wYWNpdHknIGZyb209JzEnIHRvPScwJyBkdXI9JzFzJyBiZWdpbj0nMHMnIHJlcGVhdENvdW50PSdpbmRlZmluaXRlJy8+PC9yZWN0PjxyZWN0ICB4PSc0Ni41JyB5PSc0MCcgd2lkdGg9JzcnIGhlaWdodD0nMjAnIHJ4PSc1JyByeT0nNScgZmlsbD0nI2ZmZmZmZicgdHJhbnNmb3JtPSdyb3RhdGUoMzAgNTAgNTApIHRyYW5zbGF0ZSgwIC0zMCknPiAgPGFuaW1hdGUgYXR0cmlidXRlTmFtZT0nb3BhY2l0eScgZnJvbT0nMScgdG89JzAnIGR1cj0nMXMnIGJlZ2luPScwLjA4MzMzMzMzMzMzMzMzMzMzcycgcmVwZWF0Q291bnQ9J2luZGVmaW5pdGUnLz48L3JlY3Q+PHJlY3QgIHg9JzQ2LjUnIHk9JzQwJyB3aWR0aD0nNycgaGVpZ2h0PScyMCcgcng9JzUnIHJ5PSc1JyBmaWxsPScjZmZmZmZmJyB0cmFuc2Zvcm09J3JvdGF0ZSg2MCA1MCA1MCkgdHJhbnNsYXRlKDAgLTMwKSc+ICA8YW5pbWF0ZSBhdHRyaWJ1dGVOYW1lPSdvcGFjaXR5JyBmcm9tPScxJyB0bz0nMCcgZHVyPScxcycgYmVnaW49JzAuMTY2NjY2NjY2NjY2NjY2NjZzJyByZXBlYXRDb3VudD0naW5kZWZpbml0ZScvPjwvcmVjdD48cmVjdCAgeD0nNDYuNScgeT0nNDAnIHdpZHRoPSc3JyBoZWlnaHQ9JzIwJyByeD0nNScgcnk9JzUnIGZpbGw9JyNmZmZmZmYnIHRyYW5zZm9ybT0ncm90YXRlKDkwIDUwIDUwKSB0cmFuc2xhdGUoMCAtMzApJz4gIDxhbmltYXRlIGF0dHJpYnV0ZU5hbWU9J29wYWNpdHknIGZyb209JzEnIHRvPScwJyBkdXI9JzFzJyBiZWdpbj0nMC4yNXMnIHJlcGVhdENvdW50PSdpbmRlZmluaXRlJy8+PC9yZWN0PjxyZWN0ICB4PSc0Ni41JyB5PSc0MCcgd2lkdGg9JzcnIGhlaWdodD0nMjAnIHJ4PSc1JyByeT0nNScgZmlsbD0nI2ZmZmZmZicgdHJhbnNmb3JtPSdyb3RhdGUoMTIwIDUwIDUwKSB0cmFuc2xhdGUoMCAtMzApJz4gIDxhbmltYXRlIGF0dHJpYnV0ZU5hbWU9J29wYWNpdHknIGZyb209JzEnIHRvPScwJyBkdXI9JzFzJyBiZWdpbj0nMC4zMzMzMzMzMzMzMzMzMzMzcycgcmVwZWF0Q291bnQ9J2luZGVmaW5pdGUnLz48L3JlY3Q+PHJlY3QgIHg9JzQ2LjUnIHk9JzQwJyB3aWR0aD0nNycgaGVpZ2h0PScyMCcgcng9JzUnIHJ5PSc1JyBmaWxsPScjZmZmZmZmJyB0cmFuc2Zvcm09J3JvdGF0ZSgxNTAgNTAgNTApIHRyYW5zbGF0ZSgwIC0zMCknPiAgPGFuaW1hdGUgYXR0cmlidXRlTmFtZT0nb3BhY2l0eScgZnJvbT0nMScgdG89JzAnIGR1cj0nMXMnIGJlZ2luPScwLjQxNjY2NjY2NjY2NjY2NjdzJyByZXBlYXRDb3VudD0naW5kZWZpbml0ZScvPjwvcmVjdD48cmVjdCAgeD0nNDYuNScgeT0nNDAnIHdpZHRoPSc3JyBoZWlnaHQ9JzIwJyByeD0nNScgcnk9JzUnIGZpbGw9JyNmZmZmZmYnIHRyYW5zZm9ybT0ncm90YXRlKDE4MCA1MCA1MCkgdHJhbnNsYXRlKDAgLTMwKSc+ICA8YW5pbWF0ZSBhdHRyaWJ1dGVOYW1lPSdvcGFjaXR5JyBmcm9tPScxJyB0bz0nMCcgZHVyPScxcycgYmVnaW49JzAuNXMnIHJlcGVhdENvdW50PSdpbmRlZmluaXRlJy8+PC9yZWN0PjxyZWN0ICB4PSc0Ni41JyB5PSc0MCcgd2lkdGg9JzcnIGhlaWdodD0nMjAnIHJ4PSc1JyByeT0nNScgZmlsbD0nI2ZmZmZmZicgdHJhbnNmb3JtPSdyb3RhdGUoMjEwIDUwIDUwKSB0cmFuc2xhdGUoMCAtMzApJz4gIDxhbmltYXRlIGF0dHJpYnV0ZU5hbWU9J29wYWNpdHknIGZyb209JzEnIHRvPScwJyBkdXI9JzFzJyBiZWdpbj0nMC41ODMzMzMzMzMzMzMzMzM0cycgcmVwZWF0Q291bnQ9J2luZGVmaW5pdGUnLz48L3JlY3Q+PHJlY3QgIHg9JzQ2LjUnIHk9JzQwJyB3aWR0aD0nNycgaGVpZ2h0PScyMCcgcng9JzUnIHJ5PSc1JyBmaWxsPScjZmZmZmZmJyB0cmFuc2Zvcm09J3JvdGF0ZSgyNDAgNTAgNTApIHRyYW5zbGF0ZSgwIC0zMCknPiAgPGFuaW1hdGUgYXR0cmlidXRlTmFtZT0nb3BhY2l0eScgZnJvbT0nMScgdG89JzAnIGR1cj0nMXMnIGJlZ2luPScwLjY2NjY2NjY2NjY2NjY2NjZzJyByZXBlYXRDb3VudD0naW5kZWZpbml0ZScvPjwvcmVjdD48cmVjdCAgeD0nNDYuNScgeT0nNDAnIHdpZHRoPSc3JyBoZWlnaHQ9JzIwJyByeD0nNScgcnk9JzUnIGZpbGw9JyNmZmZmZmYnIHRyYW5zZm9ybT0ncm90YXRlKDI3MCA1MCA1MCkgdHJhbnNsYXRlKDAgLTMwKSc+ICA8YW5pbWF0ZSBhdHRyaWJ1dGVOYW1lPSdvcGFjaXR5JyBmcm9tPScxJyB0bz0nMCcgZHVyPScxcycgYmVnaW49JzAuNzVzJyByZXBlYXRDb3VudD0naW5kZWZpbml0ZScvPjwvcmVjdD48cmVjdCAgeD0nNDYuNScgeT0nNDAnIHdpZHRoPSc3JyBoZWlnaHQ9JzIwJyByeD0nNScgcnk9JzUnIGZpbGw9JyNmZmZmZmYnIHRyYW5zZm9ybT0ncm90YXRlKDMwMCA1MCA1MCkgdHJhbnNsYXRlKDAgLTMwKSc+ICA8YW5pbWF0ZSBhdHRyaWJ1dGVOYW1lPSdvcGFjaXR5JyBmcm9tPScxJyB0bz0nMCcgZHVyPScxcycgYmVnaW49JzAuODMzMzMzMzMzMzMzMzMzNHMnIHJlcGVhdENvdW50PSdpbmRlZmluaXRlJy8+PC9yZWN0PjxyZWN0ICB4PSc0Ni41JyB5PSc0MCcgd2lkdGg9JzcnIGhlaWdodD0nMjAnIHJ4PSc1JyByeT0nNScgZmlsbD0nI2ZmZmZmZicgdHJhbnNmb3JtPSdyb3RhdGUoMzMwIDUwIDUwKSB0cmFuc2xhdGUoMCAtMzApJz4gIDxhbmltYXRlIGF0dHJpYnV0ZU5hbWU9J29wYWNpdHknIGZyb209JzEnIHRvPScwJyBkdXI9JzFzJyBiZWdpbj0nMC45MTY2NjY2NjY2NjY2NjY2cycgcmVwZWF0Q291bnQ9J2luZGVmaW5pdGUnLz48L3JlY3Q+PC9zdmc+)',
+		backgroundRepeat: 'no-repeat',
+		backgroundPosition: 'center center',
 		lineHeight: 1,
 		minHeight: 200,
 		minWidth: 300,
@@ -702,7 +727,7 @@ var styles = {
 	footerCount: {
 		float: 'right',
 		fontSize: '.85em',
-		opacity: .75
+		opacity: 0.75
 	},
 	footerCaption: {
 		paddingRight: 80
@@ -759,6 +784,19 @@ var styles = {
 };
 
 exports['default'] = styles;
+module.exports = exports['default'];
+
+},{}],10:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+	value: true
+});
+var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
+
+exports['default'] = {
+	canUseDOM: canUseDOM
+};
 module.exports = exports['default'];
 
 },{}]},{},[3])(3)
