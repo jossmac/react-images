@@ -1,8 +1,10 @@
 require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-exports.__esModule = true;
-exports['default'] = camelize;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = camelize;
 var regExp = /[-\s]+(.)?/g;
 
 /**
@@ -11,7 +13,6 @@ var regExp = /[-\s]+(.)?/g;
  * @param {String} str
  * @return {String}
  */
-
 function camelize(str) {
   return str.replace(regExp, toUpper);
 }
@@ -19,48 +20,54 @@ function camelize(str) {
 function toUpper(match, c) {
   return c ? c.toUpperCase() : '';
 }
-module.exports = exports['default'];
 },{}],2:[function(require,module,exports){
-/**
- * CSS Vendor prefix detection and property feature testing.
- *
- * @copyright Oleg Slobodskoi 2015
- * @website https://github.com/jsstyles/css-vendor
- * @license MIT
- */
-
 'use strict';
 
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.supportedValue = exports.supportedProperty = exports.prefix = undefined;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+var _prefix = require('./prefix');
 
-var _prefix2 = require('./prefix');
+var _prefix2 = _interopRequireDefault(_prefix);
 
-var _prefix3 = _interopRequireDefault(_prefix2);
+var _supportedProperty = require('./supported-property');
 
-exports.prefix = _prefix3['default'];
+var _supportedProperty2 = _interopRequireDefault(_supportedProperty);
 
-var _supportedProperty2 = require('./supported-property');
+var _supportedValue = require('./supported-value');
 
-var _supportedProperty3 = _interopRequireDefault(_supportedProperty2);
+var _supportedValue2 = _interopRequireDefault(_supportedValue);
 
-exports.supportedProperty = _supportedProperty3['default'];
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _supportedValue2 = require('./supported-value');
+exports.default = {
+  prefix: _prefix2.default,
+  supportedProperty: _supportedProperty2.default,
+  supportedValue: _supportedValue2.default
+}; /**
+    * CSS Vendor prefix detection and property feature testing.
+    *
+    * @copyright Oleg Slobodskoi 2015
+    * @website https://github.com/jsstyles/css-vendor
+    * @license MIT
+    */
 
-var _supportedValue3 = _interopRequireDefault(_supportedValue2);
-
-exports.supportedValue = _supportedValue3['default'];
+exports.prefix = _prefix2.default;
+exports.supportedProperty = _supportedProperty2.default;
+exports.supportedValue = _supportedValue2.default;
 },{"./prefix":3,"./supported-property":4,"./supported-value":5}],3:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 /**
  * Export javascript style and css style vendor prefixes.
  * Based on "transform" support test.
  */
 
-'use strict';
-
-exports.__esModule = true;
 var js = '';
 var css = '';
 
@@ -91,15 +98,14 @@ if (typeof document != 'undefined') {
  * @type {{js: String, css: String}}
  * @api public
  */
-exports['default'] = { js: js, css: css };
-module.exports = exports['default'];
+exports.default = { js: js, css: css };
 },{}],4:[function(require,module,exports){
 'use strict';
 
-exports.__esModule = true;
-exports['default'] = supportedProperty;
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = supportedProperty;
 
 var _prefix = require('./prefix');
 
@@ -109,7 +115,9 @@ var _camelize = require('./camelize');
 
 var _camelize2 = _interopRequireDefault(_camelize);
 
-var el = undefined;
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var el = void 0;
 var cache = {};
 
 if (typeof document != 'undefined') {
@@ -138,7 +146,6 @@ if (typeof document != 'undefined') {
  * @return {String|Boolean}
  * @api public
  */
-
 function supportedProperty(prop) {
   // We have not tested this prop yet, lets do the test.
   if (cache[prop] != null) return cache[prop];
@@ -146,33 +153,33 @@ function supportedProperty(prop) {
   // Camelization is required because we can't test using
   // css syntax for e.g. in FF.
   // Test if property is supported as it is.
-  if (_camelize2['default'](prop) in el.style) {
+  if ((0, _camelize2.default)(prop) in el.style) {
     cache[prop] = prop;
     // Test if property is supported with vendor prefix.
-  } else if (_prefix2['default'].js + _camelize2['default']('-' + prop) in el.style) {
-      cache[prop] = _prefix2['default'].css + prop;
+  } else if (_prefix2.default.js + (0, _camelize2.default)('-' + prop) in el.style) {
+      cache[prop] = _prefix2.default.css + prop;
     } else {
       cache[prop] = false;
     }
 
   return cache[prop];
 }
-
-module.exports = exports['default'];
 },{"./camelize":1,"./prefix":3}],5:[function(require,module,exports){
 'use strict';
 
-exports.__esModule = true;
-exports['default'] = supportedValue;
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = supportedValue;
 
 var _prefix = require('./prefix');
 
 var _prefix2 = _interopRequireDefault(_prefix);
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var cache = {};
-var el = undefined;
+var el = void 0;
 
 if (typeof document != 'undefined') el = document.createElement('p');
 
@@ -184,7 +191,6 @@ if (typeof document != 'undefined') el = document.createElement('p');
  * @return {String|Boolean}
  * @api public
  */
-
 function supportedValue(property, value) {
   if (typeof value != 'string' || !isNaN(parseInt(value, 10))) return value;
 
@@ -200,7 +206,7 @@ function supportedValue(property, value) {
     cache[cacheKey] = value;
   } else {
     // Test value with vendor prefix.
-    value = _prefix2['default'].css + value;
+    value = _prefix2.default.css + value;
 
     // Hardcode test to convert "flex" to "-ms-flexbox" for IE10.
     if (value === '-ms-flex') value = '-ms-flexbox';
@@ -215,8 +221,6 @@ function supportedValue(property, value) {
 
   return cache[cacheKey];
 }
-
-module.exports = exports['default'];
 },{"./prefix":3}],6:[function(require,module,exports){
 'use strict';
 
@@ -228,6 +232,8 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
+var _utils = require('./utils');
+
 var _uid = require('./uid');
 
 var uid = _interopRequireWildcard(_uid);
@@ -235,7 +241,7 @@ var uid = _interopRequireWildcard(_uid);
 /**
  * Conditional rule for @media, @supports
  *
- * @api private
+ * @api public
  */
 
 var ConditionalRule = (function () {
@@ -246,7 +252,10 @@ var ConditionalRule = (function () {
     this.type = 'conditional';
     this.selector = selector;
     this.options = _extends({}, options, { parent: this });
-    this.rules = this.createChildRules(styles);
+    this.rules = Object.create(null);
+    for (var _name in styles) {
+      this.createRule(_name, styles[_name]);
+    }
   }
 
   /**
@@ -254,38 +263,43 @@ var ConditionalRule = (function () {
    *
    * @param {Object} styles
    * @return {Array} rules
-   * @api private
+   * @api public
    */
 
-  ConditionalRule.prototype.createChildRules = function createChildRules(styles) {
-    var rules = Object.create(null);
-    var _options = this.options;
-    var sheet = _options.sheet;
-    var jss = _options.jss;
+  ConditionalRule.prototype.createRule = function createRule(name, style, options) {
+    var newOptions = this.options;
+    var _newOptions = newOptions;
+    var sheet = _newOptions.sheet;
+    var jss = _newOptions.jss;
 
-    for (var _name in styles) {
-      var localOptions = this.options;
-      // We have already a rule in the current style sheet with this name,
-      // This new rule is supposed to overwrite the first one, for this we need
-      // to ensure it will have the same className/selector.
-      var ruleToOverwrite = this.options.sheet && this.options.sheet.getRule(_name);
-      if (ruleToOverwrite) localOptions = _extends({}, this.options, { className: ruleToOverwrite.className });
-      rules[_name] = (sheet || jss).createRule(_name, styles[_name], localOptions);
+    // We have already a rule in the current style sheet with this name,
+    // This new rule is supposed to overwrite the first one, for this we need
+    // to ensure it will have the same className/selector.
+    var existingRule = sheet && sheet.getRule(name);
+    var className = existingRule ? existingRule.className : null;
+    if (className || options) {
+      newOptions = _extends({}, newOptions, { className: className }, options);
     }
-    return rules;
+    var rule = (sheet || jss).createRule(name, style, newOptions);
+    this.rules[name] = rule;
+    return rule;
   };
 
   /**
    * Generates a CSS string.
    *
    * @return {String}
-   * @api private
+   * @api public
    */
 
   ConditionalRule.prototype.toString = function toString() {
     var str = this.selector + ' {\n';
     for (var _name2 in this.rules) {
-      var ruleStr = this.rules[_name2].toString({ indentationLevel: 1 });
+      var rule = this.rules[_name2];
+      if (rule.style && _utils.isEmptyObject(rule.style)) {
+        continue;
+      }
+      var ruleStr = rule.toString({ indentationLevel: 1 });
       str += ruleStr + '\n';
     }
     str += '}';
@@ -297,7 +311,7 @@ var ConditionalRule = (function () {
 
 exports['default'] = ConditionalRule;
 module.exports = exports['default'];
-},{"./uid":18}],7:[function(require,module,exports){
+},{"./uid":17,"./utils":18}],7:[function(require,module,exports){
 /**
  * DOM rendering backend for StyleSheet.
  *
@@ -500,12 +514,20 @@ var Jss = (function () {
   /**
    * Register plugin. Passed function will be invoked with a rule instance.
    *
-   * @param {Function} fn
+   * @param {Function} plugins
    * @api public
    */
 
-  Jss.prototype.use = function use(fn) {
-    this.plugins.use(fn);
+  Jss.prototype.use = function use() {
+    var _this = this;
+
+    for (var _len = arguments.length, plugins = Array(_len), _key = 0; _key < _len; _key++) {
+      plugins[_key] = arguments[_key];
+    }
+
+    plugins.forEach(function (plugin) {
+      return _this.plugins.use(plugin);
+    });
     return this;
   };
 
@@ -514,7 +536,7 @@ var Jss = (function () {
 
 exports['default'] = Jss;
 module.exports = exports['default'];
-},{"./PluginsRegistry":10,"./StyleSheet":13,"./createRule":16,"./findRenderer":17,"./uid":18}],9:[function(require,module,exports){
+},{"./PluginsRegistry":10,"./StyleSheet":13,"./createRule":15,"./findRenderer":16,"./uid":17}],9:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -583,7 +605,7 @@ var KeyframeRule = (function () {
 
 exports['default'] = KeyframeRule;
 module.exports = exports['default'];
-},{"./uid":18}],10:[function(require,module,exports){
+},{"./uid":17}],10:[function(require,module,exports){
 /**
  * Register a plugin, run a plugin.
  */
@@ -634,8 +656,6 @@ module.exports = exports["default"];
 
 exports.__esModule = true;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
@@ -644,14 +664,12 @@ var _uid = require('./uid');
 
 var uid = _interopRequireWildcard(_uid);
 
-var _clone = require('./clone');
-
-var _clone2 = _interopRequireDefault(_clone);
+var _utils = require('./utils');
 
 /**
  * Regular rules and font-face.
  *
- * @api private
+ * @api public
  */
 
 var Rule = (function () {
@@ -669,7 +687,7 @@ var Rule = (function () {
     }
     this.originalStyle = style;
     // We expect style to be plain object.
-    this.style = _clone2['default'](style);
+    this.style = _utils.clone(style);
   }
 
   /**
@@ -753,9 +771,13 @@ var Rule = (function () {
   /**
    * Generates a CSS string.
    *
+   * Options:
+   * - `selector` to get a rule without selector
+   * - `indentationLevel` level of indentation
+   *
    * @param {Object} options
    * @return {String}
-   * @api private
+   * @api public
    */
 
   Rule.prototype.toString = function toString() {
@@ -792,7 +814,7 @@ function indent(level, str) {
   }return indentStr + str;
 }
 module.exports = exports['default'];
-},{"./clone":15,"./uid":18}],12:[function(require,module,exports){
+},{"./uid":17,"./utils":18}],12:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -808,7 +830,7 @@ var uid = _interopRequireWildcard(_uid);
 /**
  * Rule like @charset, @import, @namespace.
  *
- * @api private
+ * @api public
  */
 
 var SimpleRule = (function () {
@@ -826,7 +848,7 @@ var SimpleRule = (function () {
    * Generates a CSS string.
    *
    * @return {String}
-   * @api private
+   * @api public
    */
 
   SimpleRule.prototype.toString = function toString() {
@@ -838,7 +860,7 @@ var SimpleRule = (function () {
 
 exports['default'] = SimpleRule;
 module.exports = exports['default'];
-},{"./uid":18}],13:[function(require,module,exports){
+},{"./uid":17}],13:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -848,6 +870,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var _utils = require('./utils');
 
 var _createRule2 = require('./createRule');
 
@@ -995,8 +1019,18 @@ var StyleSheet = (function () {
       if (stringified[rule.id]) {
         continue;
       }
+
+      if (rule.style && _utils.isEmptyObject(rule.style)) {
+        continue;
+      }
+
+      if (rule.rules && _utils.isEmptyObject(rule.rules)) {
+        continue;
+      }
+
       if (str) str += '\n';
-      str += rules[_name3].toString(options);
+
+      str += rule.toString(options);
       stringified[rule.id] = true;
     }
     return str;
@@ -1076,7 +1110,7 @@ var StyleSheet = (function () {
 
 exports['default'] = StyleSheet;
 module.exports = exports['default'];
-},{"./createRule":16,"./findRenderer":17}],14:[function(require,module,exports){
+},{"./createRule":15,"./findRenderer":16,"./utils":18}],14:[function(require,module,exports){
 /**
  * Rendering backend to do nothing in nodejs.
  */
@@ -1111,29 +1145,6 @@ var VirtualRenderer = (function () {
 exports["default"] = VirtualRenderer;
 module.exports = exports["default"];
 },{}],15:[function(require,module,exports){
-"use strict";
-
-exports.__esModule = true;
-exports["default"] = clone;
-var stringify = JSON.stringify;
-var parse = JSON.parse;
-
-/**
- * Deeply clone object using serialization.
- * Expects object to be plain and without cyclic dependencies.
- *
- * http://jsperf.com/lodash-deepclone-vs-jquery-extend-deep/6
- *
- * @type {Object} obj
- * @return {Object}
- */
-
-function clone(obj) {
-  return parse(stringify(obj));
-}
-
-module.exports = exports["default"];
-},{}],16:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1207,7 +1218,7 @@ function createRule(selector) {
 }
 
 module.exports = exports['default'];
-},{"./ConditionalRule":6,"./KeyframeRule":9,"./Rule":11,"./SimpleRule":12}],17:[function(require,module,exports){
+},{"./ConditionalRule":6,"./KeyframeRule":9,"./Rule":11,"./SimpleRule":12}],16:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1241,7 +1252,7 @@ function findRenderer() {
 }
 
 module.exports = exports['default'];
-},{"./DomRenderer":7,"./VirtualRenderer":14}],18:[function(require,module,exports){
+},{"./DomRenderer":7,"./VirtualRenderer":14}],17:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -1278,6 +1289,41 @@ function reset() {
   ruleCounter = 0;
 }
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],18:[function(require,module,exports){
+"use strict";
+
+exports.__esModule = true;
+exports.clone = clone;
+exports.isEmptyObject = isEmptyObject;
+var stringify = JSON.stringify;
+var parse = JSON.parse;
+
+/**
+ * Deeply clone object using serialization.
+ * Expects object to be plain and without cyclic dependencies.
+ *
+ * http://jsperf.com/lodash-deepclone-vs-jquery-extend-deep/6
+ *
+ * @type {Object} obj
+ * @return {Object}
+ */
+
+function clone(obj) {
+  return parse(stringify(obj));
+}
+
+/*
+ * Determine whether an object is empty or not.
+ * More performant than a `Object.keys(obj).length > 0`
+ */
+
+function isEmptyObject(obj) {
+  for (var key in obj) {
+    return false;
+  } // eslint-disable-line no-unused-vars
+
+  return true;
+}
 },{}],19:[function(require,module,exports){
 // shim for using process in browser
 
@@ -4672,8 +4718,8 @@ var HTMLDOMPropertyConfig = {
      */
     // autoCapitalize and autoCorrect are supported in Mobile Safari for
     // keyboard hints.
-    autoCapitalize: null,
-    autoCorrect: null,
+    autoCapitalize: MUST_USE_ATTRIBUTE,
+    autoCorrect: MUST_USE_ATTRIBUTE,
     // autoSave allows WebKit/Blink to persist values of input fields on page reloads
     autoSave: null,
     // color is for Safari mask-icon link
@@ -4704,9 +4750,7 @@ var HTMLDOMPropertyConfig = {
     httpEquiv: 'http-equiv'
   },
   DOMPropertyNames: {
-    autoCapitalize: 'autocapitalize',
     autoComplete: 'autocomplete',
-    autoCorrect: 'autocorrect',
     autoFocus: 'autofocus',
     autoPlay: 'autoplay',
     autoSave: 'autosave',
@@ -9082,7 +9126,10 @@ var ReactDOMOption = {
       }
     });
 
-    nativeProps.children = content;
+    if (content) {
+      nativeProps.children = content;
+    }
+
     return nativeProps;
   }
 
@@ -9120,7 +9167,7 @@ function updateOptionsIfPendingUpdateAndMounted() {
     var value = LinkedValueUtils.getValue(props);
 
     if (value != null) {
-      updateOptions(this, props, value);
+      updateOptions(this, Boolean(props.multiple), value);
     }
   }
 }
@@ -10192,7 +10239,9 @@ var DOM_OPERATION_TYPES = {
   'setValueForProperty': 'update attribute',
   'setValueForAttribute': 'update attribute',
   'deleteValueForProperty': 'remove attribute',
-  'dangerouslyReplaceNodeWithMarkupByID': 'replace'
+  'setValueForStyles': 'update styles',
+  'replaceNodeWithMarkup': 'replace',
+  'updateTextContent': 'set textContent'
 };
 
 function getTotalTime(measurements) {
@@ -10922,6 +10971,10 @@ var ReactEmptyComponentInjection = {
   }
 };
 
+function registerNullComponentID() {
+  ReactEmptyComponentRegistry.registerNullComponentID(this._rootNodeID);
+}
+
 var ReactEmptyComponent = function (instantiate) {
   this._currentElement = null;
   this._rootNodeID = null;
@@ -10930,7 +10983,7 @@ var ReactEmptyComponent = function (instantiate) {
 assign(ReactEmptyComponent.prototype, {
   construct: function (element) {},
   mountComponent: function (rootID, transaction, context) {
-    ReactEmptyComponentRegistry.registerNullComponentID(rootID);
+    transaction.getReactMountReady().enqueue(registerNullComponentID, this);
     this._rootNodeID = rootID;
     return ReactReconciler.mountComponent(this._renderedComponent, rootID, transaction, context);
   },
@@ -15515,7 +15568,7 @@ module.exports = ReactUpdates;
 
 'use strict';
 
-module.exports = '0.14.3';
+module.exports = '0.14.8';
 },{}],106:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -16607,6 +16660,7 @@ var warning = require('fbjs/lib/warning');
  */
 var EventInterface = {
   type: null,
+  target: null,
   // currentTarget is set when dispatching; no use in copying it here
   currentTarget: emptyFunction.thatReturnsNull,
   eventPhase: null,
@@ -16640,8 +16694,6 @@ function SyntheticEvent(dispatchConfig, dispatchMarker, nativeEvent, nativeEvent
   this.dispatchConfig = dispatchConfig;
   this.dispatchMarker = dispatchMarker;
   this.nativeEvent = nativeEvent;
-  this.target = nativeEventTarget;
-  this.currentTarget = nativeEventTarget;
 
   var Interface = this.constructor.Interface;
   for (var propName in Interface) {
@@ -16652,7 +16704,11 @@ function SyntheticEvent(dispatchConfig, dispatchMarker, nativeEvent, nativeEvent
     if (normalize) {
       this[propName] = normalize(nativeEvent);
     } else {
-      this[propName] = nativeEvent[propName];
+      if (propName === 'target') {
+        this.target = nativeEventTarget;
+      } else {
+        this[propName] = nativeEvent[propName];
+      }
     }
   }
 
@@ -19745,11 +19801,14 @@ module.exports = focusNode;
  * @typechecks
  */
 
+/* eslint-disable fb-www/typeof-undefined */
+
 /**
  * Same as document.activeElement but wraps in a try-catch block. In IE it is
  * not safe to call document.activeElement if there is nothing focused.
  *
- * The activeElement will be null only if the document or document body is not yet defined.
+ * The activeElement will be null only if the document or document body is not
+ * yet defined.
  */
 'use strict';
 
@@ -19757,7 +19816,6 @@ function getActiveElement() /*?DOMElement*/{
   if (typeof document === 'undefined') {
     return null;
   }
-
   try {
     return document.activeElement || document.body;
   } catch (e) {
@@ -20000,7 +20058,7 @@ module.exports = hyphenateStyleName;
  * will remain to ensure logic does not differ in production.
  */
 
-var invariant = function (condition, format, a, b, c, d, e, f) {
+function invariant(condition, format, a, b, c, d, e, f) {
   if ("production" !== 'production') {
     if (format === undefined) {
       throw new Error('invariant requires an error message argument');
@@ -20014,15 +20072,16 @@ var invariant = function (condition, format, a, b, c, d, e, f) {
     } else {
       var args = [a, b, c, d, e, f];
       var argIndex = 0;
-      error = new Error('Invariant Violation: ' + format.replace(/%s/g, function () {
+      error = new Error(format.replace(/%s/g, function () {
         return args[argIndex++];
       }));
+      error.name = 'Invariant Violation';
     }
 
     error.framesToPop = 1; // we don't care about invariant's own frame
     throw error;
   }
-};
+}
 
 module.exports = invariant;
 },{}],166:[function(require,module,exports){
@@ -20284,18 +20343,23 @@ module.exports = performance || {};
 'use strict';
 
 var performance = require('./performance');
-var curPerformance = performance;
+
+var performanceNow;
 
 /**
  * Detect if we can use `window.performance.now()` and gracefully fallback to
  * `Date.now()` if it doesn't exist. We need to support Firefox < 15 for now
  * because of Facebook's testing infrastructure.
  */
-if (!curPerformance || !curPerformance.now) {
-  curPerformance = Date;
+if (performance.now) {
+  performanceNow = function () {
+    return performance.now();
+  };
+} else {
+  performanceNow = function () {
+    return Date.now();
+  };
 }
-
-var performanceNow = curPerformance.now.bind(curPerformance);
 
 module.exports = performanceNow;
 },{"./performance":172}],174:[function(require,module,exports){
@@ -20468,8 +20532,10 @@ module.exports = warning;
 },{"./emptyFunction":157}],"jss-camel-case":[function(require,module,exports){
 'use strict';
 
-exports.__esModule = true;
-exports['default'] = jssCamelCase;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = jssCamelCase;
 var regExp = /([A-Z])/g;
 
 /**
@@ -20478,7 +20544,6 @@ var regExp = /([A-Z])/g;
  * @param {Rule} rule
  * @api public
  */
-
 function jssCamelCase() {
   return function (rule) {
     var style = rule.style;
@@ -20487,22 +20552,26 @@ function jssCamelCase() {
     rule.style = {};
     for (var prop in style) {
       var value = style[prop];
-      prop = prop.replace(regExp, '-$1').toLowerCase();
+      prop = prop.replace(regExp, replace);
       rule.style[prop] = value;
     }
   };
 }
 
-module.exports = exports['default'];
+function replace(c) {
+  return '-' + c.toLowerCase();
+}
 },{}],"jss-nested":[function(require,module,exports){
 'use strict';
 
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-exports['default'] = jssNested;
-var regExp = /&/gi;
+exports.default = jssNested;
+var regExp = /&/g;
 
 /**
  * Convert nested rules to separate, remove them from original styles.
@@ -20510,29 +20579,31 @@ var regExp = /&/gi;
  * @param {Rule} rule
  * @api public
  */
-
 function jssNested() {
   return function (rule) {
     if (rule.type !== 'regular') return;
     var _rule$options = rule.options;
     var sheet = _rule$options.sheet;
     var jss = _rule$options.jss;
+    var parent = _rule$options.parent;
 
     var container = sheet || jss;
-    var options = rule.options;
+    var options = void 0;
+
+    if (parent && parent.type === 'conditional') {
+      container = parent;
+    }
 
     for (var prop in rule.style) {
       if (prop[0] === '&') {
-        if (options.named) options = _extends({}, options, { named: false });
-        var selector = prop.replace(regExp, rule.selector);
-        container.createRule(selector, rule.style[prop], options);
+        if (!options) options = _extends({}, rule.options, { named: false });
+        var name = prop.replace(regExp, rule.selector);
+        container.createRule(name, rule.style[prop], options);
         delete rule.style[prop];
       }
     }
   };
 }
-
-module.exports = exports['default'];
 },{}],"jss-px":[function(require,module,exports){
 // Don't automatically add 'px' to these possibly-unitless properties.
 // Borrowed from jquery.
@@ -20662,20 +20733,15 @@ module.exports = require('react/lib/ReactDOM');
 (function (process){
 'use strict';
 
-exports.__esModule = true;
-var _slice = Array.prototype.slice;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-exports['default'] = useSheet;
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+exports.default = useSheet;
 
 var _react = require('react');
 
@@ -20685,14 +20751,24 @@ var _jss = require('jss');
 
 var _jss2 = _interopRequireDefault(_jss);
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 function decorate(DecoratedComponent, rules) {
+  var _class, _temp;
+
   var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 
   var refs = 0;
   var sheet = null;
 
   function attach() {
-    if (!sheet) sheet = (options.jss || _jss2['default']).createStyleSheet(rules, options);
+    if (!sheet) sheet = (options.jss || _jss2.default).createStyleSheet(rules, options);
     sheet.attach();
   }
 
@@ -20713,56 +20789,52 @@ function decorate(DecoratedComponent, rules) {
 
   var displayName = DecoratedComponent.displayName || DecoratedComponent.name || 'Component';
 
-  return (function (_React$Component) {
+  return _temp = _class = function (_React$Component) {
     _inherits(StyleSheetWrapper, _React$Component);
 
     function StyleSheetWrapper() {
       _classCallCheck(this, StyleSheetWrapper);
 
-      _React$Component.apply(this, arguments);
+      return _possibleConstructorReturn(this, Object.getPrototypeOf(StyleSheetWrapper).apply(this, arguments));
     }
 
-    StyleSheetWrapper.prototype.componentWillMount = function componentWillMount() {
-      this.sheet = ref();
-    };
-
-    StyleSheetWrapper.prototype.componentWillUpdate = function componentWillUpdate() {
-      if (process.env.NODE_ENV !== 'production') {
-        // Support React Hot Loader
-        if (this.sheet !== sheet) {
-          this.sheet.detach();
-          this.sheet = ref();
+    _createClass(StyleSheetWrapper, [{
+      key: 'componentWillMount',
+      value: function componentWillMount() {
+        this.sheet = ref();
+      }
+    }, {
+      key: 'componentWillUpdate',
+      value: function componentWillUpdate() {
+        if (process.env.NODE_ENV !== 'production') {
+          // Support React Hot Loader
+          if (this.sheet !== sheet) {
+            this.sheet.detach();
+            this.sheet = ref();
+          }
         }
       }
-    };
-
-    StyleSheetWrapper.prototype.componentWillUnmount = function componentWillUnmount() {
-      deref();
-      this.sheet = null;
-    };
-
-    StyleSheetWrapper.prototype.render = function render() {
-      return _react2['default'].createElement(DecoratedComponent, _extends({}, this.props, { sheet: this.sheet }));
-    };
-
-    _createClass(StyleSheetWrapper, null, [{
-      key: 'wrapped',
-      value: DecoratedComponent,
-      enumerable: true
     }, {
-      key: 'displayName',
-      value: 'JSS(' + displayName + ')',
-      enumerable: true
+      key: 'componentWillUnmount',
+      value: function componentWillUnmount() {
+        deref();
+        this.sheet = null;
+      }
+    }, {
+      key: 'render',
+      value: function render() {
+        return _react2.default.createElement(DecoratedComponent, _extends({}, this.props, { sheet: this.sheet }));
+      }
     }]);
 
     return StyleSheetWrapper;
-  })(_react2['default'].Component);
+  }(_react2.default.Component), _class.wrapped = DecoratedComponent, _class.displayName = 'JSS(' + displayName + ')', _temp;
 }
 
 function useSheet(rulesOrComponentOrJss) {
   var _arguments = arguments;
 
-  if (rulesOrComponentOrJss instanceof _jss2['default'].constructor) {
+  if (rulesOrComponentOrJss instanceof _jss2.default.constructor) {
     return function (component) {
       var rules = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
       var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
@@ -20781,13 +20853,176 @@ function useSheet(rulesOrComponentOrJss) {
   }
 
   return function (DecoratedComponent) {
-    return decorate.apply(undefined, [DecoratedComponent].concat(_slice.call(_arguments)));
+    return decorate.apply(undefined, [DecoratedComponent].concat(Array.prototype.slice.call(_arguments)));
   };
 }
-
-module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"_process":19,"jss":"jss","react":"react"}],"react":[function(require,module,exports){
+},{"_process":19,"jss":"jss","react":"react"}],"react-swipeable":[function(require,module,exports){
+'use strict';
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var React = require('react');
+
+var Swipeable = React.createClass({
+  displayName: 'Swipeable',
+
+  propTypes: {
+    onSwiped: React.PropTypes.func,
+    onSwiping: React.PropTypes.func,
+    onSwipingUp: React.PropTypes.func,
+    onSwipingRight: React.PropTypes.func,
+    onSwipingDown: React.PropTypes.func,
+    onSwipingLeft: React.PropTypes.func,
+    onSwipedUp: React.PropTypes.func,
+    onSwipedRight: React.PropTypes.func,
+    onSwipedDown: React.PropTypes.func,
+    onSwipedLeft: React.PropTypes.func,
+    flickThreshold: React.PropTypes.number,
+    delta: React.PropTypes.number,
+    preventDefaultTouchmoveEvent: React.PropTypes.bool
+  },
+
+  getInitialState: function getInitialState() {
+    return {
+      x: null,
+      y: null,
+      swiping: false,
+      start: 0
+    };
+  },
+
+  getDefaultProps: function getDefaultProps() {
+    return {
+      flickThreshold: 0.6,
+      delta: 10,
+      preventDefaultTouchmoveEvent: true
+    };
+  },
+
+  calculatePos: function calculatePos(e) {
+    var x = e.changedTouches[0].clientX;
+    var y = e.changedTouches[0].clientY;
+
+    var xd = this.state.x - x;
+    var yd = this.state.y - y;
+
+    var axd = Math.abs(xd);
+    var ayd = Math.abs(yd);
+
+    var time = Date.now() - this.state.start;
+    var velocity = Math.sqrt(axd * axd + ayd * ayd) / time;
+
+    return {
+      deltaX: xd,
+      deltaY: yd,
+      absX: axd,
+      absY: ayd,
+      velocity: velocity
+    };
+  },
+
+  touchStart: function touchStart(e) {
+    if (e.touches.length > 1) {
+      return;
+    }
+    this.setState({
+      start: Date.now(),
+      x: e.touches[0].clientX,
+      y: e.touches[0].clientY,
+      swiping: false
+    });
+  },
+
+  touchMove: function touchMove(e) {
+    if (!this.state.x || !this.state.y || e.touches.length > 1) {
+      return;
+    }
+
+    var cancelPageSwipe = false;
+    var pos = this.calculatePos(e);
+
+    if (pos.absX < this.props.delta && pos.absY < this.props.delta) {
+      return;
+    }
+
+    if (this.props.onSwiping) {
+      this.props.onSwiping(e, pos.deltaX, pos.deltaY, pos.absX, pos.absY, pos.velocity);
+    }
+
+    if (pos.absX > pos.absY) {
+      if (pos.deltaX > 0) {
+        if (this.props.onSwipingLeft || this.props.onSwipedLeft) {
+          this.props.onSwipingLeft && this.props.onSwipingLeft(e, pos.absX);
+          cancelPageSwipe = true;
+        }
+      } else {
+        if (this.props.onSwipingRight || this.props.onSwipedRight) {
+          this.props.onSwipingRight && this.props.onSwipingRight(e, pos.absX);
+          cancelPageSwipe = true;
+        }
+      }
+    } else {
+      if (pos.deltaY > 0) {
+        if (this.props.onSwipingUp || this.props.onSwipedUp) {
+          this.props.onSwipingUp && this.props.onSwipingUp(e, pos.absY);
+          cancelPageSwipe = true;
+        }
+      } else {
+        if (this.props.onSwipingDown || this.props.onSwipedDown) {
+          this.props.onSwipingDown && this.props.onSwipingDown(e, pos.absY);
+          cancelPageSwipe = true;
+        }
+      }
+    }
+
+    this.setState({ swiping: true });
+
+    if (cancelPageSwipe && this.props.preventDefaultTouchmoveEvent) {
+      e.preventDefault();
+    }
+  },
+
+  touchEnd: function touchEnd(ev) {
+    if (this.state.swiping) {
+      var pos = this.calculatePos(ev);
+
+      var isFlick = pos.velocity > this.props.flickThreshold;
+
+      this.props.onSwiped && this.props.onSwiped(ev, pos.deltaX, pos.deltaY, isFlick);
+
+      if (pos.absX > pos.absY) {
+        if (pos.deltaX > 0) {
+          this.props.onSwipedLeft && this.props.onSwipedLeft(ev, pos.deltaX, isFlick);
+        } else {
+          this.props.onSwipedRight && this.props.onSwipedRight(ev, pos.deltaX, isFlick);
+        }
+      } else {
+        if (pos.deltaY > 0) {
+          this.props.onSwipedUp && this.props.onSwipedUp(ev, pos.deltaY, isFlick);
+        } else {
+          this.props.onSwipedDown && this.props.onSwipedDown(ev, pos.deltaY, isFlick);
+        }
+      }
+    }
+
+    this.setState(this.getInitialState());
+  },
+
+  render: function render() {
+    return React.createElement(
+      'div',
+      _extends({}, this.props, {
+        onTouchStart: this.touchStart,
+        onTouchMove: this.touchMove,
+        onTouchEnd: this.touchEnd }),
+      this.props.children
+    );
+  }
+});
+
+module.exports = Swipeable;
+},{"react":"react"}],"react":[function(require,module,exports){
 'use strict';
 
 module.exports = require('./lib/React');

@@ -1,6 +1,4 @@
 require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-/* eslint react/prop-types: 0 */
-
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -24,13 +22,16 @@ function capitalizeFirstLetter(str) {
 }
 
 var IMAGE_NAMES = ['cat', 'cats', 'chameleon', 'dog', 'ducks', 'goat', 'ostrich', 'pigeon', 'pigs', 'seagulls', 'wasp', 'yawn'];
-var IMAGES = IMAGE_NAMES.map(function (img) {
+var IMAGE_MAP = IMAGE_NAMES.map(function (img) {
 	return {
 		src: './images/800-' + img + '.jpg',
 		thumbnail: './images/thumbnail-' + img + '.jpg',
 		srcset: ['./images/1024-' + img + '.jpg 1024w', './images/800-' + img + '.jpg 800w', './images/500-' + img + '.jpg 500w', './images/320-' + img + '.jpg 320w'],
 		caption: capitalizeFirstLetter(img)
 	};
+});
+var IMAGES_PRELOAD = IMAGE_MAP.map(function (img) {
+	return _react2['default'].createElement('img', { key: img.caption, src: './images/1024-' + img + '.jpg' });
 });
 
 (0, _reactDom.render)(_react2['default'].createElement(
@@ -59,7 +60,7 @@ var IMAGES = IMAGE_NAMES.map(function (img) {
 		),
 		' — Also, try resizing your browser window.'
 	),
-	_react2['default'].createElement(_componentsGallery2['default'], { images: IMAGES }),
+	_react2['default'].createElement(_componentsGallery2['default'], { images: IMAGE_MAP }),
 	_react2['default'].createElement(
 		'p',
 		null,
@@ -69,6 +70,11 @@ var IMAGES = IMAGE_NAMES.map(function (img) {
 			{ href: 'http://gratisography.com/', target: '_blank' },
 			'Gratisography'
 		)
+	),
+	_react2['default'].createElement(
+		'div',
+		{ style: { display: 'none' } },
+		IMAGES_PRELOAD
 	)
 ), document.getElementById('example'));
 
@@ -81,7 +87,7 @@ Object.defineProperty(exports, '__esModule', {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -113,6 +119,7 @@ var Gallery = (function (_Component) {
 		this.closeLightbox = this.closeLightbox.bind(this);
 		this.gotoNext = this.gotoNext.bind(this);
 		this.gotoPrevious = this.gotoPrevious.bind(this);
+		this.handleClickImage = this.handleClickImage.bind(this);
 		this.openLightbox = this.openLightbox.bind(this);
 	}
 
@@ -148,6 +155,13 @@ var Gallery = (function (_Component) {
 			});
 		}
 	}, {
+		key: 'handleClickImage',
+		value: function handleClickImage() {
+			if (this.state.currentImage === this.props.images.length - 1) return;
+
+			this.gotoNext();
+		}
+	}, {
 		key: 'renderGallery',
 		value: function renderGallery() {
 			var _this = this;
@@ -156,10 +170,20 @@ var Gallery = (function (_Component) {
 			var gallery = this.props.images.map(function (obj, i) {
 				return _react2['default'].createElement(
 					'a',
-					{ key: i, href: obj.src, onClick: function (event) {
-							return _this.openLightbox(i, event);
-						}, style: styles.thumbnail },
-					_react2['default'].createElement('img', { src: obj.thumbnail, style: styles.thumbnailImage, width: styles.thumbnail.size, height: styles.thumbnail.size })
+					{
+						href: obj.src,
+						key: i,
+						onClick: function (e) {
+							return _this.openLightbox(i, e);
+						},
+						style: styles.thumbnail
+					},
+					_react2['default'].createElement('img', {
+						height: styles.thumbnail.size,
+						src: obj.thumbnail,
+						style: styles.thumbnailImage,
+						width: styles.thumbnail.size
+					})
 				);
 			});
 
@@ -192,6 +216,7 @@ var Gallery = (function (_Component) {
 					isOpen: this.state.lightboxIsOpen,
 					onClickPrev: this.gotoPrevious,
 					onClickNext: this.gotoNext,
+					onClickImage: this.handleClickImage,
 					onClose: this.closeLightbox,
 					theme: this.props.theme
 				})
@@ -206,10 +231,10 @@ var Gallery = (function (_Component) {
 
 Gallery.displayName = 'Gallery';
 Gallery.propTypes = {
-	images: _react.PropTypes.array,
 	heading: _react.PropTypes.string,
-	subheading: _react.PropTypes.string,
-	sepia: _react.PropTypes.bool
+	images: _react.PropTypes.array,
+	sepia: _react.PropTypes.bool,
+	subheading: _react.PropTypes.string
 };
 
 var THUMBNAIL_SIZE = 72;
