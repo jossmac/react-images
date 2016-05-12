@@ -1,5 +1,11 @@
 # React-Images
 
+### v0.4.0 / 2016-05-12
+* Bump all applicable dependencies
+* Remove peer dependencies
+
+* * *
+
 ### v0.3.3 / 2016-05-12
 * Updated website with more info + new design
 * Introduction of `onClickImage` prop thanks to [pradel](https://github.com/pradel)
