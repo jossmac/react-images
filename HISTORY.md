@@ -1,5 +1,19 @@
 # React-Images
 
+## v0.3.3 / 2016-05-12
+* Updated website with more info + new design
+* Introduction of `onClickImage` prop thanks to [pradel](https://github.com/pradel)
+* Documentation for `showImageCount` thanks to [neptunian](https://github.com/neptunian)
+
+## v0.3.2 / 2016-01-20
+* Fix backdropClosesModal behaviour
+* Update defaults: backdropClosesModal `false`, showCloseButton `true`
+
+## v0.3.1 / 2016-01-15
+* Updated react dependencies
+* Better handling of lightbox positioning
+
+
 ## v0.3.0 / 2016-01-06
 
 * Update to use ES6
