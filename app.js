@@ -9,10 +9,6 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactDom = require('react-dom');
 
-var _reactImages = require('react-images');
-
-var _reactImages2 = _interopRequireDefault(_reactImages);
-
 var _componentsGallery = require('./components/Gallery');
 
 var _componentsGallery2 = _interopRequireDefault(_componentsGallery);
@@ -78,7 +74,7 @@ var IMAGES_PRELOAD = IMAGE_MAP.map(function (img) {
 	)
 ), document.getElementById('example'));
 
-},{"./components/Gallery":2,"react":undefined,"react-dom":undefined,"react-images":undefined}],2:[function(require,module,exports){
+},{"./components/Gallery":2,"react":undefined,"react-dom":undefined}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {

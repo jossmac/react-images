@@ -302,7 +302,7 @@ var Lightbox = (function (_Component) {
 		}
 	}, {
 		key: 'handleImageClick',
-		value: function handleImageClick(e) {
+		value: function handleImageClick() {
 			if (!this.props.onClickImage) return;
 
 			this.props.onClickImage();
