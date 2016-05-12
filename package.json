@@ -42,7 +42,7 @@
     "bump:major": "gulp bump:major",
     "bump:minor": "gulp bump:minor",
     "examples": "gulp dev:server",
-    "lint": "eslint src/",
+    "lint": "eslint src/** examples/src/app.js examples/src/components/Gallery.js",
     "publish:examples": "gulp publish:examples",
     "release": "gulp release",
     "start": "gulp dev",
