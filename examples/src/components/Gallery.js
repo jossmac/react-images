@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import Lightbox from 'react-images';
 
 class Gallery extends Component {
-	constructor() {
+	constructor () {
 		super();
 
 		this.state = {
@@ -39,7 +39,7 @@ class Gallery extends Component {
 			currentImage: this.state.currentImage + 1,
 		});
 	}
-	handleClickImage() {
+	handleClickImage () {
 		if (this.state.currentImage === this.props.images.length - 1) {
 			this.closeLightbox();
 		}
@@ -83,10 +83,10 @@ class Gallery extends Component {
 
 Gallery.displayName = 'Gallery';
 Gallery.propTypes = {
-	images: PropTypes.array,
 	heading: PropTypes.string,
-	subheading: PropTypes.string,
+	images: PropTypes.array,
 	sepia: PropTypes.bool,
+	subheading: PropTypes.string,
 };
 
 const THUMBNAIL_SIZE = 72;
