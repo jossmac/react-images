@@ -40,16 +40,26 @@ class Gallery extends Component {
 		});
 	}
 	handleClickImage () {
-		if (this.state.currentImage === this.props.images.length - 1) {
-			this.closeLightbox();
-		}
+		if (this.state.currentImage === this.props.images.length - 1) return;
+
+		this.gotoNext();
 	}
 	renderGallery () {
 		if (!this.props.images) return;
 		const gallery = this.props.images.map((obj, i) => {
 			return (
-				<a key={i} href={obj.src} onClick={(event) => this.openLightbox(i, event)} style={styles.thumbnail}>
-					<img src={obj.thumbnail} style={styles.thumbnailImage} width={styles.thumbnail.size} height={styles.thumbnail.size} />
+				<a
+					href={obj.src}
+					key={i}
+					onClick={(e) => this.openLightbox(i, e)}
+					style={styles.thumbnail}
+					>
+					<img
+						height={styles.thumbnail.size}
+						src={obj.thumbnail}
+						style={styles.thumbnailImage}
+						width={styles.thumbnail.size}
+					/>
 				</a>
 			);
 		});

@@ -89,14 +89,9 @@ class Lightbox extends Component {
 	}
 
 	handleImageClick (e) {
-		if (this.props.onClickImage) this.props.onClickImage();
-		if (!this.props.onClickShowNextImage) return;
+		if (!this.props.onClickImage) return;
 
-		this.gotoNext(e);
-	}
-
-	handleImageLoad (e, index) {
-		// console.log('image', index, 'loaded', e);
+		this.props.onClickImage();
 	}
 
 	handleKeyboardInput (event) {
@@ -231,12 +226,11 @@ class Lightbox extends Component {
 				<Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} >
 					<img className={classes.image}
 						onClick={this.handleImageClick}
-						onLoad={e => this.handleImageLoad(e, currentImage)}
 						sizes={sizes}
 						src={image.src}
 						srcSet={srcset}
 						style={{
-							cursor: this.props.onClickShowNextImage ? 'pointer' : 'auto',
+							cursor: this.props.onClickImage ? 'pointer' : 'auto',
 							maxHeight: windowHeight,
 						}}
 					/>
@@ -271,7 +265,6 @@ Lightbox.propTypes = {
 	onClickImage: PropTypes.func,
 	onClickNext: PropTypes.func.isRequired,
 	onClickPrev: PropTypes.func.isRequired,
-	onClickShowNextImage: PropTypes.bool,
 	onClose: PropTypes.func.isRequired,
 	sheet: PropTypes.object,
 	showCloseButton: PropTypes.bool,
