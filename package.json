@@ -30,9 +30,6 @@
     "gulp": "^3.9.0",
     "react-component-gulp-tasks": "^0.7.0"
   },
-  "peerDependencies": {
-    "react": ">=0.14"
-  },
   "browserify-shim": {
     "react": "global:React"
   },
