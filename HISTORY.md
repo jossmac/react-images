@@ -2,7 +2,7 @@
 
 ### v0.4.0 / 2016-05-12
 * Bump all applicable dependencies
-* Remove peer dependencies
+* Update peer dependencies
 
 * * *
 
