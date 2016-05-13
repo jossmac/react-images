@@ -15,25 +15,25 @@
     "jss-nested": "^1.0.1",
     "jss-px": "^1.0.0",
     "jss-vendor-prefixer": "^2.0.0",
-    "react": "^15.0.2",
-    "react-addons-transition-group": "^15.0.2",
-    "react-dom": "^15.0.2",
     "react-jss": "^2.0.1",
     "react-swipeable": "^3.1.0"
   },
   "devDependencies": {
-    "babel": "^6.5.2",
     "babel-eslint": "^6.0.4",
-    "eslint": "2.9.0",
+    "babel": "^6.5.2",
     "eslint-config-keystone": "2.2.0",
     "eslint-plugin-react": "5.1.1",
+    "eslint": "2.9.0",
     "gulp": "^3.9.0",
-    "react-component-gulp-tasks": "^0.7.0"
+    "react-addons-transition-group": "^15.0.2",
+    "react-component-gulp-tasks": "^0.7.0",
+    "react-dom": "^15.0.2",
+    "react": "^15.0.2"
   },
   "peerDependencies": {
-    "react-addons-transition-group": ">=0.14",
-    "react-dom": ">=0.14",
-    "react": ">=0.14"
+    "react-addons-transition-group": "^0.14 || ^15.0",
+    "react-dom": "^0.14 || ^15.0",
+    "react": "^0.14 || ^15.0"
   },
   "browserify-shim": {
     "react": "global:React"
