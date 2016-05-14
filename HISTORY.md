@@ -1,5 +1,8 @@
 # React-Images
 
+### v0.4.2 / 2016-05-14
+* Update dependencies
+
 ### v0.4.1 / 2016-05-12
 * Update peer dependencies
 
