@@ -1,5 +1,13 @@
 # React-Images
 
+### v0.4.4 / 2016-05-16
+* Account for scrollbar width when opening/closing the lightbox
+* Remove required flag on `onClickNext` and `onClickPrev` - may only render a single image
+* Increase dialog z-index to `2001` thanks to [newsiberian](https://github.com/newsiberian)
+
+### v0.4.3 / 2016-05-16
+* Resolve peer-dependency issues thanks to [jedwatson](https://github.com/jedwatson)
+
 ### v0.4.2 / 2016-05-14
 * Update dependencies
 
