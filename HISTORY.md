@@ -1,5 +1,8 @@
 # React-Images
 
+### v0.4.6 / 2016-05-17
+* General cleanup
+
 ### v0.4.5 / 2016-05-16
 * Added `imageCountSeparator` prop to replace " of " in the image count
 
