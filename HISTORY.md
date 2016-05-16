@@ -1,5 +1,8 @@
 # React-Images
 
+### v0.4.5 / 2016-05-16
+* Added `imageCountSeparator` prop to replace " of " in the image count
+
 ### v0.4.4 / 2016-05-16
 * Account for scrollbar width when opening/closing the lightbox
 * Remove required flag on `onClickNext` and `onClickPrev` - may only render a single image
