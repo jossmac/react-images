@@ -35,30 +35,34 @@ class Lightbox extends Component {
 	constructor () {
 		super();
 
-		this.close = this.close.bind(this);
-		this.gotoNext = this.gotoNext.bind(this);
-		this.gotoPrev = this.gotoPrev.bind(this);
-		this.handleImageClick = this.handleImageClick.bind(this);
-		this.handleKeyboardInput = this.handleKeyboardInput.bind(this);
-		this.handleResize = this.handleResize.bind(this);
+		utils.bindFunctions.call(this, [
+			'close',
+			'gotoNext',
+			'gotoPrev',
+			'handleImageClick',
+			'handleKeyboardInput',
+			'handleResize',
+		]);
 
 		this.state = {};
 	}
 
 	componentWillReceiveProps (nextProps) {
+		if (!utils.canUseDom) return;
+
 		if (nextProps.isOpen && nextProps.enableKeyboardInput) {
-			if (utils.canUseDOM) window.addEventListener('keydown', this.handleKeyboardInput);
-			if (utils.canUseDOM) window.addEventListener('resize', this.handleResize);
+			window.addEventListener('keydown', this.handleKeyboardInput);
+			window.addEventListener('resize', this.handleResize);
 			this.handleResize();
 		} else {
-			if (utils.canUseDOM) window.removeEventListener('keydown', this.handleKeyboardInput);
-			if (utils.canUseDOM) window.removeEventListener('resize', this.handleResize);
+			window.removeEventListener('keydown', this.handleKeyboardInput);
+			window.removeEventListener('resize', this.handleResize);
 		}
 
 		if (nextProps.isOpen) {
-			if (utils.canUseDOM) document.body.style.overflow = 'hidden';
+			utils.bodyScroll.blockScroll();
 		} else {
-			if (utils.canUseDOM) document.body.style.overflow = null;
+			utils.bodyScroll.allowScroll();
 		}
 	}
 
@@ -109,7 +113,6 @@ class Lightbox extends Component {
 	}
 
 	handleResize () {
-		if (!utils.canUseDOM) return;
 		this.setState({
 			windowHeight: window.innerHeight || 0,
 		});
@@ -263,8 +266,8 @@ Lightbox.propTypes = {
 	).isRequired,
 	isOpen: PropTypes.bool,
 	onClickImage: PropTypes.func,
-	onClickNext: PropTypes.func.isRequired,
-	onClickPrev: PropTypes.func.isRequired,
+	onClickNext: PropTypes.func,
+	onClickPrev: PropTypes.func,
 	onClose: PropTypes.func.isRequired,
 	sheet: PropTypes.object,
 	showCloseButton: PropTypes.bool,
