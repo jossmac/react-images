@@ -243,32 +243,29 @@ var Lightbox = (function (_Component) {
 
 		_get(Object.getPrototypeOf(Lightbox.prototype), 'constructor', this).call(this);
 
-		this.close = this.close.bind(this);
-		this.gotoNext = this.gotoNext.bind(this);
-		this.gotoPrev = this.gotoPrev.bind(this);
-		this.handleImageClick = this.handleImageClick.bind(this);
-		this.handleKeyboardInput = this.handleKeyboardInput.bind(this);
-		this.handleResize = this.handleResize.bind(this);
+		_utils2['default'].bindFunctions.call(this, ['close', 'gotoNext', 'gotoPrev', 'handleImageClick', 'handleKeyboardInput', 'handleResize']);
 
-		this.state = {};
+		this.state = { windowHeight: 0 };
 	}
 
 	_createClass(Lightbox, [{
 		key: 'componentWillReceiveProps',
 		value: function componentWillReceiveProps(nextProps) {
+			if (!_utils2['default'].canUseDom) return;
+
 			if (nextProps.isOpen && nextProps.enableKeyboardInput) {
-				if (_utils2['default'].canUseDOM) window.addEventListener('keydown', this.handleKeyboardInput);
-				if (_utils2['default'].canUseDOM) window.addEventListener('resize', this.handleResize);
+				window.addEventListener('keydown', this.handleKeyboardInput);
+				window.addEventListener('resize', this.handleResize);
 				this.handleResize();
 			} else {
-				if (_utils2['default'].canUseDOM) window.removeEventListener('keydown', this.handleKeyboardInput);
-				if (_utils2['default'].canUseDOM) window.removeEventListener('resize', this.handleResize);
+				window.removeEventListener('keydown', this.handleKeyboardInput);
+				window.removeEventListener('resize', this.handleResize);
 			}
 
 			if (nextProps.isOpen) {
-				if (_utils2['default'].canUseDOM) document.body.style.overflow = 'hidden';
+				_utils2['default'].bodyScroll.blockScroll();
 			} else {
-				if (_utils2['default'].canUseDOM) document.body.style.overflow = null;
+				_utils2['default'].bodyScroll.allowScroll();
 			}
 		}
 	}, {
@@ -325,7 +322,6 @@ var Lightbox = (function (_Component) {
 	}, {
 		key: 'handleResize',
 		value: function handleResize() {
-			if (!_utils2['default'].canUseDOM) return;
 			this.setState({
 				windowHeight: window.innerHeight || 0
 			});
@@ -508,8 +504,8 @@ Lightbox.propTypes = {
 	})).isRequired,
 	isOpen: _react.PropTypes.bool,
 	onClickImage: _react.PropTypes.func,
-	onClickNext: _react.PropTypes.func.isRequired,
-	onClickPrev: _react.PropTypes.func.isRequired,
+	onClickNext: _react.PropTypes.func,
+	onClickPrev: _react.PropTypes.func,
 	onClose: _react.PropTypes.func.isRequired,
 	sheet: _react.PropTypes.object,
 	showCloseButton: _react.PropTypes.bool,
@@ -529,7 +525,7 @@ Lightbox.defaultProps = {
 exports['default'] = useSheet(Lightbox, _stylesDefault2['default']);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./Fade":1,"./Icon":2,"./Portal":4,"./styles/default":9,"./utils":10,"jss":undefined,"jss-camel-case":undefined,"jss-nested":undefined,"jss-px":undefined,"jss-vendor-prefixer":undefined,"react-jss":undefined,"react-swipeable":undefined}],4:[function(require,module,exports){
+},{"./Fade":1,"./Icon":2,"./Portal":4,"./styles/default":9,"./utils":13,"jss":undefined,"jss-camel-case":undefined,"jss-nested":undefined,"jss-px":undefined,"jss-vendor-prefixer":undefined,"react-jss":undefined,"react-swipeable":undefined}],4:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -659,7 +655,7 @@ var styles = {
 		textAlign: 'center',
 		top: 0,
 		width: '100%',
-		zIndex: 1001
+		zIndex: 2001
 	},
 	content: {
 		display: 'inline-block',
@@ -790,17 +786,104 @@ exports['default'] = styles;
 module.exports = exports['default'];
 
 },{}],10:[function(require,module,exports){
+/**
+	Bind multiple component methods:
+
+	* @param {this} context
+	* @param {Array} functions
+
+	constructor() {
+		...
+		bindFunctions.call(this, ['handleClick', 'handleOther']);
+	}
+*/
+
+"use strict";
+
+module.exports = function bindFunctions(functions) {
+	var _this = this;
+
+	functions.forEach(function (f) {
+		return _this[f] = _this[f].bind(_this);
+	});
+};
+
+},{}],11:[function(require,module,exports){
+// Don't try and apply overflow/padding if the scroll is already blocked
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
-	value: true
-});
-var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
+var bodyBlocked = false;
 
-exports['default'] = {
-	canUseDOM: canUseDOM
+var allowScroll = function allowScroll() {
+	if (typeof window === 'undefined' || !bodyBlocked) return;
+
+	//  FIXME iOS ignores overflow on body
+
+	try {
+		var target = document.body;
+
+		target.style.paddingRight = '';
+		target.style.overflowY = '';
+
+		bodyBlocked = false;
+	} catch (err) {
+		console.error('Failed to find body element. Err:', err);
+	}
 };
-module.exports = exports['default'];
 
-},{}]},{},[3])(3)
+var blockScroll = function blockScroll() {
+	if (typeof window === 'undefined' || bodyBlocked) return;
+
+	//  FIXME iOS ignores overflow on body
+
+	try {
+		var scrollBarWidth = window.innerWidth - document.body.clientWidth;
+
+		var target = document.body;
+
+		target.style.paddingRight = scrollBarWidth + 'px';
+		target.style.overflowY = 'hidden';
+
+		bodyBlocked = true;
+	} catch (err) {
+		console.error('Failed to find body element. Err:', err);
+	}
+};
+
+module.exports = {
+	allowScroll: allowScroll,
+	blockScroll: blockScroll
+};
+
+},{}],12:[function(require,module,exports){
+// Return true if window + document
+
+'use strict';
+
+module.exports = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
+
+},{}],13:[function(require,module,exports){
+'use strict';
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _bindFunctions = require('./bindFunctions');
+
+var _bindFunctions2 = _interopRequireDefault(_bindFunctions);
+
+var _bodyScroll = require('./bodyScroll');
+
+var _bodyScroll2 = _interopRequireDefault(_bodyScroll);
+
+var _canUseDom = require('./canUseDom');
+
+var _canUseDom2 = _interopRequireDefault(_canUseDom);
+
+module.exports = {
+	bindFunctions: _bindFunctions2['default'],
+	bodyScroll: _bodyScroll2['default'],
+	canUseDom: _canUseDom2['default']
+};
+
+},{"./bindFunctions":10,"./bodyScroll":11,"./canUseDom":12}]},{},[3])(3)
 });
