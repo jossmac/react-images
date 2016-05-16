@@ -60,7 +60,9 @@ var Fade = (function (_Component) {
 		}
 	}, {
 		key: 'componentDidLeave',
-		value: function componentDidLeave() {}
+		value: function componentDidLeave() {
+			// empty
+		}
 	}, {
 		key: '_showElement',
 		value: function _showElement() {
