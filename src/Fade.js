@@ -6,36 +6,30 @@ class Fade extends Component {
 		this._showElement = this._showElement.bind(this);
 		this._hideElement = this._hideElement.bind(this);
 	}
-
 	componentWillAppear (callback) {
 		setTimeout(callback, 1); // need at least one tick to fire transition
 	}
-
 	componentDidAppear () {
 		this._showElement();
 	}
-
 	componentWillEnter (callback) {
 		setTimeout(callback, 1);
 	}
-
 	componentDidEnter () {
 		this._showElement();
 	}
-
 	componentWillLeave (callback) {
 		this._hideElement();
 		setTimeout(callback, this.props.duration);
 	}
-
 	componentDidLeave () {
+		// empty
 	}
 
 	_showElement () {
 		const el = this.refs.element;
 		el.style.opacity = 1;
 	}
-
 	_hideElement () {
 		const el = this.refs.element;
 		el.style.opacity = 0;
