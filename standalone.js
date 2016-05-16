@@ -268,6 +268,11 @@ var Lightbox = (function (_Component) {
 				_utils2['default'].bodyScroll.allowScroll();
 			}
 		}
+
+		// ==============================
+		// METHODS
+		// ==============================
+
 	}, {
 		key: 'close',
 		value: function close(e) {
@@ -326,23 +331,11 @@ var Lightbox = (function (_Component) {
 				windowHeight: window.innerHeight || 0
 			});
 		}
-	}, {
-		key: 'renderArrowNext',
-		value: function renderArrowNext() {
-			if (this.props.currentImage === this.props.images.length - 1) return null;
-			var classes = this.props.sheet.classes;
 
-			return _react2['default'].createElement(
-				'button',
-				{ title: 'Next (Right arrow key)',
-					type: 'button',
-					className: classes.arrow + ' ' + classes.arrowNext,
-					onClick: this.gotoNext,
-					onTouchEnd: this.gotoNext
-				},
-				_react2['default'].createElement(_Icon2['default'], { type: 'arrowRight' })
-			);
-		}
+		// ==============================
+		// RENDERERS
+		// ==============================
+
 	}, {
 		key: 'renderArrowPrev',
 		value: function renderArrowPrev() {
@@ -361,6 +354,23 @@ var Lightbox = (function (_Component) {
 			);
 		}
 	}, {
+		key: 'renderArrowNext',
+		value: function renderArrowNext() {
+			if (this.props.currentImage === this.props.images.length - 1) return null;
+			var classes = this.props.sheet.classes;
+
+			return _react2['default'].createElement(
+				'button',
+				{ title: 'Next (Right arrow key)',
+					type: 'button',
+					className: classes.arrow + ' ' + classes.arrowNext,
+					onClick: this.gotoNext,
+					onTouchEnd: this.gotoNext
+				},
+				_react2['default'].createElement(_Icon2['default'], { type: 'arrowRight' })
+			);
+		}
+	}, {
 		key: 'renderCloseButton',
 		value: function renderCloseButton() {
 			if (!this.props.showCloseButton) return null;
@@ -371,7 +381,11 @@ var Lightbox = (function (_Component) {
 				{ className: classes.closeBar },
 				_react2['default'].createElement(
 					'button',
-					{ title: 'Close (Esc)', className: classes.closeButton, onClick: this.props.onClose },
+					{
+						title: 'Close (Esc)',
+						className: classes.closeButton,
+						onClick: this.props.onClose
+					},
 					_react2['default'].createElement(_Icon2['default'], { type: 'close' })
 				)
 			);
@@ -408,6 +422,7 @@ var Lightbox = (function (_Component) {
 			var _props = this.props;
 			var currentImage = _props.currentImage;
 			var images = _props.images;
+			var imageCountSeparator = _props.imageCountSeparator;
 			var showImageCount = _props.showImageCount;
 			var classes = this.props.sheet.classes;
 
@@ -417,7 +432,7 @@ var Lightbox = (function (_Component) {
 				'div',
 				{ className: classes.footerCount },
 				currentImage + 1,
-				' of ',
+				imageCountSeparator,
 				images.length
 			) : null;
 			var figcaption = caption ? _react2['default'].createElement(
@@ -497,6 +512,7 @@ Lightbox.propTypes = {
 	backdropClosesModal: _react.PropTypes.bool,
 	currentImage: _react.PropTypes.number,
 	enableKeyboardInput: _react.PropTypes.bool,
+	imageCountSeparator: _react.PropTypes.string,
 	images: _react.PropTypes.arrayOf(_react.PropTypes.shape({
 		src: _react.PropTypes.string.isRequired,
 		srcset: _react.PropTypes.array,
@@ -514,8 +530,9 @@ Lightbox.propTypes = {
 };
 
 Lightbox.defaultProps = {
-	enableKeyboardInput: true,
 	currentImage: 0,
+	enableKeyboardInput: true,
+	imageCountSeparator: ' of ',
 	onClickShowNextImage: true,
 	showCloseButton: true,
 	showImageCount: true,
