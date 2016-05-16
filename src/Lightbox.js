@@ -31,7 +31,6 @@ class Lightbox extends Component {
 		}
 		return extStyles;
 	}
-
 	constructor () {
 		super();
 
@@ -46,7 +45,6 @@ class Lightbox extends Component {
 
 		this.state = { windowHeight: 0 };
 	}
-
 	componentWillReceiveProps (nextProps) {
 		if (!utils.canUseDom) return;
 
@@ -66,14 +64,18 @@ class Lightbox extends Component {
 		}
 	}
 
+	// ==============================
+	// METHODS
+	// ==============================
+
 	close (e) {
 		if (e.target.id !== 'react-images-container') return;
 
 		if (this.props.backdropClosesModal && this.props.onClose) {
 			this.props.onClose();
 		}
-	}
 
+	}
 	gotoNext (event) {
 		if (this.props.currentImage === (this.props.images.length - 1)) return;
 		if (event) {
@@ -81,8 +83,8 @@ class Lightbox extends Component {
 			event.stopPropagation();
 		}
 		this.props.onClickNext();
-	}
 
+	}
 	gotoPrev (event) {
 		if (this.props.currentImage === 0) return;
 		if (event) {
@@ -90,14 +92,14 @@ class Lightbox extends Component {
 			event.stopPropagation();
 		}
 		this.props.onClickPrev();
-	}
 
+	}
 	handleImageClick () {
 		if (!this.props.onClickImage) return;
 
 		this.props.onClickImage();
-	}
 
+	}
 	handleKeyboardInput (event) {
 		if (event.keyCode === 37) {
 			this.gotoPrev(event);
@@ -110,28 +112,18 @@ class Lightbox extends Component {
 			return true;
 		}
 		return false;
-	}
 
+	}
 	handleResize () {
 		this.setState({
 			windowHeight: window.innerHeight || 0,
 		});
+
 	}
 
-	renderArrowNext () {
-		if (this.props.currentImage === (this.props.images.length - 1)) return null;
-		const { classes } = this.props.sheet;
-		return (
-			<button title="Next (Right arrow key)"
-				type="button"
-				className={`${classes.arrow} ${classes.arrowNext}`}
-				onClick={this.gotoNext}
-				onTouchEnd={this.gotoNext}
-			>
-				<Icon type="arrowRight" />
-			</button>
-		);
-	}
+	// ==============================
+	// RENDERERS
+	// ==============================
 
 	renderArrowPrev () {
 		if (this.props.currentImage === 0) return null;
@@ -148,20 +140,36 @@ class Lightbox extends Component {
 			</button>
 		);
 	}
-
+	renderArrowNext () {
+		if (this.props.currentImage === (this.props.images.length - 1)) return null;
+		const { classes } = this.props.sheet;
+		return (
+			<button title="Next (Right arrow key)"
+				type="button"
+				className={`${classes.arrow} ${classes.arrowNext}`}
+				onClick={this.gotoNext}
+				onTouchEnd={this.gotoNext}
+				>
+				<Icon type="arrowRight" />
+			</button>
+		);
+	}
 	renderCloseButton () {
 		if (!this.props.showCloseButton) return null;
 		const { classes } = this.props.sheet;
 
 		return (
 			<div className={classes.closeBar}>
-				<button title="Close (Esc)" className={classes.closeButton} onClick={this.props.onClose}>
+				<button
+					title="Close (Esc)"
+					className={classes.closeButton}
+					onClick={this.props.onClose}
+					>
 					<Icon type="close" />
 				</button>
 			</div>
 		);
 	}
-
 	renderDialog () {
 		if (!this.props.isOpen) return null;
 		const { classes } = this.props.sheet;
@@ -185,13 +193,17 @@ class Lightbox extends Component {
 		);
 	}
 	renderFooter (caption) {
-		const { currentImage, images, showImageCount } = this.props;
+		const { currentImage, images, imageCountSeparator, showImageCount } = this.props;
 		const { classes } = this.props.sheet;
 
 		if (!caption && !showImageCount) return null;
 
-		const imageCount = showImageCount
-			? <div className={classes.footerCount}>{currentImage + 1} of {images.length}</div>
+		const imageCount = showImageCount ? (
+			<div className={classes.footerCount}>
+				{currentImage + 1}
+				{imageCountSeparator}
+				{images.length}
+			</div>)
 			: null;
 		const figcaption = caption
 			? <figcaption className={classes.footerCaption}>{caption}</figcaption>
@@ -225,8 +237,8 @@ class Lightbox extends Component {
 			<figure key={`image ${currentImage}`}
 				className={classes.figure}
 				style={{ maxWidth: this.props.width }}
-			>
-				<Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} >
+				>
+				<Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev}>
 					<img className={classes.image}
 						onClick={this.handleImageClick}
 						sizes={sizes}
@@ -257,6 +269,7 @@ Lightbox.propTypes = {
 	backdropClosesModal: PropTypes.bool,
 	currentImage: PropTypes.number,
 	enableKeyboardInput: PropTypes.bool,
+	imageCountSeparator: PropTypes.string,
 	images: PropTypes.arrayOf(
 		PropTypes.shape({
 			src: PropTypes.string.isRequired,
@@ -276,8 +289,9 @@ Lightbox.propTypes = {
 };
 
 Lightbox.defaultProps = {
-	enableKeyboardInput: true,
 	currentImage: 0,
+	enableKeyboardInput: true,
+	imageCountSeparator: ' of ',
 	onClickShowNextImage: true,
 	showCloseButton: true,
 	showImageCount: true,
