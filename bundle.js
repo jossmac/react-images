@@ -168,6 +168,13 @@ var _reactAddonsTransitionGroup2 = _interopRequireDefault(_reactAddonsTransition
 
 var _reactDom = require('react-dom');
 
+var FirstChild = function FirstChild(_ref) {
+	var children = _ref.children;
+
+	var kids = _react.Children.toArray(children);
+	return kids[0] || null;
+};
+
 var Portal = (function (_Component) {
 	_inherits(Portal, _Component);
 
@@ -189,11 +196,7 @@ var Portal = (function (_Component) {
 	}, {
 		key: 'componentDidUpdate',
 		value: function componentDidUpdate() {
-			(0, _reactDom.render)(_react2['default'].createElement(
-				_reactAddonsTransitionGroup2['default'],
-				_extends({}, this.props, { component: 'div' }),
-				this.props.children
-			), this.portalElement);
+			(0, _reactDom.render)(_react2['default'].createElement(_reactAddonsTransitionGroup2['default'], _extends({}, this.props, { component: FirstChild })), this.portalElement);
 		}
 	}, {
 		key: 'componentWillUnmount',
@@ -213,7 +216,7 @@ var Portal = (function (_Component) {
 exports['default'] = Portal;
 
 Portal.propTypes = {
-	children: _react.PropTypes.any
+	children: _react.PropTypes.element
 };
 module.exports = exports['default'];
 
