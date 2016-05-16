@@ -15,7 +15,7 @@ const styles = {
 		textAlign: 'center',
 		top: 0,
 		width: '100%',
-		zIndex: 1001,
+		zIndex: 2001,
 	},
 	content: {
 		display: 'inline-block',

@@ -44,7 +44,7 @@ class Lightbox extends Component {
 			'handleResize',
 		]);
 
-		this.state = {};
+		this.state = { windowHeight: 0 };
 	}
 
 	componentWillReceiveProps (nextProps) {
