@@ -111,9 +111,10 @@ backdropClosesModal	|	bool	|	false	|	Allow users to exit the lightbox by clickin
 enableKeyboardInput | bool  | true  | Supports keyboard input - <code>esc</code>, <code>arrow left</code>, and <code>arrow right</code>
 currentImage  | number  | 0 | The index of the image to display initially
 images  | array | undefined | Required. An array of objects containing valid src and srcset values of img element
+imageCountSeparator  | String  | ' of ' | Customize separator in the image count
 isOpen  | bool  | false | Whether or not the lightbox is displayed
-onClickPrev | func | undefined | Required. Fired on request of the previous image
-onClickNext | func | undefined | Required. Fired on request of the next image
+onClickPrev | func | undefined | Fired on request of the previous image
+onClickNext | func | undefined | Fired on request of the next image
 onClose | func | undefined | Required. Handle closing of the lightbox
 onClickImage | func | undefined | Handle click on image
 showCloseButton | bool  | true | Optionally display a close "X" button in top right corner
