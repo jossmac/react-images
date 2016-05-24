@@ -44,6 +44,7 @@
     "bump:minor": "gulp bump:minor",
     "examples": "gulp dev:server",
     "lint": "eslint src/** examples/src/app.js examples/src/components/Gallery.js",
+    "prepublish": "npm run build",
     "publish:examples": "gulp publish:examples",
     "release": "gulp release",
     "start": "gulp dev",
