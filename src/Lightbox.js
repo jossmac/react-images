@@ -22,7 +22,7 @@ import Portal from './Portal';
 import defaultStyles from './styles/default';
 
 class Lightbox extends Component {
-	static theme (themeStyles) {
+    static theme (themeStyles) {
 		const extStyles = Object.assign({}, defaultStyles);
 		for (const key in extStyles) {
 			if (key in themeStyles) {
@@ -220,6 +220,7 @@ class Lightbox extends Component {
 		const { images, currentImage } = this.props;
 		const { classes } = this.props.sheet;
 		const { windowHeight } = this.state;
+		const imageDetailSpace = 90;
 
 		if (!images || !images.length) return null;
 
@@ -246,7 +247,7 @@ class Lightbox extends Component {
 						srcSet={srcset}
 						style={{
 							cursor: this.props.onClickImage ? 'pointer' : 'auto',
-							maxHeight: windowHeight,
+							maxHeight: windowHeight - imageDetailSpace,
 						}}
 					/>
 				</Swipeable>
