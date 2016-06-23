@@ -10,19 +10,19 @@ class DownloadButton extends Component {
             <button
                 title="Download"
                 style={{
-						background: 'none',
-						border: 'none',
-						cursor: 'pointer',
-						height: 40,
-						outline: 'none',
-						padding: 10,
-						position: 'relative',
-						left: -10,
-						top: 0,
-						width: 40,
-						verticalAlign: 'bottom',
-						float: 'left'
-					}}
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    height: 40,
+                    outline: 'none',
+                    padding: 10,
+                    position: 'relative',
+                    left: -10,
+                    top: 0,
+                    width: 40,
+                    verticalAlign: 'bottom',
+                    float: 'left'
+                }}
                 onClick={this.props.handler}
             >
 				<span
