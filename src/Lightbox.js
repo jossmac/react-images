@@ -154,21 +154,33 @@ class Lightbox extends Component {
 			</button>
 		);
 	}
+	renderCloseBar () {
+		const { classes } = this.props.sheet;
+
+		return (
+			<div className={classes.closeBar}>
+				{this.renderCustomControls()}
+				{this.renderCloseButton()}
+			</div>
+		);
+	}
 	renderCloseButton () {
 		if (!this.props.showCloseButton) return null;
 		const { classes } = this.props.sheet;
 
 		return (
-			<div className={classes.closeBar}>
-				<button
-					title="Close (Esc)"
-					className={classes.closeButton}
-					onClick={this.props.onClose}
-					>
-					<Icon type="close" />
-				</button>
-			</div>
+			<button
+				title="Close (Esc)"
+				className={classes.closeButton}
+				onClick={this.props.onClose}
+			>
+				<Icon type="close" />
+			</button>
 		);
+	}
+	renderCustomControls () {
+		if (!this.props.customControls) return null;
+		return this.props.customControls;
 	}
 	renderDialog () {
 		if (!this.props.isOpen) return null;
@@ -184,7 +196,7 @@ class Lightbox extends Component {
 			>
 				<span className={classes.contentHeightShim} />
 				<div className={classes.content}>
-					{this.renderCloseButton()}
+					{this.renderCloseBar()}
 					{this.renderImages()}
 				</div>
 				{this.renderArrowPrev()}
@@ -268,6 +280,7 @@ Lightbox.displayName = 'Lightbox';
 Lightbox.propTypes = {
 	backdropClosesModal: PropTypes.bool,
 	currentImage: PropTypes.number,
+	customControls: PropTypes.arrayOf(PropTypes.node),
 	enableKeyboardInput: PropTypes.bool,
 	imageCountSeparator: PropTypes.string,
 	images: PropTypes.arrayOf(
