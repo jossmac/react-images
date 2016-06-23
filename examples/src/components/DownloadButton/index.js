@@ -13,15 +13,15 @@ class DownloadButton extends Component {
                     background: 'none',
                     border: 'none',
                     cursor: 'pointer',
+                    float: 'left',
                     height: 40,
                     outline: 'none',
                     padding: 10,
                     position: 'relative',
                     left: -10,
                     top: 0,
-                    width: 40,
                     verticalAlign: 'bottom',
-                    float: 'left'
+                    width: 40,
                 }}
                 onClick={this.props.handler}
             >
