@@ -25,7 +25,7 @@ class DownloadButton extends Component {
                 }}
                 onClick={this.props.handler}
             >
-				<span
+                <span
                     dangerouslySetInnerHTML={{ __html: DownloadIcon }}
                 />
             </button>
