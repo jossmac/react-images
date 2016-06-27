@@ -138,6 +138,7 @@ const styles = {
 		position: 'relative',
 		right: -10,
 		top: 0,
+		verticalAlign: 'bottom',
 		width: CLOSE_SIZE + 20,
 	},
 };
