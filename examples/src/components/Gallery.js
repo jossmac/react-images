@@ -85,6 +85,7 @@ class Gallery extends Component {
 				{this.renderGallery()}
 				<Lightbox
 					currentImage={this.state.currentImage}
+					customControls={customControls}
 					images={this.props.images}
 					isOpen={this.state.lightboxIsOpen}
 					onClickPrev={this.gotoPrevious}
@@ -92,7 +93,6 @@ class Gallery extends Component {
 					onClickImage={this.handleClickImage}
 					onClose={this.closeLightbox}
 					theme={this.props.theme}
-					customControls={customControls}
 				/>
 			</div>
 		);

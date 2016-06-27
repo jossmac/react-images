@@ -110,6 +110,7 @@ Property	|	Type		|	Default		|	Description
 backdropClosesModal	|	bool	|	false	|	Allow users to exit the lightbox by clicking the backdrop
 enableKeyboardInput | bool  | true  | Supports keyboard input - <code>esc</code>, <code>arrow left</code>, and <code>arrow right</code>
 currentImage  | number  | 0 | The index of the image to display initially
+customControls | array | undefined | An array of elements to display as custom controls on the top of lightbox
 images  | array | undefined | Required. An array of objects containing valid src and srcset values of img element
 imageCountSeparator  | String  | ' of ' | Customize separator in the image count
 isOpen  | bool  | false | Whether or not the lightbox is displayed
