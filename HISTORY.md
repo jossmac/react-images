@@ -1,5 +1,9 @@
 # React-Images
 
+### v0.4.7 / 2016-07-14
+* Custom controls thanks to [robintail](https://github.com/robintail)
+* dependency fix for `react-addons-transition-group` thanks to [fend25](https://github.com/fend25)
+
 ### v0.4.6 / 2016-05-17
 * General cleanup
 
