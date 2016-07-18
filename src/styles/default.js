@@ -1,6 +1,7 @@
 const CLOSE_SIZE = 20;
 const ARROW_HEIGHT = 120;
 const GAP_BOTTOM = 50;
+const CAPTION_COUNT_HEIGHT = 25;
 const GAP_TOP = 40;
 
 const styles = {
@@ -38,8 +39,6 @@ const styles = {
 		lineHeight: 0,
 		maxWidth: '100%',
 		margin: '0 auto',
-		paddingBottom: 50,
-		paddingTop: 40,
 		height: 'auto',
 		width: 'auto',
 
@@ -73,9 +72,7 @@ const styles = {
 	footer: {
 		color: 'white',
 		lineHeight: 1.3,
-		height: GAP_BOTTOM,
-		marginTop: -GAP_BOTTOM,
-		paddingTop: 5,
+		marginTop: -CAPTION_COUNT_HEIGHT + 5,
 		position: 'absolute',
 		textAlign: 'left',
 		top: '100%',
@@ -84,12 +81,17 @@ const styles = {
 		cursor: 'auto',
 	},
 	footerCount: {
-		float: 'right',
+		display: 'inline-block',
+		position: 'absolute',
+		right: 0,	
+		top: CAPTION_COUNT_HEIGHT,
 		fontSize: '.85em',
 		opacity: 0.75,
 	},
 	footerCaption: {
-		paddingRight: 80,
+	    display: 'inline-block',
+	    position: 'absolute',
+	    top: CAPTION_COUNT_HEIGHT,
 	},
 
 	// BUTTONS
@@ -122,11 +124,12 @@ const styles = {
 	},
 	closeBar: {
 		height: GAP_TOP,
-		left: 0,
+		right:0,
 		position: 'absolute',
 		textAlign: 'right',
-		top: 0,
-		width: '100%',
+		top: -40,
+		width:40,
+		minHeight:40,
 	},
 	closeButton: {
 		background: 'none',
