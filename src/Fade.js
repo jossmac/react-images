@@ -44,9 +44,12 @@ class Fade extends Component {
 			transition: `opacity ${this.props.duration}ms ease-out`,
 		};
 		props.style = Object.assign(style, this.props.style);
+		const divProps = Object.assign({}, props);
+		delete divProps.component
+		delete divProps.duration;
 		return React.createElement(
 			this.props.component,
-			props,
+			divProps,
 			this.props.children
 		);
 	}
