@@ -1,5 +1,8 @@
 # React-Images
 
+### v0.4.9 / 2016-07-28
+* Resolve react "no-unused-prop" warnings [benhowell](https://github.com/benhowell)
+
 ### v0.4.7 / 2016-07-14
 * Custom controls thanks to [robintail](https://github.com/robintail)
 * dependency fix for `react-addons-transition-group` thanks to [fend25](https://github.com/fend25)
