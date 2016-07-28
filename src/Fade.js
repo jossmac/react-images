@@ -36,19 +36,18 @@ class Fade extends Component {
 	}
 
 	render () {
-		const props = Object.assign({}, this.props);
-		const style = {
-			opacity: 0,
-			WebkitTransition: `opacity ${this.props.duration}ms ease-out`,
-			msTransition: `opacity ${this.props.duration}ms ease-out`,
-			transition: `opacity ${this.props.duration}ms ease-out`,
+		const { component, duration, style, ...props } = this.props;
+		const componentProps = {
+			...props,
+			style: {
+				opacity: 0,
+				WebkitTransition: `opacity ${duration}ms ease-out`,
+				msTransition: `opacity ${duration}ms ease-out`,
+				transition: `opacity ${duration}ms ease-out`,
+				...style,
+			},
 		};
-		props.style = Object.assign(style, this.props.style);
-		return React.createElement(
-			this.props.component,
-			props,
-			this.props.children
-		);
+		return React.createElement(component, componentProps);
 	}
 }
 

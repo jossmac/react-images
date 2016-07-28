@@ -250,18 +250,21 @@ class Lightbox extends Component {
 				className={classes.figure}
 				style={{ maxWidth: this.props.width }}
 				>
-				<Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev}>
-					<img className={classes.image}
-						onClick={this.handleImageClick}
-						sizes={sizes}
-						src={image.src}
-						srcSet={srcset}
-						style={{
-							cursor: this.props.onClickImage ? 'pointer' : 'auto',
-							maxHeight: windowHeight,
-						}}
-					/>
-				</Swipeable>
+				{/*
+					Re-implement when react warning "unknown props"
+					https://fb.me/react-unknown-prop is resolved
+					<Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
+				*/}
+				<img className={classes.image}
+					onClick={this.handleImageClick}
+					sizes={sizes}
+					src={image.src}
+					srcSet={srcset}
+					style={{
+						cursor: this.props.onClickImage ? 'pointer' : 'auto',
+						maxHeight: windowHeight,
+					}}
+				/>
 				{this.renderFooter(images[currentImage].caption)}
 			</figure>
 		);
