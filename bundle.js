@@ -7,126 +7,6 @@ Object.defineProperty(exports, '__esModule', {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var Fade = (function (_Component) {
-	_inherits(Fade, _Component);
-
-	function Fade() {
-		_classCallCheck(this, Fade);
-
-		_get(Object.getPrototypeOf(Fade.prototype), 'constructor', this).call(this);
-		this._showElement = this._showElement.bind(this);
-		this._hideElement = this._hideElement.bind(this);
-	}
-
-	_createClass(Fade, [{
-		key: 'componentWillAppear',
-		value: function componentWillAppear(callback) {
-			setTimeout(callback, 1); // need at least one tick to fire transition
-		}
-	}, {
-		key: 'componentDidAppear',
-		value: function componentDidAppear() {
-			this._showElement();
-		}
-	}, {
-		key: 'componentWillEnter',
-		value: function componentWillEnter(callback) {
-			setTimeout(callback, 1);
-		}
-	}, {
-		key: 'componentDidEnter',
-		value: function componentDidEnter() {
-			this._showElement();
-		}
-	}, {
-		key: 'componentWillLeave',
-		value: function componentWillLeave(callback) {
-			this._hideElement();
-			setTimeout(callback, this.props.duration);
-		}
-	}, {
-		key: 'componentDidLeave',
-		value: function componentDidLeave() {
-			// empty
-		}
-	}, {
-		key: '_showElement',
-		value: function _showElement() {
-			var el = this.refs.element;
-			el.style.opacity = 1;
-		}
-	}, {
-		key: '_hideElement',
-		value: function _hideElement() {
-			var el = this.refs.element;
-			el.style.opacity = 0;
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			var _props = this.props;
-			var component = _props.component;
-			var duration = _props.duration;
-			var style = _props.style;
-
-			var props = _objectWithoutProperties(_props, ['component', 'duration', 'style']);
-
-			var componentProps = _extends({}, props, {
-				style: _extends({
-					opacity: 0,
-					WebkitTransition: 'opacity ' + duration + 'ms ease-out',
-					msTransition: 'opacity ' + duration + 'ms ease-out',
-					transition: 'opacity ' + duration + 'ms ease-out'
-				}, style)
-			});
-			return _react2['default'].createElement(component, componentProps);
-		}
-	}]);
-
-	return Fade;
-})(_react.Component);
-
-Fade.propTypes = {
-	children: _react.PropTypes.any,
-	component: _react.PropTypes.any,
-	duration: _react.PropTypes.number,
-	style: _react.PropTypes.object
-};
-
-Fade.defaultProps = {
-	component: 'div',
-	duration: 200,
-	ref: 'element'
-};
-
-exports['default'] = Fade;
-module.exports = exports['default'];
-
-},{"react":undefined}],2:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-	value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var _react = require('react');
@@ -150,7 +30,7 @@ Icon.propTypes = {
 exports['default'] = Icon;
 module.exports = exports['default'];
 
-},{"./icons":7,"react":undefined}],3:[function(require,module,exports){
+},{"./icons":6,"react":undefined}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -173,18 +53,11 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactAddonsTransitionGroup = require('react-addons-transition-group');
+var _reactAddonsCssTransitionGroup = require('react-addons-css-transition-group');
 
-var _reactAddonsTransitionGroup2 = _interopRequireDefault(_reactAddonsTransitionGroup);
+var _reactAddonsCssTransitionGroup2 = _interopRequireDefault(_reactAddonsCssTransitionGroup);
 
 var _reactDom = require('react-dom');
-
-var FirstChild = function FirstChild(_ref) {
-	var children = _ref.children;
-
-	var kids = _react.Children.toArray(children);
-	return kids[0] || null;
-};
 
 var Portal = (function (_Component) {
 	_inherits(Portal, _Component);
@@ -207,7 +80,21 @@ var Portal = (function (_Component) {
 	}, {
 		key: 'componentDidUpdate',
 		value: function componentDidUpdate() {
-			(0, _reactDom.render)(_react2['default'].createElement(_reactAddonsTransitionGroup2['default'], _extends({}, this.props, { component: FirstChild })), this.portalElement);
+			var styles = '\n\t\t\t\t.fade-enter { opacity: 0.01; }\n\t\t\t\t.fade-enter.fade-enter-active { opacity: 1; transition: opacity 200ms; }\n\t\t\t\t.fade-leave { opacity: 1; }\n\t\t\t\t.fade-leave.fade-leave-active { opacity: 0.01; transition: opacity 200ms; }\n\t\t';
+			(0, _reactDom.render)(_react2['default'].createElement(
+				'div',
+				null,
+				_react2['default'].createElement(
+					'style',
+					null,
+					styles
+				),
+				_react2['default'].createElement(_reactAddonsCssTransitionGroup2['default'], _extends({
+					transitionName: 'fade',
+					transitionEnterTimeout: 200,
+					transitionLeaveTimeout: 200
+				}, this.props))
+			), this.portalElement);
 		}
 	}, {
 		key: 'componentWillUnmount',
@@ -225,28 +112,24 @@ var Portal = (function (_Component) {
 })(_react.Component);
 
 exports['default'] = Portal;
-
-Portal.propTypes = {
-	children: _react.PropTypes.element
-};
 module.exports = exports['default'];
 
-},{"react":undefined,"react-addons-transition-group":undefined,"react-dom":undefined}],4:[function(require,module,exports){
+},{"react":undefined,"react-addons-css-transition-group":undefined,"react-dom":undefined}],3:[function(require,module,exports){
 'use strict';
 
 module.exports = '<svg fill="white" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100%" height="100%" viewBox="0 0 512 512" xml:space="preserve">' + '<path d="M213.7,256L213.7,256L213.7,256L380.9,81.9c4.2-4.3,4.1-11.4-0.2-15.8l-29.9-30.6c-4.3-4.4-11.3-4.5-15.5-0.2L131.1,247.9 c-2.2,2.2-3.2,5.2-3,8.1c-0.1,3,0.9,5.9,3,8.1l204.2,212.7c4.2,4.3,11.2,4.2,15.5-0.2l29.9-30.6c4.3-4.4,4.4-11.5,0.2-15.8 L213.7,256z"/>' + '</svg>';
 
-},{}],5:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 'use strict';
 
 module.exports = '<svg fill="white" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100%" height="100%" viewBox="0 0 512 512" xml:space="preserve">' + '<path d="M298.3,256L298.3,256L298.3,256L131.1,81.9c-4.2-4.3-4.1-11.4,0.2-15.8l29.9-30.6c4.3-4.4,11.3-4.5,15.5-0.2l204.2,212.7 c2.2,2.2,3.2,5.2,3,8.1c0.1,3-0.9,5.9-3,8.1L176.7,476.8c-4.2,4.3-11.2,4.2-15.5-0.2L131.3,446c-4.3-4.4-4.4-11.5-0.2-15.8 L298.3,256z"/>' + '</svg>';
 
-},{}],6:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 module.exports = '<svg fill="white" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100%" height="100%" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">' + '<path d="M443.6,387.1L312.4,255.4l131.5-130c5.4-5.4,5.4-14.2,0-19.6l-37.4-37.6c-2.6-2.6-6.1-4-9.8-4c-3.7,0-7.2,1.5-9.8,4 L256,197.8L124.9,68.3c-2.6-2.6-6.1-4-9.8-4c-3.7,0-7.2,1.5-9.8,4L68,105.9c-5.4,5.4-5.4,14.2,0,19.6l131.5,130L68.4,387.1 c-2.6,2.6-4.1,6.1-4.1,9.8c0,3.7,1.4,7.2,4.1,9.8l37.4,37.6c2.7,2.7,6.2,4.1,9.8,4.1c3.5,0,7.1-1.3,9.8-4.1L256,313.1l130.7,131.1 c2.7,2.7,6.2,4.1,9.8,4.1c3.5,0,7.1-1.3,9.8-4.1l37.4-37.6c2.6-2.6,4.1-6.1,4.1-9.8C447.7,393.2,446.2,389.7,443.6,387.1z"/>' + '</svg>';
 
-},{}],7:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -255,7 +138,7 @@ module.exports = {
 	close: require('./close')
 };
 
-},{"./arrowLeft":4,"./arrowRight":5,"./close":6}],8:[function(require,module,exports){
+},{"./arrowLeft":3,"./arrowRight":4,"./close":5}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -408,7 +291,7 @@ var styles = {
 exports['default'] = styles;
 module.exports = exports['default'];
 
-},{}],9:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 /**
 	Bind multiple component methods:
 
@@ -431,7 +314,7 @@ module.exports = function bindFunctions(functions) {
 	});
 };
 
-},{}],10:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 // Don't try and apply overflow/padding if the scroll is already blocked
 'use strict';
 
@@ -478,14 +361,14 @@ module.exports = {
 	blockScroll: blockScroll
 };
 
-},{}],11:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 // Return true if window + document
 
 'use strict';
 
 module.exports = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 
-},{}],12:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -508,7 +391,7 @@ module.exports = {
 	canUseDom: _canUseDom2['default']
 };
 
-},{"./bindFunctions":9,"./bodyScroll":10,"./canUseDom":11}],"react-images":[function(require,module,exports){
+},{"./bindFunctions":8,"./bodyScroll":9,"./canUseDom":10}],"react-images":[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -553,17 +436,11 @@ var _jssVendorPrefixer = require('jss-vendor-prefixer');
 
 var _jssVendorPrefixer2 = _interopRequireDefault(_jssVendorPrefixer);
 
-var _reactSwipeable = require('react-swipeable');
-
-var _reactSwipeable2 = _interopRequireDefault(_reactSwipeable);
+// import Swipeable from 'react-swipeable';
 
 var _utils = require('./utils');
 
 var _utils2 = _interopRequireDefault(_utils);
-
-var _Fade = require('./Fade');
-
-var _Fade2 = _interopRequireDefault(_Fade);
 
 var _Icon = require('./Icon');
 
@@ -775,10 +652,9 @@ var Lightbox = (function (_Component) {
 			var classes = this.props.sheet.classes;
 
 			return _react2['default'].createElement(
-				_Fade2['default'],
+				'div',
 				{ id: 'react-images-container',
 					key: 'dialog',
-					duration: 250,
 					className: classes.container,
 					onClick: this.close,
 					onTouchEnd: this.close
@@ -921,4 +797,4 @@ https://fb.me/react-unknown-prop is resolved
 <Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
 */
 
-},{"./Fade":1,"./Icon":2,"./Portal":3,"./styles/default":8,"./utils":12,"jss":undefined,"jss-camel-case":undefined,"jss-nested":undefined,"jss-px":undefined,"jss-vendor-prefixer":undefined,"react":undefined,"react-jss":undefined,"react-swipeable":undefined}]},{},[]);
+},{"./Icon":1,"./Portal":2,"./styles/default":7,"./utils":11,"jss":undefined,"jss-camel-case":undefined,"jss-nested":undefined,"jss-px":undefined,"jss-vendor-prefixer":undefined,"react":undefined,"react-jss":undefined}]},{},[]);
