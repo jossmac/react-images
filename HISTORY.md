@@ -1,5 +1,9 @@
 # React-Images
 
+### v0.4.10 / 2016-08-11
+* Fix react PropTypes warning. See [fixing-the-false-positive](https://facebook.github.io/react/warnings/dont-call-proptypes.html#fixing-the-false-positive-in-third-party-proptypes)
+* Simplify fade transition using `react-css-addons-transition-group`
+
 ### v0.4.9 / 2016-07-28
 * Resolve react "no-unused-prop" warnings [benhowell](https://github.com/benhowell)
 
