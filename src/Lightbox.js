@@ -15,7 +15,6 @@ jss.use(px());
 jss.use(vendorPrefixer());
 
 import utils from './utils';
-import Fade from './Fade';
 import Icon from './Icon';
 import Portal from './Portal';
 
@@ -187,9 +186,8 @@ class Lightbox extends Component {
 		const { classes } = this.props.sheet;
 
 		return (
-			<Fade id="react-images-container"
+			<div id="react-images-container"
 				key="dialog"
-				duration={250}
 				className={classes.container}
 				onClick={this.close}
 				onTouchEnd={this.close}
@@ -201,7 +199,7 @@ class Lightbox extends Component {
 				</div>
 				{this.renderArrowPrev()}
 				{this.renderArrowNext()}
-			</Fade>
+			</div>
 		);
 	}
 	renderFooter (caption) {
