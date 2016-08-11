@@ -47,12 +47,15 @@ class Lightbox extends Component {
 	componentWillReceiveProps (nextProps) {
 		if (!utils.canUseDom) return;
 
-		if (nextProps.isOpen && nextProps.enableKeyboardInput) {
+		if(nextProps.enableKeyboardInput){
 			window.addEventListener('keydown', this.handleKeyboardInput);
+		} else {
+			window.removeEventListener('keydown', this.handleKeyboardInput);
+		}
+		if (nextProps.isOpen) {
 			window.addEventListener('resize', this.handleResize);
 			this.handleResize();
 		} else {
-			window.removeEventListener('keydown', this.handleKeyboardInput);
 			window.removeEventListener('resize', this.handleResize);
 		}
 
