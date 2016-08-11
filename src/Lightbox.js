@@ -5,7 +5,7 @@ import camelCase from 'jss-camel-case';
 import px from 'jss-px';
 import nested from 'jss-nested';
 import vendorPrefixer from 'jss-vendor-prefixer';
-import Swipeable from 'react-swipeable';
+// import Swipeable from 'react-swipeable';
 
 export let jss = create();
 export let useSheet = reactJss(jss);

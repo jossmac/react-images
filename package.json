@@ -17,7 +17,6 @@
     "jss": "^3.2.0",
     "react-addons-transition-group": "^15.0.0",
     "react-jss": "^2.0.1",
-    "react-swipeable": "^3.1.0"
   },
   "devDependencies": {
     "babel-eslint": "^6.0.4",
