@@ -26,9 +26,6 @@ var IMAGE_MAP = IMAGE_NAMES.map(function (img) {
 		caption: capitalizeFirstLetter(img)
 	};
 });
-var IMAGES_PRELOAD = IMAGE_MAP.map(function (img) {
-	return _react2['default'].createElement('img', { key: img.caption, src: './images/1024-' + img + '.jpg' });
-});
 
 (0, _reactDom.render)(_react2['default'].createElement(
 	'div',
@@ -66,11 +63,6 @@ var IMAGES_PRELOAD = IMAGE_MAP.map(function (img) {
 			{ href: 'http://gratisography.com/', target: '_blank' },
 			'Gratisography'
 		)
-	),
-	_react2['default'].createElement(
-		'div',
-		{ style: { display: 'none' } },
-		IMAGES_PRELOAD
 	)
 ), document.getElementById('example'));
 
