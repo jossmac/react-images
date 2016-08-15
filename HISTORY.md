@@ -1,5 +1,11 @@
 # React-Images
 
+### v0.4.11 / 2016-08-15
+* Feature: Pre-load the next image based on user intention, uses new prop `preloadNextImage`
+* Fix: bug with `enableKeyboardInput` where images fail to render thanks to [benhowell](https://github.com/benhowell)
+* Bump dev dependencies for `react` and `react-dom` to `15.3.0`
+* Increase the default max-width of the Lightbox to `1024px`
+
 ### v0.4.10 / 2016-08-11
 * Fix react PropTypes warning. See [fixing-the-false-positive](https://facebook.github.io/react/warnings/dont-call-proptypes.html#fixing-the-false-positive-in-third-party-proptypes)
 * Simplify fade transition using `react-css-addons-transition-group`
