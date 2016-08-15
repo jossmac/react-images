@@ -118,6 +118,7 @@ onClickPrev | func | undefined | Fired on request of the previous image
 onClickNext | func | undefined | Fired on request of the next image
 onClose | func | undefined | Required. Handle closing of the lightbox
 onClickImage | func | undefined | Handle click on image
+preloadNextImage | bool | true | Based on the direction the user is navigating, preload the next available image
 showCloseButton | bool  | true | Optionally display a close "X" button in top right corner
 showImageCount | bool  | true | Optionally display image index, e.g., "3 of 20"
 width | number  | 1024 | Maximum width of the carousel; defaults to 1024px

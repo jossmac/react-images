@@ -47,6 +47,30 @@ class Lightbox extends Component {
 	componentWillReceiveProps (nextProps) {
 		if (!utils.canUseDom) return;
 
+		// preload images
+		if (nextProps.preloadNextImage) {
+			const currentIndex = this.props.currentImage;
+			const nextIndex = nextProps.currentImage + 1;
+			const prevIndex = nextProps.currentImage - 1;
+			let preloadIndex;
+
+			if (currentIndex && nextProps.currentImage > currentIndex) {
+				preloadIndex = nextIndex;
+			} else if (currentIndex && nextProps.currentImage < currentIndex) {
+				preloadIndex = prevIndex;
+			}
+
+			// if we know the user's direction just get one image
+			// otherwise, to be safe, we need to grab one in each direction
+			if (preloadIndex) {
+				this.preloadImage(preloadIndex);
+			} else {
+				this.preloadImage(prevIndex);
+				this.preloadImage(nextIndex);
+			}
+		}
+
+		// add event listeners
 		if (nextProps.isOpen && nextProps.enableKeyboardInput) {
 			window.addEventListener('keydown', this.handleKeyboardInput);
 			window.addEventListener('resize', this.handleResize);
@@ -56,6 +80,7 @@ class Lightbox extends Component {
 			window.removeEventListener('resize', this.handleResize);
 		}
 
+		// handle body scroll
 		if (nextProps.isOpen) {
 			utils.bodyScroll.blockScroll();
 		} else {
@@ -67,6 +92,19 @@ class Lightbox extends Component {
 	// METHODS
 	// ==============================
 
+	preloadImage (idx) {
+		const image = this.props.images[idx];
+
+		if (!image) return;
+
+		const img = new Image();
+
+		img.src = image.src;
+
+		if (image.srcset) {
+			img.srcset = image.srcset.join();
+		}
+	}
 	close (e) {
 		if (e.target.id !== 'react-images-container') return;
 
@@ -296,6 +334,7 @@ Lightbox.propTypes = {
 	onClickNext: PropTypes.func,
 	onClickPrev: PropTypes.func,
 	onClose: PropTypes.func.isRequired,
+	preloadNextImage: PropTypes.bool,
 	sheet: PropTypes.object,
 	showCloseButton: PropTypes.bool,
 	showImageCount: PropTypes.bool,
@@ -307,6 +346,7 @@ Lightbox.defaultProps = {
 	enableKeyboardInput: true,
 	imageCountSeparator: ' of ',
 	onClickShowNextImage: true,
+	preloadNextImage: true,
 	showCloseButton: true,
 	showImageCount: true,
 	width: 1024,
