@@ -309,7 +309,7 @@ Lightbox.defaultProps = {
 	onClickShowNextImage: true,
 	showCloseButton: true,
 	showImageCount: true,
-	width: 900,
+	width: 1024,
 };
 
 export default useSheet(Lightbox, defaultStyles);
