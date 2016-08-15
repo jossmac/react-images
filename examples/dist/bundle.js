@@ -494,15 +494,43 @@ var Lightbox = (function (_Component) {
 		value: function componentWillReceiveProps(nextProps) {
 			if (!_utils2['default'].canUseDom) return;
 
-			if (nextProps.isOpen && nextProps.enableKeyboardInput) {
+			// preload images
+			if (nextProps.preloadNextImage) {
+				var currentIndex = this.props.currentImage;
+				var nextIndex = nextProps.currentImage + 1;
+				var prevIndex = nextProps.currentImage - 1;
+				var preloadIndex = undefined;
+
+				if (currentIndex && nextProps.currentImage > currentIndex) {
+					preloadIndex = nextIndex;
+				} else if (currentIndex && nextProps.currentImage < currentIndex) {
+					preloadIndex = prevIndex;
+				}
+
+				// if we know the user's direction just get one image
+				// otherwise, to be safe, we need to grab one in each direction
+				if (preloadIndex) {
+					this.preloadImage(preloadIndex);
+				} else {
+					this.preloadImage(prevIndex);
+					this.preloadImage(nextIndex);
+				}
+			}
+
+			// add event listeners
+			if (nextProps.enableKeyboardInput) {
 				window.addEventListener('keydown', this.handleKeyboardInput);
+			} else {
+				window.removeEventListener('keydown', this.handleKeyboardInput);
+			}
+			if (nextProps.isOpen) {
 				window.addEventListener('resize', this.handleResize);
 				this.handleResize();
 			} else {
-				window.removeEventListener('keydown', this.handleKeyboardInput);
 				window.removeEventListener('resize', this.handleResize);
 			}
 
+			// handle body scroll
 			if (nextProps.isOpen) {
 				_utils2['default'].bodyScroll.blockScroll();
 			} else {
@@ -514,6 +542,21 @@ var Lightbox = (function (_Component) {
 		// METHODS
 		// ==============================
 
+	}, {
+		key: 'preloadImage',
+		value: function preloadImage(idx) {
+			var image = this.props.images[idx];
+
+			if (!image) return;
+
+			var img = new Image();
+
+			img.src = image.src;
+
+			if (image.srcset) {
+				img.srcset = image.srcset.join();
+			}
+		}
 	}, {
 		key: 'close',
 		value: function close(e) {
@@ -774,6 +817,7 @@ Lightbox.propTypes = {
 	onClickNext: _react.PropTypes.func,
 	onClickPrev: _react.PropTypes.func,
 	onClose: _react.PropTypes.func.isRequired,
+	preloadNextImage: _react.PropTypes.bool,
 	sheet: _react.PropTypes.object,
 	showCloseButton: _react.PropTypes.bool,
 	showImageCount: _react.PropTypes.bool,
@@ -785,9 +829,10 @@ Lightbox.defaultProps = {
 	enableKeyboardInput: true,
 	imageCountSeparator: ' of ',
 	onClickShowNextImage: true,
+	preloadNextImage: true,
 	showCloseButton: true,
 	showImageCount: true,
-	width: 900
+	width: 1024
 };
 
 exports['default'] = useSheet(Lightbox, _stylesDefault2['default']);
