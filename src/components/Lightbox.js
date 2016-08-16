@@ -2,27 +2,19 @@ import React, { Component, PropTypes } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 // import Swipeable from 'react-swipeable';
 
-import utils from './utils';
-import theme from './theme';
-import Arrow from './Arrow';
-import Footer from './Footer';
-import Header from './Header';
-import Portal from './Portal';
+import utils from '../utils';
+import theme from '../theme';
+import Arrow from '../Arrow';
+import Container from '../Container';
+import Footer from '../Footer';
+import Header from '../Header';
+import Portal from '../Portal';
 
-import styles from './styles/default';
+import styles from '../styles/default';
 
 const classes = StyleSheet.create(styles);
 
 class Lightbox extends Component {
-	static theme (themeStyles) {
-		const extStyles = Object.assign({}, styles);
-		for (const key in extStyles) {
-			if (key in themeStyles) {
-				extStyles[key] = Object.assign({}, styles[key], themeStyles[key]);
-			}
-		}
-		return extStyles;
-	}
 	constructor () {
 		super();
 
@@ -31,6 +23,14 @@ class Lightbox extends Component {
 			'gotoPrev',
 			'handleKeyboardInput',
 		]);
+	}
+	getChildContext () {
+		const extended = utils.deepMerge(theme, this.props.theme);
+		console.log('extended', extended);
+
+		return {
+			theme: extended,
+		};
 	}
 	componentWillReceiveProps (nextProps) {
 		if (!utils.canUseDom) return;
@@ -165,9 +165,7 @@ class Lightbox extends Component {
 		if (!isOpen) return null;
 
 		return (
-			<div
-				key="dialog"
-				className={css(classes.container)}
+			<Container
 				onClick={!!backdropClosesModal && onClose}
 				onTouchEnd={!!backdropClosesModal && onClose}
 			>
@@ -181,7 +179,7 @@ class Lightbox extends Component {
 				</div>
 				{this.renderArrowPrev()}
 				{this.renderArrowNext()}
-			</div>
+			</Container>
 		);
 	}
 	renderImages () {
@@ -236,14 +234,14 @@ class Lightbox extends Component {
 	}
 	render () {
 		return (
-			<Portal>
-				{this.renderDialog()}
-			</Portal>
+			<div>
+				<Portal>
+					{this.renderDialog()}
+				</Portal>
+			</div>
 		);
 	}
 }
-
-Lightbox.displayName = 'Lightbox';
 
 Lightbox.propTypes = {
 	backdropClosesModal: PropTypes.bool,
@@ -269,7 +267,6 @@ Lightbox.propTypes = {
 	showImageCount: PropTypes.bool,
 	width: PropTypes.number,
 };
-
 Lightbox.defaultProps = {
 	currentImage: 0,
 	enableKeyboardInput: true,
@@ -279,6 +276,9 @@ Lightbox.defaultProps = {
 	showCloseButton: true,
 	showImageCount: true,
 	width: 1024,
+};
+Lightbox.childContextTypes = {
+	theme: PropTypes.object,
 };
 
 export default Lightbox;

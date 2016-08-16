@@ -78,6 +78,7 @@ class Gallery extends Component {
 		let customControls = [
 			<DownloadButton key="Download" handler={this.handleDownload.bind(this)} />,
 		];
+
 		return (
 			<div className="section">
 				{this.props.heading && <h2>{this.props.heading}</h2>}
@@ -92,7 +93,11 @@ class Gallery extends Component {
 					onClickNext={this.gotoNext}
 					onClickImage={this.handleClickImage}
 					onClose={this.closeLightbox}
-					theme={this.props.theme}
+					theme={{
+						container: {
+							background: 'rgba(255, 0, 0, 0.5)',
+						},
+					}}
 				/>
 			</div>
 		);

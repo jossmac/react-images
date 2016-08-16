@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import icons from './icons';
+import icons from '../icons';
 
 const Icon = ({ type, ...props }) => (
 	<span

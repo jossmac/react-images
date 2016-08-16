@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
-import theme from './theme';
+import theme from '../theme';
 
 function Footer ({
 	caption,
