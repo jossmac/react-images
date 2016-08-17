@@ -93,11 +93,6 @@ class Gallery extends Component {
 					onClickNext={this.gotoNext}
 					onClickImage={this.handleClickImage}
 					onClose={this.closeLightbox}
-					theme={{
-						container: {
-							background: 'rgba(255, 0, 0, 0.5)',
-						},
-					}}
 				/>
 			</div>
 		);

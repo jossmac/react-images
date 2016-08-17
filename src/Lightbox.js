@@ -265,6 +265,7 @@ Lightbox.propTypes = {
 	sheet: PropTypes.object,
 	showCloseButton: PropTypes.bool,
 	showImageCount: PropTypes.bool,
+	theme: PropTypes.object,
 	width: PropTypes.number,
 };
 Lightbox.defaultProps = {
@@ -275,6 +276,7 @@ Lightbox.defaultProps = {
 	preloadNextImage: true,
 	showCloseButton: true,
 	showImageCount: true,
+	theme: {},
 	width: 1024,
 };
 Lightbox.childContextTypes = {
