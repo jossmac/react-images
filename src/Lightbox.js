@@ -2,15 +2,15 @@ import React, { Component, PropTypes } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 // import Swipeable from 'react-swipeable';
 
-import utils from '../utils';
-import theme from '../theme';
-import Arrow from '../Arrow';
-import Container from '../Container';
-import Footer from '../Footer';
-import Header from '../Header';
-import Portal from '../Portal';
+import Arrow from './components/Arrow';
+import Container from './components/Container';
+import Footer from './components/Footer';
+import Header from './components/Header';
+import Portal from './components/Portal';
 
-import styles from '../styles/default';
+import theme from './theme';
+import { bindFunctions, bodyScroll, canUseDom, deepMerge } from './utils';
+import styles from './styles/default';
 
 const classes = StyleSheet.create(styles);
 
@@ -18,22 +18,22 @@ class Lightbox extends Component {
 	constructor () {
 		super();
 
-		utils.bindFunctions.call(this, [
+		bindFunctions.call(this, [
 			'gotoNext',
 			'gotoPrev',
 			'handleKeyboardInput',
 		]);
 	}
 	getChildContext () {
-		const extended = utils.deepMerge(theme, this.props.theme);
-		console.log('extended', extended);
+		const extended = deepMerge(theme, this.props.theme);
+		// console.log('Lightbox extended theme', extended);
 
 		return {
 			theme: extended,
 		};
 	}
 	componentWillReceiveProps (nextProps) {
-		if (!utils.canUseDom) return;
+		if (!canUseDom) return;
 
 		// preload images
 		if (nextProps.preloadNextImage) {
@@ -67,9 +67,9 @@ class Lightbox extends Component {
 
 		// handle body scroll
 		if (nextProps.isOpen) {
-			utils.bodyScroll.blockScroll();
+			bodyScroll.blockScroll();
 		} else {
-			utils.bodyScroll.allowScroll();
+			bodyScroll.allowScroll();
 		}
 	}
 
@@ -162,10 +162,11 @@ class Lightbox extends Component {
 			showCloseButton,
 		} = this.props;
 
-		if (!isOpen) return null;
+		if (!isOpen) return <span key="closed" />;
 
 		return (
 			<Container
+				key="open"
 				onClick={!!backdropClosesModal && onClose}
 				onTouchEnd={!!backdropClosesModal && onClose}
 			>
@@ -233,12 +234,11 @@ class Lightbox extends Component {
 		);
 	}
 	render () {
+		// return this.renderDialog();
 		return (
-			<div>
-				<Portal>
-					{this.renderDialog()}
-				</Portal>
-			</div>
+			<Portal>
+				{this.renderDialog()}
+			</Portal>
 		);
 	}
 }
@@ -278,7 +278,7 @@ Lightbox.defaultProps = {
 	width: 1024,
 };
 Lightbox.childContextTypes = {
-	theme: PropTypes.object,
+	theme: PropTypes.object.isRequired,
 };
 
 export default Lightbox;

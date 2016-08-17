@@ -13,7 +13,6 @@ function Container ({ style, ...props }, { theme }) {
 		zIndex: theme.container.zIndex,
 		...style,
 	};
-	console.log('Container theme', theme);
 
 	return (
 		<div
@@ -24,26 +23,20 @@ function Container ({ style, ...props }, { theme }) {
 };
 
 Container.contextTypes = {
-	theme: PropTypes.object,
+	theme: PropTypes.object.isRequired,
 };
 
 const classes = StyleSheet.create({
 	container: {
 		alignItems: 'center',
-		// backgroundColor: theme.container.background,
 		boxSizing: 'border-box',
 		display: 'flex',
 		height: '100%',
 		justifyContent: 'center',
 		left: 0,
-		// paddingBottom: theme.container.gutter.vertical,
-		// paddingLeft: theme.container.gutter.horizontal,
-		// paddingRight: theme.container.gutter.horizontal,
-		// paddingTop: theme.container.gutter.vertical,
 		position: 'fixed',
 		top: 0,
 		width: '100%',
-		// zIndex: theme.container.zIndex,
 	},
 });
 
