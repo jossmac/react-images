@@ -7,6 +7,7 @@ import theme from './theme';
 import Arrow from './Arrow';
 import Footer from './Footer';
 import Header from './Header';
+import Thumbnails from './Thumbnails';
 import Portal from './Portal';
 
 import styles from './styles/default';
@@ -171,7 +172,7 @@ class Lightbox extends Component {
 				onClick={!!backdropClosesModal && onClose}
 				onTouchEnd={!!backdropClosesModal && onClose}
 			>
-				<div className={css(classes.content)} style={{ maxWidth: this.props.width }}>
+				<div className={css(classes.content)} style={{ maxWidth: this.props.width, marginBottom: 64 }}>
 					<Header
 						customControls={customControls}
 						onClose={onClose}
@@ -181,6 +182,7 @@ class Lightbox extends Component {
 				</div>
 				{this.renderArrowPrev()}
 				{this.renderArrowNext()}
+				{this.renderThumbnails()}
 			</div>
 		);
 	}
@@ -221,7 +223,7 @@ class Lightbox extends Component {
 					srcSet={srcset}
 					style={{
 						cursor: this.props.onClickImage ? 'pointer' : 'auto',
-						maxHeight: `calc(100vh - ${theme.header.height + theme.footer.height}px)`,
+						maxHeight: `calc(100vh - ${theme.header.height + theme.footer.height + 64}px)`,
 					}}
 				/>
 				<Footer
@@ -234,6 +236,12 @@ class Lightbox extends Component {
 			</figure>
 		);
 	}
+	renderThumbnails() {
+		const { images, currentImage, onClickThumbnail } = this.props
+		return <Thumbnails images={images}
+		                   currentImage={currentImage}
+											 onClickThumbnail={onClickThumbnail} />
+		}
 	render () {
 		return (
 			<Portal>

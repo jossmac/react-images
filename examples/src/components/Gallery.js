@@ -14,6 +14,7 @@ class Gallery extends Component {
 		this.closeLightbox = this.closeLightbox.bind(this);
 		this.gotoNext = this.gotoNext.bind(this);
 		this.gotoPrevious = this.gotoPrevious.bind(this);
+		this.gotoImage = this.gotoImage.bind(this);
 		this.handleClickImage = this.handleClickImage.bind(this);
 		this.openLightbox = this.openLightbox.bind(this);
 	}
@@ -38,6 +39,11 @@ class Gallery extends Component {
 	gotoNext () {
 		this.setState({
 			currentImage: this.state.currentImage + 1,
+		});
+	}
+	gotoImage (index) {
+		this.setState({
+			currentImage: index,
 		});
 	}
 	handleClickImage () {
@@ -90,6 +96,7 @@ class Gallery extends Component {
 					isOpen={this.state.lightboxIsOpen}
 					onClickPrev={this.gotoPrevious}
 					onClickNext={this.gotoNext}
+					onClickThumbnail={this.gotoImage}
 					onClickImage={this.handleClickImage}
 					onClose={this.closeLightbox}
 					theme={this.props.theme}
