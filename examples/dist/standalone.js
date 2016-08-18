@@ -2069,6 +2069,7 @@ var Lightbox = (function (_Component) {
 			var isOpen = _props.isOpen;
 			var onClose = _props.onClose;
 			var showCloseButton = _props.showCloseButton;
+			var thumbnails = _props.thumbnails;
 
 			if (!isOpen) return null;
 
@@ -2082,7 +2083,10 @@ var Lightbox = (function (_Component) {
 				},
 				_react2['default'].createElement(
 					'div',
-					{ className: (0, _aphroditeNoImportant.css)(classes.content), style: { maxWidth: this.props.width, marginBottom: 64 } },
+					{ className: (0, _aphroditeNoImportant.css)(classes.content), style: {
+							maxWidth: this.props.width,
+							marginBottom: thumbnails ? _theme2['default'].thumbnails.height : 0
+						} },
 					_react2['default'].createElement(_Header2['default'], {
 						customControls: customControls,
 						onClose: onClose,
@@ -2104,6 +2108,7 @@ var Lightbox = (function (_Component) {
 			var imageCountSeparator = _props2.imageCountSeparator;
 			var onClickImage = _props2.onClickImage;
 			var showImageCount = _props2.showImageCount;
+			var thumbnails = _props2.thumbnails;
 
 			if (!images || !images.length) return null;
 
@@ -2118,6 +2123,8 @@ var Lightbox = (function (_Component) {
 				sizes = '100vw';
 			}
 
+			var thumbnailsSize = thumbnails ? _theme2['default'].thumbnails.height : 0;
+
 			return _react2['default'].createElement(
 				'figure',
 				{ className: (0, _aphroditeNoImportant.css)(classes.figure), style: { width: width } },
@@ -2129,7 +2136,7 @@ var Lightbox = (function (_Component) {
 					srcSet: srcset,
 					style: {
 						cursor: this.props.onClickImage ? 'pointer' : 'auto',
-						maxHeight: 'calc(100vh - ' + (_theme2['default'].header.height + _theme2['default'].footer.height + 64) + 'px)'
+						maxHeight: 'calc(100vh - ' + (_theme2['default'].header.height + _theme2['default'].footer.height + thumbnailsSize) + 'px)'
 					}
 				}),
 				_react2['default'].createElement(_Footer2['default'], {
@@ -2148,8 +2155,10 @@ var Lightbox = (function (_Component) {
 			var images = _props3.images;
 			var currentImage = _props3.currentImage;
 			var onClickThumbnail = _props3.onClickThumbnail;
+			var ThumbnailsComponent = _props3.thumbnails;
 
-			return _react2['default'].createElement(_Thumbnails2['default'], { images: images,
+			if (!ThumbnailsComponent) return null;
+			return _react2['default'].createElement(ThumbnailsComponent, { images: images,
 				currentImage: currentImage,
 				onClickThumbnail: onClickThumbnail });
 		}
@@ -2200,7 +2209,8 @@ Lightbox.defaultProps = {
 	preloadNextImage: true,
 	showCloseButton: true,
 	showImageCount: true,
-	width: 1024
+	width: 1024,
+	thumbnails: _Thumbnails2['default']
 };
 
 exports['default'] = Lightbox;
@@ -2322,6 +2332,42 @@ var _react = (typeof window !== "undefined" ? window['React'] : typeof global !=
 
 var _react2 = _interopRequireDefault(_react);
 
+var _aphroditeNoImportant = require('aphrodite/no-important');
+
+var _theme = require('./theme');
+
+var _theme2 = _interopRequireDefault(_theme);
+
+var classes = _aphroditeNoImportant.StyleSheet.create({
+  thumbnail: {
+    display: 'inline-block',
+    margin: 2,
+    overflow: 'hidden',
+    borderRadius: 2,
+    cursor: 'pointer',
+    width: _theme2['default'].thumbnails.size,
+    height: _theme2['default'].thumbnails.size,
+    backgroundPosition: 'center',
+    backgroundSize: 'cover',
+    boxShadow: 'inset 0 0 0 1px hsla(0,0%,100%,.2)'
+  },
+  active: {
+    boxShadow: 'inset 0 0 0 2px #fff'
+  },
+
+  thumbnails: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: 72,
+    color: 'white',
+    overflowX: 'scroll',
+    textAlign: 'center',
+    whiteSpace: 'nowrap'
+  }
+});
+
 var Thumbnail = (function (_React$Component) {
   _inherits(Thumbnail, _React$Component);
 
@@ -2344,22 +2390,11 @@ var Thumbnail = (function (_React$Component) {
 
       var size = 64;
       var url = thumbnail ? thumbnail : src;
-      var boxShadow = active ? 'inset 0 0 0 2px #fff' : 'inset 0 0 0 1px hsla(0,0%,100%,.2)';
-      return _react2['default'].createElement('div', { onClick: function () {
+      return _react2['default'].createElement('div', { className: (0, _aphroditeNoImportant.css)(classes.thumbnail, active && classes.active),
+        onClick: function () {
           return onClickThumbnail(index);
         },
-        style: {
-          display: 'inline-block',
-          margin: 2,
-          overflow: 'hidden',
-          borderRadius: 2,
-          cursor: 'pointer',
-          width: size, height: size,
-          backgroundImage: 'url("' + url + '")',
-          backgroundPosition: 'center',
-          backgroundSize: 'cover',
-          boxShadow: boxShadow
-        } });
+        style: { backgroundImage: 'url("' + url + '")' } });
     }
   }]);
 
@@ -2385,17 +2420,7 @@ var Thumbnails = (function (_React$Component2) {
 
       return _react2['default'].createElement(
         'div',
-        { style: {
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            bottom: 0,
-            height: 72,
-            color: 'white',
-            overflowX: 'scroll',
-            textAlign: 'center',
-            whiteSpace: 'nowrap'
-          } },
+        { className: (0, _aphroditeNoImportant.css)(classes.thumbnails) },
         images.map(function (img, idx) {
           return _react2['default'].createElement(Thumbnail, _extends({ key: idx
           }, img, {
@@ -2414,7 +2439,7 @@ exports['default'] = Thumbnails;
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],31:[function(require,module,exports){
+},{"./theme":36,"aphrodite/no-important":6}],31:[function(require,module,exports){
 'use strict';
 
 module.exports = '<svg fill="white" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100%" height="100%" viewBox="0 0 512 512" xml:space="preserve">' + '<path d="M213.7,256L213.7,256L213.7,256L380.9,81.9c4.2-4.3,4.1-11.4-0.2-15.8l-29.9-30.6c-4.3-4.4-11.3-4.5-15.5-0.2L131.1,247.9 c-2.2,2.2-3.2,5.2-3,8.1c-0.1,3,0.9,5.9,3,8.1l204.2,212.7c4.2,4.3,11.2,4.2,15.5-0.2l29.9-30.6c4.3-4.4,4.4-11.5,0.2-15.8 L213.7,256z"/>' + '</svg>';
@@ -2535,6 +2560,11 @@ theme.footer = {
 		horizontal: 0,
 		vertical: 5
 	}
+};
+
+theme.thumbnails = {
+	height: 64,
+	size: 64
 };
 
 // arrow

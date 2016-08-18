@@ -81,6 +81,7 @@ class Gallery extends Component {
 		window.open(this.props.images[this.state.currentImage].src);
 	}
 	render () {
+		const { thumbnails } = this.props
 		let customControls = [
 			<DownloadButton key="Download" handler={this.handleDownload.bind(this)} />,
 		];
@@ -100,6 +101,7 @@ class Gallery extends Component {
 					onClickImage={this.handleClickImage}
 					onClose={this.closeLightbox}
 					theme={this.props.theme}
+					thumbnails={thumbnails}
 				/>
 			</div>
 		);

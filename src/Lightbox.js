@@ -161,6 +161,7 @@ class Lightbox extends Component {
 			isOpen,
 			onClose,
 			showCloseButton,
+			thumbnails
 		} = this.props;
 
 		if (!isOpen) return null;
@@ -172,7 +173,10 @@ class Lightbox extends Component {
 				onClick={!!backdropClosesModal && onClose}
 				onTouchEnd={!!backdropClosesModal && onClose}
 			>
-				<div className={css(classes.content)} style={{ maxWidth: this.props.width, marginBottom: 64 }}>
+				<div className={css(classes.content)} style={{ 
+					maxWidth: this.props.width, 
+					marginBottom: thumbnails ? theme.thumbnails.height : 0 
+				}}>
 					<Header
 						customControls={customControls}
 						onClose={onClose}
@@ -193,6 +197,7 @@ class Lightbox extends Component {
 			imageCountSeparator,
 			onClickImage,
 			showImageCount,
+			thumbnails
 		} = this.props;
 
 		if (!images || !images.length) return null;
@@ -207,6 +212,8 @@ class Lightbox extends Component {
 			srcset = image.srcset.join();
 			sizes = '100vw';
 		}
+
+		const thumbnailsSize = thumbnails ? theme.thumbnails.height : 0 
 
 		return (
 			<figure className={css(classes.figure)} style={{ width }}>
@@ -223,7 +230,7 @@ class Lightbox extends Component {
 					srcSet={srcset}
 					style={{
 						cursor: this.props.onClickImage ? 'pointer' : 'auto',
-						maxHeight: `calc(100vh - ${theme.header.height + theme.footer.height + 64}px)`,
+						maxHeight: `calc(100vh - ${theme.header.height + theme.footer.height + thumbnailsSize}px)`,
 					}}
 				/>
 				<Footer
@@ -237,10 +244,11 @@ class Lightbox extends Component {
 		);
 	}
 	renderThumbnails() {
-		const { images, currentImage, onClickThumbnail } = this.props
-		return <Thumbnails images={images}
-		                   currentImage={currentImage}
-											 onClickThumbnail={onClickThumbnail} />
+		const { images, currentImage, onClickThumbnail, thumbnails:ThumbnailsComponent } = this.props
+		if (!ThumbnailsComponent) return null
+		return <ThumbnailsComponent images={images}
+															  currentImage={currentImage}
+														  	onClickThumbnail={onClickThumbnail} />
 		}
 	render () {
 		return (
@@ -287,6 +295,7 @@ Lightbox.defaultProps = {
 	showCloseButton: true,
 	showImageCount: true,
 	width: 1024,
+	thumbnails: Thumbnails
 };
 
 export default Lightbox;

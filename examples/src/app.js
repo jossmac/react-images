@@ -21,9 +21,14 @@ const IMAGE_MAP = IMAGE_NAMES.map(img => ({
 
 render(
 	<div>
+		<h3>Default options</h3>
 		<p style={{ marginBottom: 40 }}>Use your keyboard to navigate <kbd>left</kbd> <kbd>right</kbd> <kbd>esc</kbd> &mdash; Also, try resizing your browser window.</p>
 		<Gallery images={IMAGE_MAP} />
 		<p>Images courtesy of <a href="http://gratisography.com/" target="_blank">Gratisography</a></p>
+
+		<h3>Without thumbnails</h3>
+		<p style={{ marginBottom: 40 }}>Set <code>{"thumbnails={false}"}</code> to remove thumbnails</p>
+		<Gallery images={IMAGE_MAP} thumbnails={false} />
 	</div>,
 	document.getElementById('example')
 );
