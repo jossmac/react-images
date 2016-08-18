@@ -6,22 +6,6 @@ import { Thumbnail } from './Thumbnails'
 import Arrow from './Arrow'
 
 const classes = StyleSheet.create({
-	thumbnail: {
-    display: 'inline-block',
-    margin: 2,
-    overflow: 'hidden',
-    borderRadius: 2,
-    cursor: 'pointer',
-    width: theme.thumbnails.size, 
-    height: theme.thumbnails.size,
-    backgroundPosition: 'center',
-    backgroundSize: 'cover',
-    boxShadow: 'inset 0 0 0 1px hsla(0,0%,100%,.2)'
-	},
-  active: {
-    boxShadow: 'inset 0 0 0 2px #fff'
-  },
-
 	paginatedThumbnails: {
     position: 'absolute',
     bottom: 0,

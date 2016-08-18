@@ -34,6 +34,9 @@ render(
 		<h3>Paginated version</h3>
 		<p style={{ marginBottom: 40 }}>The <code>thumbnails</code> prop can actually take a component as value<br /><code>{"thumbnails={Lightbox.Lightbox.PaginatedThumbnails}"}</code></p>
 		<Gallery images={IMAGE_MAP} thumbnails={Lightbox.PaginatedThumbnails} />
+		<p style={{ marginBottom: 20 }}>Note : PaginatedThumbnails has an offset prop to change the number of thumbnails to show around the current one.<br />
+		<code>{"<Lightbox thumbnails={(props) => <PaginatedThumbnails {...props} offset={5} />} />"}</code>
+		</p>
 	</div>,
 	document.getElementById('example')
 );
