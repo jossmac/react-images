@@ -8,6 +8,7 @@ import Arrow from './Arrow';
 import Footer from './Footer';
 import Header from './Header';
 import Thumbnails from './Thumbnails';
+import PaginatedThumbnails from './PaginatedThumbnails';
 import Portal from './Portal';
 
 import styles from './styles/default';
@@ -297,5 +298,8 @@ Lightbox.defaultProps = {
 	width: 1024,
 	thumbnails: Thumbnails
 };
+
+Lightbox.Thumbnails = Thumbnails
+Lightbox.PaginatedThumbnails = PaginatedThumbnails
 
 export default Lightbox;

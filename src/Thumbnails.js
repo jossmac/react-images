@@ -1,5 +1,6 @@
 import React from 'react'
 import { css, StyleSheet } from 'aphrodite/no-important';
+import Arrow from './Arrow'
 
 import theme from './theme';
 
@@ -64,3 +65,5 @@ export default class Thumbnails extends React.Component {
     )
   }
 }
+
+Thumbnails.Thumbnail = Thumbnail

@@ -1,6 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 import Gallery from './components/Gallery';
+import Lightbox from 'react-images';
 
 function capitalizeFirstLetter (str) {
 	return str.charAt(0).toUpperCase() + str.slice(1);
@@ -29,6 +30,10 @@ render(
 		<h3>Without thumbnails</h3>
 		<p style={{ marginBottom: 40 }}>Set <code>{"thumbnails={false}"}</code> to remove thumbnails</p>
 		<Gallery images={IMAGE_MAP} thumbnails={false} />
+
+		<h3>Paginated version</h3>
+		<p style={{ marginBottom: 40 }}>The <code>thumbnails</code> prop can actually take a component as value<br /><code>{"thumbnails={Lightbox.Lightbox.PaginatedThumbnails}"}</code></p>
+		<Gallery images={IMAGE_MAP} thumbnails={Lightbox.PaginatedThumbnails} />
 	</div>,
 	document.getElementById('example')
 );
