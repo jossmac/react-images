@@ -1586,15 +1586,14 @@ function Arrow(_ref) {
 	var direction = _ref.direction;
 	var icon = _ref.icon;
 	var onClick = _ref.onClick;
-	var size = _ref.size;
 
-	var props = _objectWithoutProperties(_ref, ['direction', 'icon', 'onClick', 'size']);
+	var props = _objectWithoutProperties(_ref, ['direction', 'icon', 'onClick']);
 
 	return _react2['default'].createElement(
 		'button',
 		_extends({
 			type: 'button',
-			className: (0, _aphroditeNoImportant.css)(classes.arrow, classes[direction], size && classes[size]),
+			className: (0, _aphroditeNoImportant.css)(classes.arrow, classes[direction]),
 			onClick: onClick,
 			onTouchEnd: onClick
 		}, props),
@@ -1630,13 +1629,6 @@ var classes = _aphroditeNoImportant.StyleSheet.create({
 			width: 70
 		}
 	},
-	small: {
-		width: 30,
-
-		'@media (min-width: 500px)': {
-			width: 40
-		}
-	},
 	right: {
 		right: _theme2['default'].container.gutter.horizontal
 	},
@@ -1648,7 +1640,7 @@ var classes = _aphroditeNoImportant.StyleSheet.create({
 module.exports = Arrow;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./Icon":27,"./theme":37,"aphrodite/no-important":6}],25:[function(require,module,exports){
+},{"./Icon":27,"./theme":35,"aphrodite/no-important":6}],25:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -1735,7 +1727,7 @@ var classes = _aphroditeNoImportant.StyleSheet.create({
 module.exports = Footer;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./theme":37,"aphrodite/no-important":6}],26:[function(require,module,exports){
+},{"./theme":35,"aphrodite/no-important":6}],26:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -1814,7 +1806,7 @@ var classes = _aphroditeNoImportant.StyleSheet.create({
 module.exports = Header;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./Icon":27,"./theme":37,"aphrodite/no-important":6}],27:[function(require,module,exports){
+},{"./Icon":27,"./theme":35,"aphrodite/no-important":6}],27:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -1854,7 +1846,7 @@ exports['default'] = Icon;
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./icons":35}],28:[function(require,module,exports){
+},{"./icons":33}],28:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -1901,14 +1893,6 @@ var _Footer2 = _interopRequireDefault(_Footer);
 var _Header = require('./Header');
 
 var _Header2 = _interopRequireDefault(_Header);
-
-var _Thumbnails = require('./Thumbnails');
-
-var _Thumbnails2 = _interopRequireDefault(_Thumbnails);
-
-var _PaginatedThumbnails = require('./PaginatedThumbnails');
-
-var _PaginatedThumbnails2 = _interopRequireDefault(_PaginatedThumbnails);
 
 var _Portal = require('./Portal');
 
@@ -2081,7 +2065,6 @@ var Lightbox = (function (_Component) {
 			var isOpen = _props.isOpen;
 			var onClose = _props.onClose;
 			var showCloseButton = _props.showCloseButton;
-			var thumbnails = _props.thumbnails;
 
 			if (!isOpen) return null;
 
@@ -2095,10 +2078,7 @@ var Lightbox = (function (_Component) {
 				},
 				_react2['default'].createElement(
 					'div',
-					{ className: (0, _aphroditeNoImportant.css)(classes.content), style: {
-							maxWidth: this.props.width,
-							marginBottom: thumbnails ? _theme2['default'].thumbnails.height : 0
-						} },
+					{ className: (0, _aphroditeNoImportant.css)(classes.content), style: { maxWidth: this.props.width } },
 					_react2['default'].createElement(_Header2['default'], {
 						customControls: customControls,
 						onClose: onClose,
@@ -2107,8 +2087,7 @@ var Lightbox = (function (_Component) {
 					this.renderImages()
 				),
 				this.renderArrowPrev(),
-				this.renderArrowNext(),
-				this.renderThumbnails()
+				this.renderArrowNext()
 			);
 		}
 	}, {
@@ -2120,7 +2099,6 @@ var Lightbox = (function (_Component) {
 			var imageCountSeparator = _props2.imageCountSeparator;
 			var onClickImage = _props2.onClickImage;
 			var showImageCount = _props2.showImageCount;
-			var thumbnails = _props2.thumbnails;
 
 			if (!images || !images.length) return null;
 
@@ -2135,8 +2113,6 @@ var Lightbox = (function (_Component) {
 				sizes = '100vw';
 			}
 
-			var thumbnailsSize = thumbnails ? _theme2['default'].thumbnails.height : 0;
-
 			return _react2['default'].createElement(
 				'figure',
 				{ className: (0, _aphroditeNoImportant.css)(classes.figure), style: { width: width } },
@@ -2148,7 +2124,7 @@ var Lightbox = (function (_Component) {
 					srcSet: srcset,
 					style: {
 						cursor: this.props.onClickImage ? 'pointer' : 'auto',
-						maxHeight: 'calc(100vh - ' + (_theme2['default'].header.height + _theme2['default'].footer.height + thumbnailsSize) + 'px)'
+						maxHeight: 'calc(100vh - ' + (_theme2['default'].header.height + _theme2['default'].footer.height) + 'px)'
 					}
 				}),
 				_react2['default'].createElement(_Footer2['default'], {
@@ -2159,20 +2135,6 @@ var Lightbox = (function (_Component) {
 					showCount: showImageCount
 				})
 			);
-		}
-	}, {
-		key: 'renderThumbnails',
-		value: function renderThumbnails() {
-			var _props3 = this.props;
-			var images = _props3.images;
-			var currentImage = _props3.currentImage;
-			var onClickThumbnail = _props3.onClickThumbnail;
-			var ThumbnailsComponent = _props3.thumbnails;
-
-			if (!ThumbnailsComponent) return null;
-			return _react2['default'].createElement(ThumbnailsComponent, { images: images,
-				currentImage: currentImage,
-				onClickThumbnail: onClickThumbnail });
 		}
 	}, {
 		key: 'render',
@@ -2221,12 +2183,8 @@ Lightbox.defaultProps = {
 	preloadNextImage: true,
 	showCloseButton: true,
 	showImageCount: true,
-	width: 1024,
-	thumbnails: _Thumbnails2['default']
+	width: 1024
 };
-
-Lightbox.Thumbnails = _Thumbnails2['default'];
-Lightbox.PaginatedThumbnails = _PaginatedThumbnails2['default'];
 
 exports['default'] = Lightbox;
 module.exports = exports['default'];
@@ -2237,217 +2195,7 @@ https://fb.me/react-unknown-prop is resolved
 */
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./Arrow":24,"./Footer":25,"./Header":26,"./PaginatedThumbnails":29,"./Portal":30,"./Thumbnails":31,"./styles/default":36,"./theme":37,"./utils":41,"aphrodite/no-important":6}],29:[function(require,module,exports){
-(function (global){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var _react = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _aphroditeNoImportant = require('aphrodite/no-important');
-
-var _theme = require('./theme');
-
-var _theme2 = _interopRequireDefault(_theme);
-
-var _Thumbnails = require('./Thumbnails');
-
-var _Arrow = require('./Arrow');
-
-var _Arrow2 = _interopRequireDefault(_Arrow);
-
-var classes = _aphroditeNoImportant.StyleSheet.create({
-  paginatedThumbnails: {
-    position: 'absolute',
-    bottom: 0,
-    height: 72,
-    padding: '0 50px',
-    color: 'white',
-    textAlign: 'center',
-    whiteSpace: 'nowrap'
-  }
-});
-
-var PaginatedThumbnails = (function (_React$Component) {
-  _inherits(PaginatedThumbnails, _React$Component);
-
-  function PaginatedThumbnails(props) {
-    _classCallCheck(this, PaginatedThumbnails);
-
-    _get(Object.getPrototypeOf(PaginatedThumbnails.prototype), 'constructor', this).call(this, props);
-
-    this.state = {
-      hasCustomPage: false
-    };
-
-    this.gotoPrev = this.gotoPrev.bind(this);
-    this.gotoNext = this.gotoNext.bind(this);
-  }
-
-  // Component should be controlled, flush state when currentImage changes
-
-  _createClass(PaginatedThumbnails, [{
-    key: 'componentWillReceiveProps',
-    value: function componentWillReceiveProps(nextProps) {
-      if (nextProps.currentImage != this.props.currentImage) {
-        this.setState({
-          hasCustomPage: false
-        });
-      }
-    }
-  }, {
-    key: 'getFirst',
-    value: function getFirst() {
-      var _props = this.props;
-      var currentImage = _props.currentImage;
-      var offset = _props.offset;
-
-      if (this.state.hasCustomPage) {
-        return this.clampFirst(this.state.first);
-      }
-      return this.clampFirst(currentImage - offset);
-    }
-  }, {
-    key: 'setFirst',
-    value: function setFirst(event, newFirst) {
-      var first = this.state.first;
-
-      if (event) {
-        event.preventDefault();
-        event.stopPropagation();
-      }
-      if (first == newFirst) return;
-      this.setState({
-        hasCustomPage: true,
-        first: newFirst
-      });
-    }
-  }, {
-    key: 'gotoPrev',
-    value: function gotoPrev(event) {
-      this.setFirst(event, this.getFirst() - this.props.offset);
-    }
-  }, {
-    key: 'gotoNext',
-    value: function gotoNext(event) {
-      this.setFirst(event, this.getFirst() + this.props.offset);
-    }
-  }, {
-    key: 'clampFirst',
-    value: function clampFirst(value) {
-      var _props2 = this.props;
-      var images = _props2.images;
-      var offset = _props2.offset;
-
-      var totalCount = 2 * offset + 1; // show $offset extra thumbnails on each side
-
-      if (value < 0) {
-        return 0;
-      } else if (value + totalCount > images.length) {
-        // Too far
-        return images.length - totalCount;
-      } else {
-        return value;
-      }
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _props3 = this.props;
-      var images = _props3.images;
-      var currentImage = _props3.currentImage;
-      var onClickThumbnail = _props3.onClickThumbnail;
-      var offset = _props3.offset;
-
-      var totalCount = 2 * offset + 1; // show $offset extra thumbnails on each side
-      var thumbnails = [];
-      var baseOffset = 0;
-      if (images.length <= totalCount) {
-        thumbnails = images;
-      } else {
-        // Try to center current image in list
-        baseOffset = this.getFirst();
-        thumbnails = images.slice(baseOffset, baseOffset + totalCount);
-      }
-
-      return _react2['default'].createElement(
-        'div',
-        { className: (0, _aphroditeNoImportant.css)(classes.paginatedThumbnails) },
-        this.renderArrowPrev(),
-        thumbnails.map(function (img, idx) {
-          return _react2['default'].createElement(_Thumbnails.Thumbnail, _extends({ key: baseOffset + idx
-          }, img, {
-            index: baseOffset + idx,
-            onClickThumbnail: onClickThumbnail,
-            active: baseOffset + idx === currentImage }));
-        }),
-        this.renderArrowNext()
-      );
-    }
-  }, {
-    key: 'renderArrowPrev',
-    value: function renderArrowPrev() {
-      if (this.getFirst() <= 0) return null;
-
-      return _react2['default'].createElement(_Arrow2['default'], {
-        direction: 'left',
-        size: 'small',
-        icon: 'arrowLeft',
-        onClick: this.gotoPrev,
-        title: 'Previous (Left arrow key)',
-        type: 'button'
-      });
-    }
-  }, {
-    key: 'renderArrowNext',
-    value: function renderArrowNext() {
-      var _props4 = this.props;
-      var offset = _props4.offset;
-      var images = _props4.images;
-
-      var totalCount = 2 * offset + 1;
-      if (this.getFirst() + totalCount >= images.length) return null;
-
-      return _react2['default'].createElement(_Arrow2['default'], {
-        direction: 'right',
-        size: 'small',
-        icon: 'arrowRight',
-        onClick: this.gotoNext,
-        title: 'Previous (Right arrow key)',
-        type: 'button'
-      });
-    }
-  }]);
-
-  return PaginatedThumbnails;
-})(_react2['default'].Component);
-
-exports['default'] = PaginatedThumbnails;
-
-PaginatedThumbnails.defaultProps = {
-  offset: 3
-};
-module.exports = exports['default'];
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./Arrow":24,"./Thumbnails":31,"./theme":37,"aphrodite/no-important":6}],30:[function(require,module,exports){
+},{"./Arrow":24,"./Footer":25,"./Header":26,"./Portal":29,"./styles/default":34,"./theme":35,"./utils":39,"aphrodite/no-important":6}],29:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2533,159 +2281,22 @@ exports['default'] = Portal;
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"react-addons-css-transition-group":undefined,"react-dom":undefined}],31:[function(require,module,exports){
-(function (global){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var _react = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _aphroditeNoImportant = require('aphrodite/no-important');
-
-var _Arrow = require('./Arrow');
-
-var _Arrow2 = _interopRequireDefault(_Arrow);
-
-var _theme = require('./theme');
-
-var _theme2 = _interopRequireDefault(_theme);
-
-var classes = _aphroditeNoImportant.StyleSheet.create({
-  thumbnail: {
-    display: 'inline-block',
-    margin: 2,
-    overflow: 'hidden',
-    borderRadius: 2,
-    cursor: 'pointer',
-    width: _theme2['default'].thumbnails.size,
-    height: _theme2['default'].thumbnails.size,
-    backgroundPosition: 'center',
-    backgroundSize: 'cover',
-    boxShadow: 'inset 0 0 0 1px hsla(0,0%,100%,.2)'
-  },
-  active: {
-    boxShadow: 'inset 0 0 0 2px #fff'
-  },
-
-  thumbnails: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    height: 72,
-    color: 'white',
-    overflowX: 'scroll',
-    textAlign: 'center',
-    whiteSpace: 'nowrap'
-  }
-});
-
-var Thumbnail = (function (_React$Component) {
-  _inherits(Thumbnail, _React$Component);
-
-  function Thumbnail() {
-    _classCallCheck(this, Thumbnail);
-
-    _get(Object.getPrototypeOf(Thumbnail.prototype), 'constructor', this).apply(this, arguments);
-  }
-
-  _createClass(Thumbnail, [{
-    key: 'render',
-    value: function render() {
-      var _props = this.props;
-      var index = _props.index;
-      var src = _props.src;
-      var srcset = _props.srcset;
-      var thumbnail = _props.thumbnail;
-      var active = _props.active;
-      var onClickThumbnail = _props.onClickThumbnail;
-
-      var size = 64;
-      var url = thumbnail ? thumbnail : src;
-      return _react2['default'].createElement('div', { className: (0, _aphroditeNoImportant.css)(classes.thumbnail, active && classes.active),
-        onClick: function () {
-          return onClickThumbnail(index);
-        },
-        style: { backgroundImage: 'url("' + url + '")' } });
-    }
-  }]);
-
-  return Thumbnail;
-})(_react2['default'].Component);
-
-var Thumbnails = (function (_React$Component2) {
-  _inherits(Thumbnails, _React$Component2);
-
-  function Thumbnails() {
-    _classCallCheck(this, Thumbnails);
-
-    _get(Object.getPrototypeOf(Thumbnails.prototype), 'constructor', this).apply(this, arguments);
-  }
-
-  _createClass(Thumbnails, [{
-    key: 'render',
-    value: function render() {
-      var _props2 = this.props;
-      var images = _props2.images;
-      var currentImage = _props2.currentImage;
-      var onClickThumbnail = _props2.onClickThumbnail;
-
-      return _react2['default'].createElement(
-        'div',
-        { className: (0, _aphroditeNoImportant.css)(classes.thumbnails) },
-        images.map(function (img, idx) {
-          return _react2['default'].createElement(Thumbnail, _extends({ key: idx
-          }, img, {
-            index: idx,
-            onClickThumbnail: onClickThumbnail,
-            active: idx === currentImage }));
-        })
-      );
-    }
-  }]);
-
-  return Thumbnails;
-})(_react2['default'].Component);
-
-exports['default'] = Thumbnails;
-
-Thumbnails.Thumbnail = Thumbnail;
-module.exports = exports['default'];
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./Arrow":24,"./theme":37,"aphrodite/no-important":6}],32:[function(require,module,exports){
+},{"react-addons-css-transition-group":undefined,"react-dom":undefined}],30:[function(require,module,exports){
 'use strict';
 
 module.exports = '<svg fill="white" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100%" height="100%" viewBox="0 0 512 512" xml:space="preserve">' + '<path d="M213.7,256L213.7,256L213.7,256L380.9,81.9c4.2-4.3,4.1-11.4-0.2-15.8l-29.9-30.6c-4.3-4.4-11.3-4.5-15.5-0.2L131.1,247.9 c-2.2,2.2-3.2,5.2-3,8.1c-0.1,3,0.9,5.9,3,8.1l204.2,212.7c4.2,4.3,11.2,4.2,15.5-0.2l29.9-30.6c4.3-4.4,4.4-11.5,0.2-15.8 L213.7,256z"/>' + '</svg>';
 
-},{}],33:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 'use strict';
 
 module.exports = '<svg fill="white" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100%" height="100%" viewBox="0 0 512 512" xml:space="preserve">' + '<path d="M298.3,256L298.3,256L298.3,256L131.1,81.9c-4.2-4.3-4.1-11.4,0.2-15.8l29.9-30.6c4.3-4.4,11.3-4.5,15.5-0.2l204.2,212.7 c2.2,2.2,3.2,5.2,3,8.1c0.1,3-0.9,5.9-3,8.1L176.7,476.8c-4.2,4.3-11.2,4.2-15.5-0.2L131.3,446c-4.3-4.4-4.4-11.5-0.2-15.8 L298.3,256z"/>' + '</svg>';
 
-},{}],34:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 'use strict';
 
 module.exports = '<svg fill="white" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100%" height="100%" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">' + '<path d="M443.6,387.1L312.4,255.4l131.5-130c5.4-5.4,5.4-14.2,0-19.6l-37.4-37.6c-2.6-2.6-6.1-4-9.8-4c-3.7,0-7.2,1.5-9.8,4 L256,197.8L124.9,68.3c-2.6-2.6-6.1-4-9.8-4c-3.7,0-7.2,1.5-9.8,4L68,105.9c-5.4,5.4-5.4,14.2,0,19.6l131.5,130L68.4,387.1 c-2.6,2.6-4.1,6.1-4.1,9.8c0,3.7,1.4,7.2,4.1,9.8l37.4,37.6c2.7,2.7,6.2,4.1,9.8,4.1c3.5,0,7.1-1.3,9.8-4.1L256,313.1l130.7,131.1 c2.7,2.7,6.2,4.1,9.8,4.1c3.5,0,7.1-1.3,9.8-4.1l37.4-37.6c2.6-2.6,4.1-6.1,4.1-9.8C447.7,393.2,446.2,389.7,443.6,387.1z"/>' + '</svg>';
 
-},{}],35:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -2694,7 +2305,7 @@ module.exports = {
 	close: require('./close')
 };
 
-},{"./arrowLeft":32,"./arrowRight":33,"./close":34}],36:[function(require,module,exports){
+},{"./arrowLeft":30,"./arrowRight":31,"./close":32}],34:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -2752,7 +2363,7 @@ var styles = {
 exports['default'] = styles;
 module.exports = exports['default'];
 
-},{"../theme":37}],37:[function(require,module,exports){
+},{"../theme":35}],35:[function(require,module,exports){
 // ==============================
 // THEME
 // ==============================
@@ -2793,11 +2404,6 @@ theme.footer = {
 	}
 };
 
-theme.thumbnails = {
-	height: 64,
-	size: 64
-};
-
 // arrow
 theme.arrow = {
 	height: 120
@@ -2805,7 +2411,7 @@ theme.arrow = {
 
 module.exports = theme;
 
-},{}],38:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 /**
 	Bind multiple component methods:
 
@@ -2828,7 +2434,7 @@ module.exports = function bindFunctions(functions) {
 	});
 };
 
-},{}],39:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 // Don't try and apply overflow/padding if the scroll is already blocked
 'use strict';
 
@@ -2875,14 +2481,14 @@ module.exports = {
 	blockScroll: blockScroll
 };
 
-},{}],40:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 // Return true if window + document
 
 'use strict';
 
 module.exports = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 
-},{}],41:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -2905,5 +2511,5 @@ module.exports = {
 	canUseDom: _canUseDom2['default']
 };
 
-},{"./bindFunctions":38,"./bodyScroll":39,"./canUseDom":40}]},{},[28])(28)
+},{"./bindFunctions":36,"./bodyScroll":37,"./canUseDom":38}]},{},[28])(28)
 });
