@@ -41,7 +41,7 @@ render(
 	<div>
 		<p style={{ marginBottom: 40 }}>Use your keyboard to navigate <kbd>left</kbd> <kbd>right</kbd> <kbd>esc</kbd> &mdash; Also, try resizing your browser window.</p>
 		<Gallery images={IMAGE_MAP} />
-		<p>Images courtesy of <a href="http://gratisography.com/" target="_blank">Gratisography</a></p>
+		<p>Images courtesy of <a href="https://unsplash.com/" target="_blank">Unsplash</a></p>
 	</div>,
 	document.getElementById('example')
 );
