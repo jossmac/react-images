@@ -33,7 +33,7 @@ function Footer ({
 };
 
 Footer.propTypes = {
-	caption: PropTypes.string,
+	caption: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 	countCurrent: PropTypes.number,
 	countSeparator: PropTypes.string,
 	countTotal: PropTypes.number,
