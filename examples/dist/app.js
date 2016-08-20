@@ -13,57 +13,24 @@ var _componentsGallery = require('./components/Gallery');
 
 var _componentsGallery2 = _interopRequireDefault(_componentsGallery);
 
-var _reactImages = require('react-images');
-
-var _reactImages2 = _interopRequireDefault(_reactImages);
-
 function makeUnsplashSrc(id) {
-	return 'https://images.unsplash.com/photo-' + id + '?dpr=2&auto=format&w=1600&h=1600';
+	return 'https://images.unsplash.com/photo-' + id + '?dpr=2&auto=format&w=1024&h=1024';
 }
 function makeUnsplashSrcSet(id, size) {
 	return 'https://images.unsplash.com/photo-' + id + '?dpr=2&auto=format&w=' + size + ' ' + size + 'w';
 }
 function makeUnsplashThumbnail(id) {
-	return 'https://images.unsplash.com/photo-' + id + '?dpr=2&auto=format&crop=entropy&fit=crop&w=100&h=100';
+	var orientation = arguments.length <= 1 || arguments[1] === undefined ? 'landscape' : arguments[1];
+
+	var dimensions = orientation === 'square' ? 'w=300&h=300' : 'w=240&h=159';
+
+	return 'https://images.unsplash.com/photo-' + id + '?dpr=1&auto=format&crop=faces&fit=crop&' + dimensions;
 }
 
-var IMAGE_NAMES = [{ id: '1471079502516-250c19af6928', caption: _react2['default'].createElement(
-		'span',
-		null,
-		_react2['default'].createElement(
-			'a',
-			{ href: 'https://unsplash.com/photos/GIpGxe2_cT4', target: '_blank' },
-			'Turtle'
-		),
-		', by Jeremy Bishop'
-	) }, { id: '1455970022149-a8f26b6902dd', caption: _react2['default'].createElement(
-		'span',
-		null,
-		_react2['default'].createElement(
-			'a',
-			{ href: 'https://unsplash.com/photos/a7bdqjeG6M4', target: '_blank' },
-			'Cat'
-		),
-		', by Mona Magnussen'
-	) }, { id: '1470317596697-cbdeda56f999', caption: _react2['default'].createElement(
-		'span',
-		null,
-		_react2['default'].createElement(
-			'a',
-			{ href: 'https://unsplash.com/photos/XgF9e93Tkt0', target: '_blank' },
-			'Ladybug'
-		),
-		', by Michel Bosma'
-	) }, { id: '1454023492550-5696f8ff10e1', caption: _react2['default'].createElement(
-		'span',
-		null,
-		_react2['default'].createElement(
-			'a',
-			{ href: 'https://unsplash.com/photos/LmVSKeDy6EA', target: '_blank' },
-			'Tiger'
-		),
-		', by Jessica Weiller'
-	) }, { id: '1470619549108-b85c56fe5be8', caption: _react2['default'].createElement(
+// Unsplash images from the "Spirit Animals" collection
+// https://unsplash.com/collections/158825/spirit-animals
+
+var DEFAULT_IMAGES = [{ id: '1470619549108-b85c56fe5be8', caption: _react2['default'].createElement(
 		'span',
 		null,
 		_react2['default'].createElement(
@@ -71,35 +38,26 @@ var IMAGE_NAMES = [{ id: '1471079502516-250c19af6928', caption: _react2['default
 			{ href: 'https://unsplash.com/photos/SYzUF6XcWBY', target: '_blank' },
 			'Flamingo'
 		),
-		', by Alan Emery'
-	) }, { id: '1458167072153-a2eb76d67c1c', caption: _react2['default'].createElement(
+		' by Alan Emery'
+	), orientation: 'square', useForDemo: true }, { id: '1471079502516-250c19af6928', caption: _react2['default'].createElement(
 		'span',
 		null,
 		_react2['default'].createElement(
 			'a',
-			{ href: 'https://unsplash.com/photos/I4AEXHh00uo', target: '_blank' },
-			'Chimpanzee'
+			{ href: 'https://unsplash.com/photos/GIpGxe2_cT4', target: '_blank' },
+			'Turtle'
 		),
-		', by Liz Bridges'
-	) }, { id: '1471101173712-b9884175254e', caption: _react2['default'].createElement(
+		' by Jeremy Bishop'
+	), orientation: 'landscape', useForDemo: true }, { id: '1454023492550-5696f8ff10e1', caption: _react2['default'].createElement(
 		'span',
 		null,
 		_react2['default'].createElement(
 			'a',
-			{ href: 'https://unsplash.com/photos/5oRzZU5uwSM', target: '_blank' },
-			'Dragonfly'
+			{ href: 'https://unsplash.com/photos/LmVSKeDy6EA', target: '_blank' },
+			'Tiger'
 		),
-		', by Pedro Lastra'
-	) }, { id: '1471127432458-65206be149c9', caption: _react2['default'].createElement(
-		'span',
-		null,
-		_react2['default'].createElement(
-			'a',
-			{ href: 'https://unsplash.com/photos/Kpgt4pl03O0', target: '_blank' },
-			'Deer'
-		),
-		', by Ernesto Velázquez'
-	) }, { id: '1470854989922-5be2f7456d78', caption: _react2['default'].createElement(
+		' by Jessica Weiller'
+	), orientation: 'landscape', useForDemo: true }, { id: '1470854989922-5be2f7456d78', caption: _react2['default'].createElement(
 		'span',
 		null,
 		_react2['default'].createElement(
@@ -107,8 +65,44 @@ var IMAGE_NAMES = [{ id: '1471079502516-250c19af6928', caption: _react2['default
 			{ href: 'https://unsplash.com/photos/GXMr7BadXQo', target: '_blank' },
 			'Hedgehog'
 		),
-		', by Piotr Łaskawski'
-	) }, { id: '1470777639313-60af88918203', caption: _react2['default'].createElement(
+		' by Piotr Łaskawski'
+	), orientation: 'landscape', useForDemo: true }, { id: '1470317596697-cbdeda56f999', caption: _react2['default'].createElement(
+		'span',
+		null,
+		_react2['default'].createElement(
+			'a',
+			{ href: 'https://unsplash.com/photos/XgF9e93Tkt0', target: '_blank' },
+			'Ladybug'
+		),
+		' by Michel Bosma'
+	), orientation: 'landscape', useForDemo: true }, { id: '1471101173712-b9884175254e', caption: _react2['default'].createElement(
+		'span',
+		null,
+		_react2['default'].createElement(
+			'a',
+			{ href: 'https://unsplash.com/photos/5oRzZU5uwSM', target: '_blank' },
+			'Dragonfly'
+		),
+		' by Pedro Lastra'
+	), orientation: 'square' }, { id: '1455970022149-a8f26b6902dd', caption: _react2['default'].createElement(
+		'span',
+		null,
+		_react2['default'].createElement(
+			'a',
+			{ href: 'https://unsplash.com/photos/a7bdqjeG6M4', target: '_blank' },
+			'Cat'
+		),
+		' by Mona Magnussen'
+	), orientation: 'square' }, { id: '1471127432458-65206be149c9', caption: _react2['default'].createElement(
+		'span',
+		null,
+		_react2['default'].createElement(
+			'a',
+			{ href: 'https://unsplash.com/photos/Kpgt4pl03O0', target: '_blank' },
+			'Deer'
+		),
+		' by Ernesto Velázquez'
+	), orientation: 'landscape' }, { id: '1470777639313-60af88918203', caption: _react2['default'].createElement(
 		'span',
 		null,
 		_react2['default'].createElement(
@@ -116,8 +110,8 @@ var IMAGE_NAMES = [{ id: '1471079502516-250c19af6928', caption: _react2['default
 			{ href: 'https://unsplash.com/photos/GNUcUx-iObg', target: '_blank' },
 			'Koala'
 		),
-		', by Cris Saur'
-	) }, { id: '1453550486481-aa4175b013ea', caption: _react2['default'].createElement(
+		' by Cris Saur'
+	), orientation: 'landscape' }, { id: '1453550486481-aa4175b013ea', caption: _react2['default'].createElement(
 		'span',
 		null,
 		_react2['default'].createElement(
@@ -125,190 +119,178 @@ var IMAGE_NAMES = [{ id: '1471079502516-250c19af6928', caption: _react2['default
 			{ href: 'https://unsplash.com/photos/WiSeaZ4E6ZI', target: '_blank' },
 			'Elephant'
 		),
-		', by Benjamin Pley'
-	) }];
-var IMAGE_MAP = IMAGE_NAMES.map(function (_ref) {
-	var caption = _ref.caption;
-	var id = _ref.id;
-	return {
-		src: makeUnsplashSrc(id),
-		thumbnail: makeUnsplashThumbnail(id),
-		srcset: [makeUnsplashSrcSet(id, 1024), makeUnsplashSrcSet(id, 800), makeUnsplashSrcSet(id, 500), makeUnsplashSrcSet(id, 320)],
-		caption: caption
-	};
-});
+		' by Benjamin Pley'
+	), orientation: 'landscape' }];
+var THUMBNAIL_IMAGES = [{ id: '1454991727061-be514eae86f7', caption: _react2['default'].createElement(
+		'span',
+		null,
+		_react2['default'].createElement(
+			'a',
+			{ href: 'https://unsplash.com/photos/t20pc32VbrU', target: '_blank' },
+			'Hump Back Whale'
+		),
+		' by Thomas Kelley'
+	), orientation: 'square', useForDemo: true }, { id: '1455717974081-0436a066bb96', caption: _react2['default'].createElement(
+		'span',
+		null,
+		_react2['default'].createElement(
+			'a',
+			{ href: 'https://unsplash.com/photos/cmKPOUgdmWc', target: '_blank' },
+			'Deer'
+		),
+		' by Teddy Kelley'
+	), orientation: 'landscape', useForDemo: true }, { id: '1460899960812-f6ee1ecaf117', caption: _react2['default'].createElement(
+		'span',
+		null,
+		_react2['default'].createElement(
+			'a',
+			{ href: 'https://unsplash.com/photos/h13Y8vyIXNU', target: '_blank' },
+			'Walrus'
+		),
+		' by Jay Ruzesky'
+	), orientation: 'landscape', useForDemo: true }, { id: '1456926631375-92c8ce872def', caption: _react2['default'].createElement(
+		'span',
+		null,
+		_react2['default'].createElement(
+			'a',
+			{ href: 'https://unsplash.com/photos/I3C1sSXj1i8', target: '_blank' },
+			'Leopard'
+		),
+		' by Gwen Weustink'
+	), orientation: 'landscape', useForDemo: true }, { id: '1452274381522-521513015433', caption: _react2['default'].createElement(
+		'span',
+		null,
+		_react2['default'].createElement(
+			'a',
+			{ href: 'https://unsplash.com/photos/_snqARKTgoc', target: '_blank' },
+			'Mother and Cubs'
+		),
+		' by Adam Willoughby-Knox'
+	), orientation: 'landscape', useForDemo: true }, { id: '1471145653077-54c6f0aae511', caption: _react2['default'].createElement(
+		'span',
+		null,
+		_react2['default'].createElement(
+			'a',
+			{ href: 'https://unsplash.com/photos/n0feC_PWFdk', target: '_blank' },
+			'Dragonfly'
+		),
+		' by Boris Smokrovic'
+	), orientation: 'landscape' }, { id: '1471005197911-88e9d4a7834d', caption: _react2['default'].createElement(
+		'span',
+		null,
+		_react2['default'].createElement(
+			'a',
+			{ href: 'https://unsplash.com/photos/YOX8ZMTo7hk', target: '_blank' },
+			'Baby Crocodile'
+		),
+		' by Gaetano Cessati'
+	), orientation: 'landscape' }, { id: '1470583190240-bd6bbde8a569', caption: _react2['default'].createElement(
+		'span',
+		null,
+		_react2['default'].createElement(
+			'a',
+			{ href: 'https://unsplash.com/photos/emTCWiq2txk', target: '_blank' },
+			'Beetle'
+		),
+		' by Alan Emery'
+	), orientation: 'landscape' }, { id: '1470688090067-6d429c0b2600', caption: _react2['default'].createElement(
+		'span',
+		null,
+		_react2['default'].createElement(
+			'a',
+			{ href: 'https://unsplash.com/photos/xqjO-lx39B4', target: '_blank' },
+			'Scottish Highland Cow'
+		),
+		' by Ján Jakub Naništa'
+	), orientation: 'landscape' }, { id: '1470742292565-de43c4b02b57', caption: _react2['default'].createElement(
+		'span',
+		null,
+		_react2['default'].createElement(
+			'a',
+			{ href: 'https://unsplash.com/photos/DmOCkOnx-MQ', target: '_blank' },
+			'Cheetah'
+		),
+		' by Eric Knoll'
+	), orientation: 'landscape' }];
 
+// https://unsplash.com/photos/NUMlxTPsznM coyote?
 (0, _reactDom.render)(_react2['default'].createElement(
 	'div',
 	null,
 	_react2['default'].createElement(
-		'h3',
-		null,
-		'Default options'
-	),
-	_react2['default'].createElement(
-		'p',
+		'div',
 		{ style: { marginBottom: 40 } },
-		'Use your keyboard to navigate ',
 		_react2['default'].createElement(
-			'kbd',
+			'p',
 			null,
-			'left'
-		),
-		' ',
-		_react2['default'].createElement(
-			'kbd',
-			null,
-			'right'
-		),
-		' ',
-		_react2['default'].createElement(
-			'kbd',
-			null,
-			'esc'
-		),
-		' — Also, try resizing your browser window.'
-	),
-	_react2['default'].createElement(_componentsGallery2['default'], { images: IMAGE_MAP }),
-	_react2['default'].createElement(
-		'p',
-		null,
-		'Images courtesy of ',
-		_react2['default'].createElement(
-			'a',
-			{ href: 'https://unsplash.com/', target: '_blank' },
-			'Unsplash'
+			'Photos courtesy of ',
+			_react2['default'].createElement(
+				'a',
+				{ href: 'https://unsplash.com/', target: '_blank' },
+				'Unsplash'
+			),
+			'. Use your keyboard to navigate ',
+			_react2['default'].createElement(
+				'kbd',
+				null,
+				'left'
+			),
+			' ',
+			_react2['default'].createElement(
+				'kbd',
+				null,
+				'right'
+			),
+			' ',
+			_react2['default'].createElement(
+				'kbd',
+				null,
+				'esc'
+			),
+			' — Also, try resizing your browser window.'
 		)
 	),
 	_react2['default'].createElement(
 		'h3',
 		null,
-		'Without thumbnails'
+		'Default Options'
 	),
-	_react2['default'].createElement(
-		'p',
-		{ style: { marginBottom: 40 } },
-		'Set ',
-		_react2['default'].createElement(
-			'code',
-			null,
-			"thumbnails={false}"
-		),
-		' to remove thumbnails'
-	),
-	_react2['default'].createElement(_componentsGallery2['default'], { images: IMAGE_MAP, thumbnails: false }),
+	_react2['default'].createElement(_componentsGallery2['default'], { images: DEFAULT_IMAGES.map(function (_ref) {
+			var caption = _ref.caption;
+			var id = _ref.id;
+			var orientation = _ref.orientation;
+			var useForDemo = _ref.useForDemo;
+			return {
+				src: makeUnsplashSrc(id),
+				thumbnail: makeUnsplashThumbnail(id, orientation),
+				srcset: [makeUnsplashSrcSet(id, 1024), makeUnsplashSrcSet(id, 800), makeUnsplashSrcSet(id, 500), makeUnsplashSrcSet(id, 320)],
+				caption: caption,
+				orientation: orientation,
+				useForDemo: useForDemo
+			};
+		}) }),
 	_react2['default'].createElement(
 		'h3',
 		null,
-		'Paginated version'
+		'With Thumbnails'
 	),
-	_react2['default'].createElement(
-		'p',
-		{ style: { marginBottom: 40 } },
-		'The ',
-		_react2['default'].createElement(
-			'code',
-			null,
-			'thumbnails'
-		),
-		' prop can actually take a component as value',
-		_react2['default'].createElement('br', null),
-		_react2['default'].createElement(
-			'code',
-			null,
-			"thumbnails={Lightbox.Lightbox.PaginatedThumbnails}"
-		)
-	),
-	_react2['default'].createElement(_componentsGallery2['default'], { images: IMAGE_MAP, thumbnails: _reactImages2['default'].PaginatedThumbnails }),
-	_react2['default'].createElement(
-		'p',
-		{ style: { marginBottom: 20 } },
-		'Note : PaginatedThumbnails has an offset prop to change the number of thumbnails to show around the current one.',
-		_react2['default'].createElement('br', null),
-		_react2['default'].createElement(
-			'code',
-			null,
-			"<Lightbox thumbnails={(props) => <PaginatedThumbnails {...props} offset={5} />} />"
-		)
-	)
+	_react2['default'].createElement(_componentsGallery2['default'], { images: THUMBNAIL_IMAGES.map(function (_ref2) {
+			var caption = _ref2.caption;
+			var id = _ref2.id;
+			var orientation = _ref2.orientation;
+			var useForDemo = _ref2.useForDemo;
+			return {
+				src: makeUnsplashSrc(id),
+				thumbnail: makeUnsplashThumbnail(id, orientation),
+				srcset: [makeUnsplashSrcSet(id, 1024), makeUnsplashSrcSet(id, 800), makeUnsplashSrcSet(id, 500), makeUnsplashSrcSet(id, 320)],
+				caption: caption,
+				orientation: orientation,
+				useForDemo: useForDemo
+			};
+		}), showThumbnails: true })
 ), document.getElementById('example'));
 
-},{"./components/Gallery":4,"react":undefined,"react-dom":undefined,"react-images":undefined}],2:[function(require,module,exports){
-'use strict';
-
-module.exports = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 24 30" enable-background="new 0 0 24 24" xml:space="preserve">' + '<g>' + '<polygon fill="white" points="19,14 19,18 5,18 5,14 2,14 2,18 2,22 5,22 19,22 22,22 22,18 22,14  "/>' + '<polygon fill="white" points="15,9.9 15,2 9,2 9,9.9 5.8,9.9 12,16.1 18.2,9.9  "/>' + '</g>' + '</svg>';
-
-},{}],3:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _icon = require('./icon');
-
-var _icon2 = _interopRequireDefault(_icon);
-
-var DownloadButton = (function (_Component) {
-    _inherits(DownloadButton, _Component);
-
-    function DownloadButton() {
-        _classCallCheck(this, DownloadButton);
-
-        _get(Object.getPrototypeOf(DownloadButton.prototype), 'constructor', this).call(this);
-    }
-
-    _createClass(DownloadButton, [{
-        key: 'render',
-        value: function render() {
-            return _react2['default'].createElement(
-                'button',
-                {
-                    title: 'Download',
-                    style: {
-                        background: 'none',
-                        border: 'none',
-                        cursor: 'pointer',
-                        float: 'left',
-                        height: 40,
-                        outline: 'none',
-                        padding: 10,
-                        position: 'relative',
-                        left: -10,
-                        top: 0,
-                        verticalAlign: 'bottom',
-                        width: 40
-                    },
-                    onClick: this.props.handler
-                },
-                _react2['default'].createElement('span', {
-                    dangerouslySetInnerHTML: { __html: _icon2['default'] }
-                })
-            );
-        }
-    }]);
-
-    return DownloadButton;
-})(_react.Component);
-
-exports['default'] = DownloadButton;
-module.exports = exports['default'];
-
-},{"./icon":2,"react":undefined}],4:[function(require,module,exports){
+},{"./components/Gallery":2,"react":undefined,"react-dom":undefined}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -329,13 +311,11 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _aphroditeNoImportant = require('aphrodite/no-important');
+
 var _reactImages = require('react-images');
 
 var _reactImages2 = _interopRequireDefault(_reactImages);
-
-var _DownloadButton = require('./DownloadButton');
-
-var _DownloadButton2 = _interopRequireDefault(_DownloadButton);
 
 var Gallery = (function (_Component) {
 	_inherits(Gallery, _Component);
@@ -408,44 +388,36 @@ var Gallery = (function (_Component) {
 		value: function renderGallery() {
 			var _this = this;
 
-			if (!this.props.images) return;
-			var gallery = this.props.images.map(function (obj, i) {
+			var images = this.props.images;
+
+			if (!images) return;
+
+			var gallery = images.filter(function (i) {
+				return i.useForDemo;
+			}).map(function (obj, i) {
 				return _react2['default'].createElement(
 					'a',
 					{
 						href: obj.src,
+						className: (0, _aphroditeNoImportant.css)(classes.thumbnail, classes[obj.orientation]),
 						key: i,
 						onClick: function (e) {
 							return _this.openLightbox(i, e);
-						},
-						style: styles.thumbnail
+						}
 					},
-					_react2['default'].createElement('img', {
-						height: styles.thumbnail.size,
-						src: obj.thumbnail,
-						style: styles.thumbnailImage,
-						width: styles.thumbnail.size
-					})
+					_react2['default'].createElement('img', { src: obj.thumbnail, className: (0, _aphroditeNoImportant.css)(classes.source) })
 				);
 			});
 
 			return _react2['default'].createElement(
 				'div',
-				{ style: styles.gallery },
+				{ className: (0, _aphroditeNoImportant.css)(classes.gallery) },
 				gallery
 			);
 		}
 	}, {
-		key: 'handleDownload',
-		value: function handleDownload() {
-			window.open(this.props.images[this.state.currentImage].src);
-		}
-	}, {
 		key: 'render',
 		value: function render() {
-			var thumbnails = this.props.thumbnails;
-
-			var customControls = [_react2['default'].createElement(_DownloadButton2['default'], { key: 'Download', handler: this.handleDownload.bind(this) })];
 			return _react2['default'].createElement(
 				'div',
 				{ className: 'section' },
@@ -462,7 +434,6 @@ var Gallery = (function (_Component) {
 				this.renderGallery(),
 				_react2['default'].createElement(_reactImages2['default'], {
 					currentImage: this.state.currentImage,
-					customControls: customControls,
 					images: this.props.images,
 					isOpen: this.state.lightboxIsOpen,
 					onClickPrev: this.gotoPrevious,
@@ -471,7 +442,7 @@ var Gallery = (function (_Component) {
 					onClickImage: this.handleClickImage,
 					onClose: this.closeLightbox,
 					theme: this.props.theme,
-					thumbnails: thumbnails
+					showThumbnails: this.props.showThumbnails
 				})
 			);
 		}
@@ -486,44 +457,1624 @@ Gallery.displayName = 'Gallery';
 Gallery.propTypes = {
 	heading: _react.PropTypes.string,
 	images: _react.PropTypes.array,
-	sepia: _react.PropTypes.bool,
+	showThumbnails: _react.PropTypes.bool,
 	subheading: _react.PropTypes.string
 };
 
-var THUMBNAIL_SIZE = 72;
-
-var styles = {
+var gutter = {
+	small: 2,
+	large: 4
+};
+var classes = _aphroditeNoImportant.StyleSheet.create({
 	gallery: {
-		marginLeft: -5,
-		marginRight: -5,
-		overflow: 'hidden'
-	},
-	thumbnail: {
-		backgroundSize: 'cover',
-		borderRadius: 3,
-		float: 'left',
-		height: THUMBNAIL_SIZE,
-		margin: 5,
+		marginRight: -gutter.small,
 		overflow: 'hidden',
-		width: THUMBNAIL_SIZE
+
+		'@media (min-width: 500px)': {
+			marginRight: -gutter.large
+		}
 	},
-	thumbnailImage: {
+
+	// anchor
+	thumbnail: {
+		boxSizing: 'border-box',
+		display: 'block',
+		float: 'left',
+		lineHeight: 0,
+		paddingRight: gutter.small,
+		paddingBottom: gutter.small,
+		overflow: 'hidden',
+
+		'@media (min-width: 500px)': {
+			paddingRight: gutter.large,
+			paddingBottom: gutter.large
+		}
+	},
+
+	// orientation
+	landscape: {
+		width: '30%'
+	},
+	square: {
+		paddingBottom: 0,
+		width: '40%',
+
+		'@media (min-width: 500px)': {
+			paddingBottom: 0
+		}
+	},
+
+	// actual <img />
+	source: {
+		border: 0,
 		display: 'block',
 		height: 'auto',
-		maxWidth: '100%'
+		maxWidth: '100%',
+		width: 'auto'
 	}
-};
+});
 
-// height: THUMBNAIL_SIZE,
-// left: '50%',
-// position: 'relative',
-//
-// WebkitTransform: 'translateX(-50%)',
-// MozTransform:    'translateX(-50%)',
-// msTransform:     'translateX(-50%)',
-// transform:       'translateX(-50%)',
 exports['default'] = Gallery;
 module.exports = exports['default'];
 
-},{"./DownloadButton":3,"react":undefined,"react-images":undefined}]},{},[1])
-//# sourceMappingURL=data:application/json;charset:utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIm5vZGVfbW9kdWxlcy9icm93c2VyLXBhY2svX3ByZWx1ZGUuanMiLCIvVXNlcnMvam9zcy9EZXZlbG9wbWVudC9wYWNrYWdlcy9yZWFjdC9pbWFnZXMvZXhhbXBsZXMvc3JjL2FwcC5qcyIsIi9Vc2Vycy9qb3NzL0RldmVsb3BtZW50L3BhY2thZ2VzL3JlYWN0L2ltYWdlcy9leGFtcGxlcy9zcmMvY29tcG9uZW50cy9Eb3dubG9hZEJ1dHRvbi9pY29uLmpzIiwiL1VzZXJzL2pvc3MvRGV2ZWxvcG1lbnQvcGFja2FnZXMvcmVhY3QvaW1hZ2VzL2V4YW1wbGVzL3NyYy9jb21wb25lbnRzL0Rvd25sb2FkQnV0dG9uL2luZGV4LmpzIiwiL1VzZXJzL2pvc3MvRGV2ZWxvcG1lbnQvcGFja2FnZXMvcmVhY3QvaW1hZ2VzL2V4YW1wbGVzL3NyYy9jb21wb25lbnRzL0dhbGxlcnkuanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7Ozs7O3FCQ0FrQixPQUFPOzs7O3dCQUNGLFdBQVc7O2lDQUNkLHNCQUFzQjs7OzsyQkFDckIsY0FBYzs7OztBQUVuQyxTQUFTLGVBQWUsQ0FBRSxFQUFFLEVBQUU7QUFDN0IsK0NBQTRDLEVBQUUsc0NBQW1DO0NBQ2pGO0FBQ0QsU0FBUyxrQkFBa0IsQ0FBRSxFQUFFLEVBQUUsSUFBSSxFQUFFO0FBQ3RDLCtDQUE0QyxFQUFFLDZCQUF3QixJQUFJLFNBQUksSUFBSSxPQUFJO0NBQ3RGO0FBQ0QsU0FBUyxxQkFBcUIsQ0FBRSxFQUFFLEVBQUU7QUFDbkMsK0NBQTRDLEVBQUUsMERBQXVEO0NBQ3JHOztBQUVELElBQU0sV0FBVyxHQUFHLENBQ25CLEVBQUUsRUFBRSxFQUFFLDRCQUE0QixFQUFFLE9BQU8sRUFBRTs7O0VBQU07O0tBQUcsSUFBSSxFQUFDLHlDQUF5QyxFQUFDLE1BQU0sRUFBQyxRQUFROztHQUFXOztFQUF5QixFQUFFLEVBQzFKLEVBQUUsRUFBRSxFQUFFLDRCQUE0QixFQUFFLE9BQU8sRUFBRTs7O0VBQU07O0tBQUcsSUFBSSxFQUFDLHlDQUF5QyxFQUFDLE1BQU0sRUFBQyxRQUFROztHQUFROztFQUEwQixFQUFFLEVBQ3hKLEVBQUUsRUFBRSxFQUFFLDRCQUE0QixFQUFFLE9BQU8sRUFBRTs7O0VBQU07O0tBQUcsSUFBSSxFQUFDLHlDQUF5QyxFQUFDLE1BQU0sRUFBQyxRQUFROztHQUFZOztFQUF3QixFQUFFLEVBQzFKLEVBQUUsRUFBRSxFQUFFLDRCQUE0QixFQUFFLE9BQU8sRUFBRTs7O0VBQU07O0tBQUcsSUFBSSxFQUFDLHlDQUF5QyxFQUFDLE1BQU0sRUFBQyxRQUFROztHQUFVOztFQUEyQixFQUFFLEVBQzNKLEVBQUUsRUFBRSxFQUFFLDRCQUE0QixFQUFFLE9BQU8sRUFBRTs7O0VBQU07O0tBQUcsSUFBSSxFQUFDLHlDQUF5QyxFQUFDLE1BQU0sRUFBQyxRQUFROztHQUFhOztFQUFzQixFQUFFLEVBQ3pKLEVBQUUsRUFBRSxFQUFFLDRCQUE0QixFQUFFLE9BQU8sRUFBRTs7O0VBQU07O0tBQUcsSUFBSSxFQUFDLHlDQUF5QyxFQUFDLE1BQU0sRUFBQyxRQUFROztHQUFlOztFQUF1QixFQUFFLEVBQzVKLEVBQUUsRUFBRSxFQUFFLDRCQUE0QixFQUFFLE9BQU8sRUFBRTs7O0VBQU07O0tBQUcsSUFBSSxFQUFDLHlDQUF5QyxFQUFDLE1BQU0sRUFBQyxRQUFROztHQUFjOztFQUF3QixFQUFFLEVBQzVKLEVBQUUsRUFBRSxFQUFFLDRCQUE0QixFQUFFLE9BQU8sRUFBRTs7O0VBQU07O0tBQUcsSUFBSSxFQUFDLHlDQUF5QyxFQUFDLE1BQU0sRUFBQyxRQUFROztHQUFTOztFQUE2QixFQUFFLEVBQzVKLEVBQUUsRUFBRSxFQUFFLDRCQUE0QixFQUFFLE9BQU8sRUFBRTs7O0VBQU07O0tBQUcsSUFBSSxFQUFDLHlDQUF5QyxFQUFDLE1BQU0sRUFBQyxRQUFROztHQUFhOztFQUEyQixFQUFFLEVBQzlKLEVBQUUsRUFBRSxFQUFFLDRCQUE0QixFQUFFLE9BQU8sRUFBRTs7O0VBQU07O0tBQUcsSUFBSSxFQUFD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QUssRUFBRSxNQUFNO0FBQ2IsUUFBTSxFQUFFLGNBQWM7QUFDdEIsUUFBTSxFQUFFLENBQUM7QUFDVCxVQUFRLEVBQUUsUUFBUTtBQUNsQixPQUFLLEVBQUUsY0FBYztFQUNyQjtBQUNELGVBQWMsRUFBRTtBQUNmLFNBQU8sRUFBRSxPQUFPO0FBQ2hCLFFBQU0sRUFBRSxNQUFNO0FBQ2QsVUFBUSxFQUFFLE1BQU07RUFTaEI7Q0FDRCxDQUFDOzs7Ozs7Ozs7O3FCQUVhLE9BQU8iLCJmaWxlIjoiZ2VuZXJhdGVkLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXNDb250ZW50IjpbIihmdW5jdGlvbiBlKHQsbixyKXtmdW5jdGlvbiBzKG8sdSl7aWYoIW5bb10pe2lmKCF0W29dKXt2YXIgYT10eXBlb2YgcmVxdWlyZT09XCJmdW5jdGlvblwiJiZyZXF1aXJlO2lmKCF1JiZhKXJldHVybiBhKG8sITApO2lmKGkpcmV0dXJuIGkobywhMCk7dmFyIGY9bmV3IEVycm9yKFwiQ2Fubm90IGZpbmQgbW9kdWxlICdcIitvK1wiJ1wiKTt0aHJvdyBmLmNvZGU9XCJNT0RVTEVfTk9UX0ZPVU5EXCIsZn12YXIgbD1uW29dPXtleHBvcnRzOnt9fTt0W29dWzBdLmNhbGwobC5leHBvcnRzLGZ1bmN0aW9uKGUpe3ZhciBuPXRbb11bMV1bZV07cmV0dXJuIHMobj9uOmUpfSxsLGwuZXhwb3J0cyxlLHQsbixyKX1yZXR1cm4gbltvXS5leHBvcnRzfXZhciBpPXR5cGVvZiByZXF1aXJlPT1cImZ1bmN0aW9uXCImJnJlcXVpcmU7Zm9yKHZhciBvPTA7bzxyLmxlbmd0aDtvKyspcyhyW29dKTtyZXR1cm4gc30pIiwiaW1wb3J0IFJlYWN0IGZyb20gJ3JlYWN0JztcbmltcG9ydCB7IHJlbmRlciB9IGZyb20gJ3JlYWN0LWRvbSc7XG5pbXBvcnQgR2FsbGVyeSBmcm9tICcuL2NvbXBvbmVudHMvR2FsbGVyeSc7XG5pbXBvcnQgTGlnaHRib3ggZnJvbSAncmVhY3QtaW1hZ2VzJztcblxuZnVuY3Rpb24gbWFrZVVuc3BsYXNoU3JjIChpZCkge1xuXHRyZXR1cm4gYGh0dHBzOi8vaW1hZ2VzLnVuc3BsYXNoLmNvbS9waG90by0ke2lkfT9kcHI9MiZhdXRvPWZvcm1hdCZ3PTE2MDAmaD0xNjAwYDtcbn1cbmZ1bmN0aW9uIG1ha2VVbnNwbGFzaFNyY1NldCAoaWQsIHNpemUpIHtcblx0cmV0dXJuIGBodHRwczovL2ltYWdlcy51bnNwbGFzaC5jb20vcGhvdG8tJHtpZH0/ZHByPTImYXV0bz1mb3JtYXQmdz0ke3NpemV9ICR7c2l6ZX13YDtcbn1cbmZ1bmN0aW9uIG1ha2VVbnNwbGFzaFRodW1ibmFpbCAoaWQpIHtcblx0cmV0dXJuIGBodHRwczovL2ltYWdlcy51bnNwbGFzaC5jb20vcGhvdG8tJHtpZH0/ZHByPTImYXV0bz1mb3JtYXQmY3JvcD1lbnRyb3B5JmZpdD1jcm9wJnc9MTAwJmg9MTAwYDtcbn1cblxuY29uc3QgSU1BR0VfTkFNRVMgPSBbXG5cdHsgaWQ6ICcxNDcxMDc5NTAyNTE2LTI1MGMxOWFmNjkyOCcsIGNhcHRpb246IDxzcGFuPjxhIGhyZWY9XCJodHRwczovL3Vuc3BsYXNoLmNvbS9waG90b3MvR0lwR3hlMl9jVDRcIiB0YXJnZXQ9XCJfYmxhbmtcIj5UdXJ0bGU8L2E+LCBieSBKZXJlbXkgQmlzaG9wPC9zcGFuPiB9LFxuXHR7IGlkOiAnMTQ1NTk3MDAyMjE0OS1hOGYyNmI2OTAyZGQnLCBjYXB0aW9uOiA8c3Bhbj48YSBocmVmPVwiaHR0cHM6Ly91bnNwbGFzaC5jb20vcGhvdG9zL2E3YmRxamVHNk00XCIgdGFyZ2V0PVwiX2JsYW5rXCI+Q2F0PC9hPiwgYnkgTW9uYSBNYWdudXNzZW48L3NwYW4+IH0sXG5cdHsgaWQ6ICcxNDcwMzE3NTk2Njk3LWNiZGVkYTU2Zjk5OScsIGNhcHRpb246IDxzcGFuPjxhIGhyZWY9XCJodHRwczovL3Vuc3BsYXNoLmNvbS9waG90b3MvWGdGOWU5M1RrdDBcIiB0YXJnZXQ9XCJfYmxhbmtcIj5MYWR5YnVnPC9hPiwgYnkgTWljaGVsIEJvc21hPC9zcGFuPiB9LFxuXHR7IGlkOiAnMTQ1NDAyMzQ5MjU1MC01Njk2ZjhmZjEwZTEnLCBjYXB0aW9uOiA8c3Bhbj48YSBocmVmPVwiaHR0cHM6Ly91bnNwbGFzaC5jb20vcGhvdG9zL0xtVlNLZUR5NkVBXCIgdGFyZ2V0PVwiX2JsYW5rXCI+VGlnZXI8L2E+LCBieSBKZXNzaWNhIFdlaWxsZXI8L3NwYW4+IH0sXG5cdHsgaWQ6ICcxNDcwNjE5NTQ5MTA4LWI4NWM1NmZlNWJlOCcsIGNhcHRpb246IDxzcGFuPjxhIGhyZWY9XCJodHRwczovL3Vuc3BsYXNoLmNvbS9waG90b3MvU1l6VUY2WGNXQllcIiB0YXJnZXQ9XCJfYmxhbmtcIj5GbGFtaW5nbzwvYT4sIGJ5IEFsYW4gRW1lcnk8L3NwYW4+IH0sXG5cdHsgaWQ6ICcxNDU4MTY3MDcyMTUzLWEyZWI3NmQ2N2MxYycsIGNhcHRpb246IDxzcGFuPjxhIGhyZWY9XCJodHRwczovL3Vuc3BsYXNoLmNvbS9waG90b3MvSTRBRVhIaDAwdW9cIiB0YXJnZXQ9XCJfYmxhbmtcIj5DaGltcGFuemVlPC9hPiwgYnkgTGl6IEJyaWRnZXM8L3NwYW4+IH0sXG5cdHsgaWQ6ICcxNDcxMTAxMTczNzEyLWI5ODg0MTc1MjU0ZScsIGNhcHRpb246IDxzcGFuPjxhIGhyZWY9XCJodHRwczovL3Vuc3BsYXNoLmNvbS9waG90b3MvNW9SelpVNXV3U01cIiB0YXJnZXQ9XCJfYmxhbmtcIj5EcmFnb25mbHk8L2E+LCBieSBQZWRybyBMYXN0cmE8L3NwYW4+IH0sXG5cdHsgaWQ6ICcxNDcxMTI3NDMyNDU4LTY1MjA2YmUxNDljOScsIGNhcHRpb246IDxzcGFuPjxhIGhyZWY9XCJodHRwczovL3Vuc3BsYXNoLmNvbS9waG90b3MvS3BndDRwbDAzTzBcIiB0YXJnZXQ9XCJfYmxhbmtcIj5EZWVyPC9hPiwgYnkgRXJuZXN0byBWZWzDoXpxdWV6PC9zcGFuPiB9LFxuXHR7IGlkOiAnMTQ3MDg1NDk4OTkyMi01YmUyZjc0NTZkNzgnLCBjYXB0aW9uOiA8c3Bhbj48YSBocmVmPVwiaHR0cHM6Ly91bnNwbGFzaC5jb20vcGhvdG9zL0dYTXI3QmFkWFFvXCIgdGFyZ2V0PVwiX2JsYW5rXCI+SGVkZ2Vob2c8L2E+LCBieSBQaW90ciDFgWFza2F3c2tpPC9zcGFuPiB9LFxuXHR7IGlkOiAnMTQ3MDc3NzYzOTMxMy02MGFmODg5MTgyMDMnLCBjYXB0aW9uOiA8c3Bhbj48YSBocmVmPVwiaHR0cHM6Ly91bnNwbGFzaC5jb20vcGhvdG9zL0dOVWNVeC1pT2JnXCIgdGFyZ2V0PVwiX2JsYW5rXCI+S29hbGE8L2E+LCBieSBDcmlzIFNhdXI8L3NwYW4+IH0sXG5cdHsgaWQ6ICcxNDUzNTUwNDg2NDgxLWFhNDE3NWIwMTNlYScsIGNhcHRpb246IDxzcGFuPjxhIGhyZWY9XCJodHRwczovL3Vuc3BsYXNoLmNvbS9waG90b3MvV2lTZWFaNEU2WklcIiB0YXJnZXQ9XCJfYmxhbmtcIj5FbGVwaGFudDwvYT4sIGJ5IEJlbmphbWluIFBsZXk8L3NwYW4+IH0sXG5dO1xuY29uc3QgSU1BR0VfTUFQID0gSU1BR0VfTkFNRVMubWFwKCh7IGNhcHRpb24sIGlkIH0pID0+ICh7XG5cdHNyYzogbWFrZVVuc3BsYXNoU3JjKGlkKSxcblx0dGh1bWJuYWlsOiBtYWtlVW5zcGxhc2hUaHVtYm5haWwoaWQpLFxuXHRzcmNzZXQ6IFtcblx0XHRtYWtlVW5zcGxhc2hTcmNTZXQoaWQsIDEwMjQpLFxuXHRcdG1ha2VVbnNwbGFzaFNyY1NldChpZCwgODAwKSxcblx0XHRtYWtlVW5zcGxhc2hTcmNTZXQoaWQsIDUwMCksXG5cdFx0bWFrZVVuc3BsYXNoU3JjU2V0KGlkLCAzMjApLFxuXHRdLFxuXHRjYXB0aW9uLFxufSkpO1xuXG5yZW5kZXIoXG5cdDxkaXY+XG5cdFx0PGgzPkRlZmF1bHQgb3B0aW9uczwvaDM+XG5cdFx0PHAgc3R5bGU9e3sgbWFyZ2luQm90dG9tOiA0MCB9fT5Vc2UgeW91ciBrZXlib2FyZCB0byBuYXZpZ2F0ZSA8a2JkPmxlZnQ8L2tiZD4gPGtiZD5yaWdodDwva2JkPiA8a2JkPmVzYzwva2JkPiAmbWRhc2g7IEFsc28sIHRyeSByZXNpemluZyB5b3VyIGJyb3dzZXIgd2luZG93LjwvcD5cblx0XHQ8R2FsbGVyeSBpbWFnZXM9e0lNQUdFX01BUH0gLz5cblx0XHQ8cD5JbWFnZXMgY291cnRlc3kgb2YgPGEgaHJlZj1cImh0dHBzOi8vdW5zcGxhc2guY29tL1wiIHRhcmdldD1cIl9ibGFua1wiPlVuc3BsYXNoPC9hPjwvcD5cblxuXHRcdDxoMz5XaXRob3V0IHRodW1ibmFpbHM8L2gzPlxuXHRcdDxwIHN0eWxlPXt7IG1hcmdpbkJvdHRvbTogNDAgfX0+U2V0IDxjb2RlPntcInRodW1ibmFpbHM9e2ZhbHNlfVwifTwvY29kZT4gdG8gcmVtb3ZlIHRodW1ibmFpbHM8L3A+XG5cdFx0PEdhbGxlcnkgaW1hZ2VzPXtJTUFHRV9NQVB9IHRodW1ibmFpbHM9e2ZhbHNlfSAvPlxuXG5cdFx0PGgzPlBhZ2luYXRlZCB2ZXJzaW9uPC9oMz5cblx0XHQ8cCBzdHlsZT17eyBtYXJnaW5Cb3R0b206IDQwIH19PlRoZSA8Y29kZT50aHVtYm5haWxzPC9jb2RlPiBwcm9wIGNhbiBhY3R1YWxseSB0YWtlIGEgY29tcG9uZW50IGFzIHZhbHVlPGJyIC8+PGNvZGU+e1widGh1bWJuYWlscz17TGlnaHRib3guTGlnaHRib3guUGFnaW5hdGVkVGh1bWJuYWlsc31cIn08L2NvZGU+PC9wPlxuXHRcdDxHYWxsZXJ5IGltYWdlcz17SU1BR0VfTUFQfSB0aHVtYm5haWxzPXtMaWdodGJveC5QYWdpbmF0ZWRUaHVtYm5haWxzfSAvPlxuXHRcdDxwIHN0eWxlPXt7IG1hcmdpbkJvdHRvbTogMjAgfX0+Tm90ZSA6IFBhZ2luYXRlZFRodW1ibmFpbHMgaGFzIGFuIG9mZnNldCBwcm9wIHRvIGNoYW5nZSB0aGUgbnVtYmVyIG9mIHRodW1ibmFpbHMgdG8gc2hvdyBhcm91bmQgdGhlIGN1cnJlbnQgb25lLjxiciAvPlxuXHRcdDxjb2RlPntcIjxMaWdodGJveCB0aHVtYm5haWxzPXsocHJvcHMpID0+IDxQYWdpbmF0ZWRUaHVtYm5haWxzIHsuLi5wcm9wc30gb2Zmc2V0PXs1fSAvPn0gLz5cIn08L2NvZGU+XG5cdFx0PC9wPlxuXHQ8L2Rpdj4sXG5cdGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdleGFtcGxlJylcbik7XG4iLCJtb2R1bGUuZXhwb3J0cyA9IChcbiAgICAnPHN2ZyB4bWxucz1cImh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnXCIgeG1sbnM6eGxpbms9XCJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rXCIgdmVyc2lvbj1cIjEuMVwiIHg9XCIwcHhcIiB5PVwiMHB4XCIgdmlld0JveD1cIjAgMCAyNCAzMFwiIGVuYWJsZS1iYWNrZ3JvdW5kPVwibmV3IDAgMCAyNCAyNFwiIHhtbDpzcGFjZT1cInByZXNlcnZlXCI+J1xuICAgICAgICArICc8Zz4nXG4gICAgICAgICAgICArICc8cG9seWdvbiBmaWxsPVwid2hpdGVcIiBwb2ludHM9XCIxOSwxNCAxOSwxOCA1LDE4IDUsMTQgMiwxNCAyLDE4IDIsMjIgNSwyMiAxOSwyMiAyMiwyMiAyMiwxOCAyMiwxNCAgXCIvPidcbiAgICAgICAgICAgICsgJzxwb2x5Z29uIGZpbGw9XCJ3aGl0ZVwiIHBvaW50cz1cIjE1LDkuOSAxNSwyIDksMiA5LDkuOSA1LjgsOS45IDEyLDE2LjEgMTguMiw5LjkgIFwiLz4nXG4gICAgICAgICsgJzwvZz4nXG4gICAgKyAnPC9zdmc+J1xuKTtcbiIsImltcG9ydCBSZWFjdCwgeyBDb21wb25lbnQsIFByb3BUeXBlcyB9IGZyb20gJ3JlYWN0JztcbmltcG9ydCBEb3dubG9hZEljb24gZnJvbSAnLi9pY29uJztcblxuY2xhc3MgRG93bmxvYWRCdXR0b24gZXh0ZW5kcyBDb21wb25lbnQge1xuICAgIGNvbnN0cnVjdG9yICgpIHtcbiAgICAgICAgc3VwZXIoKTtcbiAgICB9XG4gICAgcmVuZGVyICgpIHtcbiAgICAgICAgcmV0dXJuIChcbiAgICAgICAgICAgIDxidXR0b25cbiAgICAgICAgICAgICAgICB0aXRsZT1cIkRvd25sb2FkXCJcbiAgICAgICAgICAgICAgICBzdHlsZT17e1xuICAgICAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kOiAnbm9uZScsXG4gICAgICAgICAgICAgICAgICAgIGJvcmRlcjogJ25vbmUnLFxuICAgICAgICAgICAgICAgICAgICBjdXJzb3I6ICdwb2ludGVyJyxcbiAgICAgICAgICAgICAgICAgICAgZmxvYXQ6ICdsZWZ0JyxcbiAgICAgICAgICAgICAgICAgICAgaGVpZ2h0OiA0MCxcbiAgICAgICAgICAgICAgICAgICAgb3V0bGluZTogJ25vbmUnLFxuICAgICAgICAgICAgICAgICAgICBwYWRkaW5nOiAxMCxcbiAgICAgICAgICAgICAgICAgICAgcG9zaXRpb246ICdyZWxhdGl2ZScsXG4gICAgICAgICAgICAgICAgICAgIGxlZnQ6IC0xMCxcbiAgICAgICAgICAgICAgICAgICAgdG9wOiAwLFxuICAgICAgICAgICAgICAgICAgICB2ZXJ0aWNhbEFsaWduOiAnYm90dG9tJyxcbiAgICAgICAgICAgICAgICAgICAgd2lkdGg6IDQwLFxuICAgICAgICAgICAgICAgIH19XG4gICAgICAgICAgICAgICAgb25DbGljaz17dGhpcy5wcm9wcy5oYW5kbGVyfVxuICAgICAgICAgICAgPlxuICAgICAgICAgICAgICAgIDxzcGFuXG4gICAgICAgICAgICAgICAgICAgIGRhbmdlcm91c2x5U2V0SW5uZXJIVE1MPXt7IF9faHRtbDogRG93bmxvYWRJY29uIH19XG4gICAgICAgICAgICAgICAgLz5cbiAgICAgICAgICAgIDwvYnV0dG9uPlxuICAgICAgICApXG4gICAgfVxufVxuXG5leHBvcnQgZGVmYXVsdCBEb3dubG9hZEJ1dHRvbjtcbiIsImltcG9ydCBSZWFjdCwgeyBDb21wb25lbnQsIFByb3BUeXBlcyB9IGZyb20gJ3JlYWN0JztcbmltcG9ydCBMaWdodGJveCBmcm9tICdyZWFjdC1pbWFnZXMnO1xuaW1wb3J0IERvd25sb2FkQnV0dG9uIGZyb20gJy4vRG93bmxvYWRCdXR0b24nO1xuXG5jbGFzcyBHYWxsZXJ5IGV4dGVuZHMgQ29tcG9uZW50IHtcblx0Y29uc3RydWN0b3IgKCkge1xuXHRcdHN1cGVyKCk7XG5cblx0XHR0aGlzLnN0YXRlID0ge1xuXHRcdFx0bGlnaHRib3hJc09wZW46IGZhbHNlLFxuXHRcdFx0Y3VycmVudEltYWdlOiAwLFxuXHRcdH07XG5cblx0XHR0aGlzLmNsb3NlTGlnaHRib3ggPSB0aGlzLmNsb3NlTGlnaHRib3guYmluZCh0aGlzKTtcblx0XHR0aGlzLmdvdG9OZXh0ID0gdGhpcy5nb3RvTmV4dC5iaW5kKHRoaXMpO1xuXHRcdHRoaXMuZ290b1ByZXZpb3VzID0gdGhpcy5nb3RvUHJldmlvdXMuYmluZCh0aGlzKTtcblx0XHR0aGlzLmdvdG9JbWFnZSA9IHRoaXMuZ290b0ltYWdlLmJpbmQodGhpcyk7XG5cdFx0dGhpcy5oYW5kbGVDbGlja0ltYWdlID0gdGhpcy5oYW5kbGVDbGlja0ltYWdlLmJpbmQodGhpcyk7XG5cdFx0dGhpcy5vcGVuTGlnaHRib3ggPSB0aGlzLm9wZW5MaWdodGJveC5iaW5kKHRoaXMpO1xuXHR9XG5cdG9wZW5MaWdodGJveCAoaW5kZXgsIGV2ZW50KSB7XG5cdFx0ZXZlbnQucHJldmVudERlZmF1bHQoKTtcblx0XHR0aGlzLnNldFN0YXRlKHtcblx0XHRcdGN1cnJlbnRJbWFnZTogaW5kZXgsXG5cdFx0XHRsaWdodGJveElzT3BlbjogdHJ1ZSxcblx0XHR9KTtcblx0fVxuXHRjbG9zZUxpZ2h0Ym94ICgpIHtcblx0XHR0aGlzLnNldFN0YXRlKHtcblx0XHRcdGN1cnJlbnRJbWFnZTogMCxcblx0XHRcdGxpZ2h0Ym94SXNPcGVuOiBmYWxzZSxcblx0XHR9KTtcblx0fVxuXHRnb3RvUHJldmlvdXMgKCkge1xuXHRcdHRoaXMuc2V0U3RhdGUoe1xuXHRcdFx0Y3VycmVudEltYWdlOiB0aGlzLnN0YXRlLmN1cnJlbnRJbWFnZSAtIDEsXG5cdFx0fSk7XG5cdH1cblx0Z290b05leHQgKCkge1xuXHRcdHRoaXMuc2V0U3RhdGUoe1xuXHRcdFx0Y3VycmVudEltYWdlOiB0aGlzLnN0YXRlLmN1cnJlbnRJbWFnZSArIDEsXG5cdFx0fSk7XG5cdH1cblx0Z290b0ltYWdlIChpbmRleCkge1xuXHRcdHRoaXMuc2V0U3RhdGUoe1xuXHRcdFx0Y3VycmVudEltYWdlOiBpbmRleCxcblx0XHR9KTtcblx0fVxuXHRoYW5kbGVDbGlja0ltYWdlICgpIHtcblx0XHRpZiAodGhpcy5zdGF0ZS5jdXJyZW50SW1hZ2UgPT09IHRoaXMucHJvcHMuaW1hZ2VzLmxlbmd0aCAtIDEpIHJldHVybjtcblxuXHRcdHRoaXMuZ290b05leHQoKTtcblx0fVxuXHRyZW5kZXJHYWxsZXJ5ICgpIHtcblx0XHRpZiAoIXRoaXMucHJvcHMuaW1hZ2VzKSByZXR1cm47XG5cdFx0Y29uc3QgZ2FsbGVyeSA9IHRoaXMucHJvcHMuaW1hZ2VzLm1hcCgob2JqLCBpKSA9PiB7XG5cdFx0XHRyZXR1cm4gKFxuXHRcdFx0XHQ8YVxuXHRcdFx0XHRcdGhyZWY9e29iai5zcmN9XG5cdFx0XHRcdFx0a2V5PXtpfVxuXHRcdFx0XHRcdG9uQ2xpY2s9eyhlKSA9PiB0aGlzLm9wZW5MaWdodGJveChpLCBlKX1cblx0XHRcdFx0XHRzdHlsZT17c3R5bGVzLnRodW1ibmFpbH1cblx0XHRcdFx0XHQ+XG5cdFx0XHRcdFx0PGltZ1xuXHRcdFx0XHRcdFx0aGVpZ2h0PXtzdHlsZXMudGh1bWJuYWlsLnNpemV9XG5cdFx0XHRcdFx0XHRzcmM9e29iai50aHVtYm5haWx9XG5cdFx0XHRcdFx0XHRzdHlsZT17c3R5bGVzLnRodW1ibmFpbEltYWdlfVxuXHRcdFx0XHRcdFx0d2lkdGg9e3N0eWxlcy50aHVtYm5haWwuc2l6ZX1cblx0XHRcdFx0XHQvPlxuXHRcdFx0XHQ8L2E+XG5cdFx0XHQpO1xuXHRcdH0pO1xuXG5cdFx0cmV0dXJuIChcblx0XHRcdDxkaXYgc3R5bGU9e3N0eWxlcy5nYWxsZXJ5fT5cblx0XHRcdFx0e2dhbGxlcnl9XG5cdFx0XHQ8L2Rpdj5cblx0XHQpO1xuXHR9XG5cdGhhbmRsZURvd25sb2FkICgpIHtcblx0XHR3aW5kb3cub3Blbih0aGlzLnByb3BzLmltYWdlc1t0aGlzLnN0YXRlLmN1cnJlbnRJbWFnZV0uc3JjKTtcblx0fVxuXHRyZW5kZXIgKCkge1xuXHRcdGNvbnN0IHsgdGh1bWJuYWlscyB9ID0gdGhpcy5wcm9wc1xuXHRcdGxldCBjdXN0b21Db250cm9scyA9IFtcblx0XHRcdDxEb3dubG9hZEJ1dHRvbiBrZXk9XCJEb3dubG9hZFwiIGhhbmRsZXI9e3RoaXMuaGFuZGxlRG93bmxvYWQuYmluZCh0aGlzKX0gLz4sXG5cdFx0XTtcblx0XHRyZXR1cm4gKFxuXHRcdFx0PGRpdiBjbGFzc05hbWU9XCJzZWN0aW9uXCI+XG5cdFx0XHRcdHt0aGlzLnByb3BzLmhlYWRpbmcgJiYgPGgyPnt0aGlzLnByb3BzLmhlYWRpbmd9PC9oMj59XG5cdFx0XHRcdHt0aGlzLnByb3BzLnN1YmhlYWRpbmcgJiYgPHA+e3RoaXMucHJvcHMuc3ViaGVhZGluZ308L3A+fVxuXHRcdFx0XHR7dGhpcy5yZW5kZXJHYWxsZXJ5KCl9XG5cdFx0XHRcdDxMaWdodGJveFxuXHRcdFx0XHRcdGN1cnJlbnRJbWFnZT17dGhpcy5zdGF0ZS5jdXJyZW50SW1hZ2V9XG5cdFx0XHRcdFx0Y3VzdG9tQ29udHJvbHM9e2N1c3RvbUNvbnRyb2xzfVxuXHRcdFx0XHRcdGltYWdlcz17dGhpcy5wcm9wcy5pbWFnZXN9XG5cdFx0XHRcdFx0aXNPcGVuPXt0aGlzLnN0YXRlLmxpZ2h0Ym94SXNPcGVufVxuXHRcdFx0XHRcdG9uQ2xpY2tQcmV2PXt0aGlzLmdvdG9QcmV2aW91c31cblx0XHRcdFx0XHRvbkNsaWNrTmV4dD17dGhpcy5nb3RvTmV4dH1cblx0XHRcdFx0XHRvbkNsaWNrVGh1bWJuYWlsPXt0aGlzLmdvdG9JbWFnZX1cblx0XHRcdFx0XHRvbkNsaWNrSW1hZ2U9e3RoaXMuaGFuZGxlQ2xpY2tJbWFnZX1cblx0XHRcdFx0XHRvbkNsb3NlPXt0aGlzLmNsb3NlTGlnaHRib3h9XG5cdFx0XHRcdFx0dGhlbWU9e3RoaXMucHJvcHMudGhlbWV9XG5cdFx0XHRcdFx0dGh1bWJuYWlscz17dGh1bWJuYWlsc31cblx0XHRcdFx0Lz5cblx0XHRcdDwvZGl2PlxuXHRcdCk7XG5cdH1cbn07XG5cbkdhbGxlcnkuZGlzcGxheU5hbWUgPSAnR2FsbGVyeSc7XG5HYWxsZXJ5LnByb3BUeXBlcyA9IHtcblx0aGVhZGluZzogUHJvcFR5cGVzLnN0cmluZyxcblx0aW1hZ2VzOiBQcm9wVHlwZXMuYXJyYXksXG5cdHNlcGlhOiBQcm9wVHlwZXMuYm9vbCxcblx0c3ViaGVhZGluZzogUHJvcFR5cGVzLnN0cmluZyxcbn07XG5cbmNvbnN0IFRIVU1CTkFJTF9TSVpFID0gNzI7XG5cbmNvbnN0IHN0eWxlcyA9IHtcblx0Z2FsbGVyeToge1xuXHRcdG1hcmdpbkxlZnQ6IC01LFxuXHRcdG1hcmdpblJpZ2h0OiAtNSxcblx0XHRvdmVyZmxvdzogJ2hpZGRlbicsXG5cdH0sXG5cdHRodW1ibmFpbDoge1xuXHRcdGJhY2tncm91bmRTaXplOiAnY292ZXInLFxuXHRcdGJvcmRlclJhZGl1czogMyxcblx0XHRmbG9hdDogJ2xlZnQnLFxuXHRcdGhlaWdodDogVEhVTUJOQUlMX1NJWkUsXG5cdFx0bWFyZ2luOiA1LFxuXHRcdG92ZXJmbG93OiAnaGlkZGVuJyxcblx0XHR3aWR0aDogVEhVTUJOQUlMX1NJWkUsXG5cdH0sXG5cdHRodW1ibmFpbEltYWdlOiB7XG5cdFx0ZGlzcGxheTogJ2Jsb2NrJyxcblx0XHRoZWlnaHQ6ICdhdXRvJyxcblx0XHRtYXhXaWR0aDogJzEwMCUnLFxuXHRcdC8vIGhlaWdodDogVEhVTUJOQUlMX1NJWkUsXG5cdFx0Ly8gbGVmdDogJzUwJScsXG5cdFx0Ly8gcG9zaXRpb246ICdyZWxhdGl2ZScsXG5cdFx0Ly9cblx0XHQvLyBXZWJraXRUcmFuc2Zvcm06ICd0cmFuc2xhdGVYKC01MCUpJyxcblx0XHQvLyBNb3pUcmFuc2Zvcm06ICAgICd0cmFuc2xhdGVYKC01MCUpJyxcblx0XHQvLyBtc1RyYW5zZm9ybTogICAgICd0cmFuc2xhdGVYKC01MCUpJyxcblx0XHQvLyB0cmFuc2Zvcm06ICAgICAgICd0cmFuc2xhdGVYKC01MCUpJyxcblx0fSxcbn07XG5cbmV4cG9ydCBkZWZhdWx0IEdhbGxlcnk7XG4iXX0=
+},{"aphrodite/no-important":8,"react":undefined,"react-images":undefined}],3:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _inlineStylePrefixerStatic = require('inline-style-prefixer/static');
+
+var _inlineStylePrefixerStatic2 = _interopRequireDefault(_inlineStylePrefixerStatic);
+
+var _util = require('./util');
+
+/**
+ * Generate CSS for a selector and some styles.
+ *
+ * This function handles the media queries, pseudo selectors, and descendant
+ * styles that can be used in aphrodite styles.
+ *
+ * @param {string} selector: A base CSS selector for the styles to be generated
+ *     with.
+ * @param {Object} styleTypes: A list of properties of the return type of
+ *     StyleSheet.create, e.g. [styles.red, styles.blue].
+ * @param stringHandlers: See `generateCSSRuleset`
+ * @param useImportant: See `generateCSSRuleset`
+ *
+ * To actually generate the CSS special-construct-less styles are passed to
+ * `generateCSSRuleset`.
+ *
+ * For instance, a call to
+ *
+ *     generateCSSInner(".foo", {
+ *       color: "red",
+ *       "@media screen": {
+ *         height: 20,
+ *         ":hover": {
+ *           backgroundColor: "black"
+ *         }
+ *       },
+ *       ":active": {
+ *         fontWeight: "bold",
+ *         ">>bar": {
+ *           _names: { "foo_bar": true },
+ *           height: 10,
+ *         }
+ *       }
+ *     });
+ *
+ * will make 5 calls to `generateCSSRuleset`:
+ *
+ *     generateCSSRuleset(".foo", { color: "red" }, ...)
+ *     generateCSSRuleset(".foo:active", { fontWeight: "bold" }, ...)
+ *     generateCSSRuleset(".foo:active .foo_bar", { height: 10 }, ...)
+ *     // These 2 will be wrapped in @media screen {}
+ *     generateCSSRuleset(".foo", { height: 20 }, ...)
+ *     generateCSSRuleset(".foo:hover", { backgroundColor: "black" }, ...)
+ */
+var generateCSS = function generateCSS(selector, styleTypes, stringHandlers, useImportant) {
+    var merged = styleTypes.reduce(_util.recursiveMerge);
+
+    var declarations = {};
+    var mediaQueries = {};
+    var pseudoStyles = {};
+
+    Object.keys(merged).forEach(function (key) {
+        if (key[0] === ':') {
+            pseudoStyles[key] = merged[key];
+        } else if (key[0] === '@') {
+            mediaQueries[key] = merged[key];
+        } else {
+            declarations[key] = merged[key];
+        }
+    });
+
+    return generateCSSRuleset(selector, declarations, stringHandlers, useImportant) + Object.keys(pseudoStyles).map(function (pseudoSelector) {
+        return generateCSSRuleset(selector + pseudoSelector, pseudoStyles[pseudoSelector], stringHandlers, useImportant);
+    }).join("") + Object.keys(mediaQueries).map(function (mediaQuery) {
+        var ruleset = generateCSS(selector, [mediaQueries[mediaQuery]], stringHandlers, useImportant);
+        return mediaQuery + '{' + ruleset + '}';
+    }).join("");
+};
+
+exports.generateCSS = generateCSS;
+/**
+ * Helper method of generateCSSRuleset to facilitate custom handling of certain
+ * CSS properties. Used for e.g. font families.
+ *
+ * See generateCSSRuleset for usage and documentation of paramater types.
+ */
+var runStringHandlers = function runStringHandlers(declarations, stringHandlers) {
+    var result = {};
+
+    Object.keys(declarations).forEach(function (key) {
+        // If a handler exists for this particular key, let it interpret
+        // that value first before continuing
+        if (stringHandlers && stringHandlers.hasOwnProperty(key)) {
+            result[key] = stringHandlers[key](declarations[key]);
+        } else {
+            result[key] = declarations[key];
+        }
+    });
+
+    return result;
+};
+
+/**
+ * Generate a CSS ruleset with the selector and containing the declarations.
+ *
+ * This function assumes that the given declarations don't contain any special
+ * children (such as media queries, pseudo-selectors, or descendant styles).
+ *
+ * Note that this method does not deal with nesting used for e.g.
+ * psuedo-selectors or media queries. That responsibility is left to  the
+ * `generateCSS` function.
+ *
+ * @param {string} selector: the selector associated with the ruleset
+ * @param {Object} declarations: a map from camelCased CSS property name to CSS
+ *     property value.
+ * @param {Object.<string, function>} stringHandlers: a map from camelCased CSS
+ *     property name to a function which will map the given value to the value
+ *     that is output.
+ * @param {bool} useImportant: A boolean saying whether to append "!important"
+ *     to each of the CSS declarations.
+ * @returns {string} A string of raw CSS.
+ *
+ * Examples:
+ *
+ *    generateCSSRuleset(".blah", { color: "red" })
+ *    -> ".blah{color: red !important;}"
+ *    generateCSSRuleset(".blah", { color: "red" }, {}, false)
+ *    -> ".blah{color: red}"
+ *    generateCSSRuleset(".blah", { color: "red" }, {color: c => c.toUpperCase})
+ *    -> ".blah{color: RED}"
+ *    generateCSSRuleset(".blah:hover", { color: "red" })
+ *    -> ".blah:hover{color: red}"
+ */
+var generateCSSRuleset = function generateCSSRuleset(selector, declarations, stringHandlers, useImportant) {
+    var handledDeclarations = runStringHandlers(declarations, stringHandlers);
+
+    var prefixedDeclarations = (0, _inlineStylePrefixerStatic2['default'])(handledDeclarations);
+
+    var prefixedRules = (0, _util.flatten)((0, _util.objectToPairs)(prefixedDeclarations).map(function (_ref) {
+        var _ref2 = _slicedToArray(_ref, 2);
+
+        var key = _ref2[0];
+        var value = _ref2[1];
+
+        if (Array.isArray(value)) {
+            var _ret = (function () {
+                // inline-style-prefix-all returns an array when there should be
+                // multiple rules, we will flatten to single rules
+
+                var prefixedValues = [];
+                var unprefixedValues = [];
+
+                value.forEach(function (v) {
+                    if (v.indexOf('-') === 0) {
+                        prefixedValues.push(v);
+                    } else {
+                        unprefixedValues.push(v);
+                    }
+                });
+
+                prefixedValues.sort();
+                unprefixedValues.sort();
+
+                return {
+                    v: prefixedValues.concat(unprefixedValues).map(function (v) {
+                        return [key, v];
+                    })
+                };
+            })();
+
+            if (typeof _ret === 'object') return _ret.v;
+        }
+        return [[key, value]];
+    }));
+
+    var rules = prefixedRules.map(function (_ref3) {
+        var _ref32 = _slicedToArray(_ref3, 2);
+
+        var key = _ref32[0];
+        var value = _ref32[1];
+
+        var stringValue = (0, _util.stringifyValue)(key, value);
+        var ret = (0, _util.kebabifyStyleName)(key) + ':' + stringValue + ';';
+        return useImportant === false ? ret : (0, _util.importantify)(ret);
+    }).join("");
+
+    if (rules) {
+        return selector + '{' + rules + '}';
+    } else {
+        return "";
+    }
+};
+exports.generateCSSRuleset = generateCSSRuleset;
+},{"./util":7,"inline-style-prefixer/static":25}],4:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
+
+var _util = require('./util');
+
+var _inject = require('./inject');
+
+var StyleSheet = {
+    create: function create(sheetDefinition) {
+        return (0, _util.mapObj)(sheetDefinition, function (_ref) {
+            var _ref2 = _slicedToArray(_ref, 2);
+
+            var key = _ref2[0];
+            var val = _ref2[1];
+
+            return [key, {
+                // TODO(emily): Make a 'production' mode which doesn't prepend
+                // the class name here, to make the generated CSS smaller.
+                _name: key + '_' + (0, _util.hashObject)(val),
+                _definition: val
+            }];
+        });
+    },
+
+    rehydrate: function rehydrate() {
+        var renderedClassNames = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+
+        (0, _inject.addRenderedClassNames)(renderedClassNames);
+    }
+};
+
+/**
+ * Utilities for using Aphrodite server-side.
+ */
+var StyleSheetServer = {
+    renderStatic: function renderStatic(renderFunc) {
+        (0, _inject.reset)();
+        (0, _inject.startBuffering)();
+        var html = renderFunc();
+        var cssContent = (0, _inject.flushToString)();
+
+        return {
+            html: html,
+            css: {
+                content: cssContent,
+                renderedClassNames: (0, _inject.getRenderedClassNames)()
+            }
+        };
+    }
+};
+
+/**
+ * Utilities for using Aphrodite in tests.
+ *
+ * Not meant to be used in production.
+ */
+var StyleSheetTestUtils = {
+    /**
+     * Prevent styles from being injected into the DOM.
+     *
+     * This is useful in situations where you'd like to test rendering UI
+     * components which use Aphrodite without any of the side-effects of
+     * Aphrodite happening. Particularly useful for testing the output of
+     * components when you have no DOM, e.g. testing in Node without a fake DOM.
+     *
+     * Should be paired with a subsequent call to
+     * clearBufferAndResumeStyleInjection.
+     */
+    suppressStyleInjection: function suppressStyleInjection() {
+        (0, _inject.reset)();
+        (0, _inject.startBuffering)();
+    },
+
+    /**
+     * Opposite method of preventStyleInject.
+     */
+    clearBufferAndResumeStyleInjection: function clearBufferAndResumeStyleInjection() {
+        (0, _inject.reset)();
+    }
+};
+
+var css = function css() {
+    for (var _len = arguments.length, styleDefinitions = Array(_len), _key = 0; _key < _len; _key++) {
+        styleDefinitions[_key] = arguments[_key];
+    }
+
+    var useImportant = true; // Append !important to all style definitions
+    return (0, _inject.injectAndGetClassName)(useImportant, styleDefinitions);
+};
+
+exports['default'] = {
+    StyleSheet: StyleSheet,
+    StyleSheetServer: StyleSheetServer,
+    StyleSheetTestUtils: StyleSheetTestUtils,
+    css: css
+};
+module.exports = exports['default'];
+},{"./inject":5,"./util":7}],5:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _asap = require('asap');
+
+var _asap2 = _interopRequireDefault(_asap);
+
+var _generate = require('./generate');
+
+var _util = require('./util');
+
+// The current <style> tag we are inserting into, or null if we haven't
+// inserted anything yet. We could find this each time using
+// `document.querySelector("style[data-aphrodite"])`, but holding onto it is
+// faster.
+var styleTag = null;
+
+// Inject a string of styles into a <style> tag in the head of the document. This
+// will automatically create a style tag and then continue to use it for
+// multiple injections. It will also use a style tag with the `data-aphrodite`
+// tag on it if that exists in the DOM. This could be used for e.g. reusing the
+// same style tag that server-side rendering inserts.
+var injectStyleTag = function injectStyleTag(cssContents) {
+    if (styleTag == null) {
+        // Try to find a style tag with the `data-aphrodite` attribute first.
+        styleTag = document.querySelector("style[data-aphrodite]");
+
+        // If that doesn't work, generate a new style tag.
+        if (styleTag == null) {
+            // Taken from
+            // http://stackoverflow.com/questions/524696/how-to-create-a-style-tag-with-javascript
+            var head = document.head || document.getElementsByTagName('head')[0];
+            styleTag = document.createElement('style');
+
+            styleTag.type = 'text/css';
+            styleTag.setAttribute("data-aphrodite", "");
+            head.appendChild(styleTag);
+        }
+    }
+
+    if (styleTag.styleSheet) {
+        styleTag.styleSheet.cssText += cssContents;
+    } else {
+        styleTag.appendChild(document.createTextNode(cssContents));
+    }
+};
+
+// Custom handlers for stringifying CSS values that have side effects
+// (such as fontFamily, which can cause @font-face rules to be injected)
+var stringHandlers = {
+    // With fontFamily we look for objects that are passed in and interpret
+    // them as @font-face rules that we need to inject. The value of fontFamily
+    // can either be a string (as normal), an object (a single font face), or
+    // an array of objects and strings.
+    fontFamily: function fontFamily(val) {
+        if (Array.isArray(val)) {
+            return val.map(fontFamily).join(",");
+        } else if (typeof val === "object") {
+            injectStyleOnce(val.fontFamily, "@font-face", [val], false);
+            return '"' + val.fontFamily + '"';
+        } else {
+            return val;
+        }
+    },
+
+    // With animationName we look for an object that contains keyframes and
+    // inject them as an `@keyframes` block, returning a uniquely generated
+    // name. The keyframes object should look like
+    //  animationName: {
+    //    from: {
+    //      left: 0,
+    //      top: 0,
+    //    },
+    //    '50%': {
+    //      left: 15,
+    //      top: 5,
+    //    },
+    //    to: {
+    //      left: 20,
+    //      top: 20,
+    //    }
+    //  }
+    // TODO(emily): `stringHandlers` doesn't let us rename the key, so I have
+    // to use `animationName` here. Improve that so we can call this
+    // `animation` instead of `animationName`.
+    animationName: function animationName(val) {
+        if (typeof val !== "object") {
+            return val;
+        }
+
+        // Generate a unique name based on the hash of the object. We can't
+        // just use the hash because the name can't start with a number.
+        // TODO(emily): this probably makes debugging hard, allow a custom
+        // name?
+        var name = 'keyframe_' + (0, _util.hashObject)(val);
+
+        // Since keyframes need 3 layers of nesting, we use `generateCSS` to
+        // build the inner layers and wrap it in `@keyframes` ourselves.
+        var finalVal = '@keyframes ' + name + '{';
+        Object.keys(val).forEach(function (key) {
+            finalVal += (0, _generate.generateCSS)(key, [val[key]], stringHandlers, false);
+        });
+        finalVal += '}';
+
+        injectGeneratedCSSOnce(name, finalVal);
+
+        return name;
+    }
+};
+
+// This is a map from Aphrodite's generated class names to `true` (acting as a
+// set of class names)
+var alreadyInjected = {};
+
+// This is the buffer of styles which have not yet been flushed.
+var injectionBuffer = "";
+
+// A flag to tell if we are already buffering styles. This could happen either
+// because we scheduled a flush call already, so newly added styles will
+// already be flushed, or because we are statically buffering on the server.
+var isBuffering = false;
+
+var injectGeneratedCSSOnce = function injectGeneratedCSSOnce(key, generatedCSS) {
+    if (!alreadyInjected[key]) {
+        if (!isBuffering) {
+            // We should never be automatically buffering on the server (or any
+            // place without a document), so guard against that.
+            if (typeof document === "undefined") {
+                throw new Error("Cannot automatically buffer without a document");
+            }
+
+            // If we're not already buffering, schedule a call to flush the
+            // current styles.
+            isBuffering = true;
+            (0, _asap2['default'])(flushToStyleTag);
+        }
+
+        injectionBuffer += generatedCSS;
+        alreadyInjected[key] = true;
+    }
+};
+
+var injectStyleOnce = function injectStyleOnce(key, selector, definitions, useImportant) {
+    if (!alreadyInjected[key]) {
+        var generated = (0, _generate.generateCSS)(selector, definitions, stringHandlers, useImportant);
+
+        injectGeneratedCSSOnce(key, generated);
+    }
+};
+
+exports.injectStyleOnce = injectStyleOnce;
+var reset = function reset() {
+    injectionBuffer = "";
+    alreadyInjected = {};
+    isBuffering = false;
+    styleTag = null;
+};
+
+exports.reset = reset;
+var startBuffering = function startBuffering() {
+    if (isBuffering) {
+        throw new Error("Cannot buffer while already buffering");
+    }
+    isBuffering = true;
+};
+
+exports.startBuffering = startBuffering;
+var flushToString = function flushToString() {
+    isBuffering = false;
+    var ret = injectionBuffer;
+    injectionBuffer = "";
+    return ret;
+};
+
+exports.flushToString = flushToString;
+var flushToStyleTag = function flushToStyleTag() {
+    var cssContent = flushToString();
+    if (cssContent.length > 0) {
+        injectStyleTag(cssContent);
+    }
+};
+
+exports.flushToStyleTag = flushToStyleTag;
+var getRenderedClassNames = function getRenderedClassNames() {
+    return Object.keys(alreadyInjected);
+};
+
+exports.getRenderedClassNames = getRenderedClassNames;
+var addRenderedClassNames = function addRenderedClassNames(classNames) {
+    classNames.forEach(function (className) {
+        alreadyInjected[className] = true;
+    });
+};
+
+exports.addRenderedClassNames = addRenderedClassNames;
+/**
+ * Inject styles associated with the passed style definition objects, and return
+ * an associated CSS class name.
+ *
+ * @param {boolean} useImportant If true, will append !important to generated
+ *     CSS output. e.g. {color: red} -> "color: red !important".
+ * @param {Object[]} styleDefinitions style definition objects as returned as
+ *     properties of the return value of StyleSheet.create().
+ */
+var injectAndGetClassName = function injectAndGetClassName(useImportant, styleDefinitions) {
+    // Filter out falsy values from the input, to allow for
+    // `css(a, test && c)`
+    var validDefinitions = styleDefinitions.filter(function (def) {
+        return def;
+    });
+
+    // Break if there aren't any valid styles.
+    if (validDefinitions.length === 0) {
+        return "";
+    }
+
+    var className = validDefinitions.map(function (s) {
+        return s._name;
+    }).join("-o_O-");
+    injectStyleOnce(className, '.' + className, validDefinitions.map(function (d) {
+        return d._definition;
+    }), useImportant);
+
+    return className;
+};
+exports.injectAndGetClassName = injectAndGetClassName;
+},{"./generate":3,"./util":7,"asap":9}],6:[function(require,module,exports){
+// Module with the same interface as the core aphrodite module,
+// except that styles injected do not automatically have !important
+// appended to them.
+//
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _inject = require('./inject');
+
+var _indexJs = require('./index.js');
+
+var css = function css() {
+    for (var _len = arguments.length, styleDefinitions = Array(_len), _key = 0; _key < _len; _key++) {
+        styleDefinitions[_key] = arguments[_key];
+    }
+
+    var useImportant = false; // Don't append !important to style definitions
+    return (0, _inject.injectAndGetClassName)(useImportant, styleDefinitions);
+};
+
+exports.StyleSheet = _indexJs.StyleSheet;
+exports.StyleSheetServer = _indexJs.StyleSheetServer;
+exports.StyleSheetTestUtils = _indexJs.StyleSheetTestUtils;
+exports.css = css;
+},{"./index.js":4,"./inject":5}],7:[function(require,module,exports){
+// {K1: V1, K2: V2, ...} -> [[K1, V1], [K2, V2]]
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var objectToPairs = function objectToPairs(obj) {
+    return Object.keys(obj).map(function (key) {
+        return [key, obj[key]];
+    });
+};
+
+exports.objectToPairs = objectToPairs;
+// [[K1, V1], [K2, V2]] -> {K1: V1, K2: V2, ...}
+var pairsToObject = function pairsToObject(pairs) {
+    var result = {};
+    pairs.forEach(function (_ref) {
+        var _ref2 = _slicedToArray(_ref, 2);
+
+        var key = _ref2[0];
+        var val = _ref2[1];
+
+        result[key] = val;
+    });
+    return result;
+};
+
+var mapObj = function mapObj(obj, fn) {
+    return pairsToObject(objectToPairs(obj).map(fn));
+};
+
+exports.mapObj = mapObj;
+// Flattens an array one level
+// [[A], [B, C, [D]]] -> [A, B, C, [D]]
+var flatten = function flatten(list) {
+    return list.reduce(function (memo, x) {
+        return memo.concat(x);
+    }, []);
+};
+
+exports.flatten = flatten;
+var UPPERCASE_RE = /([A-Z])/g;
+var MS_RE = /^ms-/;
+
+var kebabify = function kebabify(string) {
+    return string.replace(UPPERCASE_RE, '-$1').toLowerCase();
+};
+var kebabifyStyleName = function kebabifyStyleName(string) {
+    return kebabify(string).replace(MS_RE, '-ms-');
+};
+
+exports.kebabifyStyleName = kebabifyStyleName;
+var recursiveMerge = function recursiveMerge(a, b) {
+    // TODO(jlfwong): Handle malformed input where a and b are not the same
+    // type.
+
+    if (typeof a !== 'object') {
+        return b;
+    }
+
+    var ret = _extends({}, a);
+
+    Object.keys(b).forEach(function (key) {
+        if (ret.hasOwnProperty(key)) {
+            ret[key] = recursiveMerge(a[key], b[key]);
+        } else {
+            ret[key] = b[key];
+        }
+    });
+
+    return ret;
+};
+
+exports.recursiveMerge = recursiveMerge;
+/**
+ * CSS properties which accept numbers but are not in units of "px".
+ * Taken from React's CSSProperty.js
+ */
+var isUnitlessNumber = {
+    animationIterationCount: true,
+    borderImageOutset: true,
+    borderImageSlice: true,
+    borderImageWidth: true,
+    boxFlex: true,
+    boxFlexGroup: true,
+    boxOrdinalGroup: true,
+    columnCount: true,
+    flex: true,
+    flexGrow: true,
+    flexPositive: true,
+    flexShrink: true,
+    flexNegative: true,
+    flexOrder: true,
+    gridRow: true,
+    gridColumn: true,
+    fontWeight: true,
+    lineClamp: true,
+    lineHeight: true,
+    opacity: true,
+    order: true,
+    orphans: true,
+    tabSize: true,
+    widows: true,
+    zIndex: true,
+    zoom: true,
+
+    // SVG-related properties
+    fillOpacity: true,
+    floodOpacity: true,
+    stopOpacity: true,
+    strokeDasharray: true,
+    strokeDashoffset: true,
+    strokeMiterlimit: true,
+    strokeOpacity: true,
+    strokeWidth: true
+};
+
+/**
+ * Taken from React's CSSProperty.js
+ *
+ * @param {string} prefix vendor-specific prefix, eg: Webkit
+ * @param {string} key style name, eg: transitionDuration
+ * @return {string} style name prefixed with `prefix`, properly camelCased, eg:
+ * WebkitTransitionDuration
+ */
+function prefixKey(prefix, key) {
+    return prefix + key.charAt(0).toUpperCase() + key.substring(1);
+}
+
+/**
+ * Support style names that may come passed in prefixed by adding permutations
+ * of vendor prefixes.
+ * Taken from React's CSSProperty.js
+ */
+var prefixes = ['Webkit', 'ms', 'Moz', 'O'];
+
+// Using Object.keys here, or else the vanilla for-in loop makes IE8 go into an
+// infinite loop, because it iterates over the newly added props too.
+// Taken from React's CSSProperty.js
+Object.keys(isUnitlessNumber).forEach(function (prop) {
+    prefixes.forEach(function (prefix) {
+        isUnitlessNumber[prefixKey(prefix, prop)] = isUnitlessNumber[prop];
+    });
+});
+
+var stringifyValue = function stringifyValue(key, prop) {
+    if (typeof prop === "number") {
+        if (isUnitlessNumber[key]) {
+            return "" + prop;
+        } else {
+            return prop + "px";
+        }
+    } else {
+        return prop;
+    }
+};
+
+exports.stringifyValue = stringifyValue;
+/**
+ * JS Implementation of MurmurHash2
+ *
+ * @author <a href="mailto:gary.court@gmail.com">Gary Court</a>
+ * @see http://github.com/garycourt/murmurhash-js
+ * @author <a href="mailto:aappleby@gmail.com">Austin Appleby</a>
+ * @see http://sites.google.com/site/murmurhash/
+ *
+ * @param {string} str ASCII only
+ * @return {string} Base 36 encoded hash result
+ */
+function murmurhash2_32_gc(str) {
+    var l = str.length;
+    var h = l;
+    var i = 0;
+    var k = undefined;
+
+    while (l >= 4) {
+        k = str.charCodeAt(i) & 0xff | (str.charCodeAt(++i) & 0xff) << 8 | (str.charCodeAt(++i) & 0xff) << 16 | (str.charCodeAt(++i) & 0xff) << 24;
+
+        k = (k & 0xffff) * 0x5bd1e995 + (((k >>> 16) * 0x5bd1e995 & 0xffff) << 16);
+        k ^= k >>> 24;
+        k = (k & 0xffff) * 0x5bd1e995 + (((k >>> 16) * 0x5bd1e995 & 0xffff) << 16);
+
+        h = (h & 0xffff) * 0x5bd1e995 + (((h >>> 16) * 0x5bd1e995 & 0xffff) << 16) ^ k;
+
+        l -= 4;
+        ++i;
+    }
+
+    switch (l) {
+        case 3:
+            h ^= (str.charCodeAt(i + 2) & 0xff) << 16;
+        case 2:
+            h ^= (str.charCodeAt(i + 1) & 0xff) << 8;
+        case 1:
+            h ^= str.charCodeAt(i) & 0xff;
+            h = (h & 0xffff) * 0x5bd1e995 + (((h >>> 16) * 0x5bd1e995 & 0xffff) << 16);
+    }
+
+    h ^= h >>> 13;
+    h = (h & 0xffff) * 0x5bd1e995 + (((h >>> 16) * 0x5bd1e995 & 0xffff) << 16);
+    h ^= h >>> 15;
+
+    return (h >>> 0).toString(36);
+}
+
+// Hash a javascript object using JSON.stringify. This is very fast, about 3
+// microseconds on my computer for a sample object:
+// http://jsperf.com/test-hashfnv32a-hash/5
+//
+// Note that this uses JSON.stringify to stringify the objects so in order for
+// this to produce consistent hashes browsers need to have a consistent
+// ordering of objects. Ben Alpert says that Facebook depends on this, so we
+// can probably depend on this too.
+var hashObject = function hashObject(object) {
+    return murmurhash2_32_gc(JSON.stringify(object));
+};
+
+exports.hashObject = hashObject;
+var IMPORTANT_RE = /^([^:]+:.*?)( !important)?;$/;
+
+// Given a single style rule string like "a: b;", adds !important to generate
+// "a: b !important;".
+var importantify = function importantify(string) {
+    return string.replace(IMPORTANT_RE, function (_, base, important) {
+        return base + " !important;";
+    });
+};
+exports.importantify = importantify;
+},{}],8:[function(require,module,exports){
+module.exports = require('./lib/no-important.js');
+
+},{"./lib/no-important.js":6}],9:[function(require,module,exports){
+"use strict";
+
+// rawAsap provides everything we need except exception management.
+var rawAsap = require("./raw");
+// RawTasks are recycled to reduce GC churn.
+var freeTasks = [];
+// We queue errors to ensure they are thrown in right order (FIFO).
+// Array-as-queue is good enough here, since we are just dealing with exceptions.
+var pendingErrors = [];
+var requestErrorThrow = rawAsap.makeRequestCallFromTimer(throwFirstError);
+
+function throwFirstError() {
+    if (pendingErrors.length) {
+        throw pendingErrors.shift();
+    }
+}
+
+/**
+ * Calls a task as soon as possible after returning, in its own event, with priority
+ * over other events like animation, reflow, and repaint. An error thrown from an
+ * event will not interrupt, nor even substantially slow down the processing of
+ * other events, but will be rather postponed to a lower priority event.
+ * @param {{call}} task A callable object, typically a function that takes no
+ * arguments.
+ */
+module.exports = asap;
+function asap(task) {
+    var rawTask;
+    if (freeTasks.length) {
+        rawTask = freeTasks.pop();
+    } else {
+        rawTask = new RawTask();
+    }
+    rawTask.task = task;
+    rawAsap(rawTask);
+}
+
+// We wrap tasks with recyclable task objects.  A task object implements
+// `call`, just like a function.
+function RawTask() {
+    this.task = null;
+}
+
+// The sole purpose of wrapping the task is to catch the exception and recycle
+// the task object after its single use.
+RawTask.prototype.call = function () {
+    try {
+        this.task.call();
+    } catch (error) {
+        if (asap.onerror) {
+            // This hook exists purely for testing purposes.
+            // Its name will be periodically randomized to break any code that
+            // depends on its existence.
+            asap.onerror(error);
+        } else {
+            // In a web browser, exceptions are not fatal. However, to avoid
+            // slowing down the queue of pending tasks, we rethrow the error in a
+            // lower priority turn.
+            pendingErrors.push(error);
+            requestErrorThrow();
+        }
+    } finally {
+        this.task = null;
+        freeTasks[freeTasks.length] = this;
+    }
+};
+
+},{"./raw":10}],10:[function(require,module,exports){
+(function (global){
+"use strict";
+
+// Use the fastest means possible to execute a task in its own turn, with
+// priority over other events including IO, animation, reflow, and redraw
+// events in browsers.
+//
+// An exception thrown by a task will permanently interrupt the processing of
+// subsequent tasks. The higher level `asap` function ensures that if an
+// exception is thrown by a task, that the task queue will continue flushing as
+// soon as possible, but if you use `rawAsap` directly, you are responsible to
+// either ensure that no exceptions are thrown from your task, or to manually
+// call `rawAsap.requestFlush` if an exception is thrown.
+module.exports = rawAsap;
+function rawAsap(task) {
+    if (!queue.length) {
+        requestFlush();
+        flushing = true;
+    }
+    // Equivalent to push, but avoids a function call.
+    queue[queue.length] = task;
+}
+
+var queue = [];
+// Once a flush has been requested, no further calls to `requestFlush` are
+// necessary until the next `flush` completes.
+var flushing = false;
+// `requestFlush` is an implementation-specific method that attempts to kick
+// off a `flush` event as quickly as possible. `flush` will attempt to exhaust
+// the event queue before yielding to the browser's own event loop.
+var requestFlush;
+// The position of the next task to execute in the task queue. This is
+// preserved between calls to `flush` so that it can be resumed if
+// a task throws an exception.
+var index = 0;
+// If a task schedules additional tasks recursively, the task queue can grow
+// unbounded. To prevent memory exhaustion, the task queue will periodically
+// truncate already-completed tasks.
+var capacity = 1024;
+
+// The flush function processes all tasks that have been scheduled with
+// `rawAsap` unless and until one of those tasks throws an exception.
+// If a task throws an exception, `flush` ensures that its state will remain
+// consistent and will resume where it left off when called again.
+// However, `flush` does not make any arrangements to be called again if an
+// exception is thrown.
+function flush() {
+    while (index < queue.length) {
+        var currentIndex = index;
+        // Advance the index before calling the task. This ensures that we will
+        // begin flushing on the next task the task throws an error.
+        index = index + 1;
+        queue[currentIndex].call();
+        // Prevent leaking memory for long chains of recursive calls to `asap`.
+        // If we call `asap` within tasks scheduled by `asap`, the queue will
+        // grow, but to avoid an O(n) walk for every task we execute, we don't
+        // shift tasks off the queue after they have been executed.
+        // Instead, we periodically shift 1024 tasks off the queue.
+        if (index > capacity) {
+            // Manually shift all values starting at the index back to the
+            // beginning of the queue.
+            for (var scan = 0, newLength = queue.length - index; scan < newLength; scan++) {
+                queue[scan] = queue[scan + index];
+            }
+            queue.length -= index;
+            index = 0;
+        }
+    }
+    queue.length = 0;
+    index = 0;
+    flushing = false;
+}
+
+// `requestFlush` is implemented using a strategy based on data collected from
+// every available SauceLabs Selenium web driver worker at time of writing.
+// https://docs.google.com/spreadsheets/d/1mG-5UYGup5qxGdEMWkhP6BWCz053NUb2E1QoUTU16uA/edit#gid=783724593
+
+// Safari 6 and 6.1 for desktop, iPad, and iPhone are the only browsers that
+// have WebKitMutationObserver but not un-prefixed MutationObserver.
+// Must use `global` instead of `window` to work in both frames and web
+// workers. `global` is a provision of Browserify, Mr, Mrs, or Mop.
+var BrowserMutationObserver = global.MutationObserver || global.WebKitMutationObserver;
+
+// MutationObservers are desirable because they have high priority and work
+// reliably everywhere they are implemented.
+// They are implemented in all modern browsers.
+//
+// - Android 4-4.3
+// - Chrome 26-34
+// - Firefox 14-29
+// - Internet Explorer 11
+// - iPad Safari 6-7.1
+// - iPhone Safari 7-7.1
+// - Safari 6-7
+if (typeof BrowserMutationObserver === "function") {
+    requestFlush = makeRequestCallFromMutationObserver(flush);
+
+// MessageChannels are desirable because they give direct access to the HTML
+// task queue, are implemented in Internet Explorer 10, Safari 5.0-1, and Opera
+// 11-12, and in web workers in many engines.
+// Although message channels yield to any queued rendering and IO tasks, they
+// would be better than imposing the 4ms delay of timers.
+// However, they do not work reliably in Internet Explorer or Safari.
+
+// Internet Explorer 10 is the only browser that has setImmediate but does
+// not have MutationObservers.
+// Although setImmediate yields to the browser's renderer, it would be
+// preferrable to falling back to setTimeout since it does not have
+// the minimum 4ms penalty.
+// Unfortunately there appears to be a bug in Internet Explorer 10 Mobile (and
+// Desktop to a lesser extent) that renders both setImmediate and
+// MessageChannel useless for the purposes of ASAP.
+// https://github.com/kriskowal/q/issues/396
+
+// Timers are implemented universally.
+// We fall back to timers in workers in most engines, and in foreground
+// contexts in the following browsers.
+// However, note that even this simple case requires nuances to operate in a
+// broad spectrum of browsers.
+//
+// - Firefox 3-13
+// - Internet Explorer 6-9
+// - iPad Safari 4.3
+// - Lynx 2.8.7
+} else {
+    requestFlush = makeRequestCallFromTimer(flush);
+}
+
+// `requestFlush` requests that the high priority event queue be flushed as
+// soon as possible.
+// This is useful to prevent an error thrown in a task from stalling the event
+// queue if the exception handled by Node.js’s
+// `process.on("uncaughtException")` or by a domain.
+rawAsap.requestFlush = requestFlush;
+
+// To request a high priority event, we induce a mutation observer by toggling
+// the text of a text node between "1" and "-1".
+function makeRequestCallFromMutationObserver(callback) {
+    var toggle = 1;
+    var observer = new BrowserMutationObserver(callback);
+    var node = document.createTextNode("");
+    observer.observe(node, {characterData: true});
+    return function requestCall() {
+        toggle = -toggle;
+        node.data = toggle;
+    };
+}
+
+// The message channel technique was discovered by Malte Ubl and was the
+// original foundation for this library.
+// http://www.nonblocking.io/2011/06/windownexttick.html
+
+// Safari 6.0.5 (at least) intermittently fails to create message ports on a
+// page's first load. Thankfully, this version of Safari supports
+// MutationObservers, so we don't need to fall back in that case.
+
+// function makeRequestCallFromMessageChannel(callback) {
+//     var channel = new MessageChannel();
+//     channel.port1.onmessage = callback;
+//     return function requestCall() {
+//         channel.port2.postMessage(0);
+//     };
+// }
+
+// For reasons explained above, we are also unable to use `setImmediate`
+// under any circumstances.
+// Even if we were, there is another bug in Internet Explorer 10.
+// It is not sufficient to assign `setImmediate` to `requestFlush` because
+// `setImmediate` must be called *by name* and therefore must be wrapped in a
+// closure.
+// Never forget.
+
+// function makeRequestCallFromSetImmediate(callback) {
+//     return function requestCall() {
+//         setImmediate(callback);
+//     };
+// }
+
+// Safari 6.0 has a problem where timers will get lost while the user is
+// scrolling. This problem does not impact ASAP because Safari 6.0 supports
+// mutation observers, so that implementation is used instead.
+// However, if we ever elect to use timers in Safari, the prevalent work-around
+// is to add a scroll event listener that calls for a flush.
+
+// `setTimeout` does not call the passed callback if the delay is less than
+// approximately 7 in web workers in Firefox 8 through 18, and sometimes not
+// even then.
+
+function makeRequestCallFromTimer(callback) {
+    return function requestCall() {
+        // We dispatch a timeout with a specified delay of 0 for engines that
+        // can reliably accommodate that request. This will usually be snapped
+        // to a 4 milisecond delay, but once we're flushing, there's no delay
+        // between events.
+        var timeoutHandle = setTimeout(handleTimer, 0);
+        // However, since this timer gets frequently dropped in Firefox
+        // workers, we enlist an interval handle that will try to fire
+        // an event 20 times per second until it succeeds.
+        var intervalHandle = setInterval(handleTimer, 50);
+
+        function handleTimer() {
+            // Whichever timer succeeds will cancel both timers and
+            // execute the callback.
+            clearTimeout(timeoutHandle);
+            clearInterval(intervalHandle);
+            callback();
+        }
+    };
+}
+
+// This is for `asap.js` only.
+// Its name will be periodically randomized to break any code that depends on
+// its existence.
+rawAsap.makeRequestCallFromTimer = makeRequestCallFromTimer;
+
+// ASAP was originally a nextTick shim included in Q. This was factored out
+// into this ASAP package. It was later adapted to RSVP which made further
+// amendments. These decisions, particularly to marginalize MessageChannel and
+// to capture the MutationObserver implementation in a closure, were integrated
+// back into ASAP proper.
+// https://github.com/tildeio/rsvp.js/blob/cddf7232546a9cf858524b75cde6f9edf72620a7/lib/rsvp/asap.js
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],11:[function(require,module,exports){
+'use strict';
+
+var uppercasePattern = /[A-Z]/g;
+var msPattern = /^ms-/;
+
+function hyphenateStyleName(string) {
+    return string
+        .replace(uppercasePattern, '-$&')
+        .toLowerCase()
+        .replace(msPattern, '-ms-');
+}
+
+module.exports = hyphenateStyleName;
+
+},{}],12:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = calc;
+
+var _joinPrefixedValue = require('../../utils/joinPrefixedValue');
+
+var _joinPrefixedValue2 = _interopRequireDefault(_joinPrefixedValue);
+
+var _isPrefixedValue = require('../../utils/isPrefixedValue');
+
+var _isPrefixedValue2 = _interopRequireDefault(_isPrefixedValue);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function calc(property, value) {
+  if (typeof value === 'string' && !(0, _isPrefixedValue2.default)(value) && value.indexOf('calc(') > -1) {
+    return (0, _joinPrefixedValue2.default)(property, value, function (prefix, value) {
+      return value.replace(/calc\(/g, prefix + 'calc(');
+    });
+  }
+}
+module.exports = exports['default'];
+},{"../../utils/isPrefixedValue":23,"../../utils/joinPrefixedValue":24}],13:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = cursor;
+
+var _joinPrefixedValue = require('../../utils/joinPrefixedValue');
+
+var _joinPrefixedValue2 = _interopRequireDefault(_joinPrefixedValue);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var values = {
+  'zoom-in': true,
+  'zoom-out': true,
+  grab: true,
+  grabbing: true
+};
+
+function cursor(property, value) {
+  if (property === 'cursor' && values[value]) {
+    return (0, _joinPrefixedValue2.default)(property, value);
+  }
+}
+module.exports = exports['default'];
+},{"../../utils/joinPrefixedValue":24}],14:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = flex;
+var values = { flex: true, 'inline-flex': true };
+
+function flex(property, value) {
+  if (property === 'display' && values[value]) {
+    return {
+      display: ['-webkit-box', '-moz-box', '-ms-' + value + 'box', '-webkit-' + value, value]
+    };
+  }
+}
+module.exports = exports['default'];
+},{}],15:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = flexboxIE;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var alternativeValues = {
+  'space-around': 'distribute',
+  'space-between': 'justify',
+  'flex-start': 'start',
+  'flex-end': 'end'
+};
+var alternativeProps = {
+  alignContent: 'msFlexLinePack',
+  alignSelf: 'msFlexItemAlign',
+  alignItems: 'msFlexAlign',
+  justifyContent: 'msFlexPack',
+  order: 'msFlexOrder',
+  flexGrow: 'msFlexPositive',
+  flexShrink: 'msFlexNegative',
+  flexBasis: 'msPreferredSize'
+};
+
+function flexboxIE(property, value) {
+  if (alternativeProps[property]) {
+    return _defineProperty({}, alternativeProps[property], alternativeValues[value] || value);
+  }
+}
+module.exports = exports['default'];
+},{}],16:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = flexboxOld;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var alternativeValues = {
+  'space-around': 'justify',
+  'space-between': 'justify',
+  'flex-start': 'start',
+  'flex-end': 'end',
+  'wrap-reverse': 'multiple',
+  wrap: 'multiple'
+};
+
+var alternativeProps = {
+  alignItems: 'WebkitBoxAlign',
+  justifyContent: 'WebkitBoxPack',
+  flexWrap: 'WebkitBoxLines'
+};
+
+function flexboxOld(property, value) {
+  if (property === 'flexDirection') {
+    return {
+      WebkitBoxOrient: value.indexOf('column') > -1 ? 'vertical' : 'horizontal',
+      WebkitBoxDirection: value.indexOf('reverse') > -1 ? 'reverse' : 'normal'
+    };
+  }
+  if (alternativeProps[property]) {
+    return _defineProperty({}, alternativeProps[property], alternativeValues[value] || value);
+  }
+}
+module.exports = exports['default'];
+},{}],17:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = gradient;
+
+var _joinPrefixedValue = require('../../utils/joinPrefixedValue');
+
+var _joinPrefixedValue2 = _interopRequireDefault(_joinPrefixedValue);
+
+var _isPrefixedValue = require('../../utils/isPrefixedValue');
+
+var _isPrefixedValue2 = _interopRequireDefault(_isPrefixedValue);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var values = /linear-gradient|radial-gradient|repeating-linear-gradient|repeating-radial-gradient/;
+
+function gradient(property, value) {
+  if (typeof value === 'string' && !(0, _isPrefixedValue2.default)(value) && value.match(values) !== null) {
+    return (0, _joinPrefixedValue2.default)(property, value);
+  }
+}
+module.exports = exports['default'];
+},{"../../utils/isPrefixedValue":23,"../../utils/joinPrefixedValue":24}],18:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = sizing;
+
+var _joinPrefixedValue = require('../../utils/joinPrefixedValue');
+
+var _joinPrefixedValue2 = _interopRequireDefault(_joinPrefixedValue);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var properties = {
+  maxHeight: true,
+  maxWidth: true,
+  width: true,
+  height: true,
+  columnWidth: true,
+  minWidth: true,
+  minHeight: true
+};
+var values = {
+  'min-content': true,
+  'max-content': true,
+  'fill-available': true,
+  'fit-content': true,
+  'contain-floats': true
+};
+
+function sizing(property, value) {
+  if (properties[property] && values[value]) {
+    return (0, _joinPrefixedValue2.default)(property, value);
+  }
+}
+module.exports = exports['default'];
+},{"../../utils/joinPrefixedValue":24}],19:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = transition;
+
+var _hyphenateStyleName = require('hyphenate-style-name');
+
+var _hyphenateStyleName2 = _interopRequireDefault(_hyphenateStyleName);
+
+var _capitalizeString = require('../../utils/capitalizeString');
+
+var _capitalizeString2 = _interopRequireDefault(_capitalizeString);
+
+var _isPrefixedValue = require('../../utils/isPrefixedValue');
+
+var _isPrefixedValue2 = _interopRequireDefault(_isPrefixedValue);
+
+var _prefixProps = require('../prefixProps');
+
+var _prefixProps2 = _interopRequireDefault(_prefixProps);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var properties = {
+  transition: true,
+  transitionProperty: true,
+  WebkitTransition: true,
+  WebkitTransitionProperty: true
+};
+
+function transition(property, value) {
+  // also check for already prefixed transitions
+  if (typeof value === 'string' && properties[property]) {
+    var _ref2;
+
+    var outputValue = prefixValue(value);
+    var webkitOutput = outputValue.split(/,(?![^()]*(?:\([^()]*\))?\))/g).filter(function (value) {
+      return value.match(/-moz-|-ms-/) === null;
+    }).join(',');
+
+    // if the property is already prefixed
+    if (property.indexOf('Webkit') > -1) {
+      return _defineProperty({}, property, webkitOutput);
+    }
+
+    return _ref2 = {}, _defineProperty(_ref2, 'Webkit' + (0, _capitalizeString2.default)(property), webkitOutput), _defineProperty(_ref2, property, outputValue), _ref2;
+  }
+}
+
+function prefixValue(value) {
+  if ((0, _isPrefixedValue2.default)(value)) {
+    return value;
+  }
+
+  // only split multi values, not cubic beziers
+  var multipleValues = value.split(/,(?![^()]*(?:\([^()]*\))?\))/g);
+
+  // iterate each single value and check for transitioned properties
+  // that need to be prefixed as well
+  multipleValues.forEach(function (val, index) {
+    multipleValues[index] = Object.keys(_prefixProps2.default).reduce(function (out, prefix) {
+      var dashCasePrefix = '-' + prefix.toLowerCase() + '-';
+
+      Object.keys(_prefixProps2.default[prefix]).forEach(function (prop) {
+        var dashCaseProperty = (0, _hyphenateStyleName2.default)(prop);
+
+        if (val.indexOf(dashCaseProperty) > -1 && dashCaseProperty !== 'order') {
+          // join all prefixes and create a new value
+          out = val.replace(dashCaseProperty, dashCasePrefix + dashCaseProperty) + ',' + out;
+        }
+      });
+      return out;
+    }, val);
+  });
+
+  return multipleValues.join(',');
+}
+module.exports = exports['default'];
+},{"../../utils/capitalizeString":22,"../../utils/isPrefixedValue":23,"../prefixProps":21,"hyphenate-style-name":11}],20:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = prefixAll;
+
+var _prefixProps = require('./prefixProps');
+
+var _prefixProps2 = _interopRequireDefault(_prefixProps);
+
+var _capitalizeString = require('../utils/capitalizeString');
+
+var _capitalizeString2 = _interopRequireDefault(_capitalizeString);
+
+var _calc = require('./plugins/calc');
+
+var _calc2 = _interopRequireDefault(_calc);
+
+var _cursor = require('./plugins/cursor');
+
+var _cursor2 = _interopRequireDefault(_cursor);
+
+var _flex = require('./plugins/flex');
+
+var _flex2 = _interopRequireDefault(_flex);
+
+var _sizing = require('./plugins/sizing');
+
+var _sizing2 = _interopRequireDefault(_sizing);
+
+var _gradient = require('./plugins/gradient');
+
+var _gradient2 = _interopRequireDefault(_gradient);
+
+var _transition = require('./plugins/transition');
+
+var _transition2 = _interopRequireDefault(_transition);
+
+var _flexboxIE = require('./plugins/flexboxIE');
+
+var _flexboxIE2 = _interopRequireDefault(_flexboxIE);
+
+var _flexboxOld = require('./plugins/flexboxOld');
+
+var _flexboxOld2 = _interopRequireDefault(_flexboxOld);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// special flexbox specifications
+
+
+var plugins = [_calc2.default, _cursor2.default, _sizing2.default, _gradient2.default, _transition2.default, _flexboxIE2.default, _flexboxOld2.default, _flex2.default];
+
+/**
+ * Returns a prefixed version of the style object using all vendor prefixes
+ * @param {Object} styles - Style object that gets prefixed properties added
+ * @returns {Object} - Style object with prefixed properties and values
+ */
+function prefixAll(styles) {
+  Object.keys(styles).forEach(function (property) {
+    var value = styles[property];
+    if (value instanceof Object && !Array.isArray(value)) {
+      // recurse through nested style objects
+      styles[property] = prefixAll(value);
+    } else {
+      Object.keys(_prefixProps2.default).forEach(function (prefix) {
+        var properties = _prefixProps2.default[prefix];
+        // add prefixes if needed
+        if (properties[property]) {
+          styles[prefix + (0, _capitalizeString2.default)(property)] = value;
+        }
+      });
+    }
+  });
+
+  Object.keys(styles).forEach(function (property) {
+    [].concat(styles[property]).forEach(function (value, index) {
+      // resolve every special plugins
+      plugins.forEach(function (plugin) {
+        return assignStyles(styles, plugin(property, value));
+      });
+    });
+  });
+
+  return styles;
+}
+
+function assignStyles(base) {
+  var extend = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+  Object.keys(extend).forEach(function (property) {
+    var baseValue = base[property];
+    if (Array.isArray(baseValue)) {
+      [].concat(extend[property]).forEach(function (value) {
+        var valueIndex = baseValue.indexOf(value);
+        if (valueIndex > -1) {
+          base[property].splice(valueIndex, 1);
+        }
+        base[property].push(value);
+      });
+    } else {
+      base[property] = extend[property];
+    }
+  });
+}
+module.exports = exports['default'];
+},{"../utils/capitalizeString":22,"./plugins/calc":12,"./plugins/cursor":13,"./plugins/flex":14,"./plugins/flexboxIE":15,"./plugins/flexboxOld":16,"./plugins/gradient":17,"./plugins/sizing":18,"./plugins/transition":19,"./prefixProps":21}],21:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = { "Webkit": { "transform": true, "transformOrigin": true, "transformOriginX": true, "transformOriginY": true, "backfaceVisibility": true, "perspective": true, "perspectiveOrigin": true, "transformStyle": true, "transformOriginZ": true, "animation": true, "animationDelay": true, "animationDirection": true, "animationFillMode": true, "animationDuration": true, "animationIterationCount": true, "animationName": true, "animationPlayState": true, "animationTimingFunction": true, "appearance": true, "userSelect": true, "fontKerning": true, "textEmphasisPosition": true, "textEmphasis": true, "textEmphasisStyle": true, "textEmphasisColor": true, "boxDecorationBreak": true, "clipPath": true, "maskImage": true, "maskMode": true, "maskRepeat": true, "maskPosition": true, "maskClip": true, "maskOrigin": true, "maskSize": true, "maskComposite": true, "mask": true, "maskBorderSource": true, "maskBorderMode": true, "maskBorderSlice": true, "maskBorderWidth": true, "maskBorderOutset": true, "maskBorderRepeat": true, "maskBorder": true, "maskType": true, "textDecorationStyle": true, "textDecorationSkip": true, "textDecorationLine": true, "textDecorationColor": true, "filter": true, "fontFeatureSettings": true, "breakAfter": true, "breakBefore": true, "breakInside": true, "columnCount": true, "columnFill": true, "columnGap": true, "columnRule": true, "columnRuleColor": true, "columnRuleStyle": true, "columnRuleWidth": true, "columns": true, "columnSpan": true, "columnWidth": true, "flex": true, "flexBasis": true, "flexDirection": true, "flexGrow": true, "flexFlow": true, "flexShrink": true, "flexWrap": true, "alignContent": true, "alignItems": true, "alignSelf": true, "justifyContent": true, "order": true, "transition": true, "transitionDelay": true, "transitionDuration": true, "transitionProperty": true, "transitionTimingFunction": true, "backdropFilter": true, "scrollSnapType": true, "scrollSnapPointsX": true, "scrollSnapPointsY": true, "scrollSnapDestination": true, "scrollSnapCoordinate": true, "shapeImageThreshold": true, "shapeImageMargin": true, "shapeImageOutside": true, "hyphens": true, "flowInto": true, "flowFrom": true, "regionFragment": true, "textSizeAdjust": true, "borderImage": true, "borderImageOutset": true, "borderImageRepeat": true, "borderImageSlice": true, "borderImageSource": true, "borderImageWidth": true, "tabSize": true, "objectFit": true, "objectPosition": true }, "Moz": { "appearance": true, "userSelect": true, "boxSizing": true, "textAlignLast": true, "textDecorationStyle": true, "textDecorationSkip": true, "textDecorationLine": true, "textDecorationColor": true, "tabSize": true, "hyphens": true, "fontFeatureSettings": true, "breakAfter": true, "breakBefore": true, "breakInside": true, "columnCount": true, "columnFill": true, "columnGap": true, "columnRule": true, "columnRuleColor": true, "columnRuleStyle": true, "columnRuleWidth": true, "columns": true, "columnSpan": true, "columnWidth": true }, "ms": { "flex": true, "flexBasis": false, "flexDirection": true, "flexGrow": false, "flexFlow": true, "flexShrink": false, "flexWrap": true, "alignContent": false, "alignItems": false, "alignSelf": false, "justifyContent": false, "order": false, "transform": true, "transformOrigin": true, "transformOriginX": true, "transformOriginY": true, "userSelect": true, "wrapFlow": true, "wrapThrough": true, "wrapMargin": true, "scrollSnapType": true, "scrollSnapPointsX": true, "scrollSnapPointsY": true, "scrollSnapDestination": true, "scrollSnapCoordinate": true, "touchAction": true, "hyphens": true, "flowInto": true, "flowFrom": true, "breakBefore": true, "breakAfter": true, "breakInside": true, "regionFragment": true, "gridTemplateColumns": true, "gridTemplateRows": true, "gridTemplateAreas": true, "gridTemplate": true, "gridAutoColumns": true, "gridAutoRows": true, "gridAutoFlow": true, "grid": true, "gridRowStart": true, "gridColumnStart": true, "gridRowEnd": true, "gridRow": true, "gridColumn": true, "gridColumnEnd": true, "gridColumnGap": true, "gridRowGap": true, "gridArea": true, "gridGap": true, "textSizeAdjust": true } };
+module.exports = exports["default"];
+},{}],22:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+// helper to capitalize strings
+
+exports.default = function (str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
+module.exports = exports["default"];
+},{}],23:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+exports.default = function (value) {
+  if (Array.isArray(value)) value = value.join(',');
+
+  return value.match(/-webkit-|-moz-|-ms-/) !== null;
+};
+
+module.exports = exports['default'];
+},{}],24:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+// returns a style object with a single concated prefixed value string
+
+exports.default = function (property, value) {
+  var replacer = arguments.length <= 2 || arguments[2] === undefined ? function (prefix, value) {
+    return prefix + value;
+  } : arguments[2];
+  return _defineProperty({}, property, ['-webkit-', '-moz-', ''].map(function (prefix) {
+    return replacer(prefix, value);
+  }));
+};
+
+module.exports = exports['default'];
+},{}],25:[function(require,module,exports){
+module.exports = require('./lib/static/prefixAll')
+
+},{"./lib/static/prefixAll":20}]},{},[1]);

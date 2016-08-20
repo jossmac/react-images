@@ -1605,7 +1605,11 @@ function Arrow(_ref) {
 Arrow.propTypes = {
 	direction: _react.PropTypes.oneOf(['left', 'right']),
 	icon: _react.PropTypes.string,
-	onClick: _react.PropTypes.func.isRequired
+	onClick: _react.PropTypes.func.isRequired,
+	size: _react.PropTypes.oneOf(['medium', 'small']).isRequired
+};
+Arrow.defaultProps = {
+	size: 'medium'
 };
 
 var classes = _aphroditeNoImportant.StyleSheet.create({
@@ -1614,29 +1618,37 @@ var classes = _aphroditeNoImportant.StyleSheet.create({
 		border: 'none',
 		borderRadius: 4,
 		cursor: 'pointer',
-		height: _theme2['default'].arrow.height,
-		marginTop: _theme2['default'].arrow.height / -2,
 		outline: 'none',
-		padding: 10,
+		padding: 10, // increase hit area
 		position: 'absolute',
 		top: '50%',
-		width: 40,
 
 		// disable user select
 		WebkitTouchCallout: 'none',
-		userSelect: 'none',
+		userSelect: 'none'
+	},
 
-		'@media (min-width: 500px)': {
+	// sizees
+	medium: {
+		height: _theme2['default'].arrow.height,
+		marginTop: _theme2['default'].arrow.height / -2,
+		width: 40,
+
+		'@media (min-width: 768px)': {
 			width: 70
 		}
 	},
 	small: {
+		height: _theme2['default'].thumbnail.size,
+		marginTop: _theme2['default'].thumbnail.size / -2,
 		width: 30,
 
 		'@media (min-width: 500px)': {
 			width: 40
 		}
 	},
+
+	// direction
 	right: {
 		right: _theme2['default'].container.gutter.horizontal
 	},
@@ -1902,9 +1914,7 @@ var _Header = require('./Header');
 
 var _Header2 = _interopRequireDefault(_Header);
 
-var _Thumbnails = require('./Thumbnails');
-
-var _Thumbnails2 = _interopRequireDefault(_Thumbnails);
+// import Thumbnails from './Thumbnails';
 
 var _PaginatedThumbnails = require('./PaginatedThumbnails');
 
@@ -2081,9 +2091,15 @@ var Lightbox = (function (_Component) {
 			var isOpen = _props.isOpen;
 			var onClose = _props.onClose;
 			var showCloseButton = _props.showCloseButton;
-			var thumbnails = _props.thumbnails;
+			var showThumbnails = _props.showThumbnails;
+			var width = _props.width;
 
 			if (!isOpen) return null;
+
+			var offsetThumbnails = 0;
+			if (showThumbnails) {
+				offsetThumbnails = _theme2['default'].thumbnail.size + _theme2['default'].container.gutter.vertical;
+			}
 
 			return _react2['default'].createElement(
 				'div',
@@ -2095,10 +2111,7 @@ var Lightbox = (function (_Component) {
 				},
 				_react2['default'].createElement(
 					'div',
-					{ className: (0, _aphroditeNoImportant.css)(classes.content), style: {
-							maxWidth: this.props.width,
-							marginBottom: thumbnails ? _theme2['default'].thumbnails.height : 0
-						} },
+					{ className: (0, _aphroditeNoImportant.css)(classes.content), style: { marginBottom: offsetThumbnails, maxWidth: width } },
 					_react2['default'].createElement(_Header2['default'], {
 						customControls: customControls,
 						onClose: onClose,
@@ -2120,7 +2133,7 @@ var Lightbox = (function (_Component) {
 			var imageCountSeparator = _props2.imageCountSeparator;
 			var onClickImage = _props2.onClickImage;
 			var showImageCount = _props2.showImageCount;
-			var thumbnails = _props2.thumbnails;
+			var showThumbnails = _props2.showThumbnails;
 
 			if (!images || !images.length) return null;
 
@@ -2128,18 +2141,18 @@ var Lightbox = (function (_Component) {
 
 			var srcset = undefined;
 			var sizes = undefined;
-			var width = undefined;
 
 			if (image.srcset) {
 				srcset = image.srcset.join();
 				sizes = '100vw';
 			}
 
-			var thumbnailsSize = thumbnails ? _theme2['default'].thumbnails.height : 0;
+			var thumbnailsSize = showThumbnails ? _theme2['default'].thumbnail.size : 0;
+			var heightOffset = _theme2['default'].header.height + _theme2['default'].footer.height + thumbnailsSize + _theme2['default'].container.gutter.vertical + 'px';
 
 			return _react2['default'].createElement(
 				'figure',
-				{ className: (0, _aphroditeNoImportant.css)(classes.figure), style: { width: width } },
+				{ className: (0, _aphroditeNoImportant.css)(classes.figure) },
 				_react2['default'].createElement('img', {
 					className: (0, _aphroditeNoImportant.css)(classes.image),
 					onClick: !!onClickImage && onClickImage,
@@ -2148,7 +2161,7 @@ var Lightbox = (function (_Component) {
 					srcSet: srcset,
 					style: {
 						cursor: this.props.onClickImage ? 'pointer' : 'auto',
-						maxHeight: 'calc(100vh - ' + (_theme2['default'].header.height + _theme2['default'].footer.height + thumbnailsSize) + 'px)'
+						maxHeight: 'calc(100vh - ' + heightOffset + ')'
 					}
 				}),
 				_react2['default'].createElement(_Footer2['default'], {
@@ -2167,12 +2180,17 @@ var Lightbox = (function (_Component) {
 			var images = _props3.images;
 			var currentImage = _props3.currentImage;
 			var onClickThumbnail = _props3.onClickThumbnail;
-			var ThumbnailsComponent = _props3.thumbnails;
+			var showThumbnails = _props3.showThumbnails;
+			var thumbnailOffset = _props3.thumbnailOffset;
 
-			if (!ThumbnailsComponent) return null;
-			return _react2['default'].createElement(ThumbnailsComponent, { images: images,
+			if (!showThumbnails) return;
+
+			return _react2['default'].createElement(_PaginatedThumbnails2['default'], {
 				currentImage: currentImage,
-				onClickThumbnail: onClickThumbnail });
+				images: images,
+				offset: thumbnailOffset,
+				onClickThumbnail: onClickThumbnail
+			});
 		}
 	}, {
 		key: 'render',
@@ -2199,7 +2217,8 @@ Lightbox.propTypes = {
 	images: _react.PropTypes.arrayOf(_react.PropTypes.shape({
 		src: _react.PropTypes.string.isRequired,
 		srcset: _react.PropTypes.array,
-		caption: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.element])
+		caption: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.element]),
+		thumbnail: _react.PropTypes.string
 	})).isRequired,
 	isOpen: _react.PropTypes.bool,
 	onClickImage: _react.PropTypes.func,
@@ -2210,6 +2229,8 @@ Lightbox.propTypes = {
 	sheet: _react.PropTypes.object,
 	showCloseButton: _react.PropTypes.bool,
 	showImageCount: _react.PropTypes.bool,
+	showThumbnails: _react.PropTypes.bool,
+	thumbnailOffset: _react.PropTypes.number,
 	width: _react.PropTypes.number
 };
 
@@ -2221,11 +2242,10 @@ Lightbox.defaultProps = {
 	preloadNextImage: true,
 	showCloseButton: true,
 	showImageCount: true,
-	width: 1024,
-	thumbnails: _Thumbnails2['default']
+	thumbnailOffset: 2,
+	width: 1024
 };
 
-Lightbox.Thumbnails = _Thumbnails2['default'];
 Lightbox.PaginatedThumbnails = _PaginatedThumbnails2['default'];
 
 exports['default'] = Lightbox;
@@ -2237,12 +2257,12 @@ https://fb.me/react-unknown-prop is resolved
 */
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./Arrow":24,"./Footer":25,"./Header":26,"./PaginatedThumbnails":29,"./Portal":30,"./Thumbnails":31,"./styles/default":36,"./theme":37,"./utils":41,"aphrodite/no-important":6}],29:[function(require,module,exports){
+},{"./Arrow":24,"./Footer":25,"./Header":26,"./PaginatedThumbnails":29,"./Portal":30,"./styles/default":36,"./theme":37,"./utils":41,"aphrodite/no-important":6}],29:[function(require,module,exports){
 (function (global){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
-  value: true
+	value: true
 });
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -2263,191 +2283,213 @@ var _react2 = _interopRequireDefault(_react);
 
 var _aphroditeNoImportant = require('aphrodite/no-important');
 
-var _theme = require('./theme');
+var _Thumbnail = require('./Thumbnail');
 
-var _theme2 = _interopRequireDefault(_theme);
-
-var _Thumbnails = require('./Thumbnails');
+var _Thumbnail2 = _interopRequireDefault(_Thumbnail);
 
 var _Arrow = require('./Arrow');
 
 var _Arrow2 = _interopRequireDefault(_Arrow);
 
+var _theme = require('./theme');
+
+var _theme2 = _interopRequireDefault(_theme);
+
 var classes = _aphroditeNoImportant.StyleSheet.create({
-  paginatedThumbnails: {
-    position: 'absolute',
-    bottom: 0,
-    height: 72,
-    padding: '0 50px',
-    color: 'white',
-    textAlign: 'center',
-    whiteSpace: 'nowrap'
-  }
+	paginatedThumbnails: {
+		bottom: _theme2['default'].container.gutter.vertical,
+		height: _theme2['default'].thumbnail.size,
+		padding: '0 50px',
+		position: 'absolute',
+		textAlign: 'center',
+		whiteSpace: 'nowrap'
+	}
 });
 
-var PaginatedThumbnails = (function (_React$Component) {
-  _inherits(PaginatedThumbnails, _React$Component);
+var arrowStyles = {
+	height: _theme2['default'].thumbnail.size + _theme2['default'].thumbnail.gutter * 2,
+	width: 40
+};
 
-  function PaginatedThumbnails(props) {
-    _classCallCheck(this, PaginatedThumbnails);
+var PaginatedThumbnails = (function (_Component) {
+	_inherits(PaginatedThumbnails, _Component);
 
-    _get(Object.getPrototypeOf(PaginatedThumbnails.prototype), 'constructor', this).call(this, props);
+	function PaginatedThumbnails(props) {
+		_classCallCheck(this, PaginatedThumbnails);
 
-    this.state = {
-      hasCustomPage: false
-    };
+		_get(Object.getPrototypeOf(PaginatedThumbnails.prototype), 'constructor', this).call(this, props);
 
-    this.gotoPrev = this.gotoPrev.bind(this);
-    this.gotoNext = this.gotoNext.bind(this);
-  }
+		this.state = {
+			hasCustomPage: false
+		};
 
-  // Component should be controlled, flush state when currentImage changes
+		this.gotoPrev = this.gotoPrev.bind(this);
+		this.gotoNext = this.gotoNext.bind(this);
+	}
 
-  _createClass(PaginatedThumbnails, [{
-    key: 'componentWillReceiveProps',
-    value: function componentWillReceiveProps(nextProps) {
-      if (nextProps.currentImage != this.props.currentImage) {
-        this.setState({
-          hasCustomPage: false
-        });
-      }
-    }
-  }, {
-    key: 'getFirst',
-    value: function getFirst() {
-      var _props = this.props;
-      var currentImage = _props.currentImage;
-      var offset = _props.offset;
+	_createClass(PaginatedThumbnails, [{
+		key: 'componentWillReceiveProps',
+		value: function componentWillReceiveProps(nextProps) {
+			// Component should be controlled, flush state when currentImage changes
+			if (nextProps.currentImage !== this.props.currentImage) {
+				this.setState({
+					hasCustomPage: false
+				});
+			}
+		}
 
-      if (this.state.hasCustomPage) {
-        return this.clampFirst(this.state.first);
-      }
-      return this.clampFirst(currentImage - offset);
-    }
-  }, {
-    key: 'setFirst',
-    value: function setFirst(event, newFirst) {
-      var first = this.state.first;
+		// ==============================
+		// METHODS
+		// ==============================
 
-      if (event) {
-        event.preventDefault();
-        event.stopPropagation();
-      }
-      if (first == newFirst) return;
-      this.setState({
-        hasCustomPage: true,
-        first: newFirst
-      });
-    }
-  }, {
-    key: 'gotoPrev',
-    value: function gotoPrev(event) {
-      this.setFirst(event, this.getFirst() - this.props.offset);
-    }
-  }, {
-    key: 'gotoNext',
-    value: function gotoNext(event) {
-      this.setFirst(event, this.getFirst() + this.props.offset);
-    }
-  }, {
-    key: 'clampFirst',
-    value: function clampFirst(value) {
-      var _props2 = this.props;
-      var images = _props2.images;
-      var offset = _props2.offset;
+	}, {
+		key: 'getFirst',
+		value: function getFirst() {
+			var _props = this.props;
+			var currentImage = _props.currentImage;
+			var offset = _props.offset;
 
-      var totalCount = 2 * offset + 1; // show $offset extra thumbnails on each side
+			if (this.state.hasCustomPage) {
+				return this.clampFirst(this.state.first);
+			}
+			return this.clampFirst(currentImage - offset);
+		}
+	}, {
+		key: 'setFirst',
+		value: function setFirst(event, newFirst) {
+			var first = this.state.first;
 
-      if (value < 0) {
-        return 0;
-      } else if (value + totalCount > images.length) {
-        // Too far
-        return images.length - totalCount;
-      } else {
-        return value;
-      }
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _props3 = this.props;
-      var images = _props3.images;
-      var currentImage = _props3.currentImage;
-      var onClickThumbnail = _props3.onClickThumbnail;
-      var offset = _props3.offset;
+			if (event) {
+				event.preventDefault();
+				event.stopPropagation();
+			}
 
-      var totalCount = 2 * offset + 1; // show $offset extra thumbnails on each side
-      var thumbnails = [];
-      var baseOffset = 0;
-      if (images.length <= totalCount) {
-        thumbnails = images;
-      } else {
-        // Try to center current image in list
-        baseOffset = this.getFirst();
-        thumbnails = images.slice(baseOffset, baseOffset + totalCount);
-      }
+			if (first === newFirst) return;
 
-      return _react2['default'].createElement(
-        'div',
-        { className: (0, _aphroditeNoImportant.css)(classes.paginatedThumbnails) },
-        this.renderArrowPrev(),
-        thumbnails.map(function (img, idx) {
-          return _react2['default'].createElement(_Thumbnails.Thumbnail, _extends({ key: baseOffset + idx
-          }, img, {
-            index: baseOffset + idx,
-            onClickThumbnail: onClickThumbnail,
-            active: baseOffset + idx === currentImage }));
-        }),
-        this.renderArrowNext()
-      );
-    }
-  }, {
-    key: 'renderArrowPrev',
-    value: function renderArrowPrev() {
-      if (this.getFirst() <= 0) return null;
+			this.setState({
+				hasCustomPage: true,
+				first: newFirst
+			});
+		}
+	}, {
+		key: 'gotoPrev',
+		value: function gotoPrev(event) {
+			this.setFirst(event, this.getFirst() - this.props.offset);
+		}
+	}, {
+		key: 'gotoNext',
+		value: function gotoNext(event) {
+			this.setFirst(event, this.getFirst() + this.props.offset);
+		}
+	}, {
+		key: 'clampFirst',
+		value: function clampFirst(value) {
+			var _props2 = this.props;
+			var images = _props2.images;
+			var offset = _props2.offset;
 
-      return _react2['default'].createElement(_Arrow2['default'], {
-        direction: 'left',
-        size: 'small',
-        icon: 'arrowLeft',
-        onClick: this.gotoPrev,
-        title: 'Previous (Left arrow key)',
-        type: 'button'
-      });
-    }
-  }, {
-    key: 'renderArrowNext',
-    value: function renderArrowNext() {
-      var _props4 = this.props;
-      var offset = _props4.offset;
-      var images = _props4.images;
+			var totalCount = 2 * offset + 1; // show $offset extra thumbnails on each side
 
-      var totalCount = 2 * offset + 1;
-      if (this.getFirst() + totalCount >= images.length) return null;
+			if (value < 0) {
+				return 0;
+			} else if (value + totalCount > images.length) {
+				// Too far
+				return images.length - totalCount;
+			} else {
+				return value;
+			}
+		}
 
-      return _react2['default'].createElement(_Arrow2['default'], {
-        direction: 'right',
-        size: 'small',
-        icon: 'arrowRight',
-        onClick: this.gotoNext,
-        title: 'Previous (Right arrow key)',
-        type: 'button'
-      });
-    }
-  }]);
+		// ==============================
+		// RENDERERS
+		// ==============================
 
-  return PaginatedThumbnails;
-})(_react2['default'].Component);
+	}, {
+		key: 'renderArrowPrev',
+		value: function renderArrowPrev() {
+			if (this.getFirst() <= 0) return null;
+
+			return _react2['default'].createElement(_Arrow2['default'], {
+				direction: 'left',
+				size: 'small',
+				icon: 'arrowLeft',
+				onClick: this.gotoPrev,
+				style: arrowStyles,
+				title: 'Previous (Left arrow key)',
+				type: 'button'
+			});
+		}
+	}, {
+		key: 'renderArrowNext',
+		value: function renderArrowNext() {
+			var _props3 = this.props;
+			var offset = _props3.offset;
+			var images = _props3.images;
+
+			var totalCount = 2 * offset + 1;
+			if (this.getFirst() + totalCount >= images.length) return null;
+
+			return _react2['default'].createElement(_Arrow2['default'], {
+				direction: 'right',
+				size: 'small',
+				icon: 'arrowRight',
+				onClick: this.gotoNext,
+				style: arrowStyles,
+				title: 'Previous (Right arrow key)',
+				type: 'button'
+			});
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var _props4 = this.props;
+			var images = _props4.images;
+			var currentImage = _props4.currentImage;
+			var onClickThumbnail = _props4.onClickThumbnail;
+			var offset = _props4.offset;
+
+			var totalCount = 2 * offset + 1; // show $offset extra thumbnails on each side
+			var thumbnails = [];
+			var baseOffset = 0;
+			if (images.length <= totalCount) {
+				thumbnails = images;
+			} else {
+				// Try to center current image in list
+				baseOffset = this.getFirst();
+				thumbnails = images.slice(baseOffset, baseOffset + totalCount);
+			}
+
+			return _react2['default'].createElement(
+				'div',
+				{ className: (0, _aphroditeNoImportant.css)(classes.paginatedThumbnails) },
+				this.renderArrowPrev(),
+				thumbnails.map(function (img, idx) {
+					return _react2['default'].createElement(_Thumbnail2['default'], _extends({ key: baseOffset + idx
+					}, img, {
+						index: baseOffset + idx,
+						onClick: onClickThumbnail,
+						active: baseOffset + idx === currentImage }));
+				}),
+				this.renderArrowNext()
+			);
+		}
+	}]);
+
+	return PaginatedThumbnails;
+})(_react.Component);
 
 exports['default'] = PaginatedThumbnails;
 
-PaginatedThumbnails.defaultProps = {
-  offset: 3
+PaginatedThumbnails.propTypes = {
+	currentImage: _react.PropTypes.number,
+	images: _react.PropTypes.array,
+	offset: _react.PropTypes.number,
+	onClickThumbnail: _react.PropTypes.func.isRequired
 };
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./Arrow":24,"./Thumbnails":31,"./theme":37,"aphrodite/no-important":6}],30:[function(require,module,exports){
+},{"./Arrow":24,"./Thumbnail":31,"./theme":37,"aphrodite/no-important":6}],30:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2538,20 +2580,10 @@ module.exports = exports['default'];
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
-  value: true
+	value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var _react = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
 
@@ -2559,118 +2591,59 @@ var _react2 = _interopRequireDefault(_react);
 
 var _aphroditeNoImportant = require('aphrodite/no-important');
 
-var _Arrow = require('./Arrow');
-
-var _Arrow2 = _interopRequireDefault(_Arrow);
-
 var _theme = require('./theme');
 
 var _theme2 = _interopRequireDefault(_theme);
 
-var classes = _aphroditeNoImportant.StyleSheet.create({
-  thumbnail: {
-    display: 'inline-block',
-    margin: 2,
-    overflow: 'hidden',
-    borderRadius: 2,
-    cursor: 'pointer',
-    width: _theme2['default'].thumbnails.size,
-    height: _theme2['default'].thumbnails.size,
-    backgroundPosition: 'center',
-    backgroundSize: 'cover',
-    boxShadow: 'inset 0 0 0 1px hsla(0,0%,100%,.2)'
-  },
-  active: {
-    boxShadow: 'inset 0 0 0 2px #fff'
-  },
+function Thumbnail(_ref) {
+	var index = _ref.index;
+	var src = _ref.src;
+	var thumbnail = _ref.thumbnail;
+	var active = _ref.active;
+	var onClick = _ref.onClick;
 
-  thumbnails: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    height: 72,
-    color: 'white',
-    overflowX: 'scroll',
-    textAlign: 'center',
-    whiteSpace: 'nowrap'
-  }
+	var url = thumbnail ? thumbnail : src;
+
+	return _react2['default'].createElement('div', {
+		className: (0, _aphroditeNoImportant.css)(classes.thumbnail, active && classes.active),
+		onClick: function () {
+			return onClick(index);
+		},
+		style: { backgroundImage: 'url("' + url + '")' }
+	});
+}
+
+Thumbnail.propTypes = {
+	active: _react.PropTypes.bool,
+	index: _react.PropTypes.number,
+	onClick: _react.PropTypes.func.isRequired,
+	src: _react.PropTypes.string,
+	thumbnail: _react.PropTypes.string
+};
+
+var classes = _aphroditeNoImportant.StyleSheet.create({
+	thumbnail: {
+		backgroundPosition: 'center',
+		backgroundSize: 'cover',
+		borderRadius: 2,
+		boxShadow: 'inset 0 0 0 1px hsla(0,0%,100%,.2)',
+		cursor: 'pointer',
+		display: 'inline-block',
+		height: _theme2['default'].thumbnail.size,
+		margin: _theme2['default'].thumbnail.gutter,
+		overflow: 'hidden',
+		width: _theme2['default'].thumbnail.size
+	},
+	active: {
+		boxShadow: 'inset 0 0 0 2px ' + _theme2['default'].thumbnail.activeBorderColor
+	}
 });
 
-var Thumbnail = (function (_React$Component) {
-  _inherits(Thumbnail, _React$Component);
-
-  function Thumbnail() {
-    _classCallCheck(this, Thumbnail);
-
-    _get(Object.getPrototypeOf(Thumbnail.prototype), 'constructor', this).apply(this, arguments);
-  }
-
-  _createClass(Thumbnail, [{
-    key: 'render',
-    value: function render() {
-      var _props = this.props;
-      var index = _props.index;
-      var src = _props.src;
-      var srcset = _props.srcset;
-      var thumbnail = _props.thumbnail;
-      var active = _props.active;
-      var onClickThumbnail = _props.onClickThumbnail;
-
-      var size = 64;
-      var url = thumbnail ? thumbnail : src;
-      return _react2['default'].createElement('div', { className: (0, _aphroditeNoImportant.css)(classes.thumbnail, active && classes.active),
-        onClick: function () {
-          return onClickThumbnail(index);
-        },
-        style: { backgroundImage: 'url("' + url + '")' } });
-    }
-  }]);
-
-  return Thumbnail;
-})(_react2['default'].Component);
-
-var Thumbnails = (function (_React$Component2) {
-  _inherits(Thumbnails, _React$Component2);
-
-  function Thumbnails() {
-    _classCallCheck(this, Thumbnails);
-
-    _get(Object.getPrototypeOf(Thumbnails.prototype), 'constructor', this).apply(this, arguments);
-  }
-
-  _createClass(Thumbnails, [{
-    key: 'render',
-    value: function render() {
-      var _props2 = this.props;
-      var images = _props2.images;
-      var currentImage = _props2.currentImage;
-      var onClickThumbnail = _props2.onClickThumbnail;
-
-      return _react2['default'].createElement(
-        'div',
-        { className: (0, _aphroditeNoImportant.css)(classes.thumbnails) },
-        images.map(function (img, idx) {
-          return _react2['default'].createElement(Thumbnail, _extends({ key: idx
-          }, img, {
-            index: idx,
-            onClickThumbnail: onClickThumbnail,
-            active: idx === currentImage }));
-        })
-      );
-    }
-  }]);
-
-  return Thumbnails;
-})(_react2['default'].Component);
-
-exports['default'] = Thumbnails;
-
-Thumbnails.Thumbnail = Thumbnail;
+exports['default'] = Thumbnail;
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./Arrow":24,"./theme":37,"aphrodite/no-important":6}],32:[function(require,module,exports){
+},{"./theme":37,"aphrodite/no-important":6}],32:[function(require,module,exports){
 'use strict';
 
 module.exports = '<svg fill="white" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100%" height="100%" viewBox="0 0 512 512" xml:space="preserve">' + '<path d="M213.7,256L213.7,256L213.7,256L380.9,81.9c4.2-4.3,4.1-11.4-0.2-15.8l-29.9-30.6c-4.3-4.4-11.3-4.5-15.5-0.2L131.1,247.9 c-2.2,2.2-3.2,5.2-3,8.1c-0.1,3,0.9,5.9,3,8.1l204.2,212.7c4.2,4.3,11.2,4.2,15.5-0.2l29.9-30.6c4.3-4.4,4.4-11.5,0.2-15.8 L213.7,256z"/>' + '</svg>';
@@ -2713,6 +2686,7 @@ var styles = {
 		backgroundColor: _theme2['default'].container.background,
 		boxSizing: 'border-box',
 		display: 'flex',
+		flexDirection: 'column',
 		height: '100%',
 		justifyContent: 'center',
 		left: 0,
@@ -2766,7 +2740,7 @@ theme.container = {
 	background: 'rgba(0, 0, 0, 0.8)',
 	gutter: {
 		horizontal: 10,
-		vertical: 0
+		vertical: 10
 	},
 	zIndex: 2001
 };
@@ -2793,9 +2767,11 @@ theme.footer = {
 	}
 };
 
-theme.thumbnails = {
-	height: 64,
-	size: 64
+// thumbnails
+theme.thumbnail = {
+	activeBorderColor: 'white',
+	size: 64,
+	gutter: 2
 };
 
 // arrow
