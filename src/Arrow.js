@@ -8,12 +8,13 @@ function Arrow ({
 	direction,
 	icon,
 	onClick,
+	size,
 	...props,
 }) {
 	return (
 		<button
 			type="button"
-			className={css(classes.arrow, classes[direction])}
+			className={css(classes.arrow, classes[direction], size && classes[size])}
 			onClick={onClick}
 			onTouchEnd={onClick}
 			{...props}
@@ -49,6 +50,13 @@ const classes = StyleSheet.create({
 
 		'@media (min-width: 500px)': {
 			width: 70,
+		},
+	},
+	small: {
+		width: 30,
+
+		'@media (min-width: 500px)': {
+			width: 40,
 		},
 	},
 	right: {

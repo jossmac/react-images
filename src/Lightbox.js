@@ -7,6 +7,8 @@ import theme from './theme';
 import Arrow from './Arrow';
 import Footer from './Footer';
 import Header from './Header';
+import Thumbnails from './Thumbnails';
+import PaginatedThumbnails from './PaginatedThumbnails';
 import Portal from './Portal';
 
 import styles from './styles/default';
@@ -160,6 +162,7 @@ class Lightbox extends Component {
 			isOpen,
 			onClose,
 			showCloseButton,
+			thumbnails
 		} = this.props;
 
 		if (!isOpen) return null;
@@ -171,7 +174,10 @@ class Lightbox extends Component {
 				onClick={!!backdropClosesModal && onClose}
 				onTouchEnd={!!backdropClosesModal && onClose}
 			>
-				<div className={css(classes.content)} style={{ maxWidth: this.props.width }}>
+				<div className={css(classes.content)} style={{ 
+					maxWidth: this.props.width, 
+					marginBottom: thumbnails ? theme.thumbnails.height : 0 
+				}}>
 					<Header
 						customControls={customControls}
 						onClose={onClose}
@@ -181,6 +187,7 @@ class Lightbox extends Component {
 				</div>
 				{this.renderArrowPrev()}
 				{this.renderArrowNext()}
+				{this.renderThumbnails()}
 			</div>
 		);
 	}
@@ -191,6 +198,7 @@ class Lightbox extends Component {
 			imageCountSeparator,
 			onClickImage,
 			showImageCount,
+			thumbnails
 		} = this.props;
 
 		if (!images || !images.length) return null;
@@ -205,6 +213,8 @@ class Lightbox extends Component {
 			srcset = image.srcset.join();
 			sizes = '100vw';
 		}
+
+		const thumbnailsSize = thumbnails ? theme.thumbnails.height : 0 
 
 		return (
 			<figure className={css(classes.figure)} style={{ width }}>
@@ -221,7 +231,7 @@ class Lightbox extends Component {
 					srcSet={srcset}
 					style={{
 						cursor: this.props.onClickImage ? 'pointer' : 'auto',
-						maxHeight: `calc(100vh - ${theme.header.height + theme.footer.height}px)`,
+						maxHeight: `calc(100vh - ${theme.header.height + theme.footer.height + thumbnailsSize}px)`,
 					}}
 				/>
 				<Footer
@@ -234,6 +244,13 @@ class Lightbox extends Component {
 			</figure>
 		);
 	}
+	renderThumbnails() {
+		const { images, currentImage, onClickThumbnail, thumbnails:ThumbnailsComponent } = this.props
+		if (!ThumbnailsComponent) return null
+		return <ThumbnailsComponent images={images}
+															  currentImage={currentImage}
+														  	onClickThumbnail={onClickThumbnail} />
+		}
 	render () {
 		return (
 			<Portal>
@@ -279,6 +296,10 @@ Lightbox.defaultProps = {
 	showCloseButton: true,
 	showImageCount: true,
 	width: 1024,
+	thumbnails: Thumbnails
 };
+
+Lightbox.Thumbnails = Thumbnails
+Lightbox.PaginatedThumbnails = PaginatedThumbnails
 
 export default Lightbox;
