@@ -1,5 +1,10 @@
 # React-Images
 
+### v0.4.12 / 2016-08-15
+* Feature: Added a thumbnail preview beneath the lightbox thanks to [GregoryPotdevin](https://github.com/GregoryPotdevin)
+* Feature: Re-implemented the layout using `flexbox`
+* Examples: Replaced local images with hot-linked Unsplash photographs
+
 ### v0.4.11 / 2016-08-15
 * Feature: Pre-load the next image based on user intention, uses new prop `preloadNextImage`
 * Fix: bug with `enableKeyboardInput` where images fail to render thanks to [benhowell](https://github.com/benhowell)
