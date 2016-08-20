@@ -6,6 +6,7 @@ const styles = {
 		backgroundColor: theme.container.background,
 		boxSizing: 'border-box',
 		display: 'flex',
+		flexDirection: 'column',
 		height: '100%',
 		justifyContent: 'center',
 		left: 0,

@@ -9,7 +9,7 @@ theme.container = {
 	background: 'rgba(0, 0, 0, 0.8)',
 	gutter: {
 		horizontal: 10,
-		vertical: 0,
+		vertical: 10,
 	},
 	zIndex: 2001,
 };
@@ -36,10 +36,12 @@ theme.footer = {
 	},
 };
 
-theme.thumbnails = {
-	height: 64,
+// thumbnails
+theme.thumbnail = {
+	activeBorderColor: 'white',
 	size: 64,
-}
+	gutter: 2,
+};
 
 // arrow
 theme.arrow = {

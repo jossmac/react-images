@@ -7,7 +7,7 @@ import theme from './theme';
 import Arrow from './Arrow';
 import Footer from './Footer';
 import Header from './Header';
-import Thumbnails from './Thumbnails';
+// import Thumbnails from './Thumbnails';
 import PaginatedThumbnails from './PaginatedThumbnails';
 import Portal from './Portal';
 
@@ -162,10 +162,16 @@ class Lightbox extends Component {
 			isOpen,
 			onClose,
 			showCloseButton,
-			thumbnails
+			showThumbnails,
+			width,
 		} = this.props;
 
 		if (!isOpen) return null;
+
+		let offsetThumbnails = 0;
+		if (showThumbnails) {
+			offsetThumbnails = theme.thumbnail.size + theme.container.gutter.vertical;
+		}
 
 		return (
 			<div
@@ -174,10 +180,7 @@ class Lightbox extends Component {
 				onClick={!!backdropClosesModal && onClose}
 				onTouchEnd={!!backdropClosesModal && onClose}
 			>
-				<div className={css(classes.content)} style={{ 
-					maxWidth: this.props.width, 
-					marginBottom: thumbnails ? theme.thumbnails.height : 0 
-				}}>
+				<div className={css(classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
 					<Header
 						customControls={customControls}
 						onClose={onClose}
@@ -198,7 +201,7 @@ class Lightbox extends Component {
 			imageCountSeparator,
 			onClickImage,
 			showImageCount,
-			thumbnails
+			showThumbnails,
 		} = this.props;
 
 		if (!images || !images.length) return null;
@@ -207,17 +210,17 @@ class Lightbox extends Component {
 
 		let srcset;
 		let sizes;
-		let width;
 
 		if (image.srcset) {
 			srcset = image.srcset.join();
 			sizes = '100vw';
 		}
 
-		const thumbnailsSize = thumbnails ? theme.thumbnails.height : 0 
+		const thumbnailsSize = showThumbnails ? theme.thumbnail.size : 0;
+		const heightOffset = `${theme.header.height + theme.footer.height + thumbnailsSize + (theme.container.gutter.vertical)}px`;
 
 		return (
-			<figure className={css(classes.figure)} style={{ width }}>
+			<figure className={css(classes.figure)}>
 				{/*
 					Re-implement when react warning "unknown props"
 					https://fb.me/react-unknown-prop is resolved
@@ -231,7 +234,7 @@ class Lightbox extends Component {
 					srcSet={srcset}
 					style={{
 						cursor: this.props.onClickImage ? 'pointer' : 'auto',
-						maxHeight: `calc(100vh - ${theme.header.height + theme.footer.height + thumbnailsSize}px)`,
+						maxHeight: `calc(100vh - ${heightOffset})`,
 					}}
 				/>
 				<Footer
@@ -244,13 +247,20 @@ class Lightbox extends Component {
 			</figure>
 		);
 	}
-	renderThumbnails() {
-		const { images, currentImage, onClickThumbnail, thumbnails:ThumbnailsComponent } = this.props
-		if (!ThumbnailsComponent) return null
-		return <ThumbnailsComponent images={images}
-															  currentImage={currentImage}
-														  	onClickThumbnail={onClickThumbnail} />
-		}
+	renderThumbnails () {
+		const { images, currentImage, onClickThumbnail, showThumbnails, thumbnailOffset } = this.props;
+
+		if (!showThumbnails) return;
+
+		return (
+			<PaginatedThumbnails
+				currentImage={currentImage}
+				images={images}
+				offset={thumbnailOffset}
+				onClickThumbnail={onClickThumbnail}
+			/>
+		);
+	}
 	render () {
 		return (
 			<Portal>
@@ -272,7 +282,8 @@ Lightbox.propTypes = {
 		PropTypes.shape({
 			src: PropTypes.string.isRequired,
 			srcset: PropTypes.array,
-			caption: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
+			caption: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+			thumbnail: PropTypes.string,
 		})
 	).isRequired,
 	isOpen: PropTypes.bool,
@@ -284,6 +295,8 @@ Lightbox.propTypes = {
 	sheet: PropTypes.object,
 	showCloseButton: PropTypes.bool,
 	showImageCount: PropTypes.bool,
+	showThumbnails: PropTypes.bool,
+	thumbnailOffset: PropTypes.number,
 	width: PropTypes.number,
 };
 
@@ -295,11 +308,10 @@ Lightbox.defaultProps = {
 	preloadNextImage: true,
 	showCloseButton: true,
 	showImageCount: true,
+	thumbnailOffset: 2,
 	width: 1024,
-	thumbnails: Thumbnails
 };
 
-Lightbox.Thumbnails = Thumbnails
-Lightbox.PaginatedThumbnails = PaginatedThumbnails
+Lightbox.PaginatedThumbnails = PaginatedThumbnails;
 
 export default Lightbox;

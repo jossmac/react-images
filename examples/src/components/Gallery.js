@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { css, StyleSheet } from 'aphrodite/no-important';
 import Lightbox from 'react-images';
 
 class Gallery extends Component {
@@ -51,34 +52,30 @@ class Gallery extends Component {
 		this.gotoNext();
 	}
 	renderGallery () {
-		if (!this.props.images) return;
-		const gallery = this.props.images.map((obj, i) => {
+		const { images } = this.props;
+
+		if (!images) return;
+
+		const gallery = images.filter(i => i.useForDemo).map((obj, i) => {
 			return (
 				<a
 					href={obj.src}
+					className={css(classes.thumbnail, classes[obj.orientation])}
 					key={i}
 					onClick={(e) => this.openLightbox(i, e)}
-					style={styles.thumbnail}
-					>
-					<img
-						height={styles.thumbnail.size}
-						src={obj.thumbnail}
-						style={styles.thumbnailImage}
-						width={styles.thumbnail.size}
-					/>
+				>
+					<img src={obj.thumbnail} className={css(classes.source)} />
 				</a>
 			);
 		});
 
 		return (
-			<div style={styles.gallery}>
+			<div className={css(classes.gallery)}>
 				{gallery}
 			</div>
 		);
 	}
 	render () {
-		const { thumbnails } = this.props;
-
 		return (
 			<div className="section">
 				{this.props.heading && <h2>{this.props.heading}</h2>}
@@ -94,7 +91,7 @@ class Gallery extends Component {
 					onClickImage={this.handleClickImage}
 					onClose={this.closeLightbox}
 					theme={this.props.theme}
-					thumbnails={thumbnails}
+					showThumbnails={this.props.showThumbnails}
 				/>
 			</div>
 		);
@@ -105,40 +102,61 @@ Gallery.displayName = 'Gallery';
 Gallery.propTypes = {
 	heading: PropTypes.string,
 	images: PropTypes.array,
-	sepia: PropTypes.bool,
+	showThumbnails: PropTypes.bool,
 	subheading: PropTypes.string,
 };
 
-const THUMBNAIL_SIZE = 72;
-
-const styles = {
+const gutter = {
+	small: 2,
+	large: 4,
+};
+const classes = StyleSheet.create({
 	gallery: {
-		marginLeft: -5,
-		marginRight: -5,
+		marginRight: -gutter.small,
 		overflow: 'hidden',
+
+		'@media (min-width: 500px)': {
+			marginRight: -gutter.large,
+		},
 	},
+
+	// anchor
 	thumbnail: {
-		backgroundSize: 'cover',
-		borderRadius: 3,
+		boxSizing: 'border-box',
+		display: 'block',
 		float: 'left',
-		height: THUMBNAIL_SIZE,
-		margin: 5,
+		lineHeight: 0,
+		paddingRight: gutter.small,
+		paddingBottom: gutter.small,
 		overflow: 'hidden',
-		width: THUMBNAIL_SIZE,
+
+		'@media (min-width: 500px)': {
+			paddingRight: gutter.large,
+			paddingBottom: gutter.large,
+		},
 	},
-	thumbnailImage: {
+
+	// orientation
+	landscape: {
+		width: '30%',
+	},
+	square: {
+		paddingBottom: 0,
+		width: '40%',
+
+		'@media (min-width: 500px)': {
+			paddingBottom: 0,
+		},
+	},
+
+	// actual <img />
+	source: {
+		border: 0,
 		display: 'block',
 		height: 'auto',
 		maxWidth: '100%',
-		// height: THUMBNAIL_SIZE,
-		// left: '50%',
-		// position: 'relative',
-		//
-		// WebkitTransform: 'translateX(-50%)',
-		// MozTransform:    'translateX(-50%)',
-		// msTransform:     'translateX(-50%)',
-		// transform:       'translateX(-50%)',
+		width: 'auto',
 	},
-};
+});
 
 export default Gallery;

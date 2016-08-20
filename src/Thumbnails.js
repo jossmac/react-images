@@ -1,69 +1,44 @@
-import React from 'react'
+import React, { PropTypes } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
-import Arrow from './Arrow'
+import Thumbnail from './Thumbnail';
 
 import theme from './theme';
 
-const classes = StyleSheet.create({
-	thumbnail: {
-    display: 'inline-block',
-    margin: 2,
-    overflow: 'hidden',
-    borderRadius: 2,
-    cursor: 'pointer',
-    width: theme.thumbnails.size, 
-    height: theme.thumbnails.size,
-    backgroundPosition: 'center',
-    backgroundSize: 'cover',
-    boxShadow: 'inset 0 0 0 1px hsla(0,0%,100%,.2)'
-	},
-  active: {
-    boxShadow: 'inset 0 0 0 2px #fff'
-  },
+function Thumbnails ({ currentImage, images, onClickThumbnail }) {
+	return (
+		<div className={css(classes.thumbnails)}>
+			{images.map((img, idx) => (
+				<Thumbnail
+					{...img}
+					active={idx === currentImage}
+					index={idx}
+					key={idx}
+					onClick={onClickThumbnail}
+				/>
+			))}
+		</div>
+	);
+}
 
+Thumbnails.propTypes = {
+	currentImage: PropTypes.number,
+	images: PropTypes.array,
+	onClickThumbnail: PropTypes.func.isRequired,
+};
+
+const classes = StyleSheet.create({
 	thumbnails: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    height: 72,
-    color: 'white',
-    overflowX: 'scroll',
-    textAlign: 'center',
-    whiteSpace: 'nowrap'
+		bottom: theme.container.gutter.vertical,
+		color: 'white',
+		height: theme.thumbnail.size,
+		left: theme.container.gutter.horizontal,
+		overflowX: 'scroll',
+		overflowY: 'hidden',
+		position: 'absolute',
+		right: theme.container.gutter.horizontal,
+		textAlign: 'center',
+		whiteSpace: 'nowrap',
 	},
 });
 
-class Thumbnail extends React.Component {
-  render(){
-    const { index, src, srcset, thumbnail, active, onClickThumbnail } = this.props
-
-    const size = 64
-    const url = thumbnail ? thumbnail : src
-    return (
-      <div className={css(classes.thumbnail, active && classes.active)}
-           onClick={() => onClickThumbnail(index)}
-           style={{ backgroundImage: 'url("' + url + '")' }}>
-      </div>
-    )
-  }
-}
-
-export default class Thumbnails extends React.Component {
-  render(){
-    const { images, currentImage, onClickThumbnail } = this.props
-    return (
-      <div className={css(classes.thumbnails)}>
-        {images.map((img, idx) => (
-          <Thumbnail key={idx} 
-                     {...img} 
-                     index={idx}
-                     onClickThumbnail={onClickThumbnail}
-                     active={idx === currentImage} />
-        ))}
-      </div>
-    )
-  }
-}
-
-Thumbnails.Thumbnail = Thumbnail
+export default Thumbnails;
