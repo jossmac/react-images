@@ -36,6 +36,11 @@ theme.footer = {
 	},
 };
 
+theme.thumbnails = {
+	height: 64,
+	size: 64,
+}
+
 // arrow
 theme.arrow = {
 	height: 120,
