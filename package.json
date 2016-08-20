@@ -49,7 +49,17 @@
   "keywords": [
     "react",
     "react-component",
+    "react-images",
+    "react-lightbox",
+    "react-carousel",
+    "react-gallery",
+    "react images",
+    "react lightbox",
+    "react carousel",
+    "react gallery",
+
     "lightbox",
-    "images"
+    "carousel",
+    "gallery"
   ]
 }
