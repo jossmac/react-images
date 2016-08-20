@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import Lightbox from 'react-images';
-import DownloadButton from './DownloadButton';
 
 class Gallery extends Component {
 	constructor () {
@@ -77,14 +76,9 @@ class Gallery extends Component {
 			</div>
 		);
 	}
-	handleDownload () {
-		window.open(this.props.images[this.state.currentImage].src);
-	}
 	render () {
-		const { thumbnails } = this.props
-		let customControls = [
-			<DownloadButton key="Download" handler={this.handleDownload.bind(this)} />,
-		];
+		const { thumbnails } = this.props;
+
 		return (
 			<div className="section">
 				{this.props.heading && <h2>{this.props.heading}</h2>}
@@ -92,7 +86,6 @@ class Gallery extends Component {
 				{this.renderGallery()}
 				<Lightbox
 					currentImage={this.state.currentImage}
-					customControls={customControls}
 					images={this.props.images}
 					isOpen={this.state.lightboxIsOpen}
 					onClickPrev={this.gotoPrevious}
