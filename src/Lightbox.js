@@ -272,7 +272,7 @@ Lightbox.propTypes = {
 		PropTypes.shape({
 			src: PropTypes.string.isRequired,
 			srcset: PropTypes.array,
-			caption: PropTypes.string,
+			caption: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
 		})
 	).isRequired,
 	isOpen: PropTypes.bool,
