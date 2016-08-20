@@ -1,5 +1,7 @@
 # React Images
 
+[![Join the chat at https://gitter.im/react-images/Lobby](https://badges.gitter.im/react-images/Lobby.svg)](https://gitter.im/react-images/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 A simple, responsive lightbox component for displaying an array of images.
 
 
