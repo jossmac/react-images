@@ -79,6 +79,31 @@ render(
 			orientation,
 			useForDemo,
 		}))} showThumbnails />
+
+		<h3>Themed Lightbox</h3>
+		<Gallery images={DEFAULT_IMAGES.map(({ caption, id, orientation, useForDemo }) => ({
+			src: makeUnsplashSrc(id),
+			thumbnail: makeUnsplashThumbnail(id, orientation),
+			srcset: [
+				makeUnsplashSrcSet(id, 1024),
+				makeUnsplashSrcSet(id, 800),
+				makeUnsplashSrcSet(id, 500),
+				makeUnsplashSrcSet(id, 320),
+			],
+			caption,
+			orientation,
+			useForDemo,
+		}))} theme={{
+			arrow: { color: '#999' },
+			close: { color: '#666' },
+			container: { background: 'rgba(255, 255, 255, 0.9)' },
+			footer: {
+				color: 'black',
+				count: {
+					color: 'rgba(0, 0, 0, 0.6)',
+				},
+			},
+		}} />
 	</div>,
 	document.getElementById('example')
 );

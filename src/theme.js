@@ -19,12 +19,14 @@ theme.header = {
 	height: 40,
 };
 theme.close = {
+	color: 'white',
 	height: 20,
 	width: 20,
 };
 
 // footer
 theme.footer = {
+	color: 'white',
 	count: {
 		color: 'rgba(255, 255, 255, 0.75)',
 		fontSize: '0.85em',
@@ -45,6 +47,7 @@ theme.thumbnail = {
 
 // arrow
 theme.arrow = {
+	color: 'white',
 	height: 120,
 };
 

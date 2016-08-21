@@ -2,17 +2,15 @@ import React, { Component, PropTypes } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 // import Swipeable from 'react-swipeable';
 
-import utils from './utils';
 import theme from './theme';
-import Arrow from './Arrow';
+import Arrow from './components/Arrow';
 import Container from './components/Container';
-import Footer from './Footer';
-import Header from './Header';
-// import Thumbnails from './Thumbnails';
-import PaginatedThumbnails from './PaginatedThumbnails';
-import Portal from './Portal';
+import Footer from './components/Footer';
+import Header from './components/Header';
+import PaginatedThumbnails from './components/PaginatedThumbnails';
+import Portal from './components/Portal';
+// import Thumbnails from './components/Thumbnails';
 
-import theme from './theme';
 import { bindFunctions, bodyScroll, canUseDom, deepMerge } from './utils';
 import styles from './styles/default';
 

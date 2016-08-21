@@ -10,6 +10,9 @@ function Arrow ({
 	onClick,
 	size,
 	...props,
+},
+{
+	theme,
 }) {
 	return (
 		<button
@@ -19,7 +22,7 @@ function Arrow ({
 			onTouchEnd={onClick}
 			{...props}
 		>
-			<Icon type={icon} />
+			<Icon color={theme.arrow.color} type={icon} />
 		</button>
 	);
 };
@@ -32,6 +35,9 @@ Arrow.propTypes = {
 };
 Arrow.defaultProps = {
 	size: 'medium',
+};
+Arrow.contextTypes = {
+	theme: PropTypes.object.isRequired,
 };
 
 const classes = StyleSheet.create({

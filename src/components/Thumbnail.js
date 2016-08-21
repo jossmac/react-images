@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 
-import theme from './theme';
+import theme from '../theme';
 
 function Thumbnail ({ index, src, thumbnail, active, onClick }) {
 	const url = thumbnail ? thumbnail : src;
