@@ -1,7 +1,7 @@
 # React-Images
 
 ### v0.5.1 / 2016-21-15
-* Feature: Support theming with aphrodite and deep merge
+* Feature: Support theming with aphrodite classes
 * Examples: Update options with new new prop details
 
 ### v0.5.0 / 2016-20-15
