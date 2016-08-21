@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 import Thumbnail from './Thumbnail';
 
-import theme from './theme';
+import theme from '../theme';
 
 function Thumbnails ({ currentImage, images, onClickThumbnail }) {
 	return (

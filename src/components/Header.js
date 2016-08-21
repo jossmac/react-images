@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 
-import theme from './theme';
+import theme from '../theme';
 import Icon from './Icon';
 
 function Header ({
@@ -9,6 +9,8 @@ function Header ({
 	onClose,
 	showCloseButton,
 	...props,
+}, {
+	theme,
 }) {
 	return (
 		<div className={css(classes.header)} {...props}>
@@ -19,7 +21,7 @@ function Header ({
 					className={css(classes.close)}
 					onClick={onClose}
 				>
-					<Icon type="close" />
+					<Icon color={theme.close.color} type="close" />
 				</button>
 			)}
 		</div>
@@ -30,6 +32,9 @@ Header.propTypes = {
 	customControls: PropTypes.array,
 	onClose: PropTypes.func.isRequired,
 	showCloseButton: PropTypes.bool,
+};
+Header.contextTypes = {
+	theme: PropTypes.object.isRequired,
 };
 
 const classes = StyleSheet.create({

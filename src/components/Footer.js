@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
-import theme from './theme';
+import theme from '../theme';
 
 function Footer ({
 	caption,
@@ -9,11 +9,16 @@ function Footer ({
 	countTotal,
 	showCount,
 	...props,
+}, {
+	theme,
 }) {
 	if (!caption && !showCount) return null;
 
 	const imageCount = showCount ? (
-		<div className={css(classes.footerCount)}>
+		<div className={css(classes.footerCount)} style={{
+			color: theme.footer.count.color,
+			fontSize: theme.footer.count.fontSize,
+		}}>
 			{countCurrent}
 			{countSeparator}
 			{countTotal}
@@ -21,7 +26,9 @@ function Footer ({
 		: <span />;
 
 	return (
-		<div className={css(classes.footer)} {...props}>
+		<div className={css(classes.footer)} {...props} style={{
+			color: theme.footer.color,
+		}}>
 			{caption ? (
 				<figcaption className={css(classes.footerCaption)}>
 					{caption}
@@ -38,6 +45,9 @@ Footer.propTypes = {
 	countSeparator: PropTypes.string,
 	countTotal: PropTypes.number,
 	showCount: PropTypes.bool,
+};
+Footer.contextTypes = {
+	theme: PropTypes.object.isRequired,
 };
 
 const classes = StyleSheet.create({
@@ -56,8 +66,6 @@ const classes = StyleSheet.create({
 		paddingTop: theme.footer.gutter.vertical,
 	},
 	footerCount: {
-		color: theme.footer.count.color,
-		fontSize: theme.footer.count.fontSize,
 		paddingLeft: '1em', // add a small gutter for the caption
 	},
 	footerCaption: {

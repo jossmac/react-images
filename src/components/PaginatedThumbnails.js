@@ -3,7 +3,7 @@ import { css, StyleSheet } from 'aphrodite/no-important';
 
 import Thumbnail from './Thumbnail';
 import Arrow from './Arrow';
-import theme from './theme';
+import theme from '../theme';
 
 const classes = StyleSheet.create({
 	paginatedThumbnails: {
