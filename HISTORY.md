@@ -1,6 +1,10 @@
 # React-Images
 
-### v0.4.12 / 2016-08-15
+### v0.5.1 / 2016-21-15
+* Feature: Support theming with aphrodite and deep merge
+* Examples: Update options with new new prop details
+
+### v0.5.0 / 2016-20-15
 * Feature: Added a thumbnail preview beneath the lightbox thanks to [GregoryPotdevin](https://github.com/GregoryPotdevin)
 * Feature: Re-implemented the layout using `flexbox`
 * Examples: Replaced local images with hot-linked Unsplash photographs
