@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
+import { css, StyleSheet } from 'aphrodite/no-important';
 import Lightbox from 'react-images';
-import DownloadButton from './DownloadButton';
 
 class Gallery extends Component {
 	constructor () {
@@ -14,6 +14,7 @@ class Gallery extends Component {
 		this.closeLightbox = this.closeLightbox.bind(this);
 		this.gotoNext = this.gotoNext.bind(this);
 		this.gotoPrevious = this.gotoPrevious.bind(this);
+		this.gotoImage = this.gotoImage.bind(this);
 		this.handleClickImage = this.handleClickImage.bind(this);
 		this.openLightbox = this.openLightbox.bind(this);
 	}
@@ -40,45 +41,41 @@ class Gallery extends Component {
 			currentImage: this.state.currentImage + 1,
 		});
 	}
+	gotoImage (index) {
+		this.setState({
+			currentImage: index,
+		});
+	}
 	handleClickImage () {
 		if (this.state.currentImage === this.props.images.length - 1) return;
 
 		this.gotoNext();
 	}
 	renderGallery () {
-		if (!this.props.images) return;
-		const gallery = this.props.images.map((obj, i) => {
+		const { images } = this.props;
+
+		if (!images) return;
+
+		const gallery = images.filter(i => i.useForDemo).map((obj, i) => {
 			return (
 				<a
 					href={obj.src}
+					className={css(classes.thumbnail, classes[obj.orientation])}
 					key={i}
 					onClick={(e) => this.openLightbox(i, e)}
-					style={styles.thumbnail}
-					>
-					<img
-						height={styles.thumbnail.size}
-						src={obj.thumbnail}
-						style={styles.thumbnailImage}
-						width={styles.thumbnail.size}
-					/>
+				>
+					<img src={obj.thumbnail} className={css(classes.source)} />
 				</a>
 			);
 		});
 
 		return (
-			<div style={styles.gallery}>
+			<div className={css(classes.gallery)}>
 				{gallery}
 			</div>
 		);
 	}
-	handleDownload () {
-		window.open(this.props.images[this.state.currentImage].src);
-	}
 	render () {
-		let customControls = [
-			<DownloadButton key="Download" handler={this.handleDownload.bind(this)} />,
-		];
-
 		return (
 			<div className="section">
 				{this.props.heading && <h2>{this.props.heading}</h2>}
@@ -86,13 +83,15 @@ class Gallery extends Component {
 				{this.renderGallery()}
 				<Lightbox
 					currentImage={this.state.currentImage}
-					customControls={customControls}
 					images={this.props.images}
 					isOpen={this.state.lightboxIsOpen}
-					onClickPrev={this.gotoPrevious}
-					onClickNext={this.gotoNext}
 					onClickImage={this.handleClickImage}
+					onClickNext={this.gotoNext}
+					onClickPrev={this.gotoPrevious}
+					onClickThumbnail={this.gotoImage}
 					onClose={this.closeLightbox}
+					showThumbnails={this.props.showThumbnails}
+					theme={this.props.theme}
 				/>
 			</div>
 		);
@@ -103,40 +102,61 @@ Gallery.displayName = 'Gallery';
 Gallery.propTypes = {
 	heading: PropTypes.string,
 	images: PropTypes.array,
-	sepia: PropTypes.bool,
+	showThumbnails: PropTypes.bool,
 	subheading: PropTypes.string,
 };
 
-const THUMBNAIL_SIZE = 72;
-
-const styles = {
+const gutter = {
+	small: 2,
+	large: 4,
+};
+const classes = StyleSheet.create({
 	gallery: {
-		marginLeft: -5,
-		marginRight: -5,
+		marginRight: -gutter.small,
 		overflow: 'hidden',
+
+		'@media (min-width: 500px)': {
+			marginRight: -gutter.large,
+		},
 	},
+
+	// anchor
 	thumbnail: {
-		backgroundSize: 'cover',
-		borderRadius: 3,
+		boxSizing: 'border-box',
+		display: 'block',
 		float: 'left',
-		height: THUMBNAIL_SIZE,
-		margin: 5,
+		lineHeight: 0,
+		paddingRight: gutter.small,
+		paddingBottom: gutter.small,
 		overflow: 'hidden',
-		width: THUMBNAIL_SIZE,
+
+		'@media (min-width: 500px)': {
+			paddingRight: gutter.large,
+			paddingBottom: gutter.large,
+		},
 	},
-	thumbnailImage: {
+
+	// orientation
+	landscape: {
+		width: '30%',
+	},
+	square: {
+		paddingBottom: 0,
+		width: '40%',
+
+		'@media (min-width: 500px)': {
+			paddingBottom: 0,
+		},
+	},
+
+	// actual <img />
+	source: {
+		border: 0,
 		display: 'block',
 		height: 'auto',
 		maxWidth: '100%',
-		// height: THUMBNAIL_SIZE,
-		// left: '50%',
-		// position: 'relative',
-		//
-		// WebkitTransform: 'translateX(-50%)',
-		// MozTransform:    'translateX(-50%)',
-		// msTransform:     'translateX(-50%)',
-		// transform:       'translateX(-50%)',
+		width: 'auto',
 	},
-};
+});
 
 export default Gallery;
