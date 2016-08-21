@@ -1,4 +1,4 @@
-function deepMerge (target, source) {
+function deepMerge (target, source = {}) {
 	const extended = Object.assign({}, target);
 
 	Object.keys(source).forEach((key) => {

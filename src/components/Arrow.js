@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 
-import theme from '../theme';
+import defaults from '../theme';
+import { deepMerge } from '../utils';
 import Icon from './Icon';
 
 function Arrow ({
@@ -14,15 +15,17 @@ function Arrow ({
 {
 	theme,
 }) {
+	const classes = StyleSheet.create(deepMerge(defaultStyles, theme));
+
 	return (
 		<button
 			type="button"
-			className={css(classes.arrow, classes[direction], size && classes[size])}
+			className={css(classes.arrow, classes['arrow__direction__' + direction], size && classes['arrow__size__' + size])}
 			onClick={onClick}
 			onTouchEnd={onClick}
 			{...props}
 		>
-			<Icon color={theme.arrow.color} type={icon} />
+			<Icon fill={!!theme.arrow && theme.arrow.fill || defaults.arrow.fill} type={icon} />
 		</button>
 	);
 };
@@ -40,7 +43,7 @@ Arrow.contextTypes = {
 	theme: PropTypes.object.isRequired,
 };
 
-const classes = StyleSheet.create({
+const defaultStyles = {
 	arrow: {
 		background: 'none',
 		border: 'none',
@@ -57,18 +60,18 @@ const classes = StyleSheet.create({
 	},
 
 	// sizees
-	medium: {
-		height: theme.arrow.height,
-		marginTop: theme.arrow.height / -2,
+	arrow__size__medium: {
+		height: defaults.arrow.height,
+		marginTop: defaults.arrow.height / -2,
 		width: 40,
 
 		'@media (min-width: 768px)': {
 			width: 70,
 		},
 	},
-	small: {
-		height: theme.thumbnail.size,
-		marginTop: theme.thumbnail.size / -2,
+	arrow__size__small: {
+		height: defaults.thumbnail.size,
+		marginTop: defaults.thumbnail.size / -2,
 		width: 30,
 
 		'@media (min-width: 500px)': {
@@ -77,12 +80,12 @@ const classes = StyleSheet.create({
 	},
 
 	// direction
-	right: {
-		right: theme.container.gutter.horizontal,
+	arrow__direction__right: {
+		right: defaults.container.gutter.horizontal,
 	},
-	left: {
-		left: theme.container.gutter.horizontal,
+	arrow__direction__left: {
+		left: defaults.container.gutter.horizontal,
 	},
-});
+};
 
 module.exports = Arrow;

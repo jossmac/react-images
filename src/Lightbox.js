@@ -9,12 +9,8 @@ import Footer from './components/Footer';
 import Header from './components/Header';
 import PaginatedThumbnails from './components/PaginatedThumbnails';
 import Portal from './components/Portal';
-// import Thumbnails from './components/Thumbnails';
 
-import { bindFunctions, bodyScroll, canUseDom, deepMerge } from './utils';
-import styles from './styles/default';
-
-const classes = StyleSheet.create(styles);
+import { bindFunctions, bodyScroll, canUseDom } from './utils';
 
 class Lightbox extends Component {
 	constructor () {
@@ -27,11 +23,8 @@ class Lightbox extends Component {
 		]);
 	}
 	getChildContext () {
-		const extended = deepMerge(theme, this.props.theme);
-		// console.log('Lightbox extended theme', extended);
-
 		return {
-			theme: extended,
+			theme: this.props.theme,
 		};
 	}
 	componentWillReceiveProps (nextProps) {
@@ -187,9 +180,9 @@ class Lightbox extends Component {
 					/>
 					{this.renderImages()}
 				</div>
+				{this.renderThumbnails()}
 				{this.renderArrowPrev()}
 				{this.renderArrowNext()}
-				{this.renderThumbnails()}
 			</Container>
 		);
 	}
@@ -314,6 +307,23 @@ Lightbox.childContextTypes = {
 	theme: PropTypes.object.isRequired,
 };
 
-Lightbox.PaginatedThumbnails = PaginatedThumbnails;
+const classes = StyleSheet.create({
+	content: {
+		position: 'relative',
+	},
+	figure: {
+		margin: 0, // remove browser default
+	},
+	image: {
+		display: 'block', // removes browser default gutter
+		height: 'auto',
+		margin: '0 auto', // maintain center on very short screens OR very narrow image
+		maxWidth: '100%',
+
+		// disable user select
+		WebkitTouchCallout: 'none',
+		userSelect: 'none',
+	},
+});
 
 export default Lightbox;

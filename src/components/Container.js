@@ -1,18 +1,11 @@
 import React, { PropTypes } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 
-// import theme from './theme';
+import defaults from '../theme';
+import { deepMerge } from '../utils';
 
-function Container ({ style, ...props }, { theme }) {
-	props.style = {
-		backgroundColor: theme.container.background,
-		paddingBottom: theme.container.gutter.vertical,
-		paddingLeft: theme.container.gutter.horizontal,
-		paddingRight: theme.container.gutter.horizontal,
-		paddingTop: theme.container.gutter.vertical,
-		zIndex: theme.container.zIndex,
-		...style,
-	};
+function Container ({ ...props }, { theme }) {
+	const classes = StyleSheet.create(deepMerge(defaultStyles, theme));
 
 	return (
 		<div
@@ -26,18 +19,24 @@ Container.contextTypes = {
 	theme: PropTypes.object.isRequired,
 };
 
-const classes = StyleSheet.create({
+const defaultStyles = {
 	container: {
 		alignItems: 'center',
+		backgroundColor: defaults.container.background,
 		boxSizing: 'border-box',
 		display: 'flex',
 		height: '100%',
 		justifyContent: 'center',
 		left: 0,
+		paddingBottom: defaults.container.gutter.vertical,
+		paddingLeft: defaults.container.gutter.horizontal,
+		paddingRight: defaults.container.gutter.horizontal,
+		paddingTop: defaults.container.gutter.vertical,
 		position: 'fixed',
 		top: 0,
 		width: '100%',
+		zIndex: defaults.container.zIndex,
 	},
-});
+};
 
 module.exports = Container;

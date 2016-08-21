@@ -19,7 +19,7 @@ theme.header = {
 	height: 40,
 };
 theme.close = {
-	color: 'white',
+	fill: 'white',
 	height: 20,
 	width: 20,
 };
@@ -41,13 +41,14 @@ theme.footer = {
 // thumbnails
 theme.thumbnail = {
 	activeBorderColor: 'white',
-	size: 64,
+	size: 50,
 	gutter: 2,
 };
 
 // arrow
 theme.arrow = {
-	color: 'white',
+	background: 'black',
+	fill: 'white',
 	height: 120,
 };
 

@@ -1,23 +1,23 @@
 import React, { PropTypes } from 'react';
 import icons from '../icons';
 
-const Icon = ({ color, type, ...props }) => {
+const Icon = ({ fill, type, ...props }) => {
 	const icon = icons[type];
 
 	return (
 		<span
-			dangerouslySetInnerHTML={{ __html: icon(color) }}
+			dangerouslySetInnerHTML={{ __html: icon(fill) }}
 			{...props}
 		/>
 	);
 };
 
 Icon.propTypes = {
-	color: PropTypes.string,
+	fill: PropTypes.string,
 	type: PropTypes.oneOf(Object.keys(icons)),
 };
 Icon.defaultProps = {
-	color: 'white',
+	fill: 'white',
 };
 
 export default Icon;
