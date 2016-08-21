@@ -1573,15 +1573,17 @@ var _react2 = _interopRequireDefault(_react);
 
 var _aphroditeNoImportant = require('aphrodite/no-important');
 
-var _theme = require('./theme');
+var _theme = require('../theme');
 
 var _theme2 = _interopRequireDefault(_theme);
+
+var _utils = require('../utils');
 
 var _Icon = require('./Icon');
 
 var _Icon2 = _interopRequireDefault(_Icon);
 
-function Arrow(_ref) {
+function Arrow(_ref, _ref2) {
 	var direction = _ref.direction;
 	var icon = _ref.icon;
 	var onClick = _ref.onClick;
@@ -1589,15 +1591,19 @@ function Arrow(_ref) {
 
 	var props = _objectWithoutProperties(_ref, ['direction', 'icon', 'onClick', 'size']);
 
+	var theme = _ref2.theme;
+
+	var classes = _aphroditeNoImportant.StyleSheet.create((0, _utils.deepMerge)(defaultStyles, theme));
+
 	return _react2['default'].createElement(
 		'button',
 		_extends({
 			type: 'button',
-			className: (0, _aphroditeNoImportant.css)(classes.arrow, classes[direction], size && classes[size]),
+			className: (0, _aphroditeNoImportant.css)(classes.arrow, classes['arrow__direction__' + direction], size && classes['arrow__size__' + size]),
 			onClick: onClick,
 			onTouchEnd: onClick
 		}, props),
-		_react2['default'].createElement(_Icon2['default'], { type: icon })
+		_react2['default'].createElement(_Icon2['default'], { fill: !!theme.arrow && theme.arrow.fill || _theme2['default'].arrow.fill, type: icon })
 	);
 };
 
@@ -1610,8 +1616,11 @@ Arrow.propTypes = {
 Arrow.defaultProps = {
 	size: 'medium'
 };
+Arrow.contextTypes = {
+	theme: _react.PropTypes.object.isRequired
+};
 
-var classes = _aphroditeNoImportant.StyleSheet.create({
+var defaultStyles = {
 	arrow: {
 		background: 'none',
 		border: 'none',
@@ -1628,7 +1637,7 @@ var classes = _aphroditeNoImportant.StyleSheet.create({
 	},
 
 	// sizees
-	medium: {
+	arrow__size__medium: {
 		height: _theme2['default'].arrow.height,
 		marginTop: _theme2['default'].arrow.height / -2,
 		width: 40,
@@ -1637,7 +1646,7 @@ var classes = _aphroditeNoImportant.StyleSheet.create({
 			width: 70
 		}
 	},
-	small: {
+	arrow__size__small: {
 		height: _theme2['default'].thumbnail.size,
 		marginTop: _theme2['default'].thumbnail.size / -2,
 		width: 30,
@@ -1648,17 +1657,17 @@ var classes = _aphroditeNoImportant.StyleSheet.create({
 	},
 
 	// direction
-	right: {
+	arrow__direction__right: {
 		right: _theme2['default'].container.gutter.horizontal
 	},
-	left: {
+	arrow__direction__left: {
 		left: _theme2['default'].container.gutter.horizontal
 	}
-});
+};
 
 module.exports = Arrow;
 
-},{"./Icon":27,"./theme":36,"aphrodite/no-important":6,"react":undefined}],25:[function(require,module,exports){
+},{"../theme":37,"../utils":42,"./Icon":28,"aphrodite/no-important":6,"react":undefined}],25:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -1673,11 +1682,72 @@ var _react2 = _interopRequireDefault(_react);
 
 var _aphroditeNoImportant = require('aphrodite/no-important');
 
-var _theme = require('./theme');
+var _theme = require('../theme');
 
 var _theme2 = _interopRequireDefault(_theme);
 
-function Footer(_ref) {
+var _utils = require('../utils');
+
+function Container(_ref, _ref2) {
+	var props = _objectWithoutProperties(_ref, []);
+
+	var theme = _ref2.theme;
+
+	var classes = _aphroditeNoImportant.StyleSheet.create((0, _utils.deepMerge)(defaultStyles, theme));
+
+	return _react2['default'].createElement('div', _extends({
+		className: (0, _aphroditeNoImportant.css)(classes.container)
+	}, props));
+};
+
+Container.contextTypes = {
+	theme: _react.PropTypes.object.isRequired
+};
+
+var defaultStyles = {
+	container: {
+		alignItems: 'center',
+		backgroundColor: _theme2['default'].container.background,
+		boxSizing: 'border-box',
+		display: 'flex',
+		height: '100%',
+		justifyContent: 'center',
+		left: 0,
+		paddingBottom: _theme2['default'].container.gutter.vertical,
+		paddingLeft: _theme2['default'].container.gutter.horizontal,
+		paddingRight: _theme2['default'].container.gutter.horizontal,
+		paddingTop: _theme2['default'].container.gutter.vertical,
+		position: 'fixed',
+		top: 0,
+		width: '100%',
+		zIndex: _theme2['default'].container.zIndex
+	}
+};
+
+module.exports = Container;
+
+},{"../theme":37,"../utils":42,"aphrodite/no-important":6,"react":undefined}],26:[function(require,module,exports){
+'use strict';
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _aphroditeNoImportant = require('aphrodite/no-important');
+
+var _theme = require('../theme');
+
+var _theme2 = _interopRequireDefault(_theme);
+
+var _utils = require('../utils');
+
+function Footer(_ref, _ref2) {
 	var caption = _ref.caption;
 	var countCurrent = _ref.countCurrent;
 	var countSeparator = _ref.countSeparator;
@@ -1686,7 +1756,11 @@ function Footer(_ref) {
 
 	var props = _objectWithoutProperties(_ref, ['caption', 'countCurrent', 'countSeparator', 'countTotal', 'showCount']);
 
+	var theme = _ref2.theme;
+
 	if (!caption && !showCount) return null;
+
+	var classes = _aphroditeNoImportant.StyleSheet.create((0, _utils.deepMerge)(defaultStyles, theme));
 
 	var imageCount = showCount ? _react2['default'].createElement(
 		'div',
@@ -1715,14 +1789,16 @@ Footer.propTypes = {
 	countTotal: _react.PropTypes.number,
 	showCount: _react.PropTypes.bool
 };
+Footer.contextTypes = {
+	theme: _react.PropTypes.object.isRequired
+};
 
-var classes = _aphroditeNoImportant.StyleSheet.create({
+var defaultStyles = {
 	footer: {
 		boxSizing: 'border-box',
-		color: 'white',
+		color: _theme2['default'].footer.color,
 		cursor: 'auto',
 		display: 'flex',
-		height: _theme2['default'].footer.height,
 		justifyContent: 'space-between',
 		left: 0,
 		lineHeight: 1.3,
@@ -1739,11 +1815,11 @@ var classes = _aphroditeNoImportant.StyleSheet.create({
 	footerCaption: {
 		flex: '1 1 0'
 	}
-});
+};
 
 module.exports = Footer;
 
-},{"./theme":36,"aphrodite/no-important":6,"react":undefined}],26:[function(require,module,exports){
+},{"../theme":37,"../utils":42,"aphrodite/no-important":6,"react":undefined}],27:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -1758,20 +1834,26 @@ var _react2 = _interopRequireDefault(_react);
 
 var _aphroditeNoImportant = require('aphrodite/no-important');
 
-var _theme = require('./theme');
+var _theme = require('../theme');
 
 var _theme2 = _interopRequireDefault(_theme);
+
+var _utils = require('../utils');
 
 var _Icon = require('./Icon');
 
 var _Icon2 = _interopRequireDefault(_Icon);
 
-function Header(_ref) {
+function Header(_ref, _ref2) {
 	var customControls = _ref.customControls;
 	var onClose = _ref.onClose;
 	var showCloseButton = _ref.showCloseButton;
 
 	var props = _objectWithoutProperties(_ref, ['customControls', 'onClose', 'showCloseButton']);
+
+	var theme = _ref2.theme;
+
+	var classes = _aphroditeNoImportant.StyleSheet.create((0, _utils.deepMerge)(defaultStyles, theme));
 
 	return _react2['default'].createElement(
 		'div',
@@ -1784,7 +1866,7 @@ function Header(_ref) {
 				className: (0, _aphroditeNoImportant.css)(classes.close),
 				onClick: onClose
 			},
-			_react2['default'].createElement(_Icon2['default'], { type: 'close' })
+			_react2['default'].createElement(_Icon2['default'], { fill: !!theme.close && theme.close.fill || _theme2['default'].close.fill, type: 'close' })
 		)
 	);
 };
@@ -1794,8 +1876,11 @@ Header.propTypes = {
 	onClose: _react.PropTypes.func.isRequired,
 	showCloseButton: _react.PropTypes.bool
 };
+Header.contextTypes = {
+	theme: _react.PropTypes.object.isRequired
+};
 
-var classes = _aphroditeNoImportant.StyleSheet.create({
+var defaultStyles = {
 	header: {
 		display: 'flex',
 		justifyContent: 'space-between',
@@ -1816,11 +1901,11 @@ var classes = _aphroditeNoImportant.StyleSheet.create({
 		padding: 10,
 		width: _theme2['default'].close.width + 20
 	}
-});
+};
 
 module.exports = Header;
 
-},{"./Icon":27,"./theme":36,"aphrodite/no-important":6,"react":undefined}],27:[function(require,module,exports){
+},{"../theme":37,"../utils":42,"./Icon":28,"aphrodite/no-important":6,"react":undefined}],28:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1837,28 +1922,35 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _icons = require('./icons');
+var _icons = require('../icons');
 
 var _icons2 = _interopRequireDefault(_icons);
 
 var Icon = function Icon(_ref) {
+	var fill = _ref.fill;
 	var type = _ref.type;
 
-	var props = _objectWithoutProperties(_ref, ['type']);
+	var props = _objectWithoutProperties(_ref, ['fill', 'type']);
+
+	var icon = _icons2['default'][type];
 
 	return _react2['default'].createElement('span', _extends({
-		dangerouslySetInnerHTML: { __html: _icons2['default'][type] }
+		dangerouslySetInnerHTML: { __html: icon(fill) }
 	}, props));
 };
 
 Icon.propTypes = {
+	fill: _react.PropTypes.string,
 	type: _react.PropTypes.oneOf(Object.keys(_icons2['default']))
+};
+Icon.defaultProps = {
+	fill: 'white'
 };
 
 exports['default'] = Icon;
 module.exports = exports['default'];
 
-},{"./icons":34,"react":undefined}],28:[function(require,module,exports){
+},{"../icons":36,"react":undefined}],29:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1891,7 +1983,7 @@ var _Arrow = require('./Arrow');
 
 var _Arrow2 = _interopRequireDefault(_Arrow);
 
-var _theme = require('./theme');
+var _theme = require('../theme');
 
 var _theme2 = _interopRequireDefault(_theme);
 
@@ -2088,7 +2180,63 @@ PaginatedThumbnails.propTypes = {
 };
 module.exports = exports['default'];
 
-},{"./Arrow":24,"./Thumbnail":30,"./theme":36,"aphrodite/no-important":6,"react":undefined}],29:[function(require,module,exports){
+},{"../theme":37,"./Arrow":24,"./Thumbnail":32,"aphrodite/no-important":6,"react":undefined}],30:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+	value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _react = require('react');
+
+// Pass the Lightbox context through to the Portal's descendents
+// StackOverflow discussion http://goo.gl/oclrJ9
+
+var PassContext = (function (_Component) {
+	_inherits(PassContext, _Component);
+
+	function PassContext() {
+		_classCallCheck(this, PassContext);
+
+		_get(Object.getPrototypeOf(PassContext.prototype), 'constructor', this).apply(this, arguments);
+	}
+
+	_createClass(PassContext, [{
+		key: 'getChildContext',
+		value: function getChildContext() {
+			return this.props.context;
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			return _react.Children.only(this.props.children);
+		}
+	}]);
+
+	return PassContext;
+})(_react.Component);
+
+;
+
+PassContext.propTypes = {
+	context: _react.PropTypes.object.isRequired
+};
+PassContext.childContextTypes = {
+	theme: _react.PropTypes.object
+};
+
+exports['default'] = PassContext;
+module.exports = exports['default'];
+
+},{"react":undefined}],31:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -2117,6 +2265,10 @@ var _reactAddonsCssTransitionGroup2 = _interopRequireDefault(_reactAddonsCssTran
 
 var _reactDom = require('react-dom');
 
+var _PassContext = require('./PassContext');
+
+var _PassContext2 = _interopRequireDefault(_PassContext);
+
 var Portal = (function (_Component) {
 	_inherits(Portal, _Component);
 
@@ -2138,20 +2290,28 @@ var Portal = (function (_Component) {
 	}, {
 		key: 'componentDidUpdate',
 		value: function componentDidUpdate() {
-			var styles = '\n\t\t\t\t.fade-enter { opacity: 0.01; }\n\t\t\t\t.fade-enter.fade-enter-active { opacity: 1; transition: opacity 200ms; }\n\t\t\t\t.fade-leave { opacity: 1; }\n\t\t\t\t.fade-leave.fade-leave-active { opacity: 0.01; transition: opacity 200ms; }\n\t\t';
+			// Animate fade on mount/unmount
+			var duration = 200;
+			var styles = '\n\t\t\t\t.fade-enter { opacity: 0.01; }\n\t\t\t\t.fade-enter.fade-enter-active { opacity: 1; transition: opacity ' + duration + 'ms; }\n\t\t\t\t.fade-leave { opacity: 1; }\n\t\t\t\t.fade-leave.fade-leave-active { opacity: 0.01; transition: opacity ' + duration + 'ms; }\n\t\t';
+
 			(0, _reactDom.render)(_react2['default'].createElement(
-				'div',
-				null,
+				_PassContext2['default'],
+				{ context: this.context },
 				_react2['default'].createElement(
-					'style',
+					'div',
 					null,
-					styles
-				),
-				_react2['default'].createElement(_reactAddonsCssTransitionGroup2['default'], _extends({
-					transitionName: 'fade',
-					transitionEnterTimeout: 200,
-					transitionLeaveTimeout: 200
-				}, this.props))
+					_react2['default'].createElement(
+						'style',
+						null,
+						styles
+					),
+					_react2['default'].createElement(_reactAddonsCssTransitionGroup2['default'], _extends({
+						component: 'div',
+						transitionName: 'fade',
+						transitionEnterTimeout: duration,
+						transitionLeaveTimeout: duration
+					}, this.props))
+				)
 			), this.portalElement);
 		}
 	}, {
@@ -2170,9 +2330,13 @@ var Portal = (function (_Component) {
 })(_react.Component);
 
 exports['default'] = Portal;
+
+Portal.contextTypes = {
+	theme: _react.PropTypes.object.isRequired
+};
 module.exports = exports['default'];
 
-},{"react":undefined,"react-addons-css-transition-group":undefined,"react-dom":undefined}],30:[function(require,module,exports){
+},{"./PassContext":30,"react":undefined,"react-addons-css-transition-group":undefined,"react-dom":undefined}],32:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -2187,21 +2351,25 @@ var _react2 = _interopRequireDefault(_react);
 
 var _aphroditeNoImportant = require('aphrodite/no-important');
 
-var _theme = require('./theme');
+var _theme = require('../theme');
 
 var _theme2 = _interopRequireDefault(_theme);
 
-function Thumbnail(_ref) {
+var _utils = require('../utils');
+
+function Thumbnail(_ref, _ref2) {
 	var index = _ref.index;
 	var src = _ref.src;
 	var thumbnail = _ref.thumbnail;
 	var active = _ref.active;
 	var onClick = _ref.onClick;
+	var theme = _ref2.theme;
 
 	var url = thumbnail ? thumbnail : src;
+	var classes = _aphroditeNoImportant.StyleSheet.create((0, _utils.deepMerge)(defaultStyles, theme));
 
 	return _react2['default'].createElement('div', {
-		className: (0, _aphroditeNoImportant.css)(classes.thumbnail, active && classes.active),
+		className: (0, _aphroditeNoImportant.css)(classes.thumbnail, active && classes.thumbnail__active),
 		onClick: function () {
 			return onClick(index);
 		},
@@ -2217,7 +2385,11 @@ Thumbnail.propTypes = {
 	thumbnail: _react.PropTypes.string
 };
 
-var classes = _aphroditeNoImportant.StyleSheet.create({
+Thumbnail.contextTypes = {
+	theme: _react.PropTypes.object.isRequired
+};
+
+var defaultStyles = {
 	thumbnail: {
 		backgroundPosition: 'center',
 		backgroundSize: 'cover',
@@ -2230,30 +2402,54 @@ var classes = _aphroditeNoImportant.StyleSheet.create({
 		overflow: 'hidden',
 		width: _theme2['default'].thumbnail.size
 	},
-	active: {
+	thumbnail__active: {
 		boxShadow: 'inset 0 0 0 2px ' + _theme2['default'].thumbnail.activeBorderColor
 	}
-});
+};
 
 exports['default'] = Thumbnail;
 module.exports = exports['default'];
 
-},{"./theme":36,"aphrodite/no-important":6,"react":undefined}],31:[function(require,module,exports){
-'use strict';
+},{"../theme":37,"../utils":42,"aphrodite/no-important":6,"react":undefined}],33:[function(require,module,exports){
+"use strict";
 
-module.exports = '<svg fill="white" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100%" height="100%" viewBox="0 0 512 512" xml:space="preserve">' + '<path d="M213.7,256L213.7,256L213.7,256L380.9,81.9c4.2-4.3,4.1-11.4-0.2-15.8l-29.9-30.6c-4.3-4.4-11.3-4.5-15.5-0.2L131.1,247.9 c-2.2,2.2-3.2,5.2-3,8.1c-0.1,3,0.9,5.9,3,8.1l204.2,212.7c4.2,4.3,11.2,4.2,15.5-0.2l29.9-30.6c4.3-4.4,4.4-11.5,0.2-15.8 L213.7,256z"/>' + '</svg>';
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
 
-},{}],32:[function(require,module,exports){
-'use strict';
+exports["default"] = function (fill) {
+	return "<svg fill=\"" + fill + "\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" width=\"100%\" height=\"100%\" viewBox=\"0 0 512 512\" xml:space=\"preserve\">\n\t\t<path d=\"M213.7,256L213.7,256L213.7,256L380.9,81.9c4.2-4.3,4.1-11.4-0.2-15.8l-29.9-30.6c-4.3-4.4-11.3-4.5-15.5-0.2L131.1,247.9 c-2.2,2.2-3.2,5.2-3,8.1c-0.1,3,0.9,5.9,3,8.1l204.2,212.7c4.2,4.3,11.2,4.2,15.5-0.2l29.9-30.6c4.3-4.4,4.4-11.5,0.2-15.8 L213.7,256z\"/>\n\t</svg>";
+};
 
-module.exports = '<svg fill="white" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100%" height="100%" viewBox="0 0 512 512" xml:space="preserve">' + '<path d="M298.3,256L298.3,256L298.3,256L131.1,81.9c-4.2-4.3-4.1-11.4,0.2-15.8l29.9-30.6c4.3-4.4,11.3-4.5,15.5-0.2l204.2,212.7 c2.2,2.2,3.2,5.2,3,8.1c0.1,3-0.9,5.9-3,8.1L176.7,476.8c-4.2,4.3-11.2,4.2-15.5-0.2L131.3,446c-4.3-4.4-4.4-11.5-0.2-15.8 L298.3,256z"/>' + '</svg>';
-
-},{}],33:[function(require,module,exports){
-'use strict';
-
-module.exports = '<svg fill="white" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100%" height="100%" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">' + '<path d="M443.6,387.1L312.4,255.4l131.5-130c5.4-5.4,5.4-14.2,0-19.6l-37.4-37.6c-2.6-2.6-6.1-4-9.8-4c-3.7,0-7.2,1.5-9.8,4 L256,197.8L124.9,68.3c-2.6-2.6-6.1-4-9.8-4c-3.7,0-7.2,1.5-9.8,4L68,105.9c-5.4,5.4-5.4,14.2,0,19.6l131.5,130L68.4,387.1 c-2.6,2.6-4.1,6.1-4.1,9.8c0,3.7,1.4,7.2,4.1,9.8l37.4,37.6c2.7,2.7,6.2,4.1,9.8,4.1c3.5,0,7.1-1.3,9.8-4.1L256,313.1l130.7,131.1 c2.7,2.7,6.2,4.1,9.8,4.1c3.5,0,7.1-1.3,9.8-4.1l37.4-37.6c2.6-2.6,4.1-6.1,4.1-9.8C447.7,393.2,446.2,389.7,443.6,387.1z"/>' + '</svg>';
+module.exports = exports["default"];
 
 },{}],34:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+exports["default"] = function (fill) {
+	return "<svg fill=\"" + fill + "\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" width=\"100%\" height=\"100%\" viewBox=\"0 0 512 512\" xml:space=\"preserve\">\n\t\t<path d=\"M298.3,256L298.3,256L298.3,256L131.1,81.9c-4.2-4.3-4.1-11.4,0.2-15.8l29.9-30.6c4.3-4.4,11.3-4.5,15.5-0.2l204.2,212.7 c2.2,2.2,3.2,5.2,3,8.1c0.1,3-0.9,5.9-3,8.1L176.7,476.8c-4.2,4.3-11.2,4.2-15.5-0.2L131.3,446c-4.3-4.4-4.4-11.5-0.2-15.8 L298.3,256z\"/>\n\t</svg>";
+};
+
+module.exports = exports["default"];
+
+},{}],35:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+exports["default"] = function (fill) {
+	return "<svg fill=\"" + fill + "\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" width=\"100%\" height=\"100%\" viewBox=\"0 0 512 512\" style=\"enable-background:new 0 0 512 512;\" xml:space=\"preserve\">\n\t\t<path d=\"M443.6,387.1L312.4,255.4l131.5-130c5.4-5.4,5.4-14.2,0-19.6l-37.4-37.6c-2.6-2.6-6.1-4-9.8-4c-3.7,0-7.2,1.5-9.8,4 L256,197.8L124.9,68.3c-2.6-2.6-6.1-4-9.8-4c-3.7,0-7.2,1.5-9.8,4L68,105.9c-5.4,5.4-5.4,14.2,0,19.6l131.5,130L68.4,387.1 c-2.6,2.6-4.1,6.1-4.1,9.8c0,3.7,1.4,7.2,4.1,9.8l37.4,37.6c2.7,2.7,6.2,4.1,9.8,4.1c3.5,0,7.1-1.3,9.8-4.1L256,313.1l130.7,131.1 c2.7,2.7,6.2,4.1,9.8,4.1c3.5,0,7.1-1.3,9.8-4.1l37.4-37.6c2.6-2.6,4.1-6.1,4.1-9.8C447.7,393.2,446.2,389.7,443.6,387.1z\"/>\n\t</svg>";
+};
+
+module.exports = exports["default"];
+
+},{}],36:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -2262,66 +2458,7 @@ module.exports = {
 	close: require('./close')
 };
 
-},{"./arrowLeft":31,"./arrowRight":32,"./close":33}],35:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-	value: true
-});
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _theme = require('../theme');
-
-var _theme2 = _interopRequireDefault(_theme);
-
-var styles = {
-	container: {
-		alignItems: 'center',
-		backgroundColor: _theme2['default'].container.background,
-		boxSizing: 'border-box',
-		display: 'flex',
-		flexDirection: 'column',
-		height: '100%',
-		justifyContent: 'center',
-		left: 0,
-		paddingBottom: _theme2['default'].container.gutter.vertical,
-		paddingLeft: _theme2['default'].container.gutter.horizontal,
-		paddingRight: _theme2['default'].container.gutter.horizontal,
-		paddingTop: _theme2['default'].container.gutter.vertical,
-		position: 'fixed',
-		top: 0,
-		width: '100%',
-		zIndex: _theme2['default'].container.zIndex
-	},
-
-	content: {
-		position: 'relative'
-	},
-
-	// IMAGES
-	image: {
-		display: 'block', // removes browser default gutter beneath
-		height: 'auto',
-		margin: '0 auto', // maintain center on very short screens OR very narrow image
-		maxWidth: '100%',
-
-		// disable user select
-		WebkitTouchCallout: 'none',
-		userSelect: 'none'
-
-	},
-	figure: {
-		// minHeight: 200,
-		// minWidth: 300,
-		margin: 0 }
-};
-
-// remove browser default
-exports['default'] = styles;
-module.exports = exports['default'];
-
-},{"../theme":36}],36:[function(require,module,exports){
+},{"./arrowLeft":33,"./arrowRight":34,"./close":35}],37:[function(require,module,exports){
 // ==============================
 // THEME
 // ==============================
@@ -2345,12 +2482,14 @@ theme.header = {
 	height: 40
 };
 theme.close = {
+	fill: 'white',
 	height: 20,
 	width: 20
 };
 
 // footer
 theme.footer = {
+	color: 'white',
 	count: {
 		color: 'rgba(255, 255, 255, 0.75)',
 		fontSize: '0.85em'
@@ -2365,18 +2504,20 @@ theme.footer = {
 // thumbnails
 theme.thumbnail = {
 	activeBorderColor: 'white',
-	size: 64,
+	size: 50,
 	gutter: 2
 };
 
 // arrow
 theme.arrow = {
+	background: 'black',
+	fill: 'white',
 	height: 120
 };
 
 module.exports = theme;
 
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 /**
 	Bind multiple component methods:
 
@@ -2399,7 +2540,7 @@ module.exports = function bindFunctions(functions) {
 	});
 };
 
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 // Don't try and apply overflow/padding if the scroll is already blocked
 'use strict';
 
@@ -2446,14 +2587,41 @@ module.exports = {
 	blockScroll: blockScroll
 };
 
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 // Return true if window + document
 
 'use strict';
 
 module.exports = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
+'use strict';
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function deepMerge(target) {
+	var source = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+	var extended = _extends({}, target);
+
+	Object.keys(source).forEach(function (key) {
+		if (typeof source[key] !== 'object' || !source[key]) {
+			extended[key] = source[key];
+		} else {
+			if (!target[key]) {
+				extended[key] = source[key];
+			} else {
+				extended[key] = deepMerge(target[key], source[key]);
+			}
+		}
+	});
+
+	return extended;
+}
+
+module.exports = deepMerge;
+
+},{}],42:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -2470,13 +2638,18 @@ var _canUseDom = require('./canUseDom');
 
 var _canUseDom2 = _interopRequireDefault(_canUseDom);
 
+var _deepMerge = require('./deepMerge');
+
+var _deepMerge2 = _interopRequireDefault(_deepMerge);
+
 module.exports = {
 	bindFunctions: _bindFunctions2['default'],
 	bodyScroll: _bodyScroll2['default'],
-	canUseDom: _canUseDom2['default']
+	canUseDom: _canUseDom2['default'],
+	deepMerge: _deepMerge2['default']
 };
 
-},{"./bindFunctions":37,"./bodyScroll":38,"./canUseDom":39}],"react-images":[function(require,module,exports){
+},{"./bindFunctions":38,"./bodyScroll":39,"./canUseDom":40,"./deepMerge":41}],"react-images":[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -2486,8 +2659,6 @@ Object.defineProperty(exports, '__esModule', {
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -2503,70 +2674,58 @@ var _aphroditeNoImportant = require('aphrodite/no-important');
 
 // import Swipeable from 'react-swipeable';
 
-var _utils = require('./utils');
-
-var _utils2 = _interopRequireDefault(_utils);
-
 var _theme = require('./theme');
 
 var _theme2 = _interopRequireDefault(_theme);
 
-var _Arrow = require('./Arrow');
+var _componentsArrow = require('./components/Arrow');
 
-var _Arrow2 = _interopRequireDefault(_Arrow);
+var _componentsArrow2 = _interopRequireDefault(_componentsArrow);
 
-var _Footer = require('./Footer');
+var _componentsContainer = require('./components/Container');
 
-var _Footer2 = _interopRequireDefault(_Footer);
+var _componentsContainer2 = _interopRequireDefault(_componentsContainer);
 
-var _Header = require('./Header');
+var _componentsFooter = require('./components/Footer');
 
-var _Header2 = _interopRequireDefault(_Header);
+var _componentsFooter2 = _interopRequireDefault(_componentsFooter);
 
-// import Thumbnails from './Thumbnails';
+var _componentsHeader = require('./components/Header');
 
-var _PaginatedThumbnails = require('./PaginatedThumbnails');
+var _componentsHeader2 = _interopRequireDefault(_componentsHeader);
 
-var _PaginatedThumbnails2 = _interopRequireDefault(_PaginatedThumbnails);
+var _componentsPaginatedThumbnails = require('./components/PaginatedThumbnails');
 
-var _Portal = require('./Portal');
+var _componentsPaginatedThumbnails2 = _interopRequireDefault(_componentsPaginatedThumbnails);
 
-var _Portal2 = _interopRequireDefault(_Portal);
+var _componentsPortal = require('./components/Portal');
 
-var _stylesDefault = require('./styles/default');
+var _componentsPortal2 = _interopRequireDefault(_componentsPortal);
 
-var _stylesDefault2 = _interopRequireDefault(_stylesDefault);
-
-var classes = _aphroditeNoImportant.StyleSheet.create(_stylesDefault2['default']);
+var _utils = require('./utils');
 
 var Lightbox = (function (_Component) {
 	_inherits(Lightbox, _Component);
-
-	_createClass(Lightbox, null, [{
-		key: 'theme',
-		value: function theme(themeStyles) {
-			var extStyles = _extends({}, _stylesDefault2['default']);
-			for (var key in extStyles) {
-				if (key in themeStyles) {
-					extStyles[key] = _extends({}, _stylesDefault2['default'][key], themeStyles[key]);
-				}
-			}
-			return extStyles;
-		}
-	}]);
 
 	function Lightbox() {
 		_classCallCheck(this, Lightbox);
 
 		_get(Object.getPrototypeOf(Lightbox.prototype), 'constructor', this).call(this);
 
-		_utils2['default'].bindFunctions.call(this, ['gotoNext', 'gotoPrev', 'handleKeyboardInput']);
+		_utils.bindFunctions.call(this, ['gotoNext', 'gotoPrev', 'handleKeyboardInput']);
 	}
 
 	_createClass(Lightbox, [{
+		key: 'getChildContext',
+		value: function getChildContext() {
+			return {
+				theme: this.props.theme
+			};
+		}
+	}, {
 		key: 'componentWillReceiveProps',
 		value: function componentWillReceiveProps(nextProps) {
-			if (!_utils2['default'].canUseDom) return;
+			if (!_utils.canUseDom) return;
 
 			// preload images
 			if (nextProps.preloadNextImage) {
@@ -2600,9 +2759,9 @@ var Lightbox = (function (_Component) {
 
 			// handle body scroll
 			if (nextProps.isOpen) {
-				_utils2['default'].bodyScroll.blockScroll();
+				_utils.bodyScroll.blockScroll();
 			} else {
-				_utils2['default'].bodyScroll.allowScroll();
+				_utils.bodyScroll.allowScroll();
 			}
 		}
 
@@ -2670,7 +2829,7 @@ var Lightbox = (function (_Component) {
 		value: function renderArrowPrev() {
 			if (this.props.currentImage === 0) return null;
 
-			return _react2['default'].createElement(_Arrow2['default'], {
+			return _react2['default'].createElement(_componentsArrow2['default'], {
 				direction: 'left',
 				icon: 'arrowLeft',
 				onClick: this.gotoPrev,
@@ -2683,7 +2842,7 @@ var Lightbox = (function (_Component) {
 		value: function renderArrowNext() {
 			if (this.props.currentImage === this.props.images.length - 1) return null;
 
-			return _react2['default'].createElement(_Arrow2['default'], {
+			return _react2['default'].createElement(_componentsArrow2['default'], {
 				direction: 'right',
 				icon: 'arrowRight',
 				onClick: this.gotoNext,
@@ -2703,7 +2862,7 @@ var Lightbox = (function (_Component) {
 			var showThumbnails = _props.showThumbnails;
 			var width = _props.width;
 
-			if (!isOpen) return null;
+			if (!isOpen) return _react2['default'].createElement('span', { key: 'closed' });
 
 			var offsetThumbnails = 0;
 			if (showThumbnails) {
@@ -2711,26 +2870,25 @@ var Lightbox = (function (_Component) {
 			}
 
 			return _react2['default'].createElement(
-				'div',
+				_componentsContainer2['default'],
 				{
-					key: 'dialog',
-					className: (0, _aphroditeNoImportant.css)(classes.container),
+					key: 'open',
 					onClick: !!backdropClosesModal && onClose,
 					onTouchEnd: !!backdropClosesModal && onClose
 				},
 				_react2['default'].createElement(
 					'div',
 					{ className: (0, _aphroditeNoImportant.css)(classes.content), style: { marginBottom: offsetThumbnails, maxWidth: width } },
-					_react2['default'].createElement(_Header2['default'], {
+					_react2['default'].createElement(_componentsHeader2['default'], {
 						customControls: customControls,
 						onClose: onClose,
 						showCloseButton: showCloseButton
 					}),
 					this.renderImages()
 				),
+				this.renderThumbnails(),
 				this.renderArrowPrev(),
-				this.renderArrowNext(),
-				this.renderThumbnails()
+				this.renderArrowNext()
 			);
 		}
 	}, {
@@ -2773,7 +2931,7 @@ var Lightbox = (function (_Component) {
 						maxHeight: 'calc(100vh - ' + heightOffset + ')'
 					}
 				}),
-				_react2['default'].createElement(_Footer2['default'], {
+				_react2['default'].createElement(_componentsFooter2['default'], {
 					caption: images[currentImage].caption,
 					countCurrent: currentImage + 1,
 					countSeparator: imageCountSeparator,
@@ -2794,7 +2952,7 @@ var Lightbox = (function (_Component) {
 
 			if (!showThumbnails) return;
 
-			return _react2['default'].createElement(_PaginatedThumbnails2['default'], {
+			return _react2['default'].createElement(_componentsPaginatedThumbnails2['default'], {
 				currentImage: currentImage,
 				images: images,
 				offset: thumbnailOffset,
@@ -2804,8 +2962,9 @@ var Lightbox = (function (_Component) {
 	}, {
 		key: 'render',
 		value: function render() {
+			// return this.renderDialog();
 			return _react2['default'].createElement(
-				_Portal2['default'],
+				_componentsPortal2['default'],
 				null,
 				this.renderDialog()
 			);
@@ -2814,8 +2973,6 @@ var Lightbox = (function (_Component) {
 
 	return Lightbox;
 })(_react.Component);
-
-Lightbox.displayName = 'Lightbox';
 
 Lightbox.propTypes = {
 	backdropClosesModal: _react.PropTypes.bool,
@@ -2839,10 +2996,10 @@ Lightbox.propTypes = {
 	showCloseButton: _react.PropTypes.bool,
 	showImageCount: _react.PropTypes.bool,
 	showThumbnails: _react.PropTypes.bool,
+	theme: _react.PropTypes.object,
 	thumbnailOffset: _react.PropTypes.number,
 	width: _react.PropTypes.number
 };
-
 Lightbox.defaultProps = {
 	currentImage: 0,
 	enableKeyboardInput: true,
@@ -2851,11 +3008,32 @@ Lightbox.defaultProps = {
 	preloadNextImage: true,
 	showCloseButton: true,
 	showImageCount: true,
+	theme: {},
 	thumbnailOffset: 2,
 	width: 1024
 };
+Lightbox.childContextTypes = {
+	theme: _react.PropTypes.object.isRequired
+};
 
-Lightbox.PaginatedThumbnails = _PaginatedThumbnails2['default'];
+var classes = _aphroditeNoImportant.StyleSheet.create({
+	content: {
+		position: 'relative'
+	},
+	figure: {
+		margin: 0 },
+	// remove browser default
+	image: {
+		display: 'block', // removes browser default gutter
+		height: 'auto',
+		margin: '0 auto', // maintain center on very short screens OR very narrow image
+		maxWidth: '100%',
+
+		// disable user select
+		WebkitTouchCallout: 'none',
+		userSelect: 'none'
+	}
+});
 
 exports['default'] = Lightbox;
 module.exports = exports['default'];
@@ -2865,4 +3043,4 @@ https://fb.me/react-unknown-prop is resolved
 <Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
 */
 
-},{"./Arrow":24,"./Footer":25,"./Header":26,"./PaginatedThumbnails":28,"./Portal":29,"./styles/default":35,"./theme":36,"./utils":40,"aphrodite/no-important":6,"react":undefined}]},{},[]);
+},{"./components/Arrow":24,"./components/Container":25,"./components/Footer":26,"./components/Header":27,"./components/PaginatedThumbnails":29,"./components/Portal":31,"./theme":37,"./utils":42,"aphrodite/no-important":6,"react":undefined}]},{},[]);
