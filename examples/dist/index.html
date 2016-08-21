@@ -110,7 +110,7 @@
 											<td align="left">Supports keyboard input - <code>esc</code>, <code>arrow left</code>, and <code>arrow right</code></td>
 										</tr>
 										<tr>
-											<td align="left">images</td>
+											<td align="left"><a href="#images">images</a></td>
 											<td align="left">array</td>
 											<td align="left">undefined</td>
 											<td align="left">Required. An array of objects containing valid src and srcset values of img element</td>
@@ -170,10 +170,55 @@
 											<td align="left">Optionally display image index, e.g., "3 of 20"</td>
 										</tr>
 										<tr>
+											<td align="left">showThumbnails</td>
+											<td align="left">bool</td>
+											<td align="left">false</td>
+											<td align="left">Optionally display thumbnails beneath the Lightbox</td>
+										</tr>
+										<tr>
 											<td align="left">width</td>
 											<td align="left">number</td>
 											<td align="left">1024</td>
 											<td align="left">Maximum width of the carousel; defaults to 1024px</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<h2>Images</h2>
+							<div class="options-table-container" id="images">
+								<table class="options-table">
+									<thead>
+										<tr>
+											<th align="left">Property</th>
+											<th align="left">Type</th>
+											<th align="left">Default</th>
+											<th align="left">Description</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td align="left">src</td>
+											<td align="left">string</td>
+											<td align="left">undefined</td>
+											<td align="left">Required. The primary image path</td>
+										</tr>
+										<tr>
+											<td align="left">srcset</td>
+											<td align="left">array</td>
+											<td align="left">undefined</td>
+											<td align="left">List of alternative image sizes</td>
+										</tr>
+										<tr>
+											<td align="left">caption</td>
+											<td align="left">string</td>
+											<td align="left">undefined</td>
+											<td align="left">Displayed benath the current image. Great for description or attribution</td>
+										</tr>
+										<tr>
+											<td align="left">thumbnail</td>
+											<td align="left">string</td>
+											<td align="left">undefined</td>
+											<td align="left">Thumbnail to display if <code>showThumbnails</code> is set to <code>true</code></td>
 										</tr>
 									</tbody>
 								</table>
