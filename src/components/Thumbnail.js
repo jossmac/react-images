@@ -1,14 +1,16 @@
 import React, { PropTypes } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 
-import theme from './theme';
+import defaults from '../theme';
+import { deepMerge } from '../utils';
 
-function Thumbnail ({ index, src, thumbnail, active, onClick }) {
+function Thumbnail ({ index, src, thumbnail, active, onClick }, { theme }) {
 	const url = thumbnail ? thumbnail : src;
+	const classes = StyleSheet.create(deepMerge(defaultStyles, theme));
 
 	return (
 		<div
-			className={css(classes.thumbnail, active && classes.active)}
+			className={css(classes.thumbnail, active && classes.thumbnail__active)}
 			onClick={() => onClick(index)}
 			style={{ backgroundImage: 'url("' + url + '")' }}
 		/>
@@ -23,7 +25,11 @@ Thumbnail.propTypes = {
 	thumbnail: PropTypes.string,
 };
 
-const classes = StyleSheet.create({
+Thumbnail.contextTypes = {
+	theme: PropTypes.object.isRequired,
+};
+
+const defaultStyles = {
 	thumbnail: {
 		backgroundPosition: 'center',
 		backgroundSize: 'cover',
@@ -31,14 +37,14 @@ const classes = StyleSheet.create({
 		boxShadow: 'inset 0 0 0 1px hsla(0,0%,100%,.2)',
 		cursor: 'pointer',
 		display: 'inline-block',
-		height: theme.thumbnail.size,
-		margin: theme.thumbnail.gutter,
+		height: defaults.thumbnail.size,
+		margin: defaults.thumbnail.gutter,
 		overflow: 'hidden',
-		width: theme.thumbnail.size,
+		width: defaults.thumbnail.size,
 	},
-	active: {
-		boxShadow: `inset 0 0 0 2px ${theme.thumbnail.activeBorderColor}`,
+	thumbnail__active: {
+		boxShadow: `inset 0 0 0 2px ${defaults.thumbnail.activeBorderColor}`,
 	},
-});
+};
 
 export default Thumbnail;

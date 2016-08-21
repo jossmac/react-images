@@ -13,37 +13,94 @@ function makeUnsplashThumbnail (id, orientation = 'landscape') {
 		? 'w=300&h=300'
 		: 'w=240&h=159';
 
-	return `https://images.unsplash.com/photo-${id}?dpr=1&auto=format&crop=faces&fit=crop&${dimensions}`;
+	return `https://images.unsplash.com/photo-${id}?dpr=2&auto=format&crop=faces&fit=crop&${dimensions}`;
 }
 
 // Unsplash images from the "Spirit Animals" collection
 // https://unsplash.com/collections/158825/spirit-animals
 
 const DEFAULT_IMAGES = [
-	{ id: '1470619549108-b85c56fe5be8', caption: <span><a href="https://unsplash.com/photos/SYzUF6XcWBY" target="_blank">Flamingo</a> by Alan Emery</span>, orientation: 'square', useForDemo: true },
-	{ id: '1471079502516-250c19af6928', caption: <span><a href="https://unsplash.com/photos/GIpGxe2_cT4" target="_blank">Turtle</a> by Jeremy Bishop</span>, orientation: 'landscape', useForDemo: true },
-	{ id: '1454023492550-5696f8ff10e1', caption: <span><a href="https://unsplash.com/photos/LmVSKeDy6EA" target="_blank">Tiger</a> by Jessica Weiller</span>, orientation: 'landscape', useForDemo: true },
-	{ id: '1470854989922-5be2f7456d78', caption: <span><a href="https://unsplash.com/photos/GXMr7BadXQo" target="_blank">Hedgehog</a> by Piotr Łaskawski</span>, orientation: 'landscape', useForDemo: true },
-	{ id: '1470317596697-cbdeda56f999', caption: <span><a href="https://unsplash.com/photos/XgF9e93Tkt0" target="_blank">Ladybug</a> by Michel Bosma</span>, orientation: 'landscape', useForDemo: true },
-	{ id: '1471101173712-b9884175254e', caption: <span><a href="https://unsplash.com/photos/5oRzZU5uwSM" target="_blank">Dragonfly</a> by Pedro Lastra</span>, orientation: 'square' },
-	{ id: '1455970022149-a8f26b6902dd', caption: <span><a href="https://unsplash.com/photos/a7bdqjeG6M4" target="_blank">Cat</a> by Mona Magnussen</span>, orientation: 'square' },
-	{ id: '1471127432458-65206be149c9', caption: <span><a href="https://unsplash.com/photos/Kpgt4pl03O0" target="_blank">Deer</a> by Ernesto Velázquez</span>, orientation: 'landscape' },
-	{ id: '1470777639313-60af88918203', caption: <span><a href="https://unsplash.com/photos/GNUcUx-iObg" target="_blank">Koala</a> by Cris Saur</span>, orientation: 'landscape' },
-	{ id: '1453550486481-aa4175b013ea', caption: <span><a href="https://unsplash.com/photos/WiSeaZ4E6ZI" target="_blank">Elephant</a> by Benjamin Pley</span>, orientation: 'landscape' },
+	{ id: '1470619549108-b85c56fe5be8', caption: 'Photo by Alan Emery', orientation: 'square', useForDemo: true }, // https://unsplash.com/photos/SYzUF6XcWBY (Flamingo)
+	{ id: '1471079502516-250c19af6928', caption: 'Photo by Jeremy Bishop', orientation: 'landscape', useForDemo: true }, // https://unsplash.com/photos/GIpGxe2_cT4 (Turtle)
+	{ id: '1454023492550-5696f8ff10e1', caption: 'Photo by Jessica Weiller', orientation: 'landscape', useForDemo: true }, // https://unsplash.com/photos/LmVSKeDy6EA (Tiger)
+	{ id: '1470854989922-5be2f7456d78', caption: 'Photo by Piotr Łaskawski', orientation: 'landscape', useForDemo: true }, // https://unsplash.com/photos/GXMr7BadXQo (Hedgehog)
+	{ id: '1470317596697-cbdeda56f999', caption: 'Photo by Michel Bosma', orientation: 'landscape', useForDemo: true }, // https://unsplash.com/photos/XgF9e93Tkt0 (Ladybug)
+];
+const THEMED_IMAGES = [
+	{ id: '1471101173712-b9884175254e', caption: 'Photo by Pedro Lastra', orientation: 'square', useForDemo: true }, // https://unsplash.com/photos/5oRzZU5uwSM (Dragonfly)
+	{ id: '1471127432458-65206be149c9', caption: 'Photo by Ernesto Velázquez', orientation: 'landscape', useForDemo: true }, // https://unsplash.com/photos/Kpgt4pl03O0 (Deer)
+	{ id: '1470777639313-60af88918203', caption: 'Photo by Cris Saur', orientation: 'landscape', useForDemo: true }, // https://unsplash.com/photos/GNUcUx-iObg (Koala)
+	{ id: '1453550486481-aa4175b013ea', caption: 'Photo by Benjamin Pley', orientation: 'landscape', useForDemo: true }, // https://unsplash.com/photos/WiSeaZ4E6ZI (Elephant)
+	{ id: '1415904663467-dfdc16cae794', caption: 'Photo by Levi Saunders', orientation: 'landscape', useForDemo: true }, // https://unsplash.com/photos/NUMlxTPsznM (Coyote)
 ];
 const THUMBNAIL_IMAGES = [
-	{ id: '1454991727061-be514eae86f7', caption: <span><a href="https://unsplash.com/photos/t20pc32VbrU" target="_blank">Hump Back Whale</a> by Thomas Kelley</span>, orientation: 'square', useForDemo: true },
-	{ id: '1455717974081-0436a066bb96', caption: <span><a href="https://unsplash.com/photos/cmKPOUgdmWc" target="_blank">Deer</a> by Teddy Kelley</span>, orientation: 'landscape', useForDemo: true },
-	{ id: '1460899960812-f6ee1ecaf117', caption: <span><a href="https://unsplash.com/photos/h13Y8vyIXNU" target="_blank">Walrus</a> by Jay Ruzesky</span>, orientation: 'landscape', useForDemo: true },
-	{ id: '1456926631375-92c8ce872def', caption: <span><a href="https://unsplash.com/photos/I3C1sSXj1i8" target="_blank">Leopard</a> by Gwen Weustink</span>, orientation: 'landscape', useForDemo: true },
-	{ id: '1452274381522-521513015433', caption: <span><a href="https://unsplash.com/photos/_snqARKTgoc" target="_blank">Mother and Cubs</a> by Adam Willoughby-Knox</span>, orientation: 'landscape', useForDemo: true },
-	{ id: '1471145653077-54c6f0aae511', caption: <span><a href="https://unsplash.com/photos/n0feC_PWFdk" target="_blank">Dragonfly</a> by Boris Smokrovic</span>, orientation: 'landscape' },
-	{ id: '1471005197911-88e9d4a7834d', caption: <span><a href="https://unsplash.com/photos/YOX8ZMTo7hk" target="_blank">Baby Crocodile</a> by Gaetano Cessati</span>, orientation: 'landscape' },
-	{ id: '1470583190240-bd6bbde8a569', caption: <span><a href="https://unsplash.com/photos/emTCWiq2txk" target="_blank">Beetle</a> by Alan Emery</span>, orientation: 'landscape' },
-	{ id: '1470688090067-6d429c0b2600', caption: <span><a href="https://unsplash.com/photos/xqjO-lx39B4" target="_blank">Scottish Highland Cow</a> by Ján Jakub Naništa</span>, orientation: 'landscape' },
-	{ id: '1470742292565-de43c4b02b57', caption: <span><a href="https://unsplash.com/photos/DmOCkOnx-MQ" target="_blank">Cheetah</a> by Eric Knoll</span>, orientation: 'landscape' },
+	{ id: '1454991727061-be514eae86f7', caption: 'Photo by Thomas Kelley', orientation: 'square', useForDemo: true }, // https://unsplash.com/photos/t20pc32VbrU (Hump Back Whale)
+	{ id: '1455717974081-0436a066bb96', caption: 'Photo by Teddy Kelley', orientation: 'landscape', useForDemo: true }, // https://unsplash.com/photos/cmKPOUgdmWc (Deer)
+	{ id: '1460899960812-f6ee1ecaf117', caption: 'Photo by Jay Ruzesky', orientation: 'landscape', useForDemo: true }, // https://unsplash.com/photos/h13Y8vyIXNU (Walrus)
+	{ id: '1456926631375-92c8ce872def', caption: 'Photo by Gwen Weustink', orientation: 'landscape', useForDemo: true }, // https://unsplash.com/photos/I3C1sSXj1i8 (Leopard)
+	{ id: '1452274381522-521513015433', caption: 'Photo by Adam Willoughby-Knox', orientation: 'landscape', useForDemo: true }, // https://unsplash.com/photos/_snqARKTgoc (Mother and Cubs)
+	{ id: '1471145653077-54c6f0aae511', caption: 'Photo by Boris Smokrovic', orientation: 'landscape' }, // https://unsplash.com/photos/n0feC_PWFdk (Dragonfly)
+	{ id: '1471005197911-88e9d4a7834d', caption: 'Photo by Gaetano Cessati', orientation: 'landscape' }, // https://unsplash.com/photos/YOX8ZMTo7hk (Baby Crocodile)
+	{ id: '1470583190240-bd6bbde8a569', caption: 'Photo by Alan Emery', orientation: 'landscape' }, // https://unsplash.com/photos/emTCWiq2txk (Beetle)
+	{ id: '1470688090067-6d429c0b2600', caption: 'Photo by Ján Jakub Naništa', orientation: 'landscape' }, // https://unsplash.com/photos/xqjO-lx39B4 (Scottish Highland Cow)
+	{ id: '1470742292565-de43c4b02b57', caption: 'Photo by Eric Knoll', orientation: 'landscape' }, // https://unsplash.com/photos/DmOCkOnx-MQ (Cheetah)
 	// https://unsplash.com/photos/NUMlxTPsznM coyote?
 ];
+
+const theme = {
+	// container
+	container: { background: 'rgba(255, 255, 255, 0.9)' },
+
+	// arrows
+	arrow: {
+		backgroundColor: 'rgba(255, 255, 255, 0.8)',
+		fill: '#222',
+		opacity: 0.6,
+		transition: 'opacity 200ms',
+
+		':hover': {
+			opacity: 1,
+		},
+	},
+	arrow__size__medium: {
+		borderRadius: 40,
+		height: 40,
+		marginTop: -20,
+
+		'@media (min-width: 768px)': {
+			height: 70,
+			padding: 15,
+		},
+	},
+	arrow__direction__left: { marginLeft: 10 },
+	arrow__direction__right: { marginRight: 10 },
+
+	// header
+	close: {
+		fill: '#D40000',
+		opacity: 0.6,
+		transition: 'all 200ms',
+
+		':hover': {
+			opacity: 1,
+		},
+	},
+
+	// footer
+	footer: {
+		color: 'black',
+	},
+	footerCount: {
+		color: 'rgba(0, 0, 0, 0.6)',
+	},
+
+	// thumbnails
+	thumbnail: {
+	},
+	thumbnail__active: {
+		boxShadow: '0 0 0 2px #00D8FF',
+	},
+};
 
 render(
 	<div>
@@ -79,6 +136,21 @@ render(
 			orientation,
 			useForDemo,
 		}))} showThumbnails />
+
+		<h3>Themed Lightbox</h3>
+		<Gallery images={THEMED_IMAGES.map(({ caption, id, orientation, useForDemo }) => ({
+			src: makeUnsplashSrc(id),
+			thumbnail: makeUnsplashThumbnail(id, orientation),
+			srcset: [
+				makeUnsplashSrcSet(id, 1024),
+				makeUnsplashSrcSet(id, 800),
+				makeUnsplashSrcSet(id, 500),
+				makeUnsplashSrcSet(id, 320),
+			],
+			caption,
+			orientation,
+			useForDemo,
+		}))} theme={theme} showThumbnails />
 	</div>,
 	document.getElementById('example')
 );

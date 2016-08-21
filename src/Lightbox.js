@@ -2,40 +2,33 @@ import React, { Component, PropTypes } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 // import Swipeable from 'react-swipeable';
 
-import utils from './utils';
 import theme from './theme';
-import Arrow from './Arrow';
-import Footer from './Footer';
-import Header from './Header';
-// import Thumbnails from './Thumbnails';
-import PaginatedThumbnails from './PaginatedThumbnails';
-import Portal from './Portal';
+import Arrow from './components/Arrow';
+import Container from './components/Container';
+import Footer from './components/Footer';
+import Header from './components/Header';
+import PaginatedThumbnails from './components/PaginatedThumbnails';
+import Portal from './components/Portal';
 
-import styles from './styles/default';
-
-const classes = StyleSheet.create(styles);
+import { bindFunctions, bodyScroll, canUseDom } from './utils';
 
 class Lightbox extends Component {
-	static theme (themeStyles) {
-		const extStyles = Object.assign({}, styles);
-		for (const key in extStyles) {
-			if (key in themeStyles) {
-				extStyles[key] = Object.assign({}, styles[key], themeStyles[key]);
-			}
-		}
-		return extStyles;
-	}
 	constructor () {
 		super();
 
-		utils.bindFunctions.call(this, [
+		bindFunctions.call(this, [
 			'gotoNext',
 			'gotoPrev',
 			'handleKeyboardInput',
 		]);
 	}
+	getChildContext () {
+		return {
+			theme: this.props.theme,
+		};
+	}
 	componentWillReceiveProps (nextProps) {
-		if (!utils.canUseDom) return;
+		if (!canUseDom) return;
 
 		// preload images
 		if (nextProps.preloadNextImage) {
@@ -69,9 +62,9 @@ class Lightbox extends Component {
 
 		// handle body scroll
 		if (nextProps.isOpen) {
-			utils.bodyScroll.blockScroll();
+			bodyScroll.blockScroll();
 		} else {
-			utils.bodyScroll.allowScroll();
+			bodyScroll.allowScroll();
 		}
 	}
 
@@ -166,7 +159,7 @@ class Lightbox extends Component {
 			width,
 		} = this.props;
 
-		if (!isOpen) return null;
+		if (!isOpen) return <span key="closed" />;
 
 		let offsetThumbnails = 0;
 		if (showThumbnails) {
@@ -174,9 +167,8 @@ class Lightbox extends Component {
 		}
 
 		return (
-			<div
-				key="dialog"
-				className={css(classes.container)}
+			<Container
+				key="open"
 				onClick={!!backdropClosesModal && onClose}
 				onTouchEnd={!!backdropClosesModal && onClose}
 			>
@@ -188,10 +180,10 @@ class Lightbox extends Component {
 					/>
 					{this.renderImages()}
 				</div>
+				{this.renderThumbnails()}
 				{this.renderArrowPrev()}
 				{this.renderArrowNext()}
-				{this.renderThumbnails()}
-			</div>
+			</Container>
 		);
 	}
 	renderImages () {
@@ -262,6 +254,7 @@ class Lightbox extends Component {
 		);
 	}
 	render () {
+		// return this.renderDialog();
 		return (
 			<Portal>
 				{this.renderDialog()}
@@ -269,8 +262,6 @@ class Lightbox extends Component {
 		);
 	}
 }
-
-Lightbox.displayName = 'Lightbox';
 
 Lightbox.propTypes = {
 	backdropClosesModal: PropTypes.bool,
@@ -296,10 +287,10 @@ Lightbox.propTypes = {
 	showCloseButton: PropTypes.bool,
 	showImageCount: PropTypes.bool,
 	showThumbnails: PropTypes.bool,
+	theme: PropTypes.object,
 	thumbnailOffset: PropTypes.number,
 	width: PropTypes.number,
 };
-
 Lightbox.defaultProps = {
 	currentImage: 0,
 	enableKeyboardInput: true,
@@ -308,10 +299,31 @@ Lightbox.defaultProps = {
 	preloadNextImage: true,
 	showCloseButton: true,
 	showImageCount: true,
+	theme: {},
 	thumbnailOffset: 2,
 	width: 1024,
 };
+Lightbox.childContextTypes = {
+	theme: PropTypes.object.isRequired,
+};
 
-Lightbox.PaginatedThumbnails = PaginatedThumbnails;
+const classes = StyleSheet.create({
+	content: {
+		position: 'relative',
+	},
+	figure: {
+		margin: 0, // remove browser default
+	},
+	image: {
+		display: 'block', // removes browser default gutter
+		height: 'auto',
+		margin: '0 auto', // maintain center on very short screens OR very narrow image
+		maxWidth: '100%',
+
+		// disable user select
+		WebkitTouchCallout: 'none',
+		userSelect: 'none',
+	},
+});
 
 export default Lightbox;

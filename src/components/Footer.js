@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
-import theme from './theme';
+import defaults from '../theme';
+import { deepMerge } from '../utils';
 
 function Footer ({
 	caption,
@@ -9,8 +10,12 @@ function Footer ({
 	countTotal,
 	showCount,
 	...props,
+}, {
+	theme,
 }) {
 	if (!caption && !showCount) return null;
+
+	const classes = StyleSheet.create(deepMerge(defaultStyles, theme));
 
 	const imageCount = showCount ? (
 		<div className={css(classes.footerCount)}>
@@ -39,30 +44,32 @@ Footer.propTypes = {
 	countTotal: PropTypes.number,
 	showCount: PropTypes.bool,
 };
+Footer.contextTypes = {
+	theme: PropTypes.object.isRequired,
+};
 
-const classes = StyleSheet.create({
+const defaultStyles = {
 	footer: {
 		boxSizing: 'border-box',
-		color: 'white',
+		color: defaults.footer.color,
 		cursor: 'auto',
 		display: 'flex',
-		height: theme.footer.height,
 		justifyContent: 'space-between',
 		left: 0,
 		lineHeight: 1.3,
-		paddingBottom: theme.footer.gutter.vertical,
-		paddingLeft: theme.footer.gutter.horizontal,
-		paddingRight: theme.footer.gutter.horizontal,
-		paddingTop: theme.footer.gutter.vertical,
+		paddingBottom: defaults.footer.gutter.vertical,
+		paddingLeft: defaults.footer.gutter.horizontal,
+		paddingRight: defaults.footer.gutter.horizontal,
+		paddingTop: defaults.footer.gutter.vertical,
 	},
 	footerCount: {
-		color: theme.footer.count.color,
-		fontSize: theme.footer.count.fontSize,
+		color: defaults.footer.count.color,
+		fontSize: defaults.footer.count.fontSize,
 		paddingLeft: '1em', // add a small gutter for the caption
 	},
 	footerCaption: {
 		flex: '1 1 0',
 	},
-});
+};
 
 module.exports = Footer;

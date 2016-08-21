@@ -19,12 +19,14 @@ theme.header = {
 	height: 40,
 };
 theme.close = {
+	fill: 'white',
 	height: 20,
 	width: 20,
 };
 
 // footer
 theme.footer = {
+	color: 'white',
 	count: {
 		color: 'rgba(255, 255, 255, 0.75)',
 		fontSize: '0.85em',
@@ -39,12 +41,14 @@ theme.footer = {
 // thumbnails
 theme.thumbnail = {
 	activeBorderColor: 'white',
-	size: 64,
+	size: 50,
 	gutter: 2,
 };
 
 // arrow
 theme.arrow = {
+	background: 'black',
+	fill: 'white',
 	height: 120,
 };
 
