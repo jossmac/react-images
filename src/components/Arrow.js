@@ -8,12 +8,13 @@ function Arrow ({
 	direction,
 	icon,
 	onClick,
+	size,
 	...props,
 }) {
 	return (
 		<button
 			type="button"
-			className={css(classes.arrow, classes[direction])}
+			className={css(classes.arrow, classes[direction], size && classes[size])}
 			onClick={onClick}
 			onTouchEnd={onClick}
 			{...props}
@@ -27,6 +28,10 @@ Arrow.propTypes = {
 	direction: PropTypes.oneOf(['left', 'right']),
 	icon: PropTypes.string,
 	onClick: PropTypes.func.isRequired,
+	size: PropTypes.oneOf(['medium', 'small']).isRequired,
+};
+Arrow.defaultProps = {
+	size: 'medium',
 };
 
 const classes = StyleSheet.create({
@@ -35,22 +40,37 @@ const classes = StyleSheet.create({
 		border: 'none',
 		borderRadius: 4,
 		cursor: 'pointer',
-		height: theme.arrow.height,
-		marginTop: theme.arrow.height / -2,
 		outline: 'none',
-		padding: 10,
+		padding: 10, // increase hit area
 		position: 'absolute',
 		top: '50%',
-		width: 40,
 
 		// disable user select
 		WebkitTouchCallout: 'none',
 		userSelect: 'none',
+	},
 
-		'@media (min-width: 500px)': {
+	// sizees
+	medium: {
+		height: theme.arrow.height,
+		marginTop: theme.arrow.height / -2,
+		width: 40,
+
+		'@media (min-width: 768px)': {
 			width: 70,
 		},
 	},
+	small: {
+		height: theme.thumbnail.size,
+		marginTop: theme.thumbnail.size / -2,
+		width: 30,
+
+		'@media (min-width: 500px)': {
+			width: 40,
+		},
+	},
+
+	// direction
 	right: {
 		right: theme.container.gutter.horizontal,
 	},

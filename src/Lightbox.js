@@ -2,11 +2,15 @@ import React, { Component, PropTypes } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 // import Swipeable from 'react-swipeable';
 
-import Arrow from './components/Arrow';
+import utils from './utils';
+import theme from './theme';
+import Arrow from './Arrow';
 import Container from './components/Container';
-import Footer from './components/Footer';
-import Header from './components/Header';
-import Portal from './components/Portal';
+import Footer from './Footer';
+import Header from './Header';
+// import Thumbnails from './Thumbnails';
+import PaginatedThumbnails from './PaginatedThumbnails';
+import Portal from './Portal';
 
 import theme from './theme';
 import { bindFunctions, bodyScroll, canUseDom, deepMerge } from './utils';
@@ -160,9 +164,16 @@ class Lightbox extends Component {
 			isOpen,
 			onClose,
 			showCloseButton,
+			showThumbnails,
+			width,
 		} = this.props;
 
 		if (!isOpen) return <span key="closed" />;
+
+		let offsetThumbnails = 0;
+		if (showThumbnails) {
+			offsetThumbnails = theme.thumbnail.size + theme.container.gutter.vertical;
+		}
 
 		return (
 			<Container
@@ -170,7 +181,7 @@ class Lightbox extends Component {
 				onClick={!!backdropClosesModal && onClose}
 				onTouchEnd={!!backdropClosesModal && onClose}
 			>
-				<div className={css(classes.content)} style={{ maxWidth: this.props.width }}>
+				<div className={css(classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
 					<Header
 						customControls={customControls}
 						onClose={onClose}
@@ -180,6 +191,7 @@ class Lightbox extends Component {
 				</div>
 				{this.renderArrowPrev()}
 				{this.renderArrowNext()}
+				{this.renderThumbnails()}
 			</Container>
 		);
 	}
@@ -190,6 +202,7 @@ class Lightbox extends Component {
 			imageCountSeparator,
 			onClickImage,
 			showImageCount,
+			showThumbnails,
 		} = this.props;
 
 		if (!images || !images.length) return null;
@@ -198,15 +211,17 @@ class Lightbox extends Component {
 
 		let srcset;
 		let sizes;
-		let width;
 
 		if (image.srcset) {
 			srcset = image.srcset.join();
 			sizes = '100vw';
 		}
 
+		const thumbnailsSize = showThumbnails ? theme.thumbnail.size : 0;
+		const heightOffset = `${theme.header.height + theme.footer.height + thumbnailsSize + (theme.container.gutter.vertical)}px`;
+
 		return (
-			<figure className={css(classes.figure)} style={{ width }}>
+			<figure className={css(classes.figure)}>
 				{/*
 					Re-implement when react warning "unknown props"
 					https://fb.me/react-unknown-prop is resolved
@@ -220,7 +235,7 @@ class Lightbox extends Component {
 					srcSet={srcset}
 					style={{
 						cursor: this.props.onClickImage ? 'pointer' : 'auto',
-						maxHeight: `calc(100vh - ${theme.header.height + theme.footer.height}px)`,
+						maxHeight: `calc(100vh - ${heightOffset})`,
 					}}
 				/>
 				<Footer
@@ -231,6 +246,20 @@ class Lightbox extends Component {
 					showCount={showImageCount}
 				/>
 			</figure>
+		);
+	}
+	renderThumbnails () {
+		const { images, currentImage, onClickThumbnail, showThumbnails, thumbnailOffset } = this.props;
+
+		if (!showThumbnails) return;
+
+		return (
+			<PaginatedThumbnails
+				currentImage={currentImage}
+				images={images}
+				offset={thumbnailOffset}
+				onClickThumbnail={onClickThumbnail}
+			/>
 		);
 	}
 	render () {
@@ -253,7 +282,8 @@ Lightbox.propTypes = {
 		PropTypes.shape({
 			src: PropTypes.string.isRequired,
 			srcset: PropTypes.array,
-			caption: PropTypes.string,
+			caption: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+			thumbnail: PropTypes.string,
 		})
 	).isRequired,
 	isOpen: PropTypes.bool,
@@ -265,7 +295,9 @@ Lightbox.propTypes = {
 	sheet: PropTypes.object,
 	showCloseButton: PropTypes.bool,
 	showImageCount: PropTypes.bool,
+	showThumbnails: PropTypes.bool,
 	theme: PropTypes.object,
+	thumbnailOffset: PropTypes.number,
 	width: PropTypes.number,
 };
 Lightbox.defaultProps = {
@@ -277,10 +309,13 @@ Lightbox.defaultProps = {
 	showCloseButton: true,
 	showImageCount: true,
 	theme: {},
+	thumbnailOffset: 2,
 	width: 1024,
 };
 Lightbox.childContextTypes = {
 	theme: PropTypes.object.isRequired,
 };
+
+Lightbox.PaginatedThumbnails = PaginatedThumbnails;
 
 export default Lightbox;
