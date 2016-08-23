@@ -67,6 +67,11 @@ class Lightbox extends Component {
 			bodyScroll.allowScroll();
 		}
 	}
+	componentWillUnmount () {
+		if (this.props.enableKeyboardInput) {
+			window.removeEventListener('keydown', this.handleKeyboardInput);
+		}
+	}
 
 	// ==============================
 	// METHODS
