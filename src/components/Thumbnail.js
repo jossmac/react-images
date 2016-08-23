@@ -11,7 +11,12 @@ function Thumbnail ({ index, src, thumbnail, active, onClick }, { theme }) {
 	return (
 		<div
 			className={css(classes.thumbnail, active && classes.thumbnail__active)}
-			onClick={() => onClick(index)}
+			onClick={(e) => {
+				e.preventDefault()
+				e.stopPropagation()
+				
+				onClick(index)
+			}}
 			style={{ backgroundImage: 'url("' + url + '")' }}
 		/>
 	);
