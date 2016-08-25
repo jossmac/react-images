@@ -9,8 +9,9 @@ import Footer from './components/Footer';
 import Header from './components/Header';
 import PaginatedThumbnails from './components/PaginatedThumbnails';
 import Portal from './components/Portal';
+import ScrollLock from './components/ScrollLock';
 
-import { bindFunctions, bodyScroll, canUseDom } from './utils';
+import { bindFunctions, canUseDom } from './utils';
 
 class Lightbox extends Component {
 	constructor () {
@@ -58,13 +59,6 @@ class Lightbox extends Component {
 			window.addEventListener('keydown', this.handleKeyboardInput);
 		} else {
 			window.removeEventListener('keydown', this.handleKeyboardInput);
-		}
-
-		// handle body scroll
-		if (nextProps.isOpen) {
-			bodyScroll.blockScroll();
-		} else {
-			bodyScroll.allowScroll();
 		}
 	}
 	componentWillUnmount () {
@@ -188,6 +182,7 @@ class Lightbox extends Component {
 				{this.renderThumbnails()}
 				{this.renderArrowPrev()}
 				{this.renderArrowNext()}
+				<ScrollLock />
 			</Container>
 		);
 	}
@@ -259,7 +254,6 @@ class Lightbox extends Component {
 		);
 	}
 	render () {
-		// return this.renderDialog();
 		return (
 			<Portal>
 				{this.renderDialog()}
