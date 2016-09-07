@@ -1584,6 +1584,8 @@ var _aphroditeNoImportant = require('aphrodite/no-important');
 
 // import Swipeable from 'react-swipeable';
 
+var _reactMotion = require('react-motion');
+
 var _theme = require('./theme');
 
 var _theme2 = _interopRequireDefault(_theme);
@@ -1789,6 +1791,8 @@ var Lightbox = (function (_Component) {
 
 			var horizontalPadding = _theme2['default'].container.gutter.horizontal;
 
+			var motionStyle = { marginLeft: (0, _reactMotion.spring)(-currentImage * window.innerWidth - horizontalPadding) };
+
 			return _react2['default'].createElement(
 				_componentsContainer2['default'],
 				{
@@ -1797,31 +1801,40 @@ var Lightbox = (function (_Component) {
 					onTouchEnd: !!backdropClosesModal && onClose
 				},
 				_react2['default'].createElement(
-					'div',
+					_reactMotion.Motion,
 					{
-						className: (0, _aphroditeNoImportant.css)(classes.swipeContainer),
-						style: { width: window.innerWidth * images.length, marginLeft: -currentImage * window.innerWidth - horizontalPadding }
+						style: motionStyle
 					},
-					images.map(function (image, index) {
+					function (_ref) {
+						var marginLeft = _ref.marginLeft;
 						return _react2['default'].createElement(
 							'div',
 							{
-								key: index,
-								className: (0, _aphroditeNoImportant.css)(classes.imageContainer),
-								style: { width: window.innerWidth, paddingLeft: horizontalPadding, paddingRight: horizontalPadding }
+								className: (0, _aphroditeNoImportant.css)(classes.swipeContainer),
+								style: { width: window.innerWidth * images.length, marginLeft: marginLeft }
 							},
-							_react2['default'].createElement(
-								'div',
-								{ className: (0, _aphroditeNoImportant.css)(classes.content), style: { marginBottom: offsetThumbnails, maxWidth: width } },
-								_react2['default'].createElement(_componentsHeader2['default'], {
-									customControls: customControls,
-									onClose: onClose,
-									showCloseButton: showCloseButton
-								}),
-								_this.renderImage(image)
-							)
+							images.map(function (image, index) {
+								return _react2['default'].createElement(
+									'div',
+									{
+										key: index,
+										className: (0, _aphroditeNoImportant.css)(classes.contentContainer),
+										style: { width: window.innerWidth, paddingLeft: horizontalPadding, paddingRight: horizontalPadding }
+									},
+									_react2['default'].createElement(
+										'div',
+										{ className: (0, _aphroditeNoImportant.css)(classes.content), style: { marginBottom: offsetThumbnails, maxWidth: width } },
+										_react2['default'].createElement(_componentsHeader2['default'], {
+											customControls: customControls,
+											onClose: onClose,
+											showCloseButton: showCloseButton
+										}),
+										_this.renderImage(image)
+									)
+								);
+							})
 						);
-					})
+					}
 				),
 				_react2['default'].createElement(
 					'div',
@@ -1961,7 +1974,7 @@ var classes = _aphroditeNoImportant.StyleSheet.create({
 	swipeContainer: {
 		display: 'flex'
 	},
-	imageContainer: {
+	contentContainer: {
 		display: 'flex',
 		height: '100%',
 		justifyContent: 'center',
@@ -1994,7 +2007,7 @@ https://fb.me/react-unknown-prop is resolved
 */
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./components/Arrow":25,"./components/Container":26,"./components/Footer":27,"./components/Header":28,"./components/PaginatedThumbnails":30,"./components/Portal":32,"./components/ScrollLock":33,"./theme":39,"./utils":43,"aphrodite/no-important":6}],25:[function(require,module,exports){
+},{"./components/Arrow":25,"./components/Container":26,"./components/Footer":27,"./components/Header":28,"./components/PaginatedThumbnails":30,"./components/Portal":32,"./components/ScrollLock":33,"./theme":39,"./utils":43,"aphrodite/no-important":6,"react-motion":undefined}],25:[function(require,module,exports){
 (function (global){
 'use strict';
 

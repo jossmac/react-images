@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 // import Swipeable from 'react-swipeable';
+import {Motion, spring} from 'react-motion';
 
 import theme from './theme';
 import Arrow from './components/Arrow';
@@ -169,35 +170,45 @@ class Lightbox extends Component {
 
     const horizontalPadding = theme.container.gutter.horizontal;
 
+    const motionStyle = { marginLeft: spring(-currentImage * window.innerWidth - horizontalPadding) };
+
 		return (
 			<Container
 				key="open"
 				onClick={!!backdropClosesModal && onClose}
 				onTouchEnd={!!backdropClosesModal && onClose}
 			>
-        <div
-          className={css(classes.swipeContainer)}
-          style={{ width: window.innerWidth * images.length, marginLeft: - currentImage * window.innerWidth - horizontalPadding}}
+        <Motion
+          style={motionStyle}
         >
           {
-            images.map((image, index) => (
-                <div
-                  key={index}
-                  className={css(classes.imageContainer)}
-                  style={{ width: window.innerWidth, paddingLeft: horizontalPadding, paddingRight: horizontalPadding}}
-                >
-                  <div className={css(classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
-                    <Header
-                      customControls={customControls}
-                      onClose={onClose}
-                      showCloseButton={showCloseButton}
-                    />
-                    {this.renderImage(image)}
-                </div>
+            ({ marginLeft }) => (
+              <div
+                className={css(classes.swipeContainer)}
+                style={{ width: window.innerWidth * images.length, marginLeft }}
+              >
+                {
+                  images.map((image, index) => (
+                    <div
+                      key={index}
+                      className={css(classes.contentContainer)}
+                      style={{ width: window.innerWidth, paddingLeft: horizontalPadding, paddingRight: horizontalPadding}}
+                    >
+                      <div className={css(classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
+                        <Header
+                          customControls={customControls}
+                          onClose={onClose}
+                          showCloseButton={showCloseButton}
+                        />
+                        {this.renderImage(image)}
+                      </div>
+                    </div>
+                  ))
+                }
               </div>
-            ))
+            )
           }
-        </div>
+        </Motion>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           {this.renderThumbnails()}
           {this.renderArrowPrev()}
@@ -331,7 +342,7 @@ const classes = StyleSheet.create({
   swipeContainer: {
     display: 'flex'
   },
-	imageContainer: {
+  contentContainer: {
     display: 'flex',
     height: '100%',
     justifyContent: 'center',
