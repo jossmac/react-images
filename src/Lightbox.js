@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
-// import Swipeable from 'react-swipeable';
+import Swipeable from 'react-swipeable';
 import {Motion, spring} from 'react-motion';
 
 import theme from './theme';
@@ -18,9 +18,19 @@ class Lightbox extends Component {
 	constructor () {
 		super();
 
+		this.state = {
+			isSwipingLeft: false,
+			isSwipingRight: false,
+			swipeDeltaX: 0
+		}
+
 		bindFunctions.call(this, [
+      'onClose',
 			'gotoNext',
 			'gotoPrev',
+			'onSwipingLeft',
+			'onSwipingRight',
+			'onStopSwiping',
 			'handleKeyboardInput',
 		]);
 	}
@@ -31,6 +41,10 @@ class Lightbox extends Component {
 	}
 	componentWillReceiveProps (nextProps) {
 		if (!canUseDom) return;
+
+		if (nextProps.currentImage !== this.props.currentImage) {
+			this.resetSwipe();
+		}
 
 		// preload images
 		if (nextProps.preloadNextImage) {
@@ -85,8 +99,16 @@ class Lightbox extends Component {
 			img.srcset = image.srcset.join();
 		}
 	}
+  onClose (event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    this.resetSwipe();
+    this.props.onClose();
+  }
 	gotoNext (event) {
-		if (this.props.currentImage === (this.props.images.length - 1)) return;
+		if (this.isLastImage()) return;
 		if (event) {
 			event.preventDefault();
 			event.stopPropagation();
@@ -95,7 +117,7 @@ class Lightbox extends Component {
 
 	}
 	gotoPrev (event) {
-		if (this.props.currentImage === 0) return;
+		if (this.isFirstImage()) return;
 		if (event) {
 			event.preventDefault();
 			event.stopPropagation();
@@ -111,10 +133,60 @@ class Lightbox extends Component {
 			this.gotoNext(event);
 			return true;
 		} else if (event.keyCode === 27) {
-			this.props.onClose();
+			this.onClose();
 			return true;
 		}
 		return false;
+
+	}
+	onSwipingLeft (event, deltaX) {
+		if (this.isLastImage()) return;
+		this.setState({
+			isSwipingLeft: true,
+			isSwipingRight: false,
+			swipeDeltaX: -deltaX
+		});
+
+	}
+	onSwipingRight (event, deltaX) {
+		if (this.isFirstImage()) return;
+		this.setState({
+			isSwipingLeft: false,
+			isSwipingRight: true,
+			swipeDeltaX: deltaX
+		});
+
+	}
+	onStopSwiping (event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    const stayAtCurrentImage = Math.abs(this.state.swipeDeltaX) < window.innerWidth * 0.5;
+    if (stayAtCurrentImage) {
+      this.resetSwipe();
+    }else if (this.state.isSwipingLeft) {
+      this.gotoNext();
+    } else if (this.state.isSwipingRight) {
+      this.gotoPrev();
+    }
+
+	}
+  resetSwipe () {
+    this.setState({
+      isSwipingLeft: false,
+      isSwipingRight: false,
+      swipeDeltaX: 0
+    })
+  }
+
+	isFirstImage() {
+		return this.props.currentImage === 0;
+
+	}
+	isLastImage () {
+		return this.props.currentImage === (this.props.images.length - 1);
 
 	}
 
@@ -154,7 +226,6 @@ class Lightbox extends Component {
       currentImage,
       customControls,
 			isOpen,
-			onClose,
 			showCloseButton,
 			showThumbnails,
 			width,
@@ -170,45 +241,52 @@ class Lightbox extends Component {
 
     const horizontalPadding = theme.container.gutter.horizontal;
 
-    const motionStyle = { marginLeft: spring(-currentImage * window.innerWidth - horizontalPadding) };
+    const swipeDeltaX = this.state.isSwipingLeft || this.state.isSwipingRight ? this.state.swipeDeltaX : 0;
+    const motionStyle = { marginLeft: spring(-currentImage * window.innerWidth - horizontalPadding + swipeDeltaX) };
 
 		return (
 			<Container
 				key="open"
-				onClick={!!backdropClosesModal && onClose}
-				onTouchEnd={!!backdropClosesModal && onClose}
+				onClick={!!backdropClosesModal && this.onClose}
+				onTouchEnd={!!backdropClosesModal && this.onClose}
 			>
-        <Motion
-          style={motionStyle}
+        <Swipeable
+          className={css(classes.swipeable)}
+          onSwipedLeft={this.onStopSwiping}
+          onSwipedRight={this.onStopSwiping}
+          onSwipingLeft={this.onSwipingLeft}
+          onSwipingRight={this.onSwipingRight}
         >
-          {
-            ({ marginLeft }) => (
-              <div
-                className={css(classes.swipeContainer)}
-                style={{ width: window.innerWidth * images.length, marginLeft }}
-              >
-                {
-                  images.map((image, index) => (
-                    <div
-                      key={index}
-                      className={css(classes.contentContainer)}
-                      style={{ width: window.innerWidth, paddingLeft: horizontalPadding, paddingRight: horizontalPadding}}
-                    >
-                      <div className={css(classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
-                        <Header
-                          customControls={customControls}
-                          onClose={onClose}
-                          showCloseButton={showCloseButton}
-                        />
-                        {this.renderImage(image)}
+          <Motion style={motionStyle}>
+            {
+              ({ marginLeft }) => (
+                <div
+                  className={css(classes.swipeContainer)}
+                  style={{ width: window.innerWidth * images.length, marginLeft }}
+                >
+                  {
+                    images.map((image, index) => (
+                      <div
+                        key={index}
+                        className={css(classes.contentContainer)}
+                        style={{ width: window.innerWidth, paddingLeft: horizontalPadding, paddingRight: horizontalPadding}}
+                      >
+                        <div className={css(classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
+                          <Header
+                            customControls={customControls}
+                            onClose={this.onClose}
+                            showCloseButton={showCloseButton}
+                          />
+                          {this.renderImage(image)}
+                        </div>
                       </div>
-                    </div>
-                  ))
-                }
-              </div>
-            )
-          }
-        </Motion>
+                    ))
+                  }
+                </div>
+              )
+            }
+          </Motion>
+        </Swipeable>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           {this.renderThumbnails()}
           {this.renderArrowPrev()}
@@ -245,11 +323,6 @@ class Lightbox extends Component {
 
 		return (
 			<figure className={css(classes.figure)}>
-				{/*
-					Re-implement when react warning "unknown props"
-					https://fb.me/react-unknown-prop is resolved
-					<Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
-				*/}
 				<img
 					className={css(classes.image)}
 					onClick={!!onClickImage && onClickImage}
@@ -339,12 +412,15 @@ Lightbox.childContextTypes = {
 };
 
 const classes = StyleSheet.create({
+  swipeable: {
+    height: '100%'
+  },
   swipeContainer: {
-    display: 'flex'
+    display: 'flex',
+    height: '100%'
   },
   contentContainer: {
     display: 'flex',
-    height: '100%',
     justifyContent: 'center',
     alignSelf: 'center'
   },

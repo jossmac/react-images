@@ -1582,7 +1582,9 @@ var _react2 = _interopRequireDefault(_react);
 
 var _aphroditeNoImportant = require('aphrodite/no-important');
 
-// import Swipeable from 'react-swipeable';
+var _reactSwipeable = require('react-swipeable');
+
+var _reactSwipeable2 = _interopRequireDefault(_reactSwipeable);
 
 var _reactMotion = require('react-motion');
 
@@ -1628,7 +1630,13 @@ var Lightbox = (function (_Component) {
 
 		_get(Object.getPrototypeOf(Lightbox.prototype), 'constructor', this).call(this);
 
-		_utils.bindFunctions.call(this, ['gotoNext', 'gotoPrev', 'handleKeyboardInput']);
+		this.state = {
+			isSwipingLeft: false,
+			isSwipingRight: false,
+			swipeDeltaX: 0
+		};
+
+		_utils.bindFunctions.call(this, ['onClose', 'gotoNext', 'gotoPrev', 'onSwipingLeft', 'onSwipingRight', 'onStopSwiping', 'handleKeyboardInput']);
 	}
 
 	_createClass(Lightbox, [{
@@ -1642,6 +1650,10 @@ var Lightbox = (function (_Component) {
 		key: 'componentWillReceiveProps',
 		value: function componentWillReceiveProps(nextProps) {
 			if (!_utils.canUseDom) return;
+
+			if (nextProps.currentImage !== this.props.currentImage) {
+				this.resetSwipe();
+			}
 
 			// preload images
 			if (nextProps.preloadNextImage) {
@@ -1701,9 +1713,19 @@ var Lightbox = (function (_Component) {
 			}
 		}
 	}, {
+		key: 'onClose',
+		value: function onClose(event) {
+			if (event) {
+				event.preventDefault();
+				event.stopPropagation();
+			}
+			this.resetSwipe();
+			this.props.onClose();
+		}
+	}, {
 		key: 'gotoNext',
 		value: function gotoNext(event) {
-			if (this.props.currentImage === this.props.images.length - 1) return;
+			if (this.isLastImage()) return;
 			if (event) {
 				event.preventDefault();
 				event.stopPropagation();
@@ -1713,7 +1735,7 @@ var Lightbox = (function (_Component) {
 	}, {
 		key: 'gotoPrev',
 		value: function gotoPrev(event) {
-			if (this.props.currentImage === 0) return;
+			if (this.isFirstImage()) return;
 			if (event) {
 				event.preventDefault();
 				event.stopPropagation();
@@ -1730,10 +1752,66 @@ var Lightbox = (function (_Component) {
 				this.gotoNext(event);
 				return true;
 			} else if (event.keyCode === 27) {
-				this.props.onClose();
+				this.onClose();
 				return true;
 			}
 			return false;
+		}
+	}, {
+		key: 'onSwipingLeft',
+		value: function onSwipingLeft(event, deltaX) {
+			if (this.isLastImage()) return;
+			this.setState({
+				isSwipingLeft: true,
+				isSwipingRight: false,
+				swipeDeltaX: -deltaX
+			});
+		}
+	}, {
+		key: 'onSwipingRight',
+		value: function onSwipingRight(event, deltaX) {
+			if (this.isFirstImage()) return;
+			this.setState({
+				isSwipingLeft: false,
+				isSwipingRight: true,
+				swipeDeltaX: deltaX
+			});
+		}
+	}, {
+		key: 'onStopSwiping',
+		value: function onStopSwiping(event) {
+			if (event) {
+				event.preventDefault();
+				event.stopPropagation();
+			}
+
+			var stayAtCurrentImage = Math.abs(this.state.swipeDeltaX) < window.innerWidth * 0.5;
+			if (stayAtCurrentImage) {
+				this.resetSwipe();
+			} else if (this.state.isSwipingLeft) {
+				this.gotoNext();
+			} else if (this.state.isSwipingRight) {
+				this.gotoPrev();
+			}
+		}
+	}, {
+		key: 'resetSwipe',
+		value: function resetSwipe() {
+			this.setState({
+				isSwipingLeft: false,
+				isSwipingRight: false,
+				swipeDeltaX: 0
+			});
+		}
+	}, {
+		key: 'isFirstImage',
+		value: function isFirstImage() {
+			return this.props.currentImage === 0;
+		}
+	}, {
+		key: 'isLastImage',
+		value: function isLastImage() {
+			return this.props.currentImage === this.props.images.length - 1;
 		}
 
 		// ==============================
@@ -1776,7 +1854,6 @@ var Lightbox = (function (_Component) {
 			var currentImage = _props.currentImage;
 			var customControls = _props.customControls;
 			var isOpen = _props.isOpen;
-			var onClose = _props.onClose;
 			var showCloseButton = _props.showCloseButton;
 			var showThumbnails = _props.showThumbnails;
 			var width = _props.width;
@@ -1791,50 +1868,59 @@ var Lightbox = (function (_Component) {
 
 			var horizontalPadding = _theme2['default'].container.gutter.horizontal;
 
-			var motionStyle = { marginLeft: (0, _reactMotion.spring)(-currentImage * window.innerWidth - horizontalPadding) };
+			var swipeDeltaX = this.state.isSwipingLeft || this.state.isSwipingRight ? this.state.swipeDeltaX : 0;
+			var motionStyle = { marginLeft: (0, _reactMotion.spring)(-currentImage * window.innerWidth - horizontalPadding + swipeDeltaX) };
 
 			return _react2['default'].createElement(
 				_componentsContainer2['default'],
 				{
 					key: 'open',
-					onClick: !!backdropClosesModal && onClose,
-					onTouchEnd: !!backdropClosesModal && onClose
+					onClick: !!backdropClosesModal && this.onClose,
+					onTouchEnd: !!backdropClosesModal && this.onClose
 				},
 				_react2['default'].createElement(
-					_reactMotion.Motion,
+					_reactSwipeable2['default'],
 					{
-						style: motionStyle
+						className: (0, _aphroditeNoImportant.css)(classes.swipeable),
+						onSwipedLeft: this.onStopSwiping,
+						onSwipedRight: this.onStopSwiping,
+						onSwipingLeft: this.onSwipingLeft,
+						onSwipingRight: this.onSwipingRight
 					},
-					function (_ref) {
-						var marginLeft = _ref.marginLeft;
-						return _react2['default'].createElement(
-							'div',
-							{
-								className: (0, _aphroditeNoImportant.css)(classes.swipeContainer),
-								style: { width: window.innerWidth * images.length, marginLeft: marginLeft }
-							},
-							images.map(function (image, index) {
-								return _react2['default'].createElement(
-									'div',
-									{
-										key: index,
-										className: (0, _aphroditeNoImportant.css)(classes.contentContainer),
-										style: { width: window.innerWidth, paddingLeft: horizontalPadding, paddingRight: horizontalPadding }
-									},
-									_react2['default'].createElement(
+					_react2['default'].createElement(
+						_reactMotion.Motion,
+						{ style: motionStyle },
+						function (_ref) {
+							var marginLeft = _ref.marginLeft;
+							return _react2['default'].createElement(
+								'div',
+								{
+									className: (0, _aphroditeNoImportant.css)(classes.swipeContainer),
+									style: { width: window.innerWidth * images.length, marginLeft: marginLeft }
+								},
+								images.map(function (image, index) {
+									return _react2['default'].createElement(
 										'div',
-										{ className: (0, _aphroditeNoImportant.css)(classes.content), style: { marginBottom: offsetThumbnails, maxWidth: width } },
-										_react2['default'].createElement(_componentsHeader2['default'], {
-											customControls: customControls,
-											onClose: onClose,
-											showCloseButton: showCloseButton
-										}),
-										_this.renderImage(image)
-									)
-								);
-							})
-						);
-					}
+										{
+											key: index,
+											className: (0, _aphroditeNoImportant.css)(classes.contentContainer),
+											style: { width: window.innerWidth, paddingLeft: horizontalPadding, paddingRight: horizontalPadding }
+										},
+										_react2['default'].createElement(
+											'div',
+											{ className: (0, _aphroditeNoImportant.css)(classes.content), style: { marginBottom: offsetThumbnails, maxWidth: width } },
+											_react2['default'].createElement(_componentsHeader2['default'], {
+												customControls: customControls,
+												onClose: _this.onClose,
+												showCloseButton: showCloseButton
+											}),
+											_this.renderImage(image)
+										)
+									);
+								})
+							);
+						}
+					)
 				),
 				_react2['default'].createElement(
 					'div',
@@ -1971,12 +2057,15 @@ Lightbox.childContextTypes = {
 };
 
 var classes = _aphroditeNoImportant.StyleSheet.create({
+	swipeable: {
+		height: '100%'
+	},
 	swipeContainer: {
-		display: 'flex'
+		display: 'flex',
+		height: '100%'
 	},
 	contentContainer: {
 		display: 'flex',
-		height: '100%',
 		justifyContent: 'center',
 		alignSelf: 'center'
 	},
@@ -2000,14 +2089,9 @@ var classes = _aphroditeNoImportant.StyleSheet.create({
 
 exports['default'] = Lightbox;
 module.exports = exports['default'];
-/*
-Re-implement when react warning "unknown props"
-https://fb.me/react-unknown-prop is resolved
-<Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
-*/
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./components/Arrow":25,"./components/Container":26,"./components/Footer":27,"./components/Header":28,"./components/PaginatedThumbnails":30,"./components/Portal":32,"./components/ScrollLock":33,"./theme":39,"./utils":43,"aphrodite/no-important":6,"react-motion":undefined}],25:[function(require,module,exports){
+},{"./components/Arrow":25,"./components/Container":26,"./components/Footer":27,"./components/Header":28,"./components/PaginatedThumbnails":30,"./components/Portal":32,"./components/ScrollLock":33,"./theme":39,"./utils":43,"aphrodite/no-important":6,"react-motion":undefined,"react-swipeable":undefined}],25:[function(require,module,exports){
 (function (global){
 'use strict';
 
