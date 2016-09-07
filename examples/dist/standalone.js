@@ -1815,9 +1815,9 @@ var Lightbox = (function (_Component) {
 		}
 	}, {
 		key: 'isImageVisible',
-		value: function isImageVisible(imageIndex, marginLeftWithContainerPadding) {
+		value: function isImageVisible(imageIndex, deltaXWithContainerPadding) {
 			var containerPadding = _theme2['default'].container.gutter.horizontal;
-			var marginLeft = Math.abs(marginLeftWithContainerPadding) - containerPadding;
+			var marginLeft = Math.abs(deltaXWithContainerPadding) - containerPadding;
 			var visibleIndex = Math.floor(marginLeft / window.innerWidth);
 			if (visibleIndex === imageIndex) {
 				return true;
@@ -1886,7 +1886,7 @@ var Lightbox = (function (_Component) {
 			var horizontalPadding = _theme2['default'].container.gutter.horizontal;
 
 			var swipeDeltaX = this.state.isSwipingLeft || this.state.isSwipingRight ? this.state.swipeDeltaX : 0;
-			var motionStyle = { marginLeft: (0, _reactMotion.spring)(-currentImage * window.innerWidth - horizontalPadding + swipeDeltaX) };
+			var motionStyle = { deltaX: (0, _reactMotion.spring)(-currentImage * window.innerWidth - horizontalPadding + swipeDeltaX) };
 
 			return _react2['default'].createElement(
 				_componentsContainer2['default'],
@@ -1908,12 +1908,16 @@ var Lightbox = (function (_Component) {
 						_reactMotion.Motion,
 						{ style: motionStyle },
 						function (_ref) {
-							var marginLeft = _ref.marginLeft;
+							var deltaX = _ref.deltaX;
 							return _react2['default'].createElement(
 								'div',
 								{
 									className: (0, _aphroditeNoImportant.css)(classes.swipeContainer),
-									style: { width: window.innerWidth * images.length, marginLeft: marginLeft }
+									style: {
+										width: window.innerWidth * images.length,
+										transform: 'translate(' + deltaX + 'px, 0)',
+										WebkitTransform: 'translate(' + deltaX + 'px, 0)'
+									}
 								},
 								images.map(function (image, index) {
 									return _react2['default'].createElement(
@@ -1931,7 +1935,7 @@ var Lightbox = (function (_Component) {
 												onClose: _this.onClose,
 												showCloseButton: showCloseButton
 											}),
-											_this.renderImage({ image: image, isVisible: _this.isImageVisible(index, marginLeft) })
+											_this.renderImage({ image: image, isVisible: _this.isImageVisible(index, deltaX) })
 										)
 									);
 								})
@@ -2081,7 +2085,8 @@ var classes = _aphroditeNoImportant.StyleSheet.create({
 	},
 	swipeContainer: {
 		display: 'flex',
-		height: '100%'
+		height: '100%',
+		willChange: 'transform'
 	},
 	contentContainer: {
 		display: 'flex',

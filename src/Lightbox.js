@@ -189,9 +189,9 @@ class Lightbox extends Component {
 		return this.props.currentImage === (this.props.images.length - 1);
 
 	}
-  isImageVisible (imageIndex, marginLeftWithContainerPadding) {
+  isImageVisible (imageIndex, deltaXWithContainerPadding) {
     const containerPadding = theme.container.gutter.horizontal;
-    const marginLeft = Math.abs(marginLeftWithContainerPadding) - containerPadding;
+    const marginLeft = Math.abs(deltaXWithContainerPadding) - containerPadding;
     const visibleIndex = Math.floor(marginLeft / window.innerWidth);
     if (visibleIndex === imageIndex) {
       return true;
@@ -257,7 +257,7 @@ class Lightbox extends Component {
     const horizontalPadding = theme.container.gutter.horizontal;
 
     const swipeDeltaX = this.state.isSwipingLeft || this.state.isSwipingRight ? this.state.swipeDeltaX : 0;
-    const motionStyle = { marginLeft: spring(-currentImage * window.innerWidth - horizontalPadding + swipeDeltaX) };
+    const motionStyle = { deltaX: spring(-currentImage * window.innerWidth - horizontalPadding + swipeDeltaX) };
 
 		return (
 			<Container
@@ -274,10 +274,14 @@ class Lightbox extends Component {
         >
           <Motion style={motionStyle}>
             {
-              ({ marginLeft }) => (
+              ({ deltaX }) => (
                 <div
                   className={css(classes.swipeContainer)}
-                  style={{ width: window.innerWidth * images.length, marginLeft }}
+                  style={{
+                    width: window.innerWidth * images.length,
+                    transform: `translate(${deltaX}px, 0)`,
+                    WebkitTransform: `translate(${deltaX}px, 0)`
+                  }}
                 >
                   {
                     images.map((image, index) => (
@@ -292,7 +296,7 @@ class Lightbox extends Component {
                             onClose={this.onClose}
                             showCloseButton={showCloseButton}
                           />
-                          {this.renderImage({ image, isVisible: this.isImageVisible(index, marginLeft) })}
+                          {this.renderImage({ image, isVisible: this.isImageVisible(index, deltaX) })}
                         </div>
                       </div>
                     ))
@@ -432,7 +436,8 @@ const classes = StyleSheet.create({
   },
   swipeContainer: {
     display: 'flex',
-    height: '100%'
+    height: '100%',
+    willChange: 'transform'
   },
   contentContainer: {
     display: 'flex',
