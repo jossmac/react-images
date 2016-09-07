@@ -1794,7 +1794,7 @@ var Lightbox = (function (_Component) {
 						onClose: onClose,
 						showCloseButton: showCloseButton
 					}),
-					this.renderImages()
+					this.renderImage()
 				),
 				this.renderThumbnails(),
 				this.renderArrowPrev(),
@@ -1802,7 +1802,7 @@ var Lightbox = (function (_Component) {
 			);
 		}
 	}, {
-		key: 'renderImages',
+		key: 'renderImage',
 		value: function renderImages() {
 			var _props2 = this.props;
 			var currentImage = _props2.currentImage;

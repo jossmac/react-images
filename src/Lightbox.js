@@ -150,12 +150,14 @@ class Lightbox extends Component {
 	renderDialog () {
 		const {
 			backdropClosesModal,
-			customControls,
+      currentImage,
+      customControls,
 			isOpen,
 			onClose,
 			showCloseButton,
 			showThumbnails,
 			width,
+      images,
 		} = this.props;
 
 		if (!isOpen) return <span key="closed" />;
@@ -165,28 +167,47 @@ class Lightbox extends Component {
 			offsetThumbnails = theme.thumbnail.size + theme.container.gutter.vertical;
 		}
 
+    const horizontalPadding = theme.container.gutter.horizontal;
+
 		return (
 			<Container
 				key="open"
 				onClick={!!backdropClosesModal && onClose}
 				onTouchEnd={!!backdropClosesModal && onClose}
 			>
-				<div className={css(classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
-					<Header
-						customControls={customControls}
-						onClose={onClose}
-						showCloseButton={showCloseButton}
-					/>
-					{this.renderImages()}
-				</div>
-				{this.renderThumbnails()}
-				{this.renderArrowPrev()}
-				{this.renderArrowNext()}
-				<ScrollLock />
+        <div
+          className={css(classes.swipeContainer)}
+          style={{ width: window.innerWidth * images.length, marginLeft: - currentImage * window.innerWidth - horizontalPadding}}
+        >
+          {
+            images.map((image, index) => (
+                <div
+                  key={index}
+                  className={css(classes.imageContainer)}
+                  style={{ width: window.innerWidth, paddingLeft: horizontalPadding, paddingRight: horizontalPadding}}
+                >
+                  <div className={css(classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
+                    <Header
+                      customControls={customControls}
+                      onClose={onClose}
+                      showCloseButton={showCloseButton}
+                    />
+                    {this.renderImage(image)}
+                </div>
+              </div>
+            ))
+          }
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          {this.renderThumbnails()}
+          {this.renderArrowPrev()}
+          {this.renderArrowNext()}
+        </div>
+        <ScrollLock />
 			</Container>
 		);
 	}
-	renderImages () {
+	renderImage (image) {
 		const {
 			currentImage,
 			images,
@@ -198,7 +219,7 @@ class Lightbox extends Component {
 
 		if (!images || !images.length) return null;
 
-		const image = images[currentImage];
+		//const image = images[currentImage];
 
 		let srcset;
 		let sizes;
@@ -307,7 +328,16 @@ Lightbox.childContextTypes = {
 };
 
 const classes = StyleSheet.create({
-	content: {
+  swipeContainer: {
+    display: 'flex'
+  },
+	imageContainer: {
+    display: 'flex',
+    height: '100%',
+    justifyContent: 'center',
+    alignSelf: 'center'
+  },
+  content: {
 		position: 'relative',
 	},
 	figure: {
