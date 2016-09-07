@@ -1813,6 +1813,23 @@ var Lightbox = (function (_Component) {
 		value: function isLastImage() {
 			return this.props.currentImage === this.props.images.length - 1;
 		}
+	}, {
+		key: 'isImageVisible',
+		value: function isImageVisible(imageIndex, marginLeftWithContainerPadding) {
+			var containerPadding = _theme2['default'].container.gutter.horizontal;
+			var marginLeft = Math.abs(marginLeftWithContainerPadding) - containerPadding;
+			var visibleIndex = Math.floor(marginLeft / window.innerWidth);
+			if (visibleIndex === imageIndex) {
+				return true;
+			}
+
+			var isNextImageVisible = marginLeft - visibleIndex * window.innerWidth > 0;
+			if (isNextImageVisible && imageIndex === visibleIndex + 1) {
+				return true;
+			} else {
+				return false;
+			}
+		}
 
 		// ==============================
 		// RENDERERS
@@ -1914,7 +1931,7 @@ var Lightbox = (function (_Component) {
 												onClose: _this.onClose,
 												showCloseButton: showCloseButton
 											}),
-											_this.renderImage(image)
+											_this.renderImage({ image: image, isVisible: _this.isImageVisible(index, marginLeft) })
 										)
 									);
 								})
@@ -1934,7 +1951,9 @@ var Lightbox = (function (_Component) {
 		}
 	}, {
 		key: 'renderImage',
-		value: function renderImage(image) {
+		value: function renderImage(_ref2) {
+			var image = _ref2.image;
+			var isVisible = _ref2.isVisible;
 			var _props2 = this.props;
 			var currentImage = _props2.currentImage;
 			var images = _props2.images;
@@ -1965,8 +1984,8 @@ var Lightbox = (function (_Component) {
 					className: (0, _aphroditeNoImportant.css)(classes.image),
 					onClick: !!onClickImage && onClickImage,
 					sizes: sizes,
-					src: image.src,
-					srcSet: srcset,
+					src: isVisible ? image.src : null,
+					srcSet: isVisible ? srcset : null,
 					style: {
 						cursor: this.props.onClickImage ? 'pointer' : 'auto',
 						maxHeight: 'calc(100vh - ' + heightOffset + ')'

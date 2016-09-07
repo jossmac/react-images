@@ -189,6 +189,21 @@ class Lightbox extends Component {
 		return this.props.currentImage === (this.props.images.length - 1);
 
 	}
+  isImageVisible (imageIndex, marginLeftWithContainerPadding) {
+    const containerPadding = theme.container.gutter.horizontal;
+    const marginLeft = Math.abs(marginLeftWithContainerPadding) - containerPadding;
+    const visibleIndex = Math.floor(marginLeft / window.innerWidth);
+    if (visibleIndex === imageIndex) {
+      return true;
+    }
+
+    const isNextImageVisible = marginLeft - visibleIndex * window.innerWidth > 0;
+    if (isNextImageVisible && imageIndex === visibleIndex + 1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
 	// ==============================
 	// RENDERERS
@@ -277,7 +292,7 @@ class Lightbox extends Component {
                             onClose={this.onClose}
                             showCloseButton={showCloseButton}
                           />
-                          {this.renderImage(image)}
+                          {this.renderImage({ image, isVisible: this.isImageVisible(index, marginLeft) })}
                         </div>
                       </div>
                     ))
@@ -296,7 +311,7 @@ class Lightbox extends Component {
 			</Container>
 		);
 	}
-	renderImage (image) {
+	renderImage ({ image, isVisible }) {
 		const {
 			currentImage,
 			images,
@@ -327,8 +342,8 @@ class Lightbox extends Component {
 					className={css(classes.image)}
 					onClick={!!onClickImage && onClickImage}
 					sizes={sizes}
-					src={image.src}
-					srcSet={srcset}
+					src={isVisible ? image.src : null}
+					srcSet={isVisible ? srcset : null}
 					style={{
 						cursor: this.props.onClickImage ? 'pointer' : 'auto',
 						maxHeight: `calc(100vh - ${heightOffset})`,
