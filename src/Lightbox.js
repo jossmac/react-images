@@ -19,8 +19,6 @@ class Lightbox extends Component {
 		super();
 
 		this.state = {
-			isSwipingLeft: false,
-			isSwipingRight: false,
 			swipeDeltaX: 0
 		}
 
@@ -28,8 +26,7 @@ class Lightbox extends Component {
       'onClose',
 			'gotoNext',
 			'gotoPrev',
-			'onSwipingLeft',
-			'onSwipingRight',
+			'onSwiping',
 			'onStopSwiping',
 			'handleKeyboardInput',
 		]);
@@ -139,44 +136,34 @@ class Lightbox extends Component {
 		return false;
 
 	}
-	onSwipingLeft (event, deltaX) {
-		if (this.isLastImage()) return;
+	onSwiping (event, deltaX, deltaY, absX, absY, velocity) {
+		if ( (this.isFirstImage() && deltaX < 0) || (this.isLastImage() && deltaX > 0) ) return;
+    console.log('deltaX ' + deltaX + '  velocity ' + velocity);
 		this.setState({
-			isSwipingLeft: true,
-			isSwipingRight: false,
 			swipeDeltaX: -deltaX
 		});
 
 	}
-	onSwipingRight (event, deltaX) {
-		if (this.isFirstImage()) return;
-		this.setState({
-			isSwipingLeft: false,
-			isSwipingRight: true,
-			swipeDeltaX: deltaX
-		});
-
-	}
-	onStopSwiping (event) {
+	onStopSwiping (event, x, y, isFlick, velocity) {
     if (event) {
       event.preventDefault();
       event.stopPropagation();
     }
 
-    const stayAtCurrentImage = Math.abs(this.state.swipeDeltaX) < window.innerWidth * 0.5;
+    const quickSwipe = velocity > 0.7 && Math.abs(this.state.swipeDeltaX) > window.innerWidth * 0.3;
+
+    const stayAtCurrentImage = !quickSwipe && Math.abs(this.state.swipeDeltaX) < window.innerWidth * 0.5;
     if (stayAtCurrentImage) {
       this.resetSwipe();
-    }else if (this.state.isSwipingLeft) {
+    }else if (this.state.swipeDeltaX < 0) {
       this.gotoNext();
-    } else if (this.state.isSwipingRight) {
+    } else if (this.state.swipeDeltaX > 0) {
       this.gotoPrev();
     }
 
 	}
   resetSwipe () {
     this.setState({
-      isSwipingLeft: false,
-      isSwipingRight: false,
       swipeDeltaX: 0
     })
   }
@@ -256,8 +243,9 @@ class Lightbox extends Component {
 
     const horizontalPadding = theme.container.gutter.horizontal;
 
-    const swipeDeltaX = this.state.isSwipingLeft || this.state.isSwipingRight ? this.state.swipeDeltaX : 0;
-    const motionStyle = { deltaX: spring(-currentImage * window.innerWidth - horizontalPadding + swipeDeltaX) };
+    const springConfig = { stiffness: 300, damping: 30 };
+    const swipeDeltaX = this.state.swipeDeltaX;
+    const motionStyle = { deltaX: spring(-currentImage * window.innerWidth - horizontalPadding + swipeDeltaX, springConfig) };
 
 		return (
 			<Container
@@ -267,10 +255,8 @@ class Lightbox extends Component {
 			>
         <Swipeable
           className={css(classes.swipeable)}
-          onSwipedLeft={this.onStopSwiping}
-          onSwipedRight={this.onStopSwiping}
-          onSwipingLeft={this.onSwipingLeft}
-          onSwipingRight={this.onSwipingRight}
+          onSwiped={this.onStopSwiping}
+          onSwiping={this.onSwiping}
         >
           <Motion style={motionStyle}>
             {
@@ -288,7 +274,7 @@ class Lightbox extends Component {
                       <div
                         key={index}
                         className={css(classes.contentContainer)}
-                        style={{ width: window.innerWidth, paddingLeft: horizontalPadding, paddingRight: horizontalPadding}}
+                        style={{ width: window.innerWidth, paddingLeft: horizontalPadding, paddingRight: horizontalPadding }}
                       >
                         <div className={css(classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
                           <Header

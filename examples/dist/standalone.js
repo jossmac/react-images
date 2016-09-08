@@ -1631,12 +1631,10 @@ var Lightbox = (function (_Component) {
 		_get(Object.getPrototypeOf(Lightbox.prototype), 'constructor', this).call(this);
 
 		this.state = {
-			isSwipingLeft: false,
-			isSwipingRight: false,
 			swipeDeltaX: 0
 		};
 
-		_utils.bindFunctions.call(this, ['onClose', 'gotoNext', 'gotoPrev', 'onSwipingLeft', 'onSwipingRight', 'onStopSwiping', 'handleKeyboardInput']);
+		_utils.bindFunctions.call(this, ['onClose', 'gotoNext', 'gotoPrev', 'onSwiping', 'onStopSwiping', 'handleKeyboardInput']);
 	}
 
 	_createClass(Lightbox, [{
@@ -1758,39 +1756,30 @@ var Lightbox = (function (_Component) {
 			return false;
 		}
 	}, {
-		key: 'onSwipingLeft',
-		value: function onSwipingLeft(event, deltaX) {
-			if (this.isLastImage()) return;
+		key: 'onSwiping',
+		value: function onSwiping(event, deltaX, deltaY, absX, absY, velocity) {
+			if (this.isFirstImage() && deltaX < 0 || this.isLastImage() && deltaX > 0) return;
+			console.log('deltaX ' + deltaX + '  velocity ' + velocity);
 			this.setState({
-				isSwipingLeft: true,
-				isSwipingRight: false,
 				swipeDeltaX: -deltaX
 			});
 		}
 	}, {
-		key: 'onSwipingRight',
-		value: function onSwipingRight(event, deltaX) {
-			if (this.isFirstImage()) return;
-			this.setState({
-				isSwipingLeft: false,
-				isSwipingRight: true,
-				swipeDeltaX: deltaX
-			});
-		}
-	}, {
 		key: 'onStopSwiping',
-		value: function onStopSwiping(event) {
+		value: function onStopSwiping(event, x, y, isFlick, velocity) {
 			if (event) {
 				event.preventDefault();
 				event.stopPropagation();
 			}
 
-			var stayAtCurrentImage = Math.abs(this.state.swipeDeltaX) < window.innerWidth * 0.5;
+			var quickSwipe = velocity > 0.7 && Math.abs(this.state.swipeDeltaX) > window.innerWidth * 0.3;
+
+			var stayAtCurrentImage = !quickSwipe && Math.abs(this.state.swipeDeltaX) < window.innerWidth * 0.5;
 			if (stayAtCurrentImage) {
 				this.resetSwipe();
-			} else if (this.state.isSwipingLeft) {
+			} else if (this.state.swipeDeltaX < 0) {
 				this.gotoNext();
-			} else if (this.state.isSwipingRight) {
+			} else if (this.state.swipeDeltaX > 0) {
 				this.gotoPrev();
 			}
 		}
@@ -1798,8 +1787,6 @@ var Lightbox = (function (_Component) {
 		key: 'resetSwipe',
 		value: function resetSwipe() {
 			this.setState({
-				isSwipingLeft: false,
-				isSwipingRight: false,
 				swipeDeltaX: 0
 			});
 		}
@@ -1885,8 +1872,9 @@ var Lightbox = (function (_Component) {
 
 			var horizontalPadding = _theme2['default'].container.gutter.horizontal;
 
-			var swipeDeltaX = this.state.isSwipingLeft || this.state.isSwipingRight ? this.state.swipeDeltaX : 0;
-			var motionStyle = { deltaX: (0, _reactMotion.spring)(-currentImage * window.innerWidth - horizontalPadding + swipeDeltaX) };
+			var springConfig = { stiffness: 300, damping: 30 };
+			var swipeDeltaX = this.state.swipeDeltaX;
+			var motionStyle = { deltaX: (0, _reactMotion.spring)(-currentImage * window.innerWidth - horizontalPadding + swipeDeltaX, springConfig) };
 
 			return _react2['default'].createElement(
 				_componentsContainer2['default'],
@@ -1899,10 +1887,8 @@ var Lightbox = (function (_Component) {
 					_reactSwipeable2['default'],
 					{
 						className: (0, _aphroditeNoImportant.css)(classes.swipeable),
-						onSwipedLeft: this.onStopSwiping,
-						onSwipedRight: this.onStopSwiping,
-						onSwipingLeft: this.onSwipingLeft,
-						onSwipingRight: this.onSwipingRight
+						onSwiped: this.onStopSwiping,
+						onSwiping: this.onSwiping
 					},
 					_react2['default'].createElement(
 						_reactMotion.Motion,
