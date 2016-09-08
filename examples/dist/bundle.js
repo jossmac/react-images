@@ -2063,8 +2063,8 @@ var classes = _aphroditeNoImportant.StyleSheet.create({
     position: 'relative'
   },
   figure: {
-    margin: 0 },
-  // remove browser default
+    margin: 0 // remove browser default
+  },
   image: {
     display: 'block', // removes browser default gutter
     height: 'auto',
@@ -2589,11 +2589,7 @@ function isImageVisible(imageIndex, deltaXWithContainerPadding) {
   }
 
   var isNextImageVisible = marginLeft - visibleIndex * window.innerWidth > -200;
-  if (isNextImageVisible && imageIndex === visibleIndex + 1) {
-    return true;
-  } else {
-    return false;
-  }
+  return isNextImageVisible && imageIndex === visibleIndex + 1;
 }
 
 var SwipeContainer = function SwipeContainer(props) {

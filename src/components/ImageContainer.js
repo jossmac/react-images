@@ -36,7 +36,7 @@ function renderImage ({ props, image, isVisible }) {
         srcSet={isVisible ? srcset : null}
         style={{
 						cursor: onClickImage ? 'pointer' : 'auto',
-						maxHeight: `calc(100vh - ${heightOffset})`,
+						maxHeight: `calc(100vh - ${heightOffset})`
 					}}
       />
       <Footer
@@ -78,7 +78,7 @@ const ImageContainer = (props) => {
       </div>
     </div>
   )
-}
+};
 
 const classes = StyleSheet.create({
   contentContainer: {
@@ -87,10 +87,10 @@ const classes = StyleSheet.create({
     alignSelf: 'center'
   },
   content: {
-    position: 'relative',
+    position: 'relative'
   },
   figure: {
-    margin: 0, // remove browser default
+    margin: 0 // remove browser default
   },
   image: {
     display: 'block', // removes browser default gutter
@@ -100,8 +100,8 @@ const classes = StyleSheet.create({
 
     // disable user select
     WebkitTouchCallout: 'none',
-    userSelect: 'none',
-  },
+    userSelect: 'none'
+  }
 });
 
 export default ImageContainer;

@@ -15,11 +15,7 @@ function isImageVisible (imageIndex, deltaXWithContainerPadding) {
   }
 
   const isNextImageVisible = marginLeft - visibleIndex * window.innerWidth > -200;
-  if (isNextImageVisible && imageIndex === visibleIndex + 1) {
-    return true;
-  } else {
-    return false;
-  }
+  return isNextImageVisible && imageIndex === visibleIndex + 1;
 }
 
 const SwipeContainer = (props) => {
@@ -78,7 +74,7 @@ const SwipeContainer = (props) => {
       </Motion>
     </Swipeable>
   )
-}
+};
 
 const classes = StyleSheet.create({
   swipeable: {
@@ -88,7 +84,7 @@ const classes = StyleSheet.create({
     display: 'flex',
     height: '100%',
     willChange: 'transform'
-  },
+  }
 });
 
 export default SwipeContainer;
