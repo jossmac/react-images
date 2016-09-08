@@ -1566,6 +1566,8 @@ Object.defineProperty(exports, '__esModule', {
 	value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
@@ -1582,8 +1584,6 @@ var _react2 = _interopRequireDefault(_react);
 
 var _aphroditeNoImportant = require('aphrodite/no-important');
 
-// import Swipeable from 'react-swipeable';
-
 var _theme = require('./theme');
 
 var _theme2 = _interopRequireDefault(_theme);
@@ -1596,13 +1596,9 @@ var _componentsContainer = require('./components/Container');
 
 var _componentsContainer2 = _interopRequireDefault(_componentsContainer);
 
-var _componentsFooter = require('./components/Footer');
+var _componentsSwipeContainer = require('./components/SwipeContainer');
 
-var _componentsFooter2 = _interopRequireDefault(_componentsFooter);
-
-var _componentsHeader = require('./components/Header');
-
-var _componentsHeader2 = _interopRequireDefault(_componentsHeader);
+var _componentsSwipeContainer2 = _interopRequireDefault(_componentsSwipeContainer);
 
 var _componentsPaginatedThumbnails = require('./components/PaginatedThumbnails');
 
@@ -1611,6 +1607,10 @@ var _componentsPaginatedThumbnails2 = _interopRequireDefault(_componentsPaginate
 var _componentsPortal = require('./components/Portal');
 
 var _componentsPortal2 = _interopRequireDefault(_componentsPortal);
+
+var _componentsScrollLock = require('./components/ScrollLock');
+
+var _componentsScrollLock2 = _interopRequireDefault(_componentsScrollLock);
 
 var _utils = require('./utils');
 
@@ -1622,7 +1622,11 @@ var Lightbox = (function (_Component) {
 
 		_get(Object.getPrototypeOf(Lightbox.prototype), 'constructor', this).call(this);
 
-		_utils.bindFunctions.call(this, ['gotoNext', 'gotoPrev', 'handleKeyboardInput']);
+		this.state = {
+			swipeDeltaX: 0
+		};
+
+		_utils.bindFunctions.call(this, ['onClose', 'gotoNext', 'gotoPrev', 'onSwiping', 'onStopSwiping', 'handleKeyboardInput']);
 	}
 
 	_createClass(Lightbox, [{
@@ -1636,6 +1640,10 @@ var Lightbox = (function (_Component) {
 		key: 'componentWillReceiveProps',
 		value: function componentWillReceiveProps(nextProps) {
 			if (!_utils.canUseDom) return;
+
+			if (nextProps.currentImage !== this.props.currentImage) {
+				this.resetSwipe();
+			}
 
 			// preload images
 			if (nextProps.preloadNextImage) {
@@ -1666,12 +1674,12 @@ var Lightbox = (function (_Component) {
 			} else {
 				window.removeEventListener('keydown', this.handleKeyboardInput);
 			}
-
-			// handle body scroll
-			if (nextProps.isOpen) {
-				_utils.bodyScroll.blockScroll();
-			} else {
-				_utils.bodyScroll.allowScroll();
+		}
+	}, {
+		key: 'componentWillUnmount',
+		value: function componentWillUnmount() {
+			if (this.props.enableKeyboardInput) {
+				window.removeEventListener('keydown', this.handleKeyboardInput);
 			}
 		}
 
@@ -1695,9 +1703,19 @@ var Lightbox = (function (_Component) {
 			}
 		}
 	}, {
+		key: 'onClose',
+		value: function onClose(event) {
+			if (event) {
+				event.preventDefault();
+				event.stopPropagation();
+			}
+			this.resetSwipe();
+			this.props.onClose();
+		}
+	}, {
 		key: 'gotoNext',
 		value: function gotoNext(event) {
-			if (this.props.currentImage === this.props.images.length - 1) return;
+			if (this.isLastImage()) return;
 			if (event) {
 				event.preventDefault();
 				event.stopPropagation();
@@ -1707,7 +1725,7 @@ var Lightbox = (function (_Component) {
 	}, {
 		key: 'gotoPrev',
 		value: function gotoPrev(event) {
-			if (this.props.currentImage === 0) return;
+			if (this.isFirstImage()) return;
 			if (event) {
 				event.preventDefault();
 				event.stopPropagation();
@@ -1724,10 +1742,55 @@ var Lightbox = (function (_Component) {
 				this.gotoNext(event);
 				return true;
 			} else if (event.keyCode === 27) {
-				this.props.onClose();
+				this.onClose();
 				return true;
 			}
 			return false;
+		}
+	}, {
+		key: 'onSwiping',
+		value: function onSwiping(event, deltaX, deltaY, absX, absY, velocity) {
+			if (this.isFirstImage() && deltaX < 0 || this.isLastImage() && deltaX > 0) return;
+			console.log('deltaX ' + deltaX + '  velocity ' + velocity);
+			this.setState({
+				swipeDeltaX: -deltaX
+			});
+		}
+	}, {
+		key: 'onStopSwiping',
+		value: function onStopSwiping(event, x, y, isFlick, velocity) {
+			if (event) {
+				event.preventDefault();
+				event.stopPropagation();
+			}
+
+			var quickSwipe = velocity > 0.7 && Math.abs(this.state.swipeDeltaX) > window.innerWidth * 0.3;
+
+			var stayAtCurrentImage = !quickSwipe && Math.abs(this.state.swipeDeltaX) < window.innerWidth * 0.5;
+			if (stayAtCurrentImage) {
+				this.resetSwipe();
+			} else if (this.state.swipeDeltaX < 0) {
+				this.gotoNext();
+			} else if (this.state.swipeDeltaX > 0) {
+				this.gotoPrev();
+			}
+		}
+	}, {
+		key: 'resetSwipe',
+		value: function resetSwipe() {
+			this.setState({
+				swipeDeltaX: 0
+			});
+		}
+	}, {
+		key: 'isFirstImage',
+		value: function isFirstImage() {
+			return this.props.currentImage === 0;
+		}
+	}, {
+		key: 'isLastImage',
+		value: function isLastImage() {
+			return this.props.currentImage === this.props.images.length - 1;
 		}
 
 		// ==============================
@@ -1765,100 +1828,42 @@ var Lightbox = (function (_Component) {
 		value: function renderDialog() {
 			var _props = this.props;
 			var backdropClosesModal = _props.backdropClosesModal;
-			var customControls = _props.customControls;
 			var isOpen = _props.isOpen;
-			var onClose = _props.onClose;
-			var showCloseButton = _props.showCloseButton;
-			var showThumbnails = _props.showThumbnails;
-			var width = _props.width;
 
 			if (!isOpen) return _react2['default'].createElement('span', { key: 'closed' });
-
-			var offsetThumbnails = 0;
-			if (showThumbnails) {
-				offsetThumbnails = _theme2['default'].thumbnail.size + _theme2['default'].container.gutter.vertical;
-			}
 
 			return _react2['default'].createElement(
 				_componentsContainer2['default'],
 				{
 					key: 'open',
-					onClick: !!backdropClosesModal && onClose,
-					onTouchEnd: !!backdropClosesModal && onClose
+					onClick: !!backdropClosesModal && this.onClose,
+					onTouchEnd: !!backdropClosesModal && this.onClose
 				},
+				_react2['default'].createElement(_componentsSwipeContainer2['default'], _extends({
+					deltaX: this.state.swipeDeltaX,
+					onSwiping: this.onSwiping,
+					onStopSwiping: this.onStopSwiping,
+					onClose: this.onClose
+				}, this.props)),
 				_react2['default'].createElement(
 					'div',
-					{ className: (0, _aphroditeNoImportant.css)(classes.content), style: { marginBottom: offsetThumbnails, maxWidth: width } },
-					_react2['default'].createElement(_componentsHeader2['default'], {
-						customControls: customControls,
-						onClose: onClose,
-						showCloseButton: showCloseButton
-					}),
-					this.renderImage()
+					{ style: { display: 'flex', justifyContent: 'center' } },
+					this.renderThumbnails(),
+					this.renderArrowPrev(),
+					this.renderArrowNext()
 				),
-				this.renderThumbnails(),
-				this.renderArrowPrev(),
-				this.renderArrowNext()
-			);
-		}
-	}, {
-		key: 'renderImage',
-		value: function renderImages() {
-			var _props2 = this.props;
-			var currentImage = _props2.currentImage;
-			var images = _props2.images;
-			var imageCountSeparator = _props2.imageCountSeparator;
-			var onClickImage = _props2.onClickImage;
-			var showImageCount = _props2.showImageCount;
-			var showThumbnails = _props2.showThumbnails;
-
-			if (!images || !images.length) return null;
-
-			var image = images[currentImage];
-
-			var srcset = undefined;
-			var sizes = undefined;
-
-			if (image.srcset) {
-				srcset = image.srcset.join();
-				sizes = '100vw';
-			}
-
-			var thumbnailsSize = showThumbnails ? _theme2['default'].thumbnail.size : 0;
-			var heightOffset = _theme2['default'].header.height + _theme2['default'].footer.height + thumbnailsSize + _theme2['default'].container.gutter.vertical + 'px';
-
-			return _react2['default'].createElement(
-				'figure',
-				{ className: (0, _aphroditeNoImportant.css)(classes.figure) },
-				_react2['default'].createElement('img', {
-					className: (0, _aphroditeNoImportant.css)(classes.image),
-					onClick: !!onClickImage && onClickImage,
-					sizes: sizes,
-					src: image.src,
-					srcSet: srcset,
-					style: {
-						cursor: this.props.onClickImage ? 'pointer' : 'auto',
-						maxHeight: 'calc(100vh - ' + heightOffset + ')'
-					}
-				}),
-				_react2['default'].createElement(_componentsFooter2['default'], {
-					caption: images[currentImage].caption,
-					countCurrent: currentImage + 1,
-					countSeparator: imageCountSeparator,
-					countTotal: images.length,
-					showCount: showImageCount
-				})
+				_react2['default'].createElement(_componentsScrollLock2['default'], null)
 			);
 		}
 	}, {
 		key: 'renderThumbnails',
 		value: function renderThumbnails() {
-			var _props3 = this.props;
-			var images = _props3.images;
-			var currentImage = _props3.currentImage;
-			var onClickThumbnail = _props3.onClickThumbnail;
-			var showThumbnails = _props3.showThumbnails;
-			var thumbnailOffset = _props3.thumbnailOffset;
+			var _props2 = this.props;
+			var images = _props2.images;
+			var currentImage = _props2.currentImage;
+			var onClickThumbnail = _props2.onClickThumbnail;
+			var showThumbnails = _props2.showThumbnails;
+			var thumbnailOffset = _props2.thumbnailOffset;
 
 			if (!showThumbnails) return;
 
@@ -1872,7 +1877,6 @@ var Lightbox = (function (_Component) {
 	}, {
 		key: 'render',
 		value: function render() {
-			// return this.renderDialog();
 			return _react2['default'].createElement(
 				_componentsPortal2['default'],
 				null,
@@ -1926,35 +1930,11 @@ Lightbox.childContextTypes = {
 	theme: _react.PropTypes.object.isRequired
 };
 
-var classes = _aphroditeNoImportant.StyleSheet.create({
-	content: {
-		position: 'relative'
-	},
-	figure: {
-		margin: 0 },
-	// remove browser default
-	image: {
-		display: 'block', // removes browser default gutter
-		height: 'auto',
-		margin: '0 auto', // maintain center on very short screens OR very narrow image
-		maxWidth: '100%',
-
-		// disable user select
-		WebkitTouchCallout: 'none',
-		userSelect: 'none'
-	}
-});
-
 exports['default'] = Lightbox;
 module.exports = exports['default'];
-/*
-Re-implement when react warning "unknown props"
-https://fb.me/react-unknown-prop is resolved
-<Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
-*/
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./components/Arrow":25,"./components/Container":26,"./components/Footer":27,"./components/Header":28,"./components/PaginatedThumbnails":30,"./components/Portal":32,"./theme":38,"./utils":43,"aphrodite/no-important":6}],25:[function(require,module,exports){
+},{"./components/Arrow":25,"./components/Container":26,"./components/PaginatedThumbnails":31,"./components/Portal":33,"./components/ScrollLock":34,"./components/SwipeContainer":35,"./theme":41,"./utils":45,"aphrodite/no-important":6}],25:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2065,7 +2045,7 @@ var defaultStyles = {
 module.exports = Arrow;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../theme":38,"../utils":43,"./Icon":29,"aphrodite/no-important":6}],26:[function(require,module,exports){
+},{"../theme":41,"../utils":45,"./Icon":29,"aphrodite/no-important":6}],26:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2105,12 +2085,12 @@ Container.contextTypes = {
 
 var defaultStyles = {
 	container: {
-		alignItems: 'center',
+		//alignItems: 'center',
 		backgroundColor: _theme2['default'].container.background,
 		boxSizing: 'border-box',
-		display: 'flex',
+		//display: 'flex',
 		height: '100%',
-		justifyContent: 'center',
+		//justifyContent: 'center',
 		left: 0,
 		paddingBottom: _theme2['default'].container.gutter.vertical,
 		paddingLeft: _theme2['default'].container.gutter.horizontal,
@@ -2126,7 +2106,7 @@ var defaultStyles = {
 module.exports = Container;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../theme":38,"../utils":43,"aphrodite/no-important":6}],27:[function(require,module,exports){
+},{"../theme":41,"../utils":45,"aphrodite/no-important":6}],27:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2221,7 +2201,7 @@ var defaultStyles = {
 module.exports = Footer;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../theme":38,"../utils":43,"aphrodite/no-important":6}],28:[function(require,module,exports){
+},{"../theme":41,"../utils":45,"aphrodite/no-important":6}],28:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2309,7 +2289,7 @@ var defaultStyles = {
 module.exports = Header;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../theme":38,"../utils":43,"./Icon":29,"aphrodite/no-important":6}],29:[function(require,module,exports){
+},{"../theme":41,"../utils":45,"./Icon":29,"aphrodite/no-important":6}],29:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2356,7 +2336,139 @@ exports['default'] = Icon;
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../icons":37}],30:[function(require,module,exports){
+},{"../icons":40}],30:[function(require,module,exports){
+(function (global){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _aphroditeNoImportant = require('aphrodite/no-important');
+
+var _theme = require('../theme');
+
+var _theme2 = _interopRequireDefault(_theme);
+
+var _Footer = require('./Footer');
+
+var _Footer2 = _interopRequireDefault(_Footer);
+
+var _Header = require('./Header');
+
+var _Header2 = _interopRequireDefault(_Header);
+
+function renderImage(_ref) {
+  var props = _ref.props;
+  var image = _ref.image;
+  var isVisible = _ref.isVisible;
+  var images = props.images;
+  var imageCountSeparator = props.imageCountSeparator;
+  var index = props.index;
+  var onClickImage = props.onClickImage;
+  var showImageCount = props.showImageCount;
+  var showThumbnails = props.showThumbnails;
+
+  var srcset = undefined;
+  var sizes = undefined;
+
+  if (image.srcset) {
+    srcset = image.srcset.join();
+    sizes = '100vw';
+  }
+
+  var thumbnailsSize = showThumbnails ? _theme2['default'].thumbnail.size : 0;
+  var heightOffset = _theme2['default'].header.height + _theme2['default'].footer.height + thumbnailsSize + _theme2['default'].container.gutter.vertical + 'px';
+
+  return _react2['default'].createElement(
+    'figure',
+    { className: (0, _aphroditeNoImportant.css)(classes.figure) },
+    _react2['default'].createElement('img', {
+      className: (0, _aphroditeNoImportant.css)(classes.image),
+      onClick: !!onClickImage && onClickImage,
+      sizes: sizes,
+      src: isVisible ? image.src : "data:",
+      srcSet: isVisible ? srcset : null,
+      style: {
+        cursor: onClickImage ? 'pointer' : 'auto',
+        maxHeight: 'calc(100vh - ' + heightOffset + ')'
+      }
+    }),
+    _react2['default'].createElement(_Footer2['default'], {
+      caption: image.caption,
+      countCurrent: index + 1,
+      countSeparator: imageCountSeparator,
+      countTotal: images.length,
+      showCount: showImageCount
+    })
+  );
+}
+
+var ImageContainer = function ImageContainer(props) {
+  var customControls = props.customControls;
+  var showCloseButton = props.showCloseButton;
+  var width = props.width;
+  var image = props.image;
+  var isVisible = props.isVisible;
+  var onClose = props.onClose;
+  var marginBottom = props.marginBottom;
+
+  var horizontalPadding = _theme2['default'].container.gutter.horizontal;
+
+  return _react2['default'].createElement(
+    'div',
+    {
+      className: (0, _aphroditeNoImportant.css)(classes.contentContainer),
+      style: { width: window.innerWidth, paddingLeft: horizontalPadding, paddingRight: horizontalPadding }
+    },
+    _react2['default'].createElement(
+      'div',
+      { className: (0, _aphroditeNoImportant.css)(classes.content), style: { marginBottom: marginBottom, maxWidth: width } },
+      _react2['default'].createElement(_Header2['default'], {
+        customControls: customControls,
+        onClose: onClose,
+        showCloseButton: showCloseButton
+      }),
+      renderImage({ props: props, image: image, isVisible: isVisible })
+    )
+  );
+};
+
+var classes = _aphroditeNoImportant.StyleSheet.create({
+  contentContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignSelf: 'center'
+  },
+  content: {
+    position: 'relative'
+  },
+  figure: {
+    margin: 0 },
+  // remove browser default
+  image: {
+    display: 'block', // removes browser default gutter
+    height: 'auto',
+    margin: '0 auto', // maintain center on very short screens OR very narrow image
+    maxWidth: '100%',
+
+    // disable user select
+    WebkitTouchCallout: 'none',
+    userSelect: 'none'
+  }
+});
+
+exports['default'] = ImageContainer;
+module.exports = exports['default'];
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"../theme":41,"./Footer":27,"./Header":28,"aphrodite/no-important":6}],31:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2588,7 +2700,7 @@ PaginatedThumbnails.propTypes = {
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../theme":38,"./Arrow":25,"./Thumbnail":33,"aphrodite/no-important":6}],31:[function(require,module,exports){
+},{"../theme":41,"./Arrow":25,"./Thumbnail":36,"aphrodite/no-important":6}],32:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2646,7 +2758,7 @@ exports['default'] = PassContext;
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2748,7 +2860,211 @@ Portal.contextTypes = {
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./PassContext":31,"react-addons-css-transition-group":undefined,"react-dom":undefined}],33:[function(require,module,exports){
+},{"./PassContext":32,"react-addons-css-transition-group":undefined,"react-dom":undefined}],34:[function(require,module,exports){
+(function (global){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+	value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _react = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
+
+var _react2 = _interopRequireDefault(_react);
+
+var lockCount = 0;
+
+var ScrollLock = (function (_Component) {
+	_inherits(ScrollLock, _Component);
+
+	function ScrollLock() {
+		_classCallCheck(this, ScrollLock);
+
+		_get(Object.getPrototypeOf(ScrollLock.prototype), 'constructor', this).apply(this, arguments);
+	}
+
+	_createClass(ScrollLock, [{
+		key: 'componentWillMount',
+		value: function componentWillMount() {
+			if (typeof window === 'undefined') return;
+
+			lockCount++;
+			if (lockCount > 1) return;
+
+			//	FIXME iOS ignores overflow on body
+			try {
+				var scrollBarWidth = window.innerWidth - document.body.clientWidth;
+
+				var target = document.body;
+
+				target.style.paddingRight = scrollBarWidth + 'px';
+				target.style.overflowY = 'hidden';
+			} catch (err) {
+				console.error('Failed to find body element. Err:', err);
+			}
+		}
+	}, {
+		key: 'componentWillUnmount',
+		value: function componentWillUnmount() {
+			if (typeof window === 'undefined' || lockCount === 0) return;
+
+			lockCount--;
+			if (lockCount > 0) return; // Still locked
+
+			//	FIXME iOS ignores overflow on body
+			try {
+				var target = document.body;
+
+				target.style.paddingRight = '';
+				target.style.overflowY = '';
+			} catch (err) {
+				console.error('Failed to find body element. Err:', err);
+			}
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			return null;
+		}
+	}]);
+
+	return ScrollLock;
+})(_react.Component);
+
+exports['default'] = ScrollLock;
+module.exports = exports['default'];
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],35:[function(require,module,exports){
+(function (global){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactSwipeable = require('react-swipeable');
+
+var _reactSwipeable2 = _interopRequireDefault(_reactSwipeable);
+
+var _reactMotion = require('react-motion');
+
+var _aphroditeNoImportant = require('aphrodite/no-important');
+
+var _theme = require('../theme');
+
+var _theme2 = _interopRequireDefault(_theme);
+
+var _ImageContainer = require('./ImageContainer');
+
+var _ImageContainer2 = _interopRequireDefault(_ImageContainer);
+
+function isImageVisible(imageIndex, deltaXWithContainerPadding) {
+  var containerPadding = _theme2['default'].container.gutter.horizontal;
+  var marginLeft = Math.abs(deltaXWithContainerPadding) - containerPadding;
+  var visibleIndex = Math.floor(marginLeft / window.innerWidth);
+  if (visibleIndex === imageIndex) {
+    return true;
+  }
+
+  var isNextImageVisible = marginLeft - visibleIndex * window.innerWidth > -200;
+  if (isNextImageVisible && imageIndex === visibleIndex + 1) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+var SwipeContainer = function SwipeContainer(props) {
+  var currentImage = props.currentImage;
+  var showThumbnails = props.showThumbnails;
+  var images = props.images;
+  var onSwiping = props.onSwiping;
+  var onStopSwiping = props.onStopSwiping;
+
+  var offsetThumbnails = 0;
+  if (showThumbnails) {
+    offsetThumbnails = _theme2['default'].thumbnail.size + _theme2['default'].container.gutter.vertical;
+  }
+
+  var horizontalPadding = _theme2['default'].container.gutter.horizontal;
+  var springConfig = { stiffness: 300, damping: 30 };
+  var swipeDeltaX = props.deltaX;
+  var motionStyle = { deltaX: (0, _reactMotion.spring)(-currentImage * window.innerWidth - horizontalPadding + swipeDeltaX, springConfig) };
+
+  return _react2['default'].createElement(
+    _reactSwipeable2['default'],
+    {
+      className: (0, _aphroditeNoImportant.css)(classes.swipeable),
+      onSwiped: onStopSwiping,
+      onSwiping: onSwiping,
+      preventDefaultTouchmoveEvent: true,
+      stopPropagation: true
+    },
+    _react2['default'].createElement(
+      _reactMotion.Motion,
+      { style: motionStyle },
+      function (_ref) {
+        var deltaX = _ref.deltaX;
+        return _react2['default'].createElement(
+          'div',
+          {
+            className: (0, _aphroditeNoImportant.css)(classes.swipeContainer),
+            style: {
+              width: window.innerWidth * images.length,
+              transform: 'translate(' + deltaX + 'px, 0)',
+              WebkitTransform: 'translate(' + deltaX + 'px, 0)'
+            }
+          },
+          images.map(function (image, index) {
+            return _react2['default'].createElement(_ImageContainer2['default'], _extends({
+              key: index,
+              index: index,
+              marginBottom: offsetThumbnails,
+              image: image,
+              isVisible: isImageVisible(index, deltaX)
+            }, props));
+          })
+        );
+      }
+    )
+  );
+};
+
+var classes = _aphroditeNoImportant.StyleSheet.create({
+  swipeable: {
+    height: '100%'
+  },
+  swipeContainer: {
+    display: 'flex',
+    height: '100%',
+    willChange: 'transform'
+  }
+});
+
+exports['default'] = SwipeContainer;
+module.exports = exports['default'];
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"../theme":41,"./ImageContainer":30,"aphrodite/no-important":6,"react-motion":undefined,"react-swipeable":undefined}],36:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2783,8 +3099,11 @@ function Thumbnail(_ref, _ref2) {
 
 	return _react2['default'].createElement('div', {
 		className: (0, _aphroditeNoImportant.css)(classes.thumbnail, active && classes.thumbnail__active),
-		onClick: function () {
-			return onClick(index);
+		onClick: function (e) {
+			e.preventDefault();
+			e.stopPropagation();
+
+			onClick(index);
 		},
 		style: { backgroundImage: 'url("' + url + '")' }
 	});
@@ -2824,7 +3143,7 @@ exports['default'] = Thumbnail;
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../theme":38,"../utils":43,"aphrodite/no-important":6}],34:[function(require,module,exports){
+},{"../theme":41,"../utils":45,"aphrodite/no-important":6}],37:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2837,7 +3156,7 @@ exports["default"] = function (fill) {
 
 module.exports = exports["default"];
 
-},{}],35:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2850,7 +3169,7 @@ exports["default"] = function (fill) {
 
 module.exports = exports["default"];
 
-},{}],36:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2863,7 +3182,7 @@ exports["default"] = function (fill) {
 
 module.exports = exports["default"];
 
-},{}],37:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -2872,7 +3191,7 @@ module.exports = {
 	close: require('./close')
 };
 
-},{"./arrowLeft":34,"./arrowRight":35,"./close":36}],38:[function(require,module,exports){
+},{"./arrowLeft":37,"./arrowRight":38,"./close":39}],41:[function(require,module,exports){
 // ==============================
 // THEME
 // ==============================
@@ -2931,7 +3250,7 @@ theme.arrow = {
 
 module.exports = theme;
 
-},{}],39:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 /**
 	Bind multiple component methods:
 
@@ -2954,61 +3273,14 @@ module.exports = function bindFunctions(functions) {
 	});
 };
 
-},{}],40:[function(require,module,exports){
-// Don't try and apply overflow/padding if the scroll is already blocked
-'use strict';
-
-var bodyBlocked = false;
-
-var allowScroll = function allowScroll() {
-	if (typeof window === 'undefined' || !bodyBlocked) return;
-
-	//  FIXME iOS ignores overflow on body
-
-	try {
-		var target = document.body;
-
-		target.style.paddingRight = '';
-		target.style.overflowY = '';
-
-		bodyBlocked = false;
-	} catch (err) {
-		console.error('Failed to find body element. Err:', err);
-	}
-};
-
-var blockScroll = function blockScroll() {
-	if (typeof window === 'undefined' || bodyBlocked) return;
-
-	//  FIXME iOS ignores overflow on body
-
-	try {
-		var scrollBarWidth = window.innerWidth - document.body.clientWidth;
-
-		var target = document.body;
-
-		target.style.paddingRight = scrollBarWidth + 'px';
-		target.style.overflowY = 'hidden';
-
-		bodyBlocked = true;
-	} catch (err) {
-		console.error('Failed to find body element. Err:', err);
-	}
-};
-
-module.exports = {
-	allowScroll: allowScroll,
-	blockScroll: blockScroll
-};
-
-},{}],41:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 // Return true if window + document
 
 'use strict';
 
 module.exports = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 
-},{}],42:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -3035,7 +3307,7 @@ function deepMerge(target) {
 
 module.exports = deepMerge;
 
-},{}],43:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -3043,10 +3315,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 var _bindFunctions = require('./bindFunctions');
 
 var _bindFunctions2 = _interopRequireDefault(_bindFunctions);
-
-var _bodyScroll = require('./bodyScroll');
-
-var _bodyScroll2 = _interopRequireDefault(_bodyScroll);
 
 var _canUseDom = require('./canUseDom');
 
@@ -3058,10 +3326,9 @@ var _deepMerge2 = _interopRequireDefault(_deepMerge);
 
 module.exports = {
 	bindFunctions: _bindFunctions2['default'],
-	bodyScroll: _bodyScroll2['default'],
 	canUseDom: _canUseDom2['default'],
 	deepMerge: _deepMerge2['default']
 };
 
-},{"./bindFunctions":39,"./bodyScroll":40,"./canUseDom":41,"./deepMerge":42}]},{},[24])(24)
+},{"./bindFunctions":42,"./canUseDom":43,"./deepMerge":44}]},{},[24])(24)
 });

@@ -1,13 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
-import Swipeable from 'react-swipeable';
-import {Motion, spring} from 'react-motion';
 
 import theme from './theme';
 import Arrow from './components/Arrow';
 import Container from './components/Container';
-import Footer from './components/Footer';
-import Header from './components/Header';
+import SwipeContainer from './components/SwipeContainer';
 import PaginatedThumbnails from './components/PaginatedThumbnails';
 import Portal from './components/Portal';
 import ScrollLock from './components/ScrollLock';
@@ -176,21 +173,6 @@ class Lightbox extends Component {
 		return this.props.currentImage === (this.props.images.length - 1);
 
 	}
-  isImageVisible (imageIndex, deltaXWithContainerPadding) {
-    const containerPadding = theme.container.gutter.horizontal;
-    const marginLeft = Math.abs(deltaXWithContainerPadding) - containerPadding;
-    const visibleIndex = Math.floor(marginLeft / window.innerWidth);
-    if (visibleIndex === imageIndex) {
-      return true;
-    }
-
-    const isNextImageVisible = marginLeft - visibleIndex * window.innerWidth > 0;
-    if (isNextImageVisible && imageIndex === visibleIndex + 1) {
-      return true;
-    } else {
-      return false;
-    }
-  }
 
 	// ==============================
 	// RENDERERS
@@ -225,27 +207,10 @@ class Lightbox extends Component {
 	renderDialog () {
 		const {
 			backdropClosesModal,
-      currentImage,
-      customControls,
 			isOpen,
-			showCloseButton,
-			showThumbnails,
-			width,
-      images,
 		} = this.props;
 
 		if (!isOpen) return <span key="closed" />;
-
-		let offsetThumbnails = 0;
-		if (showThumbnails) {
-			offsetThumbnails = theme.thumbnail.size + theme.container.gutter.vertical;
-		}
-
-    const horizontalPadding = theme.container.gutter.horizontal;
-
-    const springConfig = { stiffness: 300, damping: 30 };
-    const swipeDeltaX = this.state.swipeDeltaX;
-    const motionStyle = { deltaX: spring(-currentImage * window.innerWidth - horizontalPadding + swipeDeltaX, springConfig) };
 
 		return (
 			<Container
@@ -253,45 +218,13 @@ class Lightbox extends Component {
 				onClick={!!backdropClosesModal && this.onClose}
 				onTouchEnd={!!backdropClosesModal && this.onClose}
 			>
-        <Swipeable
-          className={css(classes.swipeable)}
-          onSwiped={this.onStopSwiping}
+        <SwipeContainer
+					deltaX={this.state.swipeDeltaX}
           onSwiping={this.onSwiping}
-        >
-          <Motion style={motionStyle}>
-            {
-              ({ deltaX }) => (
-                <div
-                  className={css(classes.swipeContainer)}
-                  style={{
-                    width: window.innerWidth * images.length,
-                    transform: `translate(${deltaX}px, 0)`,
-                    WebkitTransform: `translate(${deltaX}px, 0)`
-                  }}
-                >
-                  {
-                    images.map((image, index) => (
-                      <div
-                        key={index}
-                        className={css(classes.contentContainer)}
-                        style={{ width: window.innerWidth, paddingLeft: horizontalPadding, paddingRight: horizontalPadding }}
-                      >
-                        <div className={css(classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
-                          <Header
-                            customControls={customControls}
-                            onClose={this.onClose}
-                            showCloseButton={showCloseButton}
-                          />
-                          {this.renderImage({ image, isVisible: this.isImageVisible(index, deltaX) })}
-                        </div>
-                      </div>
-                    ))
-                  }
-                </div>
-              )
-            }
-          </Motion>
-        </Swipeable>
+          onStopSwiping={this.onStopSwiping}
+          onClose={this.onClose}
+          {...this.props}
+				/>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           {this.renderThumbnails()}
           {this.renderArrowPrev()}
@@ -299,54 +232,6 @@ class Lightbox extends Component {
         </div>
         <ScrollLock />
 			</Container>
-		);
-	}
-	renderImage ({ image, isVisible }) {
-		const {
-			currentImage,
-			images,
-			imageCountSeparator,
-			onClickImage,
-			showImageCount,
-			showThumbnails,
-		} = this.props;
-
-		if (!images || !images.length) return null;
-
-		//const image = images[currentImage];
-
-		let srcset;
-		let sizes;
-
-		if (image.srcset) {
-			srcset = image.srcset.join();
-			sizes = '100vw';
-		}
-
-		const thumbnailsSize = showThumbnails ? theme.thumbnail.size : 0;
-		const heightOffset = `${theme.header.height + theme.footer.height + thumbnailsSize + (theme.container.gutter.vertical)}px`;
-
-		return (
-			<figure className={css(classes.figure)}>
-				<img
-					className={css(classes.image)}
-					onClick={!!onClickImage && onClickImage}
-					sizes={sizes}
-					src={isVisible ? image.src : null}
-					srcSet={isVisible ? srcset : null}
-					style={{
-						cursor: this.props.onClickImage ? 'pointer' : 'auto',
-						maxHeight: `calc(100vh - ${heightOffset})`,
-					}}
-				/>
-				<Footer
-					caption={images[currentImage].caption}
-					countCurrent={currentImage + 1}
-					countSeparator={imageCountSeparator}
-					countTotal={images.length}
-					showCount={showImageCount}
-				/>
-			</figure>
 		);
 	}
 	renderThumbnails () {
@@ -415,37 +300,5 @@ Lightbox.defaultProps = {
 Lightbox.childContextTypes = {
 	theme: PropTypes.object.isRequired,
 };
-
-const classes = StyleSheet.create({
-  swipeable: {
-    height: '100%'
-  },
-  swipeContainer: {
-    display: 'flex',
-    height: '100%',
-    willChange: 'transform'
-  },
-  contentContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignSelf: 'center'
-  },
-  content: {
-		position: 'relative',
-	},
-	figure: {
-		margin: 0, // remove browser default
-	},
-	image: {
-		display: 'block', // removes browser default gutter
-		height: 'auto',
-		margin: '0 auto', // maintain center on very short screens OR very narrow image
-		maxWidth: '100%',
-
-		// disable user select
-		WebkitTouchCallout: 'none',
-		userSelect: 'none',
-	},
-});
 
 export default Lightbox;
