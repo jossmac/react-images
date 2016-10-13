@@ -28,6 +28,11 @@ class Lightbox extends Component {
 			theme: this.props.theme,
 		};
 	}
+	componentDidMount() {
+		if (this.props.enableKeyboardInput) {
+			window.addEventListener('keydown', this.handleKeyboardInput);
+		}
+	}
 	componentWillReceiveProps (nextProps) {
 		if (!canUseDom) return;
 
@@ -55,9 +60,10 @@ class Lightbox extends Component {
 		}
 
 		// add event listeners
-		if (nextProps.enableKeyboardInput) {
+		if (!this.props.enableKeyboardInput && nextProps.enableKeyboardInput) {
 			window.addEventListener('keydown', this.handleKeyboardInput);
-		} else {
+		}
+		if (this.props.enableKeyboardInput && !nextProps.enableKeyboardInput) {
 			window.removeEventListener('keydown', this.handleKeyboardInput);
 		}
 	}
