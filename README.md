@@ -5,13 +5,17 @@
 A simple, responsive lightbox component for displaying an array of images.
 
 
-## Quick start
+### Quick start
 
-# npm i react-images --save 
 
-### or 
+```
+npm install react-images
 
-# yarn add react-images
+or 
+
+yarn add react-images
+```
+
 
 ```jsx
 import React from 'react';
