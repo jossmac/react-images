@@ -8,11 +8,11 @@ A simple, responsive lightbox component for displaying an array of images.
 ### Quick start
 
 
-```
+```bash
 npm install react-images
-
+```
 or 
-
+```
 yarn add react-images
 ```
 
