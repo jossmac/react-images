@@ -1,12 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
-// import Swipeable from 'react-swipeable';
 
 import theme from './theme';
 import Arrow from './components/Arrow';
 import Container from './components/Container';
-import Footer from './components/Footer';
-import Header from './components/Header';
+import SwipeContainer from './components/SwipeContainer';
 import PaginatedThumbnails from './components/PaginatedThumbnails';
 import Portal from './components/Portal';
 import ScrollLock from './components/ScrollLock';
@@ -17,9 +15,16 @@ class Lightbox extends Component {
 	constructor () {
 		super();
 
+		this.state = {
+			swipeDeltaX: 0
+		}
+
 		bindFunctions.call(this, [
+      'onClose',
 			'gotoNext',
 			'gotoPrev',
+			'onSwiping',
+			'onStopSwiping',
 			'handleKeyboardInput',
 		]);
 	}
@@ -30,6 +35,10 @@ class Lightbox extends Component {
 	}
 	componentWillReceiveProps (nextProps) {
 		if (!canUseDom) return;
+
+		if (nextProps.currentImage !== this.props.currentImage) {
+			this.resetSwipe();
+		}
 
 		// preload images
 		if (nextProps.preloadNextImage) {
@@ -84,8 +93,16 @@ class Lightbox extends Component {
 			img.srcset = image.srcset.join();
 		}
 	}
+  onClose (event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    this.resetSwipe();
+    this.props.onClose();
+  }
 	gotoNext (event) {
-		if (this.props.currentImage === (this.props.images.length - 1)) return;
+		if (this.isLastImage()) return;
 		if (event) {
 			event.preventDefault();
 			event.stopPropagation();
@@ -94,7 +111,7 @@ class Lightbox extends Component {
 
 	}
 	gotoPrev (event) {
-		if (this.props.currentImage === 0) return;
+		if (this.isFirstImage()) return;
 		if (event) {
 			event.preventDefault();
 			event.stopPropagation();
@@ -110,10 +127,50 @@ class Lightbox extends Component {
 			this.gotoNext(event);
 			return true;
 		} else if (event.keyCode === 27) {
-			this.props.onClose();
+			this.onClose();
 			return true;
 		}
 		return false;
+
+	}
+	onSwiping (event, deltaX, deltaY, absX, absY, velocity) {
+		if ( (this.isFirstImage() && deltaX < 0) || (this.isLastImage() && deltaX > 0) ) return;
+    console.log('deltaX ' + deltaX + '  velocity ' + velocity);
+		this.setState({
+			swipeDeltaX: -deltaX
+		});
+
+	}
+	onStopSwiping (event, x, y, isFlick, velocity) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    const quickSwipe = velocity > 0.7 && Math.abs(this.state.swipeDeltaX) > window.innerWidth * 0.3;
+
+    const stayAtCurrentImage = !quickSwipe && Math.abs(this.state.swipeDeltaX) < window.innerWidth * 0.5;
+    if (stayAtCurrentImage) {
+      this.resetSwipe();
+    }else if (this.state.swipeDeltaX < 0) {
+      this.gotoNext();
+    } else if (this.state.swipeDeltaX > 0) {
+      this.gotoPrev();
+    }
+
+	}
+  resetSwipe () {
+    this.setState({
+      swipeDeltaX: 0
+    })
+  }
+
+	isFirstImage() {
+		return this.props.currentImage === 0;
+
+	}
+	isLastImage () {
+		return this.props.currentImage === (this.props.images.length - 1);
 
 	}
 
@@ -150,93 +207,31 @@ class Lightbox extends Component {
 	renderDialog () {
 		const {
 			backdropClosesModal,
-			customControls,
 			isOpen,
-			onClose,
-			showCloseButton,
-			showThumbnails,
-			width,
 		} = this.props;
 
 		if (!isOpen) return <span key="closed" />;
 
-		let offsetThumbnails = 0;
-		if (showThumbnails) {
-			offsetThumbnails = theme.thumbnail.size + theme.container.gutter.vertical;
-		}
-
 		return (
 			<Container
 				key="open"
-				onClick={!!backdropClosesModal && onClose}
-				onTouchEnd={!!backdropClosesModal && onClose}
+				onClick={!!backdropClosesModal && this.onClose}
+				onTouchEnd={!!backdropClosesModal && this.onClose}
 			>
-				<div className={css(classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
-					<Header
-						customControls={customControls}
-						onClose={onClose}
-						showCloseButton={showCloseButton}
-					/>
-					{this.renderImages()}
-				</div>
-				{this.renderThumbnails()}
-				{this.renderArrowPrev()}
-				{this.renderArrowNext()}
-				<ScrollLock />
+        <SwipeContainer
+					deltaX={this.state.swipeDeltaX}
+          onSwiping={this.onSwiping}
+          onStopSwiping={this.onStopSwiping}
+          onClose={this.onClose}
+          {...this.props}
+				/>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          {this.renderThumbnails()}
+          {this.renderArrowPrev()}
+          {this.renderArrowNext()}
+        </div>
+        <ScrollLock />
 			</Container>
-		);
-	}
-	renderImages () {
-		const {
-			currentImage,
-			images,
-			imageCountSeparator,
-			onClickImage,
-			showImageCount,
-			showThumbnails,
-		} = this.props;
-
-		if (!images || !images.length) return null;
-
-		const image = images[currentImage];
-
-		let srcset;
-		let sizes;
-
-		if (image.srcset) {
-			srcset = image.srcset.join();
-			sizes = '100vw';
-		}
-
-		const thumbnailsSize = showThumbnails ? theme.thumbnail.size : 0;
-		const heightOffset = `${theme.header.height + theme.footer.height + thumbnailsSize + (theme.container.gutter.vertical)}px`;
-
-		return (
-			<figure className={css(classes.figure)}>
-				{/*
-					Re-implement when react warning "unknown props"
-					https://fb.me/react-unknown-prop is resolved
-					<Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
-				*/}
-				<img
-					className={css(classes.image)}
-					onClick={!!onClickImage && onClickImage}
-					sizes={sizes}
-					src={image.src}
-					srcSet={srcset}
-					style={{
-						cursor: this.props.onClickImage ? 'pointer' : 'auto',
-						maxHeight: `calc(100vh - ${heightOffset})`,
-					}}
-				/>
-				<Footer
-					caption={images[currentImage].caption}
-					countCurrent={currentImage + 1}
-					countSeparator={imageCountSeparator}
-					countTotal={images.length}
-					showCount={showImageCount}
-				/>
-			</figure>
 		);
 	}
 	renderThumbnails () {
@@ -305,24 +300,5 @@ Lightbox.defaultProps = {
 Lightbox.childContextTypes = {
 	theme: PropTypes.object.isRequired,
 };
-
-const classes = StyleSheet.create({
-	content: {
-		position: 'relative',
-	},
-	figure: {
-		margin: 0, // remove browser default
-	},
-	image: {
-		display: 'block', // removes browser default gutter
-		height: 'auto',
-		margin: '0 auto', // maintain center on very short screens OR very narrow image
-		maxWidth: '100%',
-
-		// disable user select
-		WebkitTouchCallout: 'none',
-		userSelect: 'none',
-	},
-});
 
 export default Lightbox;
