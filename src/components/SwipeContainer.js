@@ -44,6 +44,7 @@ const SwipeContainer = (props) => {
       onSwiping={onSwiping}
       preventDefaultTouchmoveEvent={true}
       stopPropagation={true}
+      delta={0}
     >
       <Motion style={motionStyle}>
         {
