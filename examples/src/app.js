@@ -76,6 +76,9 @@ const theme = {
 	arrow__direction__right: { marginRight: 10 },
 
 	// header
+	header: {
+		background: 'none',
+	},
 	close: {
 		fill: '#D40000',
 		opacity: 0.6,
@@ -88,6 +91,7 @@ const theme = {
 
 	// footer
 	footer: {
+		background: 'hsla(0, 0%, 100%, 0.66)',
 		color: 'black',
 	},
 	footerCount: {
@@ -105,7 +109,7 @@ const theme = {
 render(
 	<div>
 		<div style={{ marginBottom: 40 }}>
-			<p>Photos courtesy of <a href="https://unsplash.com/" target="_blank">Unsplash</a>. Use your keyboard to navigate <kbd>left</kbd> <kbd>right</kbd> <kbd>esc</kbd> &mdash; Also, try resizing your browser window.</p>
+			<p>Photos courtesy of <a href="https://unsplash.com/" target="_blank">Unsplash</a>. Use your keyboard to navigate <kbd>left</kbd> <kbd>right</kbd> <kbd>esc</kbd> &mdash; <kbd>f</kbd> for fullscreen. Also, try resizing your browser window.</p>
 		</div>
 		<h3>Default Options</h3>
 		<Gallery images={DEFAULT_IMAGES.map(({ caption, id, orientation, useForDemo }) => ({

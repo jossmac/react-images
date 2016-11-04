@@ -46,7 +46,7 @@ Header.contextTypes = {
 
 const defaultStyles = {
 	header: {
-		background: 'linear-gradient(to top, hsla(0, 0%, 10%, 0) 0%, hsla(0, 0%, 8%, 0.9) 100%)',
+		background: 'linear-gradient(to top, hsla(0, 0%, 10%, 0) 0%, hsla(0, 0%, 10%, 0.94) 100%)',
 		color: defaults.header.color,
 		cursor: 'auto',
 		left: 0,
@@ -55,7 +55,7 @@ const defaultStyles = {
 		opacity: 0,
 		right: 0,
 		top: 0,
-		transition: 'all 150ms',
+		transition: 'all 200ms',
 		transform: 'translateY(-10px)',
 		visibility: 'hidden',
 		zIndex: 1,

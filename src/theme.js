@@ -14,7 +14,7 @@ theme.common = {
 
 // wrapper
 theme.wrapper = {
-	background: 'hsla(0, 0%, 8%, 0.9)',
+	background: 'hsla(0, 0%, 10%, 0.94)',
 	gutter: {
 		horizontal: 0,
 		vertical: 0,

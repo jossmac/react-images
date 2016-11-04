@@ -12,7 +12,8 @@
   "dependencies": {
     "aphrodite": "^0.5.0",
     "react-addons-css-transition-group": "^15.3.0",
-    "react-scrolllock": "^1.0.1"
+    "react-scrolllock": "^1.0.1",
+    "screenfull": "^3.0.2"
   },
   "devDependencies": {
     "babel-eslint": "^6.0.4",

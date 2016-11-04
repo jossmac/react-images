@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 
-import defaults from '../theme';
+// import defaults from '../theme';
 import { deepMerge } from '../utils';
 
 function Loading ({ ...props }, { theme }) {
@@ -29,7 +29,7 @@ const keyframes = {
 
 const defaultStyles = {
 	loading: {
-		fontSize: '.8rem',
+		fontSize: '12px',
 		left: '50%',
 		lineHeight: 1,
 		position: 'absolute',

@@ -20,7 +20,7 @@ function Footer ({
 	const classes = StyleSheet.create(deepMerge(defaultStyles, theme));
 
 	const imageCount = showCount ? (
-		<div className={css(classes.count)}>
+		<div className={css(classes.footerCount)}>
 			{countCurrent}
 			{countSeparator}
 			{countTotal}
@@ -31,7 +31,7 @@ function Footer ({
 		<div className={css(classes.footer, visible ? classes.visible : null)} {...props}>
 			<Container>
 				{caption ? (
-					<figcaption className={css(classes.caption)}>
+					<figcaption className={css(classes.footerCaption)}>
 						{caption}
 					</figcaption>
 				) : <span />}
@@ -54,7 +54,7 @@ Footer.contextTypes = {
 
 const defaultStyles = {
 	footer: {
-		background: 'linear-gradient(to bottom, hsla(0, 0%, 10%, 0) 0%, hsla(0, 0%, 8%, 0.9) 100%)',
+		background: 'linear-gradient(to bottom, hsla(0, 0%, 10%, 0) 0%, hsla(0, 0%, 10%, 0.94) 100%)',
 		bottom: 0,
 		color: defaults.footer.color,
 		cursor: 'auto',
@@ -63,7 +63,7 @@ const defaultStyles = {
 		opacity: 0,
 		position: 'absolute',
 		right: 0,
-		transition: 'all 150ms',
+		transition: 'all 200ms',
 		transform: 'translateY(10px)',
 		visibility: 'hidden',
 	},
@@ -72,12 +72,12 @@ const defaultStyles = {
 		transform: 'translateY(0)',
 		visibility: 'visible',
 	},
-	count: {
+	footerCount: {
 		color: defaults.footer.count.color,
 		fontSize: defaults.footer.count.fontSize,
 		paddingLeft: '1em', // add a small gutter for the caption
 	},
-	caption: {
+	footerCaption: {
 		flex: '1 1 0',
 	},
 };

@@ -1,18 +1,20 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 
 import defaults from '../theme';
 import { deepMerge } from '../utils';
 
-function Wrapper ({ ...props }, { theme }) {
-	const classes = StyleSheet.create(deepMerge(defaultStyles, theme));
+class Wrapper extends Component {
+	render () {
+		const classes = StyleSheet.create(deepMerge(defaultStyles, this.context.theme));
 
-	return (
-		<div
-			className={css(classes.wrapper)}
-			{...props}
-		/>
-	);
+		return (
+			<div
+				className={css(classes.wrapper)}
+				{...this.props}
+			/>
+		);
+	}
 };
 
 Wrapper.contextTypes = {

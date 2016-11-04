@@ -60,7 +60,7 @@ const defaultStyles = {
 		padding: 10, // increase hit area
 		position: 'absolute',
 		top: '50%',
-		transition: 'all 150ms',
+		transition: 'all 200ms',
 		visibility: 'hidden',
 
 		// disable user select
