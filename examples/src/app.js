@@ -48,8 +48,8 @@ const THUMBNAIL_IMAGES = [
 ];
 
 const theme = {
-	// container
-	container: { background: 'rgba(255, 255, 255, 0.9)' },
+	// wrapper
+	wrapper: { background: 'rgba(255, 255, 255, 0.9)' },
 
 	// arrows
 	arrow: {
@@ -68,7 +68,7 @@ const theme = {
 		marginTop: -20,
 
 		'@media (min-width: 768px)': {
-			height: 70,
+			height: 60,
 			padding: 15,
 		},
 	},

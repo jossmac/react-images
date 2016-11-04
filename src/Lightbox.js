@@ -4,13 +4,14 @@ import ScrollLock from 'react-scrolllock';
 
 import theme from './theme';
 import Arrow from './components/Arrow';
-import Container from './components/Container';
 import Footer from './components/Footer';
 import Header from './components/Header';
+import Loading from './components/Loading';
 import PaginatedThumbnails from './components/PaginatedThumbnails';
 import Portal from './components/Portal';
+import Wrapper from './components/Wrapper';
 
-import { bindFunctions, canUseDom } from './utils';
+import { bindFunctions, canUseDom, isMobileDevice } from './utils';
 
 class Lightbox extends Component {
 	constructor () {
@@ -20,7 +21,14 @@ class Lightbox extends Component {
 			'gotoNext',
 			'gotoPrev',
 			'handleKeyboardInput',
+			'trackIdleTime',
 		]);
+
+		this.timer;
+
+		this.state = {
+			userIsIdle: false,
+		};
 	}
 	getChildContext () {
 		return {
@@ -34,6 +42,9 @@ class Lightbox extends Component {
 	}
 	componentWillReceiveProps (nextProps) {
 		if (!canUseDom) return;
+
+		// maintain state with props
+		this.preloadImage(nextProps.currentImage, true);
 
 		// preload images
 		if (nextProps.preloadNextImage) {
@@ -58,6 +69,12 @@ class Lightbox extends Component {
 			}
 		}
 
+		// check user interaction
+		if (!this.props.isOpen && nextProps.isOpen && nextProps.enableKeyboardInput) {
+			this.trackIdleTime();
+			document.onmousemove = this.trackIdleTime;
+		}
+
 		// add/remove event listeners
 		if (!this.props.isOpen && nextProps.isOpen && nextProps.enableKeyboardInput) {
 			window.addEventListener('keydown', this.handleKeyboardInput);
@@ -76,36 +93,65 @@ class Lightbox extends Component {
 	// METHODS
 	// ==============================
 
-	preloadImage (idx) {
+	trackIdleTime () {
+		// TODO debounce
+
+		const self = this;
+
+		clearTimeout(this.timer);
+
+		this.setState({ userIsIdle: false });
+
+		this.timer = setTimeout(function () {
+			self.setState({ userIsIdle: true });
+		}, 3000);
+	}
+	preloadImage (idx, upcoming) {
 		const image = this.props.images[idx];
 
+		// check if data available
 		if (!image) return;
 
+		// set props on the image
 		const img = new Image();
-
 		img.src = image.src;
-
 		if (image.srcset) {
 			img.srcset = image.srcset.join();
+		}
+
+		// current image
+		if (upcoming) {
+			this.setState({ loading: true }, () => {
+				img.onload = () => this.setState({
+					index: idx,
+					loading: false,
+					dimensions: {
+						height: img.height,
+						width: img.width,
+					},
+				});
+			});
 		}
 	}
 	gotoNext (event) {
 		if (this.props.currentImage === (this.props.images.length - 1)) return;
+
 		if (event) {
 			event.preventDefault();
 			event.stopPropagation();
 		}
-		this.props.onClickNext();
 
+		this.props.onClickNext();
 	}
 	gotoPrev (event) {
 		if (this.props.currentImage === 0) return;
+
 		if (event) {
 			event.preventDefault();
 			event.stopPropagation();
 		}
-		this.props.onClickPrev();
 
+		this.props.onClickPrev();
 	}
 	handleKeyboardInput (event) {
 		if (event.keyCode === 37) { // left
@@ -127,7 +173,7 @@ class Lightbox extends Component {
 	// ==============================
 
 	renderArrowPrev () {
-		if (this.props.currentImage === 0) return null;
+		if (this.props.currentImage === 0 || isMobileDevice()) return null;
 
 		return (
 			<Arrow
@@ -136,11 +182,12 @@ class Lightbox extends Component {
 				onClick={this.gotoPrev}
 				title="Previous (Left arrow key)"
 				type="button"
+				visible={!this.state.userIsIdle}
 			/>
 		);
 	}
 	renderArrowNext () {
-		if (this.props.currentImage === (this.props.images.length - 1)) return null;
+		if (this.props.currentImage === (this.props.images.length - 1) || isMobileDevice()) return null;
 
 		return (
 			<Arrow
@@ -149,6 +196,7 @@ class Lightbox extends Component {
 				onClick={this.gotoNext}
 				title="Previous (Right arrow key)"
 				type="button"
+				visible={!this.state.userIsIdle}
 			/>
 		);
 	}
@@ -167,11 +215,11 @@ class Lightbox extends Component {
 
 		let offsetThumbnails = 0;
 		if (showThumbnails) {
-			offsetThumbnails = theme.thumbnail.size + theme.container.gutter.vertical;
+			offsetThumbnails = theme.wrapper.gutter.vertical;
 		}
 
 		return (
-			<Container
+			<Wrapper
 				key="open"
 				onClick={!!backdropClosesModal && onClose}
 				onTouchEnd={!!backdropClosesModal && onClose}
@@ -181,6 +229,7 @@ class Lightbox extends Component {
 						customControls={customControls}
 						onClose={onClose}
 						showCloseButton={showCloseButton}
+						visible={!this.state.userIsIdle}
 					/>
 					{this.renderImages()}
 				</div>
@@ -188,7 +237,7 @@ class Lightbox extends Component {
 				{this.renderArrowPrev()}
 				{this.renderArrowNext()}
 				<ScrollLock />
-			</Container>
+			</Wrapper>
 		);
 	}
 	renderImages () {
@@ -200,10 +249,11 @@ class Lightbox extends Component {
 			showImageCount,
 			showThumbnails,
 		} = this.props;
+		const { index, loading, userIsIdle } = this.state;
 
 		if (!images || !images.length) return null;
 
-		const image = images[currentImage];
+		const image = images[index || currentImage];
 
 		let srcset;
 		let sizes;
@@ -213,11 +263,12 @@ class Lightbox extends Component {
 			sizes = '100vw';
 		}
 
-		const thumbnailsSize = showThumbnails ? theme.thumbnail.size : 0;
-		const heightOffset = `${theme.header.height + theme.footer.height + thumbnailsSize + (theme.container.gutter.vertical)}px`;
+		const figureStyles = showThumbnails && !userIsIdle ? {
+			transform: `translateY(-${theme.thumbnail.size}px)`,
+		} : {};
 
 		return (
-			<figure className={css(classes.figure)}>
+			<figure className={css(classes.figure)} style={figureStyles}>
 				{/*
 					Re-implement when react warning "unknown props"
 					https://fb.me/react-unknown-prop is resolved
@@ -231,23 +282,32 @@ class Lightbox extends Component {
 					srcSet={srcset}
 					style={{
 						cursor: this.props.onClickImage ? 'pointer' : 'auto',
-						maxHeight: `calc(100vh - ${heightOffset})`,
+						maxHeight: '100vh',
 					}}
 				/>
+				{loading && (
+					<Loading />
+				)}
 				<Footer
 					caption={images[currentImage].caption}
 					countCurrent={currentImage + 1}
 					countSeparator={imageCountSeparator}
 					countTotal={images.length}
 					showCount={showImageCount}
+					visible={!this.state.userIsIdle}
 				/>
 			</figure>
 		);
 	}
 	renderThumbnails () {
 		const { images, currentImage, onClickThumbnail, showThumbnails, thumbnailOffset } = this.props;
+		const { userIsIdle } = this.state;
 
 		if (!showThumbnails) return;
+
+		const styles = userIsIdle ? {
+			transform: `translateY(${theme.thumbnail.size}px)`,
+		} : {};
 
 		return (
 			<PaginatedThumbnails
@@ -255,6 +315,7 @@ class Lightbox extends Component {
 				images={images}
 				offset={thumbnailOffset}
 				onClickThumbnail={onClickThumbnail}
+				style={styles}
 			/>
 		);
 	}
@@ -316,6 +377,14 @@ const classes = StyleSheet.create({
 	},
 	figure: {
 		margin: 0, // remove browser default
+		position: 'relative',
+		transition: 'transform 150ms ease-out',
+	},
+	placeholder: {
+		display: 'block', // removes browser default gutter
+		height: 'auto',
+		margin: '0 auto', // maintain center on very short screens OR very narrow image
+		maxWidth: '100%',
 	},
 	image: {
 		display: 'block', // removes browser default gutter

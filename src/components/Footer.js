@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 import defaults from '../theme';
 import { deepMerge } from '../utils';
+import Container from './Container';
 
 function Footer ({
 	caption,
@@ -9,6 +10,7 @@ function Footer ({
 	countSeparator,
 	countTotal,
 	showCount,
+	visible,
 	...props,
 }, {
 	theme,
@@ -18,7 +20,7 @@ function Footer ({
 	const classes = StyleSheet.create(deepMerge(defaultStyles, theme));
 
 	const imageCount = showCount ? (
-		<div className={css(classes.footerCount)}>
+		<div className={css(classes.count)}>
 			{countCurrent}
 			{countSeparator}
 			{countTotal}
@@ -26,13 +28,15 @@ function Footer ({
 		: <span />;
 
 	return (
-		<div className={css(classes.footer)} {...props}>
-			{caption ? (
-				<figcaption className={css(classes.footerCaption)}>
-					{caption}
-				</figcaption>
-			) : <span />}
-			{imageCount}
+		<div className={css(classes.footer, visible ? classes.visible : null)} {...props}>
+			<Container>
+				{caption ? (
+					<figcaption className={css(classes.caption)}>
+						{caption}
+					</figcaption>
+				) : <span />}
+				{imageCount}
+			</Container>
 		</div>
 	);
 };
@@ -50,24 +54,30 @@ Footer.contextTypes = {
 
 const defaultStyles = {
 	footer: {
-		boxSizing: 'border-box',
+		background: 'linear-gradient(to bottom, hsla(0, 0%, 10%, 0) 0%, hsla(0, 0%, 8%, 0.9) 100%)',
+		bottom: 0,
 		color: defaults.footer.color,
 		cursor: 'auto',
-		display: 'flex',
-		justifyContent: 'space-between',
 		left: 0,
 		lineHeight: 1.3,
-		paddingBottom: defaults.footer.gutter.vertical,
-		paddingLeft: defaults.footer.gutter.horizontal,
-		paddingRight: defaults.footer.gutter.horizontal,
-		paddingTop: defaults.footer.gutter.vertical,
+		opacity: 0,
+		position: 'absolute',
+		right: 0,
+		transition: 'all 150ms',
+		transform: 'translateY(10px)',
+		visibility: 'hidden',
 	},
-	footerCount: {
+	visible: {
+		opacity: 1,
+		transform: 'translateY(0)',
+		visibility: 'visible',
+	},
+	count: {
 		color: defaults.footer.count.color,
 		fontSize: defaults.footer.count.fontSize,
 		paddingLeft: '1em', // add a small gutter for the caption
 	},
-	footerCaption: {
+	caption: {
 		flex: '1 1 0',
 	},
 };
