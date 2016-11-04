@@ -377,7 +377,7 @@ Lightbox.defaultProps = {
 	enableKeyboardInput: true,
 	imageCountSeparator: ' of ',
 	onClickShowNextImage: true,
-	preloadNextImage: false,
+	preloadNextImage: true,
 	showCloseButton: true,
 	showImageCount: true,
 	theme: {},
