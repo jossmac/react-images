@@ -9,13 +9,8 @@ A simple, responsive lightbox component for displaying an array of images.
 
 
 ```bash
-npm install react-images
+npm install --save react-images
 ```
-or 
-```
-yarn add react-images
-```
-
 
 ```jsx
 import React from 'react';
