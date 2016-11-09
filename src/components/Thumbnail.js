@@ -12,10 +12,10 @@ function Thumbnail ({ index, src, thumbnail, active, onClick }, { theme }) {
 		<div
 			className={css(classes.thumbnail, active && classes.thumbnail__active)}
 			onClick={(e) => {
-				e.preventDefault()
-				e.stopPropagation()
-				
-				onClick(index)
+				e.preventDefault();
+				e.stopPropagation();
+
+				onClick(index);
 			}}
 			style={{ backgroundImage: 'url("' + url + '")' }}
 		/>
@@ -34,6 +34,7 @@ Thumbnail.contextTypes = {
 	theme: PropTypes.object.isRequired,
 };
 
+const thumbnailSize = defaults.thumbnail.size - (defaults.thumbnail.gutter * 2);
 const defaultStyles = {
 	thumbnail: {
 		backgroundPosition: 'center',
@@ -42,10 +43,10 @@ const defaultStyles = {
 		boxShadow: 'inset 0 0 0 1px hsla(0,0%,100%,.2)',
 		cursor: 'pointer',
 		display: 'inline-block',
-		height: defaults.thumbnail.size,
+		height: thumbnailSize,
 		margin: defaults.thumbnail.gutter,
 		overflow: 'hidden',
-		width: defaults.thumbnail.size,
+		width: thumbnailSize,
 	},
 	thumbnail__active: {
 		boxShadow: `inset 0 0 0 2px ${defaults.thumbnail.activeBorderColor}`,

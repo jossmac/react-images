@@ -5,22 +5,6 @@ import Thumbnail from './Thumbnail';
 import Arrow from './Arrow';
 import theme from '../theme';
 
-const classes = StyleSheet.create({
-	paginatedThumbnails: {
-		bottom: theme.container.gutter.vertical,
-		height: theme.thumbnail.size,
-		padding: '0 50px',
-		position: 'absolute',
-		textAlign: 'center',
-		whiteSpace: 'nowrap',
-	},
-});
-
-const arrowStyles = {
-	height: theme.thumbnail.size + (theme.thumbnail.gutter * 2),
-	width: 40,
-};
-
 export default class PaginatedThumbnails extends Component {
 	constructor (props) {
 		super(props);
@@ -101,8 +85,7 @@ export default class PaginatedThumbnails extends Component {
 				icon="arrowLeft"
 				onClick={this.gotoPrev}
 				style={arrowStyles}
-				title="Previous (Left arrow key)"
-				type="button"
+				visible
 			/>
 		);
 	}
@@ -118,8 +101,7 @@ export default class PaginatedThumbnails extends Component {
 				icon="arrowRight"
 				onClick={this.gotoNext}
 				style={arrowStyles}
-				title="Previous (Right arrow key)"
-				type="button"
+				visible
 			/>
 		);
 	}
@@ -137,7 +119,7 @@ export default class PaginatedThumbnails extends Component {
 		}
 
 		return (
-			<div className={css(classes.paginatedThumbnails)}>
+			<div className={css(classes.paginatedThumbnails)} style={this.props.style}>
 				{this.renderArrowPrev()}
 				{thumbnails.map((img, idx) => (
 					<Thumbnail key={baseOffset + idx}
@@ -157,4 +139,20 @@ PaginatedThumbnails.propTypes = {
 	images: PropTypes.array,
 	offset: PropTypes.number,
 	onClickThumbnail: PropTypes.func.isRequired,
+};
+
+const classes = StyleSheet.create({
+	paginatedThumbnails: {
+		bottom: theme.wrapper.gutter.vertical,
+		height: theme.thumbnail.size,
+		padding: '0 50px',
+		position: 'absolute',
+		textAlign: 'center',
+		whiteSpace: 'nowrap',
+	},
+});
+
+const arrowStyles = {
+	height: theme.thumbnail.size + (theme.thumbnail.gutter * 2),
+	width: 40,
 };

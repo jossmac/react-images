@@ -1,16 +1,19 @@
 import React, { Component, PropTypes } from 'react';
+import { findDOMNode } from 'react-dom';
 import { css, StyleSheet } from 'aphrodite/no-important';
 import ScrollLock from 'react-scrolllock';
+import screenfull from 'screenfull';
 
 import theme from './theme';
 import Arrow from './components/Arrow';
-import Container from './components/Container';
 import Footer from './components/Footer';
 import Header from './components/Header';
+import Loading from './components/Loading';
 import PaginatedThumbnails from './components/PaginatedThumbnails';
 import Portal from './components/Portal';
+import Wrapper from './components/Wrapper';
 
-import { bindFunctions, canUseDom } from './utils';
+import { bindFunctions, canUseDom, isMobileDevice } from './utils';
 
 class Lightbox extends Component {
 	constructor () {
@@ -20,7 +23,14 @@ class Lightbox extends Component {
 			'gotoNext',
 			'gotoPrev',
 			'handleKeyboardInput',
+			'trackIdleTime',
 		]);
+
+		this.timer;
+
+		this.state = {
+			userIsActive: true,
+		};
 	}
 	getChildContext () {
 		return {
@@ -34,6 +44,9 @@ class Lightbox extends Component {
 	}
 	componentWillReceiveProps (nextProps) {
 		if (!canUseDom) return;
+
+		// maintain state with props
+		this.preloadImage(nextProps.currentImage, true);
 
 		// preload images
 		if (nextProps.preloadNextImage) {
@@ -58,6 +71,12 @@ class Lightbox extends Component {
 			}
 		}
 
+		// check user interaction
+		if (!this.props.isOpen && nextProps.isOpen && nextProps.enableKeyboardInput) {
+			this.trackIdleTime();
+			document.onmousemove = this.trackIdleTime;
+		}
+
 		// add/remove event listeners
 		if (!this.props.isOpen && nextProps.isOpen && nextProps.enableKeyboardInput) {
 			window.addEventListener('keydown', this.handleKeyboardInput);
@@ -76,38 +95,69 @@ class Lightbox extends Component {
 	// METHODS
 	// ==============================
 
-	preloadImage (idx) {
+	trackIdleTime () {
+		// TODO debounce
+
+		const self = this;
+
+		clearTimeout(this.timer);
+
+		this.setState({ userIsActive: true });
+
+		this.timer = setTimeout(function () {
+			self.setState({ userIsActive: false });
+		}, 3000);
+	}
+	preloadImage (idx, upcoming) {
 		const image = this.props.images[idx];
 
+		// check if data available
 		if (!image) return;
 
+		// set props on the image
 		const img = new Image();
-
 		img.src = image.src;
-
 		if (image.srcset) {
 			img.srcset = image.srcset.join();
+		}
+
+		// current image
+		if (upcoming) {
+			this.setState({ loading: true }, () => {
+				img.onload = () => this.setState({
+					index: idx,
+					loading: false,
+					dimensions: {
+						height: img.height,
+						width: img.width,
+					},
+				});
+			});
 		}
 	}
 	gotoNext (event) {
 		if (this.props.currentImage === (this.props.images.length - 1)) return;
+
 		if (event) {
 			event.preventDefault();
 			event.stopPropagation();
 		}
-		this.props.onClickNext();
 
+		this.props.onClickNext();
 	}
 	gotoPrev (event) {
 		if (this.props.currentImage === 0) return;
+
 		if (event) {
 			event.preventDefault();
 			event.stopPropagation();
 		}
-		this.props.onClickPrev();
 
+		this.props.onClickPrev();
 	}
 	handleKeyboardInput (event) {
+		const { enableFullscreen } = this.props;
+
 		if (event.keyCode === 37) { // left
 			this.gotoPrev(event);
 			return true;
@@ -116,6 +166,11 @@ class Lightbox extends Component {
 			return true;
 		} else if (event.keyCode === 27) { // esc
 			this.props.onClose();
+			return true;
+		} else if (event.keyCode === 70 && enableFullscreen) { // F
+			if (screenfull.enabled && this.refs.wrapper) {
+				screenfull.request(findDOMNode(this.refs.wrapper));
+			}
 			return true;
 		}
 		return false;
@@ -127,7 +182,7 @@ class Lightbox extends Component {
 	// ==============================
 
 	renderArrowPrev () {
-		if (this.props.currentImage === 0) return null;
+		if (this.props.currentImage === 0 || isMobileDevice()) return null;
 
 		return (
 			<Arrow
@@ -136,11 +191,12 @@ class Lightbox extends Component {
 				onClick={this.gotoPrev}
 				title="Previous (Left arrow key)"
 				type="button"
+				visible={this.state.userIsActive}
 			/>
 		);
 	}
 	renderArrowNext () {
-		if (this.props.currentImage === (this.props.images.length - 1)) return null;
+		if (this.props.currentImage === (this.props.images.length - 1) || isMobileDevice()) return null;
 
 		return (
 			<Arrow
@@ -149,6 +205,7 @@ class Lightbox extends Component {
 				onClick={this.gotoNext}
 				title="Next (Right arrow key)"
 				type="button"
+				visible={this.state.userIsActive}
 			/>
 		);
 	}
@@ -167,20 +224,22 @@ class Lightbox extends Component {
 
 		let offsetThumbnails = 0;
 		if (showThumbnails) {
-			offsetThumbnails = theme.thumbnail.size + theme.container.gutter.vertical;
+			offsetThumbnails = theme.wrapper.gutter.vertical;
 		}
 
 		return (
-			<Container
+			<Wrapper
 				key="open"
 				onClick={!!backdropClosesModal && onClose}
 				onTouchEnd={!!backdropClosesModal && onClose}
+				ref="wrapper"
 			>
-				<div className={css(classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
+				<div className={css(classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: screenfull.isFullscreen ? 'none' : width }}>
 					<Header
 						customControls={customControls}
 						onClose={onClose}
 						showCloseButton={showCloseButton}
+						visible={this.state.userIsActive}
 					/>
 					{this.renderImages()}
 				</div>
@@ -188,7 +247,7 @@ class Lightbox extends Component {
 				{this.renderArrowPrev()}
 				{this.renderArrowNext()}
 				<ScrollLock />
-			</Container>
+			</Wrapper>
 		);
 	}
 	renderImages () {
@@ -200,10 +259,11 @@ class Lightbox extends Component {
 			showImageCount,
 			showThumbnails,
 		} = this.props;
+		const { index, loading, userIsActive } = this.state;
 
 		if (!images || !images.length) return null;
 
-		const image = images[currentImage];
+		const image = images[index || currentImage];
 
 		let srcset;
 		let sizes;
@@ -213,11 +273,12 @@ class Lightbox extends Component {
 			sizes = '100vw';
 		}
 
-		const thumbnailsSize = showThumbnails ? theme.thumbnail.size : 0;
-		const heightOffset = `${theme.header.height + theme.footer.height + thumbnailsSize + (theme.container.gutter.vertical)}px`;
+		const figureStyles = showThumbnails && userIsActive ? {
+			transform: `translateY(-${theme.thumbnail.size}px)`,
+		} : {};
 
 		return (
-			<figure className={css(classes.figure)}>
+			<figure className={css(classes.figure)} style={figureStyles}>
 				{/*
 					Re-implement when react warning "unknown props"
 					https://fb.me/react-unknown-prop is resolved
@@ -231,23 +292,37 @@ class Lightbox extends Component {
 					srcSet={srcset}
 					style={{
 						cursor: this.props.onClickImage ? 'pointer' : 'auto',
-						maxHeight: `calc(100vh - ${heightOffset})`,
+						maxHeight: '100vh',
 					}}
 				/>
+				{loading && (
+					<Loading />
+				)}
 				<Footer
 					caption={images[currentImage].caption}
 					countCurrent={currentImage + 1}
 					countSeparator={imageCountSeparator}
 					countTotal={images.length}
 					showCount={showImageCount}
+					visible={this.state.userIsActive}
 				/>
 			</figure>
 		);
 	}
 	renderThumbnails () {
 		const { images, currentImage, onClickThumbnail, showThumbnails, thumbnailOffset } = this.props;
+		const { userIsActive } = this.state;
 
 		if (!showThumbnails) return;
+
+		const styles = !userIsActive ? {
+			opacity: 0,
+			transition: 'all 200ms',
+			transform: `translateY(${theme.thumbnail.size}px)`,
+		} : {
+			opacity: 1,
+			transition: 'all 200ms',
+		};
 
 		return (
 			<PaginatedThumbnails
@@ -255,6 +330,7 @@ class Lightbox extends Component {
 				images={images}
 				offset={thumbnailOffset}
 				onClickThumbnail={onClickThumbnail}
+				style={styles}
 			/>
 		);
 	}
@@ -271,6 +347,7 @@ Lightbox.propTypes = {
 	backdropClosesModal: PropTypes.bool,
 	currentImage: PropTypes.number,
 	customControls: PropTypes.arrayOf(PropTypes.node),
+	enableFullscreen: PropTypes.bool,
 	enableKeyboardInput: PropTypes.bool,
 	imageCountSeparator: PropTypes.string,
 	images: PropTypes.arrayOf(
@@ -296,6 +373,7 @@ Lightbox.propTypes = {
 };
 Lightbox.defaultProps = {
 	currentImage: 0,
+	enableFullscreen: true,
 	enableKeyboardInput: true,
 	imageCountSeparator: ' of ',
 	onClickShowNextImage: true,
@@ -304,7 +382,7 @@ Lightbox.defaultProps = {
 	showImageCount: true,
 	theme: {},
 	thumbnailOffset: 2,
-	width: 1024,
+	width: 1280,
 };
 Lightbox.childContextTypes = {
 	theme: PropTypes.object.isRequired,
@@ -312,10 +390,19 @@ Lightbox.childContextTypes = {
 
 const classes = StyleSheet.create({
 	content: {
+		overflow: 'hidden',
 		position: 'relative',
 	},
 	figure: {
 		margin: 0, // remove browser default
+		position: 'relative',
+		transition: 'transform 200ms',
+	},
+	placeholder: {
+		display: 'block', // removes browser default gutter
+		height: 'auto',
+		margin: '0 auto', // maintain center on very short screens OR very narrow image
+		maxWidth: '100%',
 	},
 	image: {
 		display: 'block', // removes browser default gutter
