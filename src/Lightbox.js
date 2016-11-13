@@ -1,16 +1,15 @@
 import React, { Component, PropTypes } from 'react';
 import { findDOMNode } from 'react-dom';
-import { css, StyleSheet } from 'aphrodite/no-important';
 import ScrollLock from 'react-scrolllock';
 import screenfull from 'screenfull';
 
 import theme from './theme';
+
 import Arrow from './components/Arrow';
-import Footer from './components/Footer';
-import Header from './components/Header';
-import Loading from './components/Loading';
+import ImageContainer from './components/ImageContainer';
 import PaginatedThumbnails from './components/PaginatedThumbnails';
 import Portal from './components/Portal';
+import SwipeContainer from './components/SwipeContainer';
 import Wrapper from './components/Wrapper';
 
 import { bindFunctions, canUseDom, isMobileDevice } from './utils';
@@ -19,9 +18,16 @@ class Lightbox extends Component {
 	constructor () {
 		super();
 
+		this.state = {
+			swipeDeltaX: 0,
+		};
+
 		bindFunctions.call(this, [
+			'onClose',
 			'gotoNext',
 			'gotoPrev',
+			'onSwiping',
+			'onStopSwiping',
 			'handleKeyboardInput',
 			'trackIdleTime',
 		]);
@@ -47,6 +53,10 @@ class Lightbox extends Component {
 
 		// maintain state with props
 		this.preloadImage(nextProps.currentImage, true);
+
+		if (nextProps.currentImage !== this.props.currentImage) {
+			this.resetSwipe();
+		}
 
 		// preload images
 		if (nextProps.preloadNextImage) {
@@ -135,9 +145,16 @@ class Lightbox extends Component {
 			});
 		}
 	}
+	onClose (event) {
+		if (event) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+		this.resetSwipe();
+		this.props.onClose();
+	}
 	gotoNext (event) {
-		if (this.props.currentImage === (this.props.images.length - 1)) return;
-
+		if (this.isLastImage()) return;
 		if (event) {
 			event.preventDefault();
 			event.stopPropagation();
@@ -146,8 +163,7 @@ class Lightbox extends Component {
 		this.props.onClickNext();
 	}
 	gotoPrev (event) {
-		if (this.props.currentImage === 0) return;
-
+		if (this.isFirstImage()) return;
 		if (event) {
 			event.preventDefault();
 			event.stopPropagation();
@@ -176,13 +192,53 @@ class Lightbox extends Component {
 		return false;
 
 	}
+	onSwiping (event, deltaX, deltaY, absX, absY, velocity) {
+		if ((this.isFirstImage() && deltaX < 0) || (this.isLastImage() && deltaX > 0)) return;
+		console.log('deltaX ' + deltaX + '	velocity ' + velocity);
+		this.setState({
+			swipeDeltaX: -deltaX,
+		});
+
+	}
+	onStopSwiping (event, x, y, isFlick, velocity) {
+		if (event) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+
+		const quickSwipe = velocity > 0.7 && Math.abs(this.state.swipeDeltaX) > window.innerWidth * 0.3;
+
+		const stayAtCurrentImage = !quickSwipe && Math.abs(this.state.swipeDeltaX) < window.innerWidth * 0.5;
+		if (stayAtCurrentImage) {
+			this.resetSwipe();
+		} else if (this.state.swipeDeltaX < 0) {
+			this.gotoNext();
+		} else if (this.state.swipeDeltaX > 0) {
+			this.gotoPrev();
+		}
+
+	}
+	resetSwipe () {
+		this.setState({
+			swipeDeltaX: 0,
+		});
+	}
+
+	isFirstImage () {
+		return this.props.currentImage === 0;
+
+	}
+	isLastImage () {
+		return this.props.currentImage === (this.props.images.length - 1);
+
+	}
 
 	// ==============================
 	// RENDERERS
 	// ==============================
 
 	renderArrowPrev () {
-		if (this.props.currentImage === 0 || isMobileDevice()) return null;
+		if (this.isFirstImage() || isMobileDevice()) return null;
 
 		return (
 			<Arrow
@@ -196,7 +252,7 @@ class Lightbox extends Component {
 		);
 	}
 	renderArrowNext () {
-		if (this.props.currentImage === (this.props.images.length - 1) || isMobileDevice()) return null;
+		if (this.isLastImage() || isMobileDevice()) return null;
 
 		return (
 			<Arrow
@@ -212,52 +268,9 @@ class Lightbox extends Component {
 	renderDialog () {
 		const {
 			backdropClosesModal,
-			customControls,
-			isOpen,
-			onClose,
-			showCloseButton,
-			showThumbnails,
-			width,
-		} = this.props;
-
-		if (!isOpen) return <span key="closed" />;
-
-		let offsetThumbnails = 0;
-		if (showThumbnails) {
-			offsetThumbnails = theme.wrapper.gutter.vertical;
-		}
-
-		return (
-			<Wrapper
-				key="open"
-				onClick={!!backdropClosesModal && onClose}
-				onTouchEnd={!!backdropClosesModal && onClose}
-				ref="wrapper"
-			>
-				<div className={css(classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: screenfull.isFullscreen ? 'none' : width }}>
-					<Header
-						customControls={customControls}
-						onClose={onClose}
-						showCloseButton={showCloseButton}
-						visible={this.state.userIsActive}
-					/>
-					{this.renderImages()}
-				</div>
-				{this.renderThumbnails()}
-				{this.renderArrowPrev()}
-				{this.renderArrowNext()}
-				<ScrollLock />
-			</Wrapper>
-		);
-	}
-	renderImages () {
-		const {
 			currentImage,
 			images,
-			imageCountSeparator,
-			onClickImage,
-			showImageCount,
-			showThumbnails,
+			isOpen,
 		} = this.props;
 		const { index, loading, userIsActive } = this.state;
 
@@ -265,48 +278,41 @@ class Lightbox extends Component {
 
 		const image = images[index || currentImage];
 
-		let srcset;
-		let sizes;
-
-		if (image.srcset) {
-			srcset = image.srcset.join();
-			sizes = '100vw';
-		}
-
-		const figureStyles = showThumbnails && userIsActive ? {
-			transform: `translateY(-${theme.thumbnail.size}px)`,
-		} : {};
+		if (!isOpen) return <span key="closed" />;
 
 		return (
-			<figure className={css(classes.figure)} style={figureStyles}>
-				{/*
-					Re-implement when react warning "unknown props"
-					https://fb.me/react-unknown-prop is resolved
-					<Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
-				*/}
-				<img
-					className={css(classes.image)}
-					onClick={!!onClickImage && onClickImage}
-					sizes={sizes}
-					src={image.src}
-					srcSet={srcset}
-					style={{
-						cursor: this.props.onClickImage ? 'pointer' : 'auto',
-						maxHeight: '100vh',
-					}}
-				/>
-				{loading && (
-					<Loading />
+			<Wrapper
+				key="wrapper"
+				onClick={!!backdropClosesModal && this.onClose}
+				onTouchEnd={!!backdropClosesModal && this.onClose}
+				ref="wrapper"
+			>
+				{isMobileDevice() ? (
+					<SwipeContainer
+						deltaX={this.state.swipeDeltaX}
+						onClose={this.onClose}
+						onStopSwiping={this.onStopSwiping}
+						onSwiping={this.onSwiping}
+						{...this.props}
+					/>
+				) : (
+					<ImageContainer
+						image={image}
+						index={index}
+						isFullscreen={screenfull.isFullscreen}
+						isVisible
+						key={index}
+						loading={loading}
+						marginBottom={0}
+						userIsActive={userIsActive}
+						{...this.props}
+					/>
 				)}
-				<Footer
-					caption={images[currentImage].caption}
-					countCurrent={currentImage + 1}
-					countSeparator={imageCountSeparator}
-					countTotal={images.length}
-					showCount={showImageCount}
-					visible={this.state.userIsActive}
-				/>
-			</figure>
+				{this.renderThumbnails()}
+				{this.renderArrowPrev()}
+				{this.renderArrowNext()}
+				<ScrollLock />
+			</Wrapper>
 		);
 	}
 	renderThumbnails () {
@@ -387,33 +393,5 @@ Lightbox.defaultProps = {
 Lightbox.childContextTypes = {
 	theme: PropTypes.object.isRequired,
 };
-
-const classes = StyleSheet.create({
-	content: {
-		overflow: 'hidden',
-		position: 'relative',
-	},
-	figure: {
-		margin: 0, // remove browser default
-		position: 'relative',
-		transition: 'transform 200ms',
-	},
-	placeholder: {
-		display: 'block', // removes browser default gutter
-		height: 'auto',
-		margin: '0 auto', // maintain center on very short screens OR very narrow image
-		maxWidth: '100%',
-	},
-	image: {
-		display: 'block', // removes browser default gutter
-		height: 'auto',
-		margin: '0 auto', // maintain center on very short screens OR very narrow image
-		maxWidth: '100%',
-
-		// disable user select
-		WebkitTouchCallout: 'none',
-		userSelect: 'none',
-	},
-});
 
 export default Lightbox;

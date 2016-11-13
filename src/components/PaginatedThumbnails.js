@@ -144,8 +144,10 @@ PaginatedThumbnails.propTypes = {
 const classes = StyleSheet.create({
 	paginatedThumbnails: {
 		bottom: theme.wrapper.gutter.vertical,
+		display: 'flex',
 		height: theme.thumbnail.size,
-		padding: '0 50px',
+		justifyContent: 'center',
+		padding: `0 ${theme.thumbnail.size}px`,
 		position: 'absolute',
 		textAlign: 'center',
 		whiteSpace: 'nowrap',
