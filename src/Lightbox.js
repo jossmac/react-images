@@ -18,10 +18,6 @@ class Lightbox extends Component {
 	constructor () {
 		super();
 
-		this.state = {
-			swipeDeltaX: 0,
-		};
-
 		bindFunctions.call(this, [
 			'onClose',
 			'gotoNext',
@@ -35,6 +31,7 @@ class Lightbox extends Component {
 		this.timer;
 
 		this.state = {
+			swipeDeltaX: 0,
 			userIsActive: true,
 		};
 	}
