@@ -1,10 +1,15 @@
 # React-Images
 
-### v0.5.1 / 2016-21-15
+### v0.5.2 / 2016-11-17
+- Fix: keydown listeners thanks to [aknuds1](https:github.com/aknuds1) [archr](https:github.com/archr)
+- Fix: thumbnail click propagation thanks to [GregoryPotdevin](https://github.com/GregoryPotdevin)
+- Update: use abstracted ScrollLock component
+
+### v0.5.1 / 2016-08-21
 * Feature: Support theming with aphrodite classes
 * Examples: Update options with new new prop details
 
-### v0.5.0 / 2016-20-15
+### v0.5.0 / 2016-08-20
 * Feature: Added a thumbnail preview beneath the lightbox thanks to [GregoryPotdevin](https://github.com/GregoryPotdevin)
 * Feature: Re-implemented the layout using `flexbox`
 * Examples: Replaced local images with hot-linked Unsplash photographs
