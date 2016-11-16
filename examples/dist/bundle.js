@@ -1667,7 +1667,7 @@ var defaultStyles = {
 
 module.exports = Arrow;
 
-},{"../theme":37,"../utils":42,"./Icon":28,"aphrodite/no-important":6,"react":undefined}],25:[function(require,module,exports){
+},{"../theme":37,"../utils":41,"./Icon":28,"aphrodite/no-important":6,"react":undefined}],25:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -1726,7 +1726,7 @@ var defaultStyles = {
 
 module.exports = Container;
 
-},{"../theme":37,"../utils":42,"aphrodite/no-important":6,"react":undefined}],26:[function(require,module,exports){
+},{"../theme":37,"../utils":41,"aphrodite/no-important":6,"react":undefined}],26:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -1819,7 +1819,7 @@ var defaultStyles = {
 
 module.exports = Footer;
 
-},{"../theme":37,"../utils":42,"aphrodite/no-important":6,"react":undefined}],27:[function(require,module,exports){
+},{"../theme":37,"../utils":41,"aphrodite/no-important":6,"react":undefined}],27:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -1905,7 +1905,7 @@ var defaultStyles = {
 
 module.exports = Header;
 
-},{"../theme":37,"../utils":42,"./Icon":28,"aphrodite/no-important":6,"react":undefined}],28:[function(require,module,exports){
+},{"../theme":37,"../utils":41,"./Icon":28,"aphrodite/no-important":6,"react":undefined}],28:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -2370,8 +2370,11 @@ function Thumbnail(_ref, _ref2) {
 
 	return _react2['default'].createElement('div', {
 		className: (0, _aphroditeNoImportant.css)(classes.thumbnail, active && classes.thumbnail__active),
-		onClick: function () {
-			return onClick(index);
+		onClick: function (e) {
+			e.preventDefault();
+			e.stopPropagation();
+
+			onClick(index);
 		},
 		style: { backgroundImage: 'url("' + url + '")' }
 	});
@@ -2410,7 +2413,7 @@ var defaultStyles = {
 exports['default'] = Thumbnail;
 module.exports = exports['default'];
 
-},{"../theme":37,"../utils":42,"aphrodite/no-important":6,"react":undefined}],33:[function(require,module,exports){
+},{"../theme":37,"../utils":41,"aphrodite/no-important":6,"react":undefined}],33:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2541,60 +2544,13 @@ module.exports = function bindFunctions(functions) {
 };
 
 },{}],39:[function(require,module,exports){
-// Don't try and apply overflow/padding if the scroll is already blocked
-'use strict';
-
-var bodyBlocked = false;
-
-var allowScroll = function allowScroll() {
-	if (typeof window === 'undefined' || !bodyBlocked) return;
-
-	//  FIXME iOS ignores overflow on body
-
-	try {
-		var target = document.body;
-
-		target.style.paddingRight = '';
-		target.style.overflowY = '';
-
-		bodyBlocked = false;
-	} catch (err) {
-		console.error('Failed to find body element. Err:', err);
-	}
-};
-
-var blockScroll = function blockScroll() {
-	if (typeof window === 'undefined' || bodyBlocked) return;
-
-	//  FIXME iOS ignores overflow on body
-
-	try {
-		var scrollBarWidth = window.innerWidth - document.body.clientWidth;
-
-		var target = document.body;
-
-		target.style.paddingRight = scrollBarWidth + 'px';
-		target.style.overflowY = 'hidden';
-
-		bodyBlocked = true;
-	} catch (err) {
-		console.error('Failed to find body element. Err:', err);
-	}
-};
-
-module.exports = {
-	allowScroll: allowScroll,
-	blockScroll: blockScroll
-};
-
-},{}],40:[function(require,module,exports){
 // Return true if window + document
 
 'use strict';
 
 module.exports = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 
-},{}],41:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -2621,7 +2577,7 @@ function deepMerge(target) {
 
 module.exports = deepMerge;
 
-},{}],42:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -2629,10 +2585,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 var _bindFunctions = require('./bindFunctions');
 
 var _bindFunctions2 = _interopRequireDefault(_bindFunctions);
-
-var _bodyScroll = require('./bodyScroll');
-
-var _bodyScroll2 = _interopRequireDefault(_bodyScroll);
 
 var _canUseDom = require('./canUseDom');
 
@@ -2644,12 +2596,11 @@ var _deepMerge2 = _interopRequireDefault(_deepMerge);
 
 module.exports = {
 	bindFunctions: _bindFunctions2['default'],
-	bodyScroll: _bodyScroll2['default'],
 	canUseDom: _canUseDom2['default'],
 	deepMerge: _deepMerge2['default']
 };
 
-},{"./bindFunctions":38,"./bodyScroll":39,"./canUseDom":40,"./deepMerge":41}],"react-images":[function(require,module,exports){
+},{"./bindFunctions":38,"./canUseDom":39,"./deepMerge":40}],"react-images":[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -2672,7 +2623,9 @@ var _react2 = _interopRequireDefault(_react);
 
 var _aphroditeNoImportant = require('aphrodite/no-important');
 
-// import Swipeable from 'react-swipeable';
+var _reactScrolllock = require('react-scrolllock');
+
+var _reactScrolllock2 = _interopRequireDefault(_reactScrolllock);
 
 var _theme = require('./theme');
 
@@ -2723,6 +2676,13 @@ var Lightbox = (function (_Component) {
 			};
 		}
 	}, {
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			if (this.props.isOpen && this.props.enableKeyboardInput) {
+				window.addEventListener('keydown', this.handleKeyboardInput);
+			}
+		}
+	}, {
 		key: 'componentWillReceiveProps',
 		value: function componentWillReceiveProps(nextProps) {
 			if (!_utils.canUseDom) return;
@@ -2750,18 +2710,19 @@ var Lightbox = (function (_Component) {
 				}
 			}
 
-			// add event listeners
-			if (nextProps.enableKeyboardInput) {
+			// add/remove event listeners
+			if (!this.props.isOpen && nextProps.isOpen && nextProps.enableKeyboardInput) {
 				window.addEventListener('keydown', this.handleKeyboardInput);
-			} else {
+			}
+			if (!nextProps.isOpen && nextProps.enableKeyboardInput) {
 				window.removeEventListener('keydown', this.handleKeyboardInput);
 			}
-
-			// handle body scroll
-			if (nextProps.isOpen) {
-				_utils.bodyScroll.blockScroll();
-			} else {
-				_utils.bodyScroll.allowScroll();
+		}
+	}, {
+		key: 'componentWillUnmount',
+		value: function componentWillUnmount() {
+			if (this.props.enableKeyboardInput) {
+				window.removeEventListener('keydown', this.handleKeyboardInput);
 			}
 		}
 
@@ -2808,12 +2769,15 @@ var Lightbox = (function (_Component) {
 		key: 'handleKeyboardInput',
 		value: function handleKeyboardInput(event) {
 			if (event.keyCode === 37) {
+				// left
 				this.gotoPrev(event);
 				return true;
 			} else if (event.keyCode === 39) {
+				// right
 				this.gotoNext(event);
 				return true;
 			} else if (event.keyCode === 27) {
+				// esc
 				this.props.onClose();
 				return true;
 			}
@@ -2888,7 +2852,8 @@ var Lightbox = (function (_Component) {
 				),
 				this.renderThumbnails(),
 				this.renderArrowPrev(),
-				this.renderArrowNext()
+				this.renderArrowNext(),
+				_react2['default'].createElement(_reactScrolllock2['default'], null)
 			);
 		}
 	}, {
@@ -2962,7 +2927,6 @@ var Lightbox = (function (_Component) {
 	}, {
 		key: 'render',
 		value: function render() {
-			// return this.renderDialog();
 			return _react2['default'].createElement(
 				_componentsPortal2['default'],
 				null,
@@ -2992,7 +2956,6 @@ Lightbox.propTypes = {
 	onClickPrev: _react.PropTypes.func,
 	onClose: _react.PropTypes.func.isRequired,
 	preloadNextImage: _react.PropTypes.bool,
-	sheet: _react.PropTypes.object,
 	showCloseButton: _react.PropTypes.bool,
 	showImageCount: _react.PropTypes.bool,
 	showThumbnails: _react.PropTypes.bool,
@@ -3043,4 +3006,4 @@ https://fb.me/react-unknown-prop is resolved
 <Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
 */
 
-},{"./components/Arrow":24,"./components/Container":25,"./components/Footer":26,"./components/Header":27,"./components/PaginatedThumbnails":29,"./components/Portal":31,"./theme":37,"./utils":42,"aphrodite/no-important":6,"react":undefined}]},{},[]);
+},{"./components/Arrow":24,"./components/Container":25,"./components/Footer":26,"./components/Header":27,"./components/PaginatedThumbnails":29,"./components/Portal":31,"./theme":37,"./utils":41,"aphrodite/no-important":6,"react":undefined,"react-scrolllock":undefined}]},{},[]);

@@ -1582,7 +1582,9 @@ var _react2 = _interopRequireDefault(_react);
 
 var _aphroditeNoImportant = require('aphrodite/no-important');
 
-// import Swipeable from 'react-swipeable';
+var _reactScrolllock = require('react-scrolllock');
+
+var _reactScrolllock2 = _interopRequireDefault(_reactScrolllock);
 
 var _theme = require('./theme');
 
@@ -1633,6 +1635,13 @@ var Lightbox = (function (_Component) {
 			};
 		}
 	}, {
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			if (this.props.isOpen && this.props.enableKeyboardInput) {
+				window.addEventListener('keydown', this.handleKeyboardInput);
+			}
+		}
+	}, {
 		key: 'componentWillReceiveProps',
 		value: function componentWillReceiveProps(nextProps) {
 			if (!_utils.canUseDom) return;
@@ -1660,18 +1669,19 @@ var Lightbox = (function (_Component) {
 				}
 			}
 
-			// add event listeners
-			if (nextProps.enableKeyboardInput) {
+			// add/remove event listeners
+			if (!this.props.isOpen && nextProps.isOpen && nextProps.enableKeyboardInput) {
 				window.addEventListener('keydown', this.handleKeyboardInput);
-			} else {
+			}
+			if (!nextProps.isOpen && nextProps.enableKeyboardInput) {
 				window.removeEventListener('keydown', this.handleKeyboardInput);
 			}
-
-			// handle body scroll
-			if (nextProps.isOpen) {
-				_utils.bodyScroll.blockScroll();
-			} else {
-				_utils.bodyScroll.allowScroll();
+		}
+	}, {
+		key: 'componentWillUnmount',
+		value: function componentWillUnmount() {
+			if (this.props.enableKeyboardInput) {
+				window.removeEventListener('keydown', this.handleKeyboardInput);
 			}
 		}
 
@@ -1718,12 +1728,15 @@ var Lightbox = (function (_Component) {
 		key: 'handleKeyboardInput',
 		value: function handleKeyboardInput(event) {
 			if (event.keyCode === 37) {
+				// left
 				this.gotoPrev(event);
 				return true;
 			} else if (event.keyCode === 39) {
+				// right
 				this.gotoNext(event);
 				return true;
 			} else if (event.keyCode === 27) {
+				// esc
 				this.props.onClose();
 				return true;
 			}
@@ -1798,7 +1811,8 @@ var Lightbox = (function (_Component) {
 				),
 				this.renderThumbnails(),
 				this.renderArrowPrev(),
-				this.renderArrowNext()
+				this.renderArrowNext(),
+				_react2['default'].createElement(_reactScrolllock2['default'], null)
 			);
 		}
 	}, {
@@ -1872,7 +1886,6 @@ var Lightbox = (function (_Component) {
 	}, {
 		key: 'render',
 		value: function render() {
-			// return this.renderDialog();
 			return _react2['default'].createElement(
 				_componentsPortal2['default'],
 				null,
@@ -1902,7 +1915,6 @@ Lightbox.propTypes = {
 	onClickPrev: _react.PropTypes.func,
 	onClose: _react.PropTypes.func.isRequired,
 	preloadNextImage: _react.PropTypes.bool,
-	sheet: _react.PropTypes.object,
 	showCloseButton: _react.PropTypes.bool,
 	showImageCount: _react.PropTypes.bool,
 	showThumbnails: _react.PropTypes.bool,
@@ -1954,7 +1966,7 @@ https://fb.me/react-unknown-prop is resolved
 */
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./components/Arrow":25,"./components/Container":26,"./components/Footer":27,"./components/Header":28,"./components/PaginatedThumbnails":30,"./components/Portal":32,"./theme":38,"./utils":43,"aphrodite/no-important":6}],25:[function(require,module,exports){
+},{"./components/Arrow":25,"./components/Container":26,"./components/Footer":27,"./components/Header":28,"./components/PaginatedThumbnails":30,"./components/Portal":32,"./theme":38,"./utils":42,"aphrodite/no-important":6,"react-scrolllock":undefined}],25:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2065,7 +2077,7 @@ var defaultStyles = {
 module.exports = Arrow;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../theme":38,"../utils":43,"./Icon":29,"aphrodite/no-important":6}],26:[function(require,module,exports){
+},{"../theme":38,"../utils":42,"./Icon":29,"aphrodite/no-important":6}],26:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2126,7 +2138,7 @@ var defaultStyles = {
 module.exports = Container;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../theme":38,"../utils":43,"aphrodite/no-important":6}],27:[function(require,module,exports){
+},{"../theme":38,"../utils":42,"aphrodite/no-important":6}],27:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2221,7 +2233,7 @@ var defaultStyles = {
 module.exports = Footer;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../theme":38,"../utils":43,"aphrodite/no-important":6}],28:[function(require,module,exports){
+},{"../theme":38,"../utils":42,"aphrodite/no-important":6}],28:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2309,7 +2321,7 @@ var defaultStyles = {
 module.exports = Header;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../theme":38,"../utils":43,"./Icon":29,"aphrodite/no-important":6}],29:[function(require,module,exports){
+},{"../theme":38,"../utils":42,"./Icon":29,"aphrodite/no-important":6}],29:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2783,8 +2795,11 @@ function Thumbnail(_ref, _ref2) {
 
 	return _react2['default'].createElement('div', {
 		className: (0, _aphroditeNoImportant.css)(classes.thumbnail, active && classes.thumbnail__active),
-		onClick: function () {
-			return onClick(index);
+		onClick: function (e) {
+			e.preventDefault();
+			e.stopPropagation();
+
+			onClick(index);
 		},
 		style: { backgroundImage: 'url("' + url + '")' }
 	});
@@ -2824,7 +2839,7 @@ exports['default'] = Thumbnail;
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../theme":38,"../utils":43,"aphrodite/no-important":6}],34:[function(require,module,exports){
+},{"../theme":38,"../utils":42,"aphrodite/no-important":6}],34:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2955,60 +2970,13 @@ module.exports = function bindFunctions(functions) {
 };
 
 },{}],40:[function(require,module,exports){
-// Don't try and apply overflow/padding if the scroll is already blocked
-'use strict';
-
-var bodyBlocked = false;
-
-var allowScroll = function allowScroll() {
-	if (typeof window === 'undefined' || !bodyBlocked) return;
-
-	//  FIXME iOS ignores overflow on body
-
-	try {
-		var target = document.body;
-
-		target.style.paddingRight = '';
-		target.style.overflowY = '';
-
-		bodyBlocked = false;
-	} catch (err) {
-		console.error('Failed to find body element. Err:', err);
-	}
-};
-
-var blockScroll = function blockScroll() {
-	if (typeof window === 'undefined' || bodyBlocked) return;
-
-	//  FIXME iOS ignores overflow on body
-
-	try {
-		var scrollBarWidth = window.innerWidth - document.body.clientWidth;
-
-		var target = document.body;
-
-		target.style.paddingRight = scrollBarWidth + 'px';
-		target.style.overflowY = 'hidden';
-
-		bodyBlocked = true;
-	} catch (err) {
-		console.error('Failed to find body element. Err:', err);
-	}
-};
-
-module.exports = {
-	allowScroll: allowScroll,
-	blockScroll: blockScroll
-};
-
-},{}],41:[function(require,module,exports){
 // Return true if window + document
 
 'use strict';
 
 module.exports = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 
-},{}],42:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -3035,7 +3003,7 @@ function deepMerge(target) {
 
 module.exports = deepMerge;
 
-},{}],43:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -3043,10 +3011,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 var _bindFunctions = require('./bindFunctions');
 
 var _bindFunctions2 = _interopRequireDefault(_bindFunctions);
-
-var _bodyScroll = require('./bodyScroll');
-
-var _bodyScroll2 = _interopRequireDefault(_bodyScroll);
 
 var _canUseDom = require('./canUseDom');
 
@@ -3058,10 +3022,9 @@ var _deepMerge2 = _interopRequireDefault(_deepMerge);
 
 module.exports = {
 	bindFunctions: _bindFunctions2['default'],
-	bodyScroll: _bodyScroll2['default'],
 	canUseDom: _canUseDom2['default'],
 	deepMerge: _deepMerge2['default']
 };
 
-},{"./bindFunctions":39,"./bodyScroll":40,"./canUseDom":41,"./deepMerge":42}]},{},[24])(24)
+},{"./bindFunctions":39,"./canUseDom":40,"./deepMerge":41}]},{},[24])(24)
 });
