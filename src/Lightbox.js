@@ -147,7 +147,7 @@ class Lightbox extends Component {
 				direction="right"
 				icon="arrowRight"
 				onClick={this.gotoNext}
-				title="Previous (Right arrow key)"
+				title="Next (Right arrow key)"
 				type="button"
 			/>
 		);
