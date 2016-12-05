@@ -134,7 +134,7 @@ class Lightbox extends Component {
 				direction="left"
 				icon="arrowLeft"
 				onClick={this.gotoPrev}
-				title="Previous (Left arrow key)"
+				title={this.props.leftArrowTitle || "Previous (Left arrow key)"}
 				type="button"
 			/>
 		);
@@ -147,7 +147,7 @@ class Lightbox extends Component {
 				direction="right"
 				icon="arrowRight"
 				onClick={this.gotoNext}
-				title="Next (Right arrow key)"
+				title={this.props.rightArrowTitle || "Next (Right arrow key)"}
 				type="button"
 			/>
 		);
@@ -181,6 +181,7 @@ class Lightbox extends Component {
 						customControls={customControls}
 						onClose={onClose}
 						showCloseButton={showCloseButton}
+						closeTitle={this.props.closeButtonTitle}
 					/>
 					{this.renderImages()}
 				</div>
@@ -291,8 +292,11 @@ Lightbox.propTypes = {
 	showImageCount: PropTypes.bool,
 	showThumbnails: PropTypes.bool,
 	theme: PropTypes.object,
-	thumbnailOffset: PropTypes.number,
-	width: PropTypes.number,
+ 	thumbnailOffset: PropTypes.number,
+ 	width: PropTypes.number,
+ 	rightArrowTitle: PropTypes.string,
+ 	leftArrowTitle: PropTypes.string,
+ 	closeButtonTitle: PropTypes.string,
 };
 Lightbox.defaultProps = {
 	currentImage: 0,
