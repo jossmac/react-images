@@ -17,6 +17,7 @@ function Header ({
 
 	return (
 		<div className={css(classes.header)} {...props}>
+			<h3 className={css(classes.headerTitle)}>Galeria de fotos</h3>
 			{customControls ? customControls : <span />}
 			{!!showCloseButton && (
 				<button
@@ -45,6 +46,12 @@ const defaultStyles = {
 		display: 'flex',
 		justifyContent: 'space-between',
 		height: defaults.header.height,
+	},
+	headerTitle: {
+		fontSize: '14px',
+		margin: 0,
+		position: 'absolute',
+		top: '15px'
 	},
 	close: {
 		background: 'none',
