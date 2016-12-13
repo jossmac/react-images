@@ -2244,7 +2244,7 @@ function Footer(_ref, _ref2) {
 
 	var imageCount = showCount ? _react2['default'].createElement(
 		'div',
-		{ className: (0, _aphroditeNoImportant.css)(classes.footerCount) },
+		{ className: (0, _aphroditeNoImportant.css)(classes.footerCount) + ' lightboxCounter' },
 		countCurrent,
 		countSeparator,
 		countTotal
