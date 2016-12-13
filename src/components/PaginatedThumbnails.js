@@ -137,7 +137,7 @@ export default class PaginatedThumbnails extends Component {
 		}
 
 		return (
-			<div className={css(classes.paginatedThumbnails)}>
+			<div className={`${css(classes.paginatedThumbnails)} lightboxPaginated`}>
 				{this.renderArrowPrev()}
 				{thumbnails.map((img, idx) => (
 					<Thumbnail key={baseOffset + idx}
