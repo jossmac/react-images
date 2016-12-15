@@ -21,21 +21,21 @@ Container.contextTypes = {
 
 const defaultStyles = {
 	container: {
-		alignItems: 'center',
-		backgroundColor: defaults.container.background,
 		boxSizing: 'border-box',
 		display: 'flex',
-		height: '100%',
-		justifyContent: 'center',
-		left: 0,
-		paddingBottom: defaults.container.gutter.vertical,
-		paddingLeft: defaults.container.gutter.horizontal,
-		paddingRight: defaults.container.gutter.horizontal,
-		paddingTop: defaults.container.gutter.vertical,
-		position: 'fixed',
-		top: 0,
-		width: '100%',
-		zIndex: defaults.container.zIndex,
+		justifyContent: 'space-between',
+		margin: '0 auto',
+		paddingBottom: defaults.common.gutter.vertical,
+		paddingLeft: defaults.common.gutter.horizontal,
+		paddingRight: defaults.common.gutter.horizontal,
+		paddingTop: defaults.common.gutter.vertical,
+
+		'@media (max-width: 500px)': {
+			paddingBottom: Math.floor(defaults.common.gutter.vertical / 2),
+			paddingLeft: Math.floor(defaults.common.gutter.horizontal / 2),
+			paddingRight: Math.floor(defaults.common.gutter.horizontal / 2),
+			paddingTop: Math.floor(defaults.common.gutter.vertical / 2),
+		},
 	},
 };
 

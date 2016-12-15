@@ -28,14 +28,14 @@ Thumbnails.propTypes = {
 
 const classes = StyleSheet.create({
 	thumbnails: {
-		bottom: theme.container.gutter.vertical,
+		bottom: theme.wrapper.gutter.vertical,
 		color: 'white',
 		height: theme.thumbnail.size,
-		left: theme.container.gutter.horizontal,
+		left: theme.wrapper.gutter.horizontal,
 		overflowX: 'scroll',
 		overflowY: 'hidden',
 		position: 'absolute',
-		right: theme.container.gutter.horizontal,
+		right: theme.wrapper.gutter.horizontal,
 		textAlign: 'center',
 		whiteSpace: 'nowrap',
 	},

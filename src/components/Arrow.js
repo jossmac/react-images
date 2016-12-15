@@ -10,6 +10,7 @@ function Arrow ({
 	icon,
 	onClick,
 	size,
+	visible,
 	...props,
 },
 {
@@ -20,7 +21,12 @@ function Arrow ({
 	return (
 		<button
 			type="button"
-			className={css(classes.arrow, classes['arrow__direction__' + direction], size && classes['arrow__size__' + size])}
+			className={css(
+				classes.arrow,
+				classes['arrow__direction__' + direction],
+				size && classes['arrow__size__' + size],
+				visible && classes.visible
+			)}
 			onClick={onClick}
 			onTouchEnd={onClick}
 			{...props}
@@ -49,14 +55,21 @@ const defaultStyles = {
 		border: 'none',
 		borderRadius: 4,
 		cursor: 'pointer',
+		opacity: 0,
 		outline: 'none',
 		padding: 10, // increase hit area
 		position: 'absolute',
 		top: '50%',
+		transition: 'all 200ms',
+		visibility: 'hidden',
 
 		// disable user select
 		WebkitTouchCallout: 'none',
 		userSelect: 'none',
+	},
+	visible: {
+		opacity: 1,
+		visibility: 'visible',
 	},
 
 	// sizees
@@ -66,7 +79,7 @@ const defaultStyles = {
 		width: 40,
 
 		'@media (min-width: 768px)': {
-			width: 70,
+			width: 60,
 		},
 	},
 	arrow__size__small: {
@@ -81,10 +94,10 @@ const defaultStyles = {
 
 	// direction
 	arrow__direction__right: {
-		right: defaults.container.gutter.horizontal,
+		right: defaults.wrapper.gutter.horizontal,
 	},
 	arrow__direction__left: {
-		left: defaults.container.gutter.horizontal,
+		left: defaults.wrapper.gutter.horizontal,
 	},
 };
 

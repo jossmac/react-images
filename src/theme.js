@@ -4,19 +4,27 @@
 
 const theme = {};
 
-// container
-theme.container = {
-	background: 'rgba(0, 0, 0, 0.8)',
+// common
+theme.common = {
 	gutter: {
-		horizontal: 10,
-		vertical: 10,
+		horizontal: 20,
+		vertical: 20,
+	},
+};
+
+// wrapper
+theme.wrapper = {
+	background: 'hsla(0, 0%, 10%, 0.94)',
+	gutter: {
+		horizontal: 0,
+		vertical: 0,
 	},
 	zIndex: 2001,
 };
 
 // header
 theme.header = {
-	height: 40,
+	color: 'white',
 };
 theme.close = {
 	fill: 'white',
@@ -30,11 +38,6 @@ theme.footer = {
 	count: {
 		color: 'rgba(255, 255, 255, 0.75)',
 		fontSize: '0.85em',
-	},
-	height: 40,
-	gutter: {
-		horizontal: 0,
-		vertical: 5,
 	},
 };
 

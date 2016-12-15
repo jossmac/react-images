@@ -3,12 +3,14 @@ import { css, StyleSheet } from 'aphrodite/no-important';
 
 import defaults from '../theme';
 import { deepMerge } from '../utils';
+import Container from './Container';
 import Icon from './Icon';
 
 function Header ({
 	customControls,
 	onClose,
 	showCloseButton,
+	visible,
 	...props,
 }, {
 	theme,
@@ -16,17 +18,19 @@ function Header ({
 	const classes = StyleSheet.create(deepMerge(defaultStyles, theme));
 
 	return (
-		<div className={css(classes.header)} {...props}>
-			{customControls ? customControls : <span />}
-			{!!showCloseButton && (
-				<button
-					title="Close (Esc)"
-					className={css(classes.close)}
-					onClick={onClose}
-				>
-					<Icon fill={!!theme.close && theme.close.fill || defaults.close.fill} type="close" />
-				</button>
-			)}
+		<div className={css(classes.header, visible ? classes.visible : null)} {...props}>
+			<Container>
+				{customControls ? customControls : <span />}
+				{!!showCloseButton && (
+					<button
+						title="Close (Esc)"
+						className={css(classes.close)}
+						onClick={onClose}
+					>
+						<Icon fill={!!theme.close && theme.close.fill || defaults.close.fill} type="close" />
+					</button>
+				)}
+			</Container>
 		</div>
 	);
 };
@@ -42,9 +46,24 @@ Header.contextTypes = {
 
 const defaultStyles = {
 	header: {
-		display: 'flex',
-		justifyContent: 'space-between',
-		height: defaults.header.height,
+		background: 'linear-gradient(to top, hsla(0, 0%, 10%, 0) 0%, hsla(0, 0%, 10%, 0.94) 100%)',
+		color: defaults.header.color,
+		cursor: 'auto',
+		left: 0,
+		lineHeight: 1.3,
+		position: 'absolute',
+		opacity: 0,
+		right: 0,
+		top: 0,
+		transition: 'all 200ms',
+		transform: 'translateY(-10px)',
+		visibility: 'hidden',
+		zIndex: 1,
+	},
+	visible: {
+		opacity: 1,
+		transform: 'translateY(0)',
+		visibility: 'visible',
 	},
 	close: {
 		background: 'none',
