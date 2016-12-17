@@ -6,7 +6,6 @@ import screenfull from 'screenfull';
 import theme from './theme';
 
 import Arrow from './components/Arrow';
-import ImageContainer from './components/ImageContainer';
 import PaginatedThumbnails from './components/PaginatedThumbnails';
 import Portal from './components/Portal';
 import SwipeContainer from './components/SwipeContainer';
@@ -189,9 +188,8 @@ class Lightbox extends Component {
 		return false;
 
 	}
-	onSwiping (event, deltaX, deltaY, absX, absY, velocity) {
+	onSwiping (event, deltaX) {
 		if ((this.isFirstImage() && deltaX < 0) || (this.isLastImage() && deltaX > 0)) return;
-		console.log('deltaX ' + deltaX + '	velocity ' + velocity);
 		this.setState({
 			swipeDeltaX: -deltaX,
 		});
@@ -273,8 +271,6 @@ class Lightbox extends Component {
 
 		if (!images || !images.length) return null;
 
-		const image = images[index || currentImage];
-
 		if (!isOpen) return <span key="closed" />;
 
 		return (
@@ -284,27 +280,16 @@ class Lightbox extends Component {
 				onTouchEnd={!!backdropClosesModal && this.onClose}
 				ref="wrapper"
 			>
-				{isMobileDevice() ? (
-					<SwipeContainer
-						deltaX={this.state.swipeDeltaX}
-						onClose={this.onClose}
-						onStopSwiping={this.onStopSwiping}
-						onSwiping={this.onSwiping}
-						{...this.props}
-					/>
-				) : (
-					<ImageContainer
-						image={image}
-						index={index}
-						isFullscreen={screenfull.isFullscreen}
-						isVisible
-						key={index}
-						loading={loading}
-						marginBottom={0}
-						userIsActive={userIsActive}
-						{...this.props}
-					/>
-				)}
+				<SwipeContainer
+					currentImage={index || currentImage}
+					deltaX={this.state.swipeDeltaX}
+					loading={loading}
+					onClose={this.onClose}
+					onStopSwiping={this.onStopSwiping}
+					onSwiping={this.onSwiping}
+					userIsActive={userIsActive}
+					{...this.props}
+				/>
 				{this.renderThumbnails()}
 				{this.renderArrowPrev()}
 				{this.renderArrowNext()}
