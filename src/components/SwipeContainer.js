@@ -65,6 +65,7 @@ const SwipeContainer = (props) => {
 								images.map((image, index) => (
 									<ImageContainer
 										image={image}
+										imageCount={images.length}
 										index={index}
 										isLoading={isLoading}
 										isVisible={isImageVisible(index, deltaX)}
