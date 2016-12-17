@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 
 import theme from '../theme';
@@ -88,6 +88,37 @@ const ImageContainer = (props) => {
 			</div>
 		</div>
 	);
+};
+
+ImageContainer.propTypes = {
+	customControls: PropTypes.arrayOf(PropTypes.node),
+	image: PropTypes.shape({
+		src: PropTypes.string.isRequired,
+		srcset: PropTypes.array,
+		caption: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+		thumbnail: PropTypes.string,
+	}),
+	imageCountSeparator: PropTypes.string,
+	images: PropTypes.arrayOf(
+		PropTypes.shape({
+			src: PropTypes.string.isRequired,
+			srcset: PropTypes.array,
+			caption: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+			thumbnail: PropTypes.string,
+		})
+	).isRequired,
+	index: PropTypes.number.isRequired,
+	isFullscreen: PropTypes.bool,
+	isVisible: PropTypes.bool,
+	loading: PropTypes.bool,
+	marginBottom: PropTypes.number,
+	onClickImage: PropTypes.func,
+	onClose: PropTypes.func.isRequired,
+	showCloseButton: PropTypes.bool,
+	showImageCount: PropTypes.bool,
+	showThumbnails: PropTypes.bool,
+	userIsActive: PropTypes.bool,
+	width: PropTypes.number,
 };
 
 const classes = StyleSheet.create({

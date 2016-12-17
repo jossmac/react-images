@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import Swipeable from 'react-swipeable';
 import { Motion, spring } from 'react-motion';
 import { css, StyleSheet } from 'aphrodite/no-important';
@@ -26,6 +26,7 @@ const SwipeContainer = (props) => {
 		onStopSwiping,
 		onSwiping,
 		showThumbnails,
+		swipeDeltaX,
 		userIsActive,
 	} = props;
 
@@ -38,7 +39,6 @@ const SwipeContainer = (props) => {
 	const springConfig = { stiffness: 300, damping: 30 };
 	const containerWidth = window.innerWidth * images.length;
 	const initialTransformX = (containerWidth - window.innerWidth) / 2;
-	const swipeDeltaX = props.deltaX;
 	const motionStyle = { deltaX: spring(-currentImage * window.innerWidth - horizontalPadding + swipeDeltaX, springConfig) };
 
 	return (
@@ -81,6 +81,27 @@ const SwipeContainer = (props) => {
 			</Motion>
 		</Swipeable>
 	);
+};
+
+SwipeContainer.propTypes = {
+	currentImage: PropTypes.number.isRequired,
+	images: PropTypes.arrayOf(
+		PropTypes.shape({
+			src: PropTypes.string.isRequired,
+			srcset: PropTypes.array,
+			caption: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+			thumbnail: PropTypes.string,
+		})
+	).isRequired,
+	isLoading: PropTypes.bool,
+	onStopSwiping: PropTypes.func.isRequired,
+	onSwiping: PropTypes.func.isRequired,
+	showThumbnails: PropTypes.bool,
+	swipeDeltaX: PropTypes.number,
+	userIsActive: PropTypes.bool,
+};
+SwipeContainer.defaultProps = {
+	swipeDeltaX: 0,
 };
 
 const classes = StyleSheet.create({

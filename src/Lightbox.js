@@ -282,11 +282,11 @@ class Lightbox extends Component {
 			>
 				<SwipeContainer
 					currentImage={index || currentImage}
-					deltaX={this.state.swipeDeltaX}
 					loading={loading}
 					onClose={this.onClose}
 					onStopSwiping={this.onStopSwiping}
 					onSwiping={this.onSwiping}
+					swipeDeltaX={this.state.swipeDeltaX}
 					userIsActive={userIsActive}
 					{...this.props}
 				/>
