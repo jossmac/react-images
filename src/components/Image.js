@@ -36,7 +36,7 @@ const Image = (props) => {
 				className={css(classes.image)}
 				onClick={!!onClickImage && onClickImage}
 				sizes={sizes}
-				src={isVisible ? image.src : 'data:'}
+				src={isVisible ? image.src : 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='}
 				srcSet={isVisible ? srcset : null}
 				style={{
 					cursor: onClickImage ? 'pointer' : 'auto',
