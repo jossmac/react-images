@@ -22,6 +22,7 @@ const SwipeContainer = (props) => {
 	const {
 		currentImage,
 		images,
+		isLoading,
 		onStopSwiping,
 		onSwiping,
 		showThumbnails,
@@ -35,6 +36,8 @@ const SwipeContainer = (props) => {
 
 	const horizontalPadding = theme.wrapper.gutter.horizontal;
 	const springConfig = { stiffness: 300, damping: 30 };
+	const containerWidth = window.innerWidth * images.length;
+	const initialTransformX = (containerWidth - window.innerWidth) / 2;
 	const swipeDeltaX = props.deltaX;
 	const motionStyle = { deltaX: spring(-currentImage * window.innerWidth - horizontalPadding + swipeDeltaX, springConfig) };
 
@@ -53,9 +56,9 @@ const SwipeContainer = (props) => {
 						<div
 							className={css(classes.swipeContainer)}
 							style={{
-								width: window.innerWidth * images.length,
-								transform: `translate(${deltaX}px, 0)`,
-								WebkitTransform: `translate(${deltaX}px, 0)`,
+								width: containerWidth,
+								transform: `translate(${deltaX + initialTransformX}px, 0)`,
+								WebkitTransform: `translate(${deltaX + initialTransformX}px, 0)`,
 							}}
 						>
 							{
@@ -63,6 +66,7 @@ const SwipeContainer = (props) => {
 									<ImageContainer
 										image={image}
 										index={index}
+										isLoading={isLoading}
 										isVisible={isImageVisible(index, deltaX)}
 										key={index}
 										marginBottom={offsetThumbnails}
