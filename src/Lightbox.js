@@ -134,7 +134,7 @@ class Lightbox extends Component {
 				direction="left"
 				icon="arrowLeft"
 				onClick={this.gotoPrev}
-				title={this.props.leftArrowTitle || "Previous (Left arrow key)"}
+				title={this.props.leftArrowTitle || 'Previous (Left arrow key)'}
 				type="button"
 			/>
 		);
@@ -147,7 +147,7 @@ class Lightbox extends Component {
 				direction="right"
 				icon="arrowRight"
 				onClick={this.gotoNext}
-				title={this.props.rightArrowTitle || "Next (Right arrow key)"}
+				title={this.props.rightArrowTitle || 'Next (Right arrow key)'}
 				type="button"
 			/>
 		);
@@ -270,6 +270,7 @@ class Lightbox extends Component {
 
 Lightbox.propTypes = {
 	backdropClosesModal: PropTypes.bool,
+	closeButtonTitle: PropTypes.string,
 	currentImage: PropTypes.number,
 	customControls: PropTypes.arrayOf(PropTypes.node),
 	enableKeyboardInput: PropTypes.bool,
@@ -283,20 +284,19 @@ Lightbox.propTypes = {
 		})
 	).isRequired,
 	isOpen: PropTypes.bool,
+	leftArrowTitle: PropTypes.string,
 	onClickImage: PropTypes.func,
 	onClickNext: PropTypes.func,
 	onClickPrev: PropTypes.func,
 	onClose: PropTypes.func.isRequired,
 	preloadNextImage: PropTypes.bool,
+	rightArrowTitle: PropTypes.string,
 	showCloseButton: PropTypes.bool,
 	showImageCount: PropTypes.bool,
 	showThumbnails: PropTypes.bool,
 	theme: PropTypes.object,
- 	thumbnailOffset: PropTypes.number,
- 	width: PropTypes.number,
- 	rightArrowTitle: PropTypes.string,
- 	leftArrowTitle: PropTypes.string,
- 	closeButtonTitle: PropTypes.string,
+	thumbnailOffset: PropTypes.number,
+	width: PropTypes.number,
 };
 Lightbox.defaultProps = {
 	currentImage: 0,
