@@ -115,18 +115,21 @@ Note that the caption is an entirely optional property, as can be seen in the fi
 Property	|	Type		|	Default		|	Description
 :-----------------------|:--------------|:--------------|:--------------------------------
 backdropClosesModal	|	bool	|	false	|	Allow users to exit the lightbox by clicking the backdrop
+closeButtonTitle | string | ' Close (Esc) ' | Customize close esc title
 enableKeyboardInput | bool  | true  | Supports keyboard input - <code>esc</code>, <code>arrow left</code>, and <code>arrow right</code>
 currentImage  | number  | 0 | The index of the image to display initially
 customControls | array | undefined | An array of elements to display as custom controls on the top of lightbox
 images  | array | undefined | Required. An array of objects containing valid src and srcset values of img element
 imageCountSeparator  | String  | ' of ' | Customize separator in the image count
 isOpen  | bool  | false | Whether or not the lightbox is displayed
+leftArrowTitle | string | ' Previous (Left arrow key) ' | Customize of left arrow title
 onClickPrev | func | undefined | Fired on request of the previous image
 onClickNext | func | undefined | Fired on request of the next image
 onClose | func | undefined | Required. Handle closing of the lightbox
 onClickImage | func | undefined | Handle click on image
 onClickThumbnail | func | undefined | Handle click on thumbnail
 preloadNextImage | bool | true | Based on the direction the user is navigating, preload the next available image
+rightArrowTitle | string | ' Next (Right arrow key) ' | Customize right arrow title
 showCloseButton | bool  | true | Optionally display a close "X" button in top right corner
 showImageCount | bool  | true | Optionally display image index, e.g., "3 of 20"
 width | number  | 1024 | Maximum width of the carousel; defaults to 1024px
