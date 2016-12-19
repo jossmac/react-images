@@ -181,7 +181,7 @@ class Lightbox extends Component {
 						customControls={customControls}
 						onClose={onClose}
 						showCloseButton={showCloseButton}
-						closeTitle={this.props.closeButtonTitle}
+						closeButtonTitle={this.props.closeButtonTitle}
 					/>
 					{this.renderImages()}
 				</div>
