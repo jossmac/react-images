@@ -134,7 +134,7 @@ class Lightbox extends Component {
 				direction="left"
 				icon="arrowLeft"
 				onClick={this.gotoPrev}
-				title={this.props.leftArrowTitle || 'Previous (Left arrow key)'}
+				title={this.props.leftArrowTitle}
 				type="button"
 			/>
 		);
@@ -147,7 +147,7 @@ class Lightbox extends Component {
 				direction="right"
 				icon="arrowRight"
 				onClick={this.gotoNext}
-				title={this.props.rightArrowTitle || 'Next (Right arrow key)'}
+				title={this.props.rightArrowTitle}
 				type="button"
 			/>
 		);
@@ -299,11 +299,14 @@ Lightbox.propTypes = {
 	width: PropTypes.number,
 };
 Lightbox.defaultProps = {
+	closeButtonTitle: 'Close (Esc)',
 	currentImage: 0,
 	enableKeyboardInput: true,
 	imageCountSeparator: ' of ',
+	leftArrowTitle: 'Previous (Left arrow key)',
 	onClickShowNextImage: true,
 	preloadNextImage: true,
+	rightArrowTitle: 'Next (Right arrow key)',
 	showCloseButton: true,
 	showImageCount: true,
 	theme: {},

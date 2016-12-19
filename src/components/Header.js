@@ -9,7 +9,7 @@ function Header ({
 	customControls,
 	onClose,
 	showCloseButton,
-	closeTitle,
+	closeButtonTitle,
 	...props,
 }, {
 	theme,
@@ -21,7 +21,7 @@ function Header ({
 			{customControls ? customControls : <span />}
 			{!!showCloseButton && (
 				<button
-					title={closeTitle || 'Close (Esc)'}
+					title={closeButtonTitle || 'Close (Esc)'}
 					className={css(classes.close)}
 					onClick={onClose}
 				>
