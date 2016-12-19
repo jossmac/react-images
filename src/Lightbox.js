@@ -134,7 +134,7 @@ class Lightbox extends Component {
 				direction="left"
 				icon="arrowLeft"
 				onClick={this.gotoPrev}
-				title="Previous (Left arrow key)"
+				title={this.props.leftArrowTitle}
 				type="button"
 			/>
 		);
@@ -147,7 +147,7 @@ class Lightbox extends Component {
 				direction="right"
 				icon="arrowRight"
 				onClick={this.gotoNext}
-				title="Next (Right arrow key)"
+				title={this.props.rightArrowTitle}
 				type="button"
 			/>
 		);
@@ -181,6 +181,7 @@ class Lightbox extends Component {
 						customControls={customControls}
 						onClose={onClose}
 						showCloseButton={showCloseButton}
+						closeButtonTitle={this.props.closeButtonTitle}
 					/>
 					{this.renderImages()}
 				</div>
@@ -269,6 +270,7 @@ class Lightbox extends Component {
 
 Lightbox.propTypes = {
 	backdropClosesModal: PropTypes.bool,
+	closeButtonTitle: PropTypes.string,
 	currentImage: PropTypes.number,
 	customControls: PropTypes.arrayOf(PropTypes.node),
 	enableKeyboardInput: PropTypes.bool,
@@ -282,11 +284,13 @@ Lightbox.propTypes = {
 		})
 	).isRequired,
 	isOpen: PropTypes.bool,
+	leftArrowTitle: PropTypes.string,
 	onClickImage: PropTypes.func,
 	onClickNext: PropTypes.func,
 	onClickPrev: PropTypes.func,
 	onClose: PropTypes.func.isRequired,
 	preloadNextImage: PropTypes.bool,
+	rightArrowTitle: PropTypes.string,
 	showCloseButton: PropTypes.bool,
 	showImageCount: PropTypes.bool,
 	showThumbnails: PropTypes.bool,
@@ -295,11 +299,14 @@ Lightbox.propTypes = {
 	width: PropTypes.number,
 };
 Lightbox.defaultProps = {
+	closeButtonTitle: 'Close (Esc)',
 	currentImage: 0,
 	enableKeyboardInput: true,
 	imageCountSeparator: ' of ',
+	leftArrowTitle: 'Previous (Left arrow key)',
 	onClickShowNextImage: true,
 	preloadNextImage: true,
+	rightArrowTitle: 'Next (Right arrow key)',
 	showCloseButton: true,
 	showImageCount: true,
 	theme: {},
