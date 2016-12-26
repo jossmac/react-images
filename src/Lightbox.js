@@ -128,6 +128,10 @@ class Lightbox extends Component {
 
 	renderArrowPrev () {
 		if (this.props.currentImage === 0) return null;
+		const style = this.props.direction === 'rtl' ? { transform: 'scaleX(-1)',
+			right: 0,
+			marginLeft: 'auto',
+		} : null;
 
 		return (
 			<Arrow
@@ -136,11 +140,16 @@ class Lightbox extends Component {
 				onClick={this.gotoPrev}
 				title={this.props.leftArrowTitle}
 				type="button"
+				style={style}
 			/>
 		);
 	}
 	renderArrowNext () {
 		if (this.props.currentImage === (this.props.images.length - 1)) return null;
+		const style = this.props.direction === 'rtl' ? { transform: 'scaleX(-1)',
+            left: 0,
+            marginRight: 'auto',
+        } : null;
 
 		return (
 			<Arrow
@@ -149,6 +158,7 @@ class Lightbox extends Component {
 				onClick={this.gotoNext}
 				title={this.props.rightArrowTitle}
 				type="button"
+				style={style}
 			/>
 		);
 	}
@@ -176,7 +186,16 @@ class Lightbox extends Component {
 				onClick={!!backdropClosesModal && onClose}
 				onTouchEnd={!!backdropClosesModal && onClose}
 			>
-				<div className={css(classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
+				<div
+					className={css(classes.content)}
+					style={{
+						marginTop: offsetThumbnails,
+						marginBottom: offsetThumbnails,
+						marginLeft: 'auto',
+						marginRight: 'auto',
+						maxWidth: width,
+					}}
+				>
 					<Header
 						customControls={customControls}
 						onClose={onClose}
@@ -215,7 +234,7 @@ class Lightbox extends Component {
 		}
 
 		const thumbnailsSize = showThumbnails ? theme.thumbnail.size : 0;
-		const heightOffset = `${theme.header.height + theme.footer.height + thumbnailsSize + (theme.container.gutter.vertical)}px`;
+		const heightOffset = `${ 60 + theme.header.height + theme.footer.height + thumbnailsSize + (theme.container.gutter.vertical)}px`;
 
 		return (
 			<figure className={css(classes.figure)}>
@@ -246,7 +265,7 @@ class Lightbox extends Component {
 		);
 	}
 	renderThumbnails () {
-		const { images, currentImage, onClickThumbnail, showThumbnails, thumbnailOffset } = this.props;
+		const { images, currentImage, onClickThumbnail, showThumbnails, thumbnailOffset, direction } = this.props;
 
 		if (!showThumbnails) return;
 
@@ -256,6 +275,7 @@ class Lightbox extends Component {
 				images={images}
 				offset={thumbnailOffset}
 				onClickThumbnail={onClickThumbnail}
+				direction={direction}
 			/>
 		);
 	}
@@ -273,6 +293,7 @@ Lightbox.propTypes = {
 	closeButtonTitle: PropTypes.string,
 	currentImage: PropTypes.number,
 	customControls: PropTypes.arrayOf(PropTypes.node),
+	direction: PropTypes.string,
 	enableKeyboardInput: PropTypes.bool,
 	imageCountSeparator: PropTypes.string,
 	images: PropTypes.arrayOf(
@@ -301,6 +322,7 @@ Lightbox.propTypes = {
 Lightbox.defaultProps = {
 	closeButtonTitle: 'Close (Esc)',
 	currentImage: 0,
+	direction: 'ltr',
 	enableKeyboardInput: true,
 	imageCountSeparator: ' of ',
 	leftArrowTitle: 'Previous (Left arrow key)',

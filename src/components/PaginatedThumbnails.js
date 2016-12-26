@@ -9,10 +9,13 @@ const classes = StyleSheet.create({
 	paginatedThumbnails: {
 		bottom: theme.container.gutter.vertical,
 		height: theme.thumbnail.size,
-		padding: '0 50px',
 		position: 'absolute',
 		textAlign: 'center',
 		whiteSpace: 'nowrap',
+		left: 0,
+		right: 0,
+		marginLeft: 'auto',
+		marginRight: 'auto',
 	},
 });
 
@@ -100,7 +103,10 @@ export default class PaginatedThumbnails extends Component {
 				size="small"
 				icon="arrowLeft"
 				onClick={this.gotoPrev}
-				style={arrowStyles}
+				style={{
+					...arrowStyles,
+					left: '-30px',
+				}}
 				title="Previous (Left arrow key)"
 				type="button"
 			/>
@@ -117,14 +123,17 @@ export default class PaginatedThumbnails extends Component {
 				size="small"
 				icon="arrowRight"
 				onClick={this.gotoNext}
-				style={arrowStyles}
+				style={{
+					...arrowStyles,
+					right: '-30px',
+				}}
 				title="Previous (Right arrow key)"
 				type="button"
 			/>
 		);
 	}
 	render () {
-		const { images, currentImage, onClickThumbnail, offset } = this.props;
+		const { images, currentImage, onClickThumbnail, offset, direction } = this.props;
 
 		const totalCount = 2 * offset + 1; // show $offset extra thumbnails on each side
 		let thumbnails = [];
@@ -135,18 +144,37 @@ export default class PaginatedThumbnails extends Component {
 			baseOffset = this.getFirst();
 			thumbnails = images.slice(baseOffset, baseOffset + totalCount);
 		}
+		const width = thumbnails.length * theme.thumbnail.size + arrowStyles.width;
+
 
 		return (
-			<div className={css(classes.paginatedThumbnails)}>
-				{this.renderArrowPrev()}
-				{thumbnails.map((img, idx) => (
-					<Thumbnail key={baseOffset + idx}
-						{...img}
-						index={baseOffset + idx}
-						onClick={onClickThumbnail}
-						active={baseOffset + idx === currentImage} />
-				))}
-				{this.renderArrowNext()}
+			<div
+				className={css(classes.paginatedThumbnails)}
+				style={{
+					transform: direction === 'rtl' ? 'scaleX(-1)' : 'null',
+					width: '100%',
+				}}
+			>
+				<div style={{
+					width: width,
+					position: 'absolute',
+					bottom: 0,
+					left: 0,
+					right: 0,
+					marginLeft: 'auto',
+					marginRight: 'auto',
+				}}>
+					{this.renderArrowPrev()}
+					{thumbnails.map((img, idx) => (
+						<Thumbnail
+							key={baseOffset + idx}
+							{...img}
+							index={baseOffset + idx}
+							onClick={onClickThumbnail}
+							active={baseOffset + idx === currentImage} />
+					))}
+					{this.renderArrowNext()}
+				</div>
 			</div>
 		);
 	}
@@ -154,6 +182,7 @@ export default class PaginatedThumbnails extends Component {
 
 PaginatedThumbnails.propTypes = {
 	currentImage: PropTypes.number,
+	direction: PropTypes.string.isRequired,
 	images: PropTypes.array,
 	offset: PropTypes.number,
 	onClickThumbnail: PropTypes.func.isRequired,
