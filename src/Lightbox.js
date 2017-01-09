@@ -228,6 +228,7 @@ class Lightbox extends Component {
 					className={css(classes.image)}
 					onClick={!!onClickImage && onClickImage}
 					sizes={sizes}
+					alt={image.alt}
 					src={image.src}
 					srcSet={srcset}
 					style={{
