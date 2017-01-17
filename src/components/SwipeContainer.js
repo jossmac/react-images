@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import Swipeable from 'react-swipeable';
 import { Motion, spring } from 'react-motion';
 import { css, StyleSheet } from 'aphrodite/no-important';
@@ -22,9 +22,11 @@ const SwipeContainer = (props) => {
 	const {
 		currentImage,
 		images,
+		isLoading,
 		onStopSwiping,
 		onSwiping,
 		showThumbnails,
+		swipeDeltaX,
 		userIsActive,
 	} = props;
 
@@ -35,7 +37,8 @@ const SwipeContainer = (props) => {
 
 	const horizontalPadding = theme.wrapper.gutter.horizontal;
 	const springConfig = { stiffness: 300, damping: 30 };
-	const swipeDeltaX = props.deltaX;
+	const containerWidth = window.innerWidth * images.length;
+	const initialTransformX = (containerWidth - window.innerWidth) / 2;
 	const motionStyle = { deltaX: spring(-currentImage * window.innerWidth - horizontalPadding + swipeDeltaX, springConfig) };
 
 	return (
@@ -53,16 +56,18 @@ const SwipeContainer = (props) => {
 						<div
 							className={css(classes.swipeContainer)}
 							style={{
-								width: window.innerWidth * images.length,
-								transform: `translate(${deltaX}px, 0)`,
-								WebkitTransform: `translate(${deltaX}px, 0)`,
+								width: containerWidth,
+								transform: `translate(${deltaX + initialTransformX}px, 0)`,
+								WebkitTransform: `translate(${deltaX + initialTransformX}px, 0)`,
 							}}
 						>
 							{
 								images.map((image, index) => (
 									<ImageContainer
 										image={image}
+										imageCount={images.length}
 										index={index}
+										isLoading={isLoading}
 										isVisible={isImageVisible(index, deltaX)}
 										key={index}
 										marginBottom={offsetThumbnails}
@@ -77,6 +82,27 @@ const SwipeContainer = (props) => {
 			</Motion>
 		</Swipeable>
 	);
+};
+
+SwipeContainer.propTypes = {
+	currentImage: PropTypes.number.isRequired,
+	images: PropTypes.arrayOf(
+		PropTypes.shape({
+			src: PropTypes.string.isRequired,
+			srcset: PropTypes.array,
+			caption: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+			thumbnail: PropTypes.string,
+		})
+	).isRequired,
+	isLoading: PropTypes.bool,
+	onStopSwiping: PropTypes.func.isRequired,
+	onSwiping: PropTypes.func.isRequired,
+	showThumbnails: PropTypes.bool,
+	swipeDeltaX: PropTypes.number,
+	userIsActive: PropTypes.bool,
+};
+SwipeContainer.defaultProps = {
+	swipeDeltaX: 0,
 };
 
 const classes = StyleSheet.create({
