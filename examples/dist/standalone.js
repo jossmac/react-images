@@ -2818,6 +2818,7 @@ var Portal = (function (_Component) {
 	}, {
 		key: 'componentWillUnmount',
 		value: function componentWillUnmount() {
+			document.body.style = null;
 			document.body.removeChild(this.portalElement);
 		}
 	}, {
