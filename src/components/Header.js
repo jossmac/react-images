@@ -17,7 +17,6 @@ function Header ({
 
 	return (
 		<div className={css(classes.header)} {...props}>
-			<h3 className={css(classes.headerTitle)}>Galeria de fotos</h3>
 			{customControls ? customControls : <span />}
 			{!!showCloseButton && (
 				<button

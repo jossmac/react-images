@@ -2340,11 +2340,6 @@ function Header(_ref, _ref2) {
 	return _react2['default'].createElement(
 		'div',
 		_extends({ className: (0, _aphroditeNoImportant.css)(classes.header) }, props),
-		_react2['default'].createElement(
-			'h3',
-			{ className: (0, _aphroditeNoImportant.css)(classes.headerTitle) },
-			'Galeria de fotos'
-		),
 		customControls ? customControls : _react2['default'].createElement('span', null),
 		!!showCloseButton && _react2['default'].createElement(
 			'button',
