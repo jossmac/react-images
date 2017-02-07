@@ -18,17 +18,48 @@ import Lightbox from 'react-images';
 
 export default class Sample extends React.Component {
   ...
+
+  state = {
+    currentImage: 0,
+    lightboxIsOpen: false,
+    images: [{ src: 'http://example.com/img1.jpg' }, { src: 'http://example.com/img2.jpg' }]
+  }
+
   render() {
+    const { currentImage, images, lightboxIsOpen } = this.state
     return (
-      <Lightbox
-        images={[{ src: 'http://example.com/img1.jpg' }, { src: 'http://example.com/img2.jpg' }]}
-        isOpen={this.state.lightboxIsOpen}
-        onClickPrev={this.gotoPrevious}
-        onClickNext={this.gotoNext}
-        onClose={this.closeLightbox}
-      />
+      <div>
+        <button onClick={this.onOpen}>Open</button>
+        <Lightbox
+          currentImage: currentImage
+          images={images}
+          isOpen={lightboxIsOpen}
+          onClickPrev={this.gotoPrevious}
+          onClickNext={this.gotoNext}
+          onClose={this.closeLightbox}
+        />
+      </div>
     );
   }
+
+  onOpen = evt => {
+    this.setState({ lightboxIsOpen: true })
+  }
+
+  onClose = evt => {
+    this.setState({ lightboxIsOpen: false })
+  }
+
+  onClickPrev = evt => {
+    this.setState({ currentImage: Math.max(0, this.state.currentImage - 1) })
+  }
+
+  onClickNext = evt => {
+    this.setState({
+      currentImage: Math.min(this.state.images.length - 1, this.state.currentImage + 1)
+    })
+  }
+
 }
 ```
 
@@ -112,9 +143,9 @@ Note that the caption is an entirely optional property, as can be seen in the fi
 
 ## Options
 
-Property	|	Type		|	Default		|	Description
+Property  | Type    | Default   | Description
 :-----------------------|:--------------|:--------------|:--------------------------------
-backdropClosesModal	|	bool	|	false	|	Allow users to exit the lightbox by clicking the backdrop
+backdropClosesModal | bool  | false | Allow users to exit the lightbox by clicking the backdrop
 closeButtonTitle | string | ' Close (Esc) ' | Customize close esc title
 enableKeyboardInput | bool  | true  | Supports keyboard input - <code>esc</code>, <code>arrow left</code>, and <code>arrow right</code>
 currentImage  | number  | 0 | The index of the image to display initially
