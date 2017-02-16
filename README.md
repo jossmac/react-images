@@ -36,7 +36,7 @@ export default class Sample extends React.Component {
           isOpen={lightboxIsOpen}
           onClickPrev={this.gotoPrevious}
           onClickNext={this.gotoNext}
-          onClose={this.closeLightbox}
+          onClose={this.onClose}
         />
       </div>
     );
