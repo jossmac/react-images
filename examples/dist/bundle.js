@@ -2390,7 +2390,7 @@ var Portal = (function (_Component) {
 	}, {
 		key: 'componentWillUnmount',
 		value: function componentWillUnmount() {
-			document.body.style = null;
+			document.body.style.cssText = 'overflow-y: initial';
 			document.body.removeChild(this.portalElement);
 		}
 	}, {

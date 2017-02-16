@@ -42,7 +42,7 @@ export default class Portal extends Component {
 		);
 	}
 	componentWillUnmount () {
-		document.body.style = null;
+		document.body.style.cssText = 'overflow-y: initial';
 		document.body.removeChild(this.portalElement);
 	}
 	render () {
