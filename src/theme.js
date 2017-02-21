@@ -23,6 +23,11 @@ theme.close = {
 	height: 20,
 	width: 20,
 };
+theme.rotate = {
+	fill: 'white',
+	height: 20,
+	width: 20,
+};
 
 // footer
 theme.footer = {
