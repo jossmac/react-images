@@ -1690,10 +1690,7 @@ var Lightbox = (function (_Component) {
 		_classCallCheck(this, Lightbox);
 
 		_get(Object.getPrototypeOf(Lightbox.prototype), 'constructor', this).call(this);
-
-		this.state = {
-			rotate: 0
-		};
+		this.state = { rotate: 0 };
 
 		_utils.bindFunctions.call(this, ['gotoNext', 'gotoPrev', 'rotate', 'handleKeyboardInput']);
 	}

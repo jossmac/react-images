@@ -15,10 +15,7 @@ import { bindFunctions, canUseDom } from './utils';
 class Lightbox extends Component {
 	constructor () {
 		super();
-		
-		this.state = {
-			rotate: 0
-		}
+		this.state = { rotate: 0 };
 
 		bindFunctions.call(this, [
 			'gotoNext',
@@ -93,6 +90,7 @@ class Lightbox extends Component {
 		if (image.srcset) {
 			img.srcset = image.srcset.join();
 		}
+
 	}
 	gotoNext (event) {
 		if (this.props.currentImage === (this.props.images.length - 1)) return;
@@ -101,7 +99,8 @@ class Lightbox extends Component {
 			event.stopPropagation();
 		}
 		this.props.onClickNext();
-		this.setState({rotate: 0});
+		this.setState({ rotate: 0 });
+
 	}
 	gotoPrev (event) {
 		if (this.props.currentImage === 0) return;
@@ -110,7 +109,8 @@ class Lightbox extends Component {
 			event.stopPropagation();
 		}
 		this.props.onClickPrev();
-		this.setState({rotate: 0});
+		this.setState({ rotate: 0 });
+
 	}
 	handleKeyboardInput (event) {
 		if (event.keyCode === 37) { // left
@@ -126,12 +126,13 @@ class Lightbox extends Component {
 		return false;
 
 	}
-	rotate(){
+	rotate () {
 		if (this.state.rotate === 360) {
-			this.setState({rotate: 90});
-		}else{
-			this.setState({rotate: this.state.rotate+90});
+			this.setState({ rotate: 90 });
+		} else {
+			this.setState({ rotate: this.state.rotate + 90 });
 		}
+
 	}
 
 	// ==============================
@@ -251,7 +252,7 @@ class Lightbox extends Component {
 					style={{
 						cursor: this.props.onClickImage ? 'pointer' : 'auto',
 						maxHeight: `calc(100vh - ${heightOffset})`,
-						transform: `rotate(${this.state.rotate}deg)`
+						transform: `rotate(${this.state.rotate}deg)`,
 					}}
 				/>
 				<Footer

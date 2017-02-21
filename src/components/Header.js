@@ -13,7 +13,7 @@ function Header ({
 	showRotateButton,
 	closeButtonTitle,
 	rotateButtonTitle,
-	...props
+	...props,
 }, {
 	theme,
 }) {
@@ -88,7 +88,7 @@ const defaultStyles = {
 		marginLeft: -10,
 		padding: 10,
 		width: defaults.close.width + 20,
-	}
+	},
 };
 
 module.exports = Header;
