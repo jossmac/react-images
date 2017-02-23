@@ -127,6 +127,10 @@ class Lightbox extends Component {
 
 	}
 	rotate () {
+		if (event) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
 		if (this.state.rotate === 360) {
 			this.setState({ rotate: 90 });
 		} else {
