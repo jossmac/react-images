@@ -155,10 +155,8 @@ class Lightbox extends Component {
 	renderDialog () {
 		const {
 			backdropClosesModal,
-			customControls,
 			isOpen,
 			onClose,
-			showCloseButton,
 			showThumbnails,
 			width,
 		} = this.props;
@@ -177,12 +175,7 @@ class Lightbox extends Component {
 				onTouchEnd={!!backdropClosesModal && onClose}
 			>
 				<div className={css(classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
-					<Header
-						customControls={customControls}
-						onClose={onClose}
-						showCloseButton={showCloseButton}
-						closeButtonTitle={this.props.closeButtonTitle}
-					/>
+					{this.renderHeader()}
 					{this.renderImages()}
 				</div>
 				{this.renderThumbnails()}
@@ -192,13 +185,30 @@ class Lightbox extends Component {
 			</Container>
 		);
 	}
+	renderHeader () {
+		const {
+			customControlsPosition,
+			onClose,
+			showCloseButton,
+			closeButtonTitle,
+		} = this.props;
+
+		const topControls = customControlsPosition !== 'BOTTOM' ? this.props.customControls : null;
+
+		return (
+			<Header
+				customControls={topControls}
+				onClose={onClose}
+				showCloseButton={showCloseButton}
+				closeButtonTitle={closeButtonTitle}
+			/>
+		);
+	}
 	renderImages () {
 		const {
 			currentImage,
 			images,
-			imageCountSeparator,
 			onClickImage,
-			showImageCount,
 			showThumbnails,
 		} = this.props;
 
@@ -236,14 +246,30 @@ class Lightbox extends Component {
 						maxHeight: `calc(100vh - ${heightOffset})`,
 					}}
 				/>
-				<Footer
-					caption={images[currentImage].caption}
-					countCurrent={currentImage + 1}
-					countSeparator={imageCountSeparator}
-					countTotal={images.length}
-					showCount={showImageCount}
-				/>
+				{this.renderFooter()}
 			</figure>
+		);
+	}
+	renderFooter () {
+		const {
+			images,
+			currentImage,
+			imageCountSeparator,
+			showImageCount,
+			customControlsPosition,
+		} = this.props;
+
+		const bottomControls = customControlsPosition === 'BOTTOM' ? this.props.customControls : null;
+
+		return (
+			<Footer
+				customControls={bottomControls}
+				caption={images[currentImage].caption}
+				countCurrent={currentImage + 1}
+				countSeparator={imageCountSeparator}
+				countTotal={images.length}
+				showCount={showImageCount}
+			/>
 		);
 	}
 	renderThumbnails () {
@@ -301,6 +327,7 @@ Lightbox.propTypes = {
 };
 Lightbox.defaultProps = {
 	closeButtonTitle: 'Close (Esc)',
+	customControlsPosition: 'TOP',
 	currentImage: 0,
 	enableKeyboardInput: true,
 	imageCountSeparator: ' of ',
