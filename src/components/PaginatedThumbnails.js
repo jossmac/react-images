@@ -118,7 +118,7 @@ export default class PaginatedThumbnails extends Component {
 				icon="arrowRight"
 				onClick={this.gotoNext}
 				style={arrowStyles}
-				title="Previous (Right arrow key)"
+				title="Next (Right arrow key)"
 				type="button"
 			/>
 		);
