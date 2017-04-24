@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 
 import defaults from '../theme';
@@ -30,7 +31,7 @@ function Header ({
 			)}
 		</div>
 	);
-};
+}
 
 Header.propTypes = {
 	customControls: PropTypes.array,

@@ -1,4 +1,5 @@
-import { Children, Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import { Children, Component } from 'react';
 
 // Pass the Lightbox context through to the Portal's descendents
 // StackOverflow discussion http://goo.gl/oclrJ9
@@ -10,7 +11,7 @@ class PassContext extends Component {
 	render () {
 		return Children.only(this.props.children);
 	}
-};
+}
 
 PassContext.propTypes = {
 	context: PropTypes.object.isRequired,

@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 
 import defaults from '../theme';
@@ -13,7 +14,7 @@ function Container ({ ...props }, { theme }) {
 			{...props}
 		/>
 	);
-};
+}
 
 Container.contextTypes = {
 	theme: PropTypes.object.isRequired,

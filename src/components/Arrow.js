@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 
 import defaults from '../theme';
@@ -28,7 +29,7 @@ function Arrow ({
 			<Icon fill={!!theme.arrow && theme.arrow.fill || defaults.arrow.fill} type={icon} />
 		</button>
 	);
-};
+}
 
 Arrow.propTypes = {
 	direction: PropTypes.oneOf(['left', 'right']),
