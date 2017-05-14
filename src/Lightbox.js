@@ -9,6 +9,7 @@ import Footer from './components/Footer';
 import Header from './components/Header';
 import PaginatedThumbnails from './components/PaginatedThumbnails';
 import Portal from './components/Portal';
+import ImageItem from './components/ImageItem';
 
 import { bindFunctions, canUseDom } from './utils';
 
@@ -224,10 +225,11 @@ class Lightbox extends Component {
 					https://fb.me/react-unknown-prop is resolved
 					<Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
 				*/}
-				<img
+				<ImageItem
 					className={css(classes.image)}
 					onClick={!!onClickImage && onClickImage}
 					sizes={sizes}
+					initialImage={image.initialImage}
 					alt={image.alt}
 					src={image.src}
 					srcSet={srcset}
