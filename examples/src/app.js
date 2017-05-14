@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import Gallery from './components/Gallery';
 
-function makeUnsplashSrc (id, width=1024, height=1024) {
+function makeUnsplashSrc (id, width = 1024, height = 1024) {
 	return `https://images.unsplash.com/photo-${id}?dpr=2&auto=format&w=${width}&h=${height}`;
 }
 function makeUnsplashSrcSet (id, size) {
