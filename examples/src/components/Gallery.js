@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 import Lightbox from 'react-images';
 
@@ -96,7 +97,7 @@ class Gallery extends Component {
 			</div>
 		);
 	}
-};
+}
 
 Gallery.displayName = 'Gallery';
 Gallery.propTypes = {

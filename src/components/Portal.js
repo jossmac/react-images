@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import Transition from 'react-addons-css-transition-group';
 import { render } from 'react-dom';
 import PassContext from './PassContext';
