@@ -132,4 +132,5 @@ preloadNextImage | bool | true | Based on the direction the user is navigating, 
 rightArrowTitle | string | ' Next (Right arrow key) ' | Customize right arrow title
 showCloseButton | bool  | true | Optionally display a close "X" button in top right corner
 showImageCount | bool  | true | Optionally display image index, e.g., "3 of 20"
+showRotateButton | bool | true | Optionally display a rotate button in top left corner
 width | number  | 1024 | Maximum width of the carousel; defaults to 1024px

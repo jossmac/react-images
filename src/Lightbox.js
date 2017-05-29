@@ -16,10 +16,12 @@ import { bindFunctions, canUseDom } from './utils';
 class Lightbox extends Component {
 	constructor () {
 		super();
+		this.state = { rotate: 0 };
 
 		bindFunctions.call(this, [
 			'gotoNext',
 			'gotoPrev',
+			'rotate',
 			'handleKeyboardInput',
 		]);
 	}
@@ -89,6 +91,7 @@ class Lightbox extends Component {
 		if (image.srcset) {
 			img.srcset = image.srcset.join();
 		}
+
 	}
 	gotoNext (event) {
 		if (this.props.currentImage === (this.props.images.length - 1)) return;
@@ -97,6 +100,7 @@ class Lightbox extends Component {
 			event.stopPropagation();
 		}
 		this.props.onClickNext();
+		this.setState({ rotate: 0 });
 
 	}
 	gotoPrev (event) {
@@ -106,6 +110,7 @@ class Lightbox extends Component {
 			event.stopPropagation();
 		}
 		this.props.onClickPrev();
+		this.setState({ rotate: 0 });
 
 	}
 	handleKeyboardInput (event) {
@@ -120,6 +125,18 @@ class Lightbox extends Component {
 			return true;
 		}
 		return false;
+
+	}
+	rotate () {
+		if (event) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+		if (this.state.rotate === 360) {
+			this.setState({ rotate: 90 });
+		} else {
+			this.setState({ rotate: this.state.rotate + 90 });
+		}
 
 	}
 
@@ -160,7 +177,9 @@ class Lightbox extends Component {
 			isOpen,
 			onClose,
 			showCloseButton,
+			showRotateButton,
 			showThumbnails,
+			rotateButtonTitle,
 			width,
 		} = this.props;
 
@@ -181,8 +200,11 @@ class Lightbox extends Component {
 					<Header
 						customControls={customControls}
 						onClose={onClose}
+						onRotate={this.rotate}
 						showCloseButton={showCloseButton}
 						closeButtonTitle={this.props.closeButtonTitle}
+						rotateButtonTitle={rotateButtonTitle}
+						showRotateButton={showRotateButton}
 					/>
 					{this.renderImages()}
 				</div>
@@ -235,6 +257,7 @@ class Lightbox extends Component {
 					style={{
 						cursor: this.props.onClickImage ? 'pointer' : 'auto',
 						maxHeight: `calc(100vh - ${heightOffset})`,
+						transform: `rotate(${this.state.rotate}deg)`,
 					}}
 				/>
 				<Footer
@@ -302,6 +325,7 @@ Lightbox.propTypes = {
 };
 Lightbox.defaultProps = {
 	closeButtonTitle: 'Close (Esc)',
+	rotateButtonTitle: 'Rotate',
 	currentImage: 0,
 	enableKeyboardInput: true,
 	imageCountSeparator: ' of ',
@@ -311,6 +335,7 @@ Lightbox.defaultProps = {
 	rightArrowTitle: 'Next (Right arrow key)',
 	showCloseButton: true,
 	showImageCount: true,
+	showRotateButton: true,
 	theme: {},
 	thumbnailOffset: 2,
 	width: 1024,

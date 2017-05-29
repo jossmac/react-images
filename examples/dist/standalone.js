@@ -198,7 +198,7 @@ var generateCSSRuleset = function generateCSSRuleset(selector, declarations, str
     }
 };
 exports.generateCSSRuleset = generateCSSRuleset;
-},{"./util":5,"inline-style-prefixer/static":23}],2:[function(require,module,exports){
+},{"./util":5,"inline-style-prefixer/static":26}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -946,9 +946,12 @@ function flush() {
 
 // Safari 6 and 6.1 for desktop, iPad, and iPhone are the only browsers that
 // have WebKitMutationObserver but not un-prefixed MutationObserver.
-// Must use `global` instead of `window` to work in both frames and web
+// Must use `global` or `self` instead of `window` to work in both frames and web
 // workers. `global` is a provision of Browserify, Mr, Mrs, or Mop.
-var BrowserMutationObserver = global.MutationObserver || global.WebKitMutationObserver;
+
+/* globals self */
+var scope = typeof global !== "undefined" ? global : self;
+var BrowserMutationObserver = scope.MutationObserver || scope.WebKitMutationObserver;
 
 // MutationObservers are desirable because they have high priority and work
 // reliably everywhere they are implemented.
@@ -1095,12 +1098,15 @@ rawAsap.makeRequestCallFromTimer = makeRequestCallFromTimer;
 
 var uppercasePattern = /[A-Z]/g;
 var msPattern = /^ms-/;
+var cache = {};
 
 function hyphenateStyleName(string) {
-    return string
-        .replace(uppercasePattern, '-$&')
-        .toLowerCase()
-        .replace(msPattern, '-ms-');
+    return string in cache
+    ? cache[string]
+    : cache[string] = string
+      .replace(uppercasePattern, '-$&')
+      .toLowerCase()
+      .replace(msPattern, '-ms-');
 }
 
 module.exports = hyphenateStyleName;
@@ -1131,7 +1137,7 @@ function calc(property, value) {
   }
 }
 module.exports = exports['default'];
-},{"../../utils/isPrefixedValue":21,"../../utils/joinPrefixedValue":22}],11:[function(require,module,exports){
+},{"../../utils/isPrefixedValue":23,"../../utils/joinPrefixedValue":24}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1158,7 +1164,7 @@ function cursor(property, value) {
   }
 }
 module.exports = exports['default'];
-},{"../../utils/joinPrefixedValue":22}],12:[function(require,module,exports){
+},{"../../utils/joinPrefixedValue":24}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1234,7 +1240,7 @@ var alternativeProps = {
 };
 
 function flexboxOld(property, value) {
-  if (property === 'flexDirection') {
+  if (property === 'flexDirection' && typeof value === 'string') {
     return {
       WebkitBoxOrient: value.indexOf('column') > -1 ? 'vertical' : 'horizontal',
       WebkitBoxDirection: value.indexOf('reverse') > -1 ? 'reverse' : 'normal'
@@ -1271,7 +1277,20 @@ function gradient(property, value) {
   }
 }
 module.exports = exports['default'];
-},{"../../utils/isPrefixedValue":21,"../../utils/joinPrefixedValue":22}],16:[function(require,module,exports){
+},{"../../utils/isPrefixedValue":23,"../../utils/joinPrefixedValue":24}],16:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = position;
+function position(property, value) {
+  if (property === 'position' && value === 'sticky') {
+    return { position: ['-webkit-sticky', 'sticky'] };
+  }
+}
+module.exports = exports['default'];
+},{}],17:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1308,7 +1327,7 @@ function sizing(property, value) {
   }
 }
 module.exports = exports['default'];
-},{"../../utils/joinPrefixedValue":22}],17:[function(require,module,exports){
+},{"../../utils/joinPrefixedValue":24}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1391,7 +1410,7 @@ function prefixValue(value) {
   return multipleValues.join(',');
 }
 module.exports = exports['default'];
-},{"../../utils/capitalizeString":20,"../../utils/isPrefixedValue":21,"../prefixProps":19,"hyphenate-style-name":9}],18:[function(require,module,exports){
+},{"../../utils/capitalizeString":21,"../../utils/isPrefixedValue":23,"../prefixProps":20,"hyphenate-style-name":9}],19:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1406,6 +1425,14 @@ var _prefixProps2 = _interopRequireDefault(_prefixProps);
 var _capitalizeString = require('../utils/capitalizeString');
 
 var _capitalizeString2 = _interopRequireDefault(_capitalizeString);
+
+var _sortPrefixedStyle = require('../utils/sortPrefixedStyle');
+
+var _sortPrefixedStyle2 = _interopRequireDefault(_sortPrefixedStyle);
+
+var _position = require('./plugins/position');
+
+var _position2 = _interopRequireDefault(_position);
 
 var _calc = require('./plugins/calc');
 
@@ -1444,7 +1471,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // special flexbox specifications
 
 
-var plugins = [_calc2.default, _cursor2.default, _sizing2.default, _gradient2.default, _transition2.default, _flexboxIE2.default, _flexboxOld2.default, _flex2.default];
+var plugins = [_position2.default, _calc2.default, _cursor2.default, _sizing2.default, _gradient2.default, _transition2.default, _flexboxIE2.default, _flexboxOld2.default, _flex2.default];
 
 /**
  * Returns a prefixed version of the style object using all vendor prefixes
@@ -1477,7 +1504,7 @@ function prefixAll(styles) {
     });
   });
 
-  return styles;
+  return (0, _sortPrefixedStyle2.default)(styles);
 }
 
 function assignStyles(base) {
@@ -1499,15 +1526,15 @@ function assignStyles(base) {
   });
 }
 module.exports = exports['default'];
-},{"../utils/capitalizeString":20,"./plugins/calc":10,"./plugins/cursor":11,"./plugins/flex":12,"./plugins/flexboxIE":13,"./plugins/flexboxOld":14,"./plugins/gradient":15,"./plugins/sizing":16,"./plugins/transition":17,"./prefixProps":19}],19:[function(require,module,exports){
+},{"../utils/capitalizeString":21,"../utils/sortPrefixedStyle":25,"./plugins/calc":10,"./plugins/cursor":11,"./plugins/flex":12,"./plugins/flexboxIE":13,"./plugins/flexboxOld":14,"./plugins/gradient":15,"./plugins/position":16,"./plugins/sizing":17,"./plugins/transition":18,"./prefixProps":20}],20:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = { "Webkit": { "transform": true, "transformOrigin": true, "transformOriginX": true, "transformOriginY": true, "backfaceVisibility": true, "perspective": true, "perspectiveOrigin": true, "transformStyle": true, "transformOriginZ": true, "animation": true, "animationDelay": true, "animationDirection": true, "animationFillMode": true, "animationDuration": true, "animationIterationCount": true, "animationName": true, "animationPlayState": true, "animationTimingFunction": true, "appearance": true, "userSelect": true, "fontKerning": true, "textEmphasisPosition": true, "textEmphasis": true, "textEmphasisStyle": true, "textEmphasisColor": true, "boxDecorationBreak": true, "clipPath": true, "maskImage": true, "maskMode": true, "maskRepeat": true, "maskPosition": true, "maskClip": true, "maskOrigin": true, "maskSize": true, "maskComposite": true, "mask": true, "maskBorderSource": true, "maskBorderMode": true, "maskBorderSlice": true, "maskBorderWidth": true, "maskBorderOutset": true, "maskBorderRepeat": true, "maskBorder": true, "maskType": true, "textDecorationStyle": true, "textDecorationSkip": true, "textDecorationLine": true, "textDecorationColor": true, "filter": true, "fontFeatureSettings": true, "breakAfter": true, "breakBefore": true, "breakInside": true, "columnCount": true, "columnFill": true, "columnGap": true, "columnRule": true, "columnRuleColor": true, "columnRuleStyle": true, "columnRuleWidth": true, "columns": true, "columnSpan": true, "columnWidth": true, "flex": true, "flexBasis": true, "flexDirection": true, "flexGrow": true, "flexFlow": true, "flexShrink": true, "flexWrap": true, "alignContent": true, "alignItems": true, "alignSelf": true, "justifyContent": true, "order": true, "transition": true, "transitionDelay": true, "transitionDuration": true, "transitionProperty": true, "transitionTimingFunction": true, "backdropFilter": true, "scrollSnapType": true, "scrollSnapPointsX": true, "scrollSnapPointsY": true, "scrollSnapDestination": true, "scrollSnapCoordinate": true, "shapeImageThreshold": true, "shapeImageMargin": true, "shapeImageOutside": true, "hyphens": true, "flowInto": true, "flowFrom": true, "regionFragment": true, "textSizeAdjust": true, "borderImage": true, "borderImageOutset": true, "borderImageRepeat": true, "borderImageSlice": true, "borderImageSource": true, "borderImageWidth": true, "tabSize": true, "objectFit": true, "objectPosition": true }, "Moz": { "appearance": true, "userSelect": true, "boxSizing": true, "textAlignLast": true, "textDecorationStyle": true, "textDecorationSkip": true, "textDecorationLine": true, "textDecorationColor": true, "tabSize": true, "hyphens": true, "fontFeatureSettings": true, "breakAfter": true, "breakBefore": true, "breakInside": true, "columnCount": true, "columnFill": true, "columnGap": true, "columnRule": true, "columnRuleColor": true, "columnRuleStyle": true, "columnRuleWidth": true, "columns": true, "columnSpan": true, "columnWidth": true }, "ms": { "flex": true, "flexBasis": false, "flexDirection": true, "flexGrow": false, "flexFlow": true, "flexShrink": false, "flexWrap": true, "alignContent": false, "alignItems": false, "alignSelf": false, "justifyContent": false, "order": false, "transform": true, "transformOrigin": true, "transformOriginX": true, "transformOriginY": true, "userSelect": true, "wrapFlow": true, "wrapThrough": true, "wrapMargin": true, "scrollSnapType": true, "scrollSnapPointsX": true, "scrollSnapPointsY": true, "scrollSnapDestination": true, "scrollSnapCoordinate": true, "touchAction": true, "hyphens": true, "flowInto": true, "flowFrom": true, "breakBefore": true, "breakAfter": true, "breakInside": true, "regionFragment": true, "gridTemplateColumns": true, "gridTemplateRows": true, "gridTemplateAreas": true, "gridTemplate": true, "gridAutoColumns": true, "gridAutoRows": true, "gridAutoFlow": true, "grid": true, "gridRowStart": true, "gridColumnStart": true, "gridRowEnd": true, "gridRow": true, "gridColumn": true, "gridColumnEnd": true, "gridColumnGap": true, "gridRowGap": true, "gridArea": true, "gridGap": true, "textSizeAdjust": true } };
+exports.default = { "Webkit": { "transform": true, "transformOrigin": true, "transformOriginX": true, "transformOriginY": true, "backfaceVisibility": true, "perspective": true, "perspectiveOrigin": true, "transformStyle": true, "transformOriginZ": true, "animation": true, "animationDelay": true, "animationDirection": true, "animationFillMode": true, "animationDuration": true, "animationIterationCount": true, "animationName": true, "animationPlayState": true, "animationTimingFunction": true, "appearance": true, "userSelect": true, "fontKerning": true, "textEmphasisPosition": true, "textEmphasis": true, "textEmphasisStyle": true, "textEmphasisColor": true, "boxDecorationBreak": true, "clipPath": true, "maskImage": true, "maskMode": true, "maskRepeat": true, "maskPosition": true, "maskClip": true, "maskOrigin": true, "maskSize": true, "maskComposite": true, "mask": true, "maskBorderSource": true, "maskBorderMode": true, "maskBorderSlice": true, "maskBorderWidth": true, "maskBorderOutset": true, "maskBorderRepeat": true, "maskBorder": true, "maskType": true, "textDecorationStyle": true, "textDecorationSkip": true, "textDecorationLine": true, "textDecorationColor": true, "filter": true, "fontFeatureSettings": true, "breakAfter": true, "breakBefore": true, "breakInside": true, "columnCount": true, "columnFill": true, "columnGap": true, "columnRule": true, "columnRuleColor": true, "columnRuleStyle": true, "columnRuleWidth": true, "columns": true, "columnSpan": true, "columnWidth": true, "flex": true, "flexBasis": true, "flexDirection": true, "flexGrow": true, "flexFlow": true, "flexShrink": true, "flexWrap": true, "alignContent": true, "alignItems": true, "alignSelf": true, "justifyContent": true, "order": true, "transition": true, "transitionDelay": true, "transitionDuration": true, "transitionProperty": true, "transitionTimingFunction": true, "backdropFilter": true, "scrollSnapType": true, "scrollSnapPointsX": true, "scrollSnapPointsY": true, "scrollSnapDestination": true, "scrollSnapCoordinate": true, "shapeImageThreshold": true, "shapeImageMargin": true, "shapeImageOutside": true, "hyphens": true, "flowInto": true, "flowFrom": true, "regionFragment": true, "textSizeAdjust": true }, "Moz": { "appearance": true, "userSelect": true, "boxSizing": true, "textAlignLast": true, "textDecorationStyle": true, "textDecorationSkip": true, "textDecorationLine": true, "textDecorationColor": true, "tabSize": true, "hyphens": true, "fontFeatureSettings": true, "breakAfter": true, "breakBefore": true, "breakInside": true, "columnCount": true, "columnFill": true, "columnGap": true, "columnRule": true, "columnRuleColor": true, "columnRuleStyle": true, "columnRuleWidth": true, "columns": true, "columnSpan": true, "columnWidth": true }, "ms": { "flex": true, "flexBasis": false, "flexDirection": true, "flexGrow": false, "flexFlow": true, "flexShrink": false, "flexWrap": true, "alignContent": false, "alignItems": false, "alignSelf": false, "justifyContent": false, "order": false, "transform": true, "transformOrigin": true, "transformOriginX": true, "transformOriginY": true, "userSelect": true, "wrapFlow": true, "wrapThrough": true, "wrapMargin": true, "scrollSnapType": true, "scrollSnapPointsX": true, "scrollSnapPointsY": true, "scrollSnapDestination": true, "scrollSnapCoordinate": true, "touchAction": true, "hyphens": true, "flowInto": true, "flowFrom": true, "breakBefore": true, "breakAfter": true, "breakInside": true, "regionFragment": true, "gridTemplateColumns": true, "gridTemplateRows": true, "gridTemplateAreas": true, "gridTemplate": true, "gridAutoColumns": true, "gridAutoRows": true, "gridAutoFlow": true, "grid": true, "gridRowStart": true, "gridColumnStart": true, "gridRowEnd": true, "gridRow": true, "gridColumn": true, "gridColumnEnd": true, "gridColumnGap": true, "gridRowGap": true, "gridArea": true, "gridGap": true, "textSizeAdjust": true } };
 module.exports = exports["default"];
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1520,7 +1547,19 @@ exports.default = function (str) {
 };
 
 module.exports = exports["default"];
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+exports.default = function (property) {
+  return property.match(/^(Webkit|Moz|O|ms)/) !== null;
+};
+
+module.exports = exports["default"];
+},{}],23:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1534,7 +1573,7 @@ exports.default = function (value) {
 };
 
 module.exports = exports['default'];
-},{}],22:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1555,10 +1594,38 @@ exports.default = function (property, value) {
 };
 
 module.exports = exports['default'];
-},{}],23:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = sortPrefixedStyle;
+
+var _isPrefixedProperty = require('./isPrefixedProperty');
+
+var _isPrefixedProperty2 = _interopRequireDefault(_isPrefixedProperty);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function sortPrefixedStyle(style) {
+  return Object.keys(style).sort(function (left, right) {
+    if ((0, _isPrefixedProperty2.default)(left) && !(0, _isPrefixedProperty2.default)(right)) {
+      return -1;
+    } else if (!(0, _isPrefixedProperty2.default)(left) && (0, _isPrefixedProperty2.default)(right)) {
+      return 1;
+    }
+    return 0;
+  }).reduce(function (sortedStyle, prop) {
+    sortedStyle[prop] = style[prop];
+    return sortedStyle;
+  }, {});
+}
+module.exports = exports['default'];
+},{"./isPrefixedProperty":22}],26:[function(require,module,exports){
 module.exports = require('./lib/static/prefixAll')
 
-},{"./lib/static/prefixAll":18}],24:[function(require,module,exports){
+},{"./lib/static/prefixAll":19}],27:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -1623,8 +1690,9 @@ var Lightbox = (function (_Component) {
 		_classCallCheck(this, Lightbox);
 
 		_get(Object.getPrototypeOf(Lightbox.prototype), 'constructor', this).call(this);
+		this.state = { rotate: 0 };
 
-		_utils.bindFunctions.call(this, ['gotoNext', 'gotoPrev', 'handleKeyboardInput']);
+		_utils.bindFunctions.call(this, ['gotoNext', 'gotoPrev', 'rotate', 'handleKeyboardInput']);
 	}
 
 	_createClass(Lightbox, [{
@@ -1713,6 +1781,7 @@ var Lightbox = (function (_Component) {
 				event.stopPropagation();
 			}
 			this.props.onClickNext();
+			this.setState({ rotate: 0 });
 		}
 	}, {
 		key: 'gotoPrev',
@@ -1723,6 +1792,7 @@ var Lightbox = (function (_Component) {
 				event.stopPropagation();
 			}
 			this.props.onClickPrev();
+			this.setState({ rotate: 0 });
 		}
 	}, {
 		key: 'handleKeyboardInput',
@@ -1742,6 +1812,15 @@ var Lightbox = (function (_Component) {
 			}
 			return false;
 		}
+	}, {
+		key: 'rotate',
+		value: function rotate() {
+			if (this.state.rotate === 360) {
+				this.setState({ rotate: 90 });
+			} else {
+				this.setState({ rotate: this.state.rotate + 90 });
+			}
+		}
 
 		// ==============================
 		// RENDERERS
@@ -1756,7 +1835,7 @@ var Lightbox = (function (_Component) {
 				direction: 'left',
 				icon: 'arrowLeft',
 				onClick: this.gotoPrev,
-				title: 'Previous (Left arrow key)',
+				title: this.props.leftArrowTitle,
 				type: 'button'
 			});
 		}
@@ -1769,7 +1848,7 @@ var Lightbox = (function (_Component) {
 				direction: 'right',
 				icon: 'arrowRight',
 				onClick: this.gotoNext,
-				title: 'Previous (Right arrow key)',
+				title: this.props.rightArrowTitle,
 				type: 'button'
 			});
 		}
@@ -1782,7 +1861,9 @@ var Lightbox = (function (_Component) {
 			var isOpen = _props.isOpen;
 			var onClose = _props.onClose;
 			var showCloseButton = _props.showCloseButton;
+			var showRotateButton = _props.showRotateButton;
 			var showThumbnails = _props.showThumbnails;
+			var rotateButtonTitle = _props.rotateButtonTitle;
 			var width = _props.width;
 
 			if (!isOpen) return _react2['default'].createElement('span', { key: 'closed' });
@@ -1805,7 +1886,11 @@ var Lightbox = (function (_Component) {
 					_react2['default'].createElement(_componentsHeader2['default'], {
 						customControls: customControls,
 						onClose: onClose,
-						showCloseButton: showCloseButton
+						onRotate: this.rotate,
+						showCloseButton: showCloseButton,
+						closeButtonTitle: this.props.closeButtonTitle,
+						rotateButtonTitle: rotateButtonTitle,
+						showRotateButton: showRotateButton
 					}),
 					this.renderImages()
 				),
@@ -1848,11 +1933,13 @@ var Lightbox = (function (_Component) {
 					className: (0, _aphroditeNoImportant.css)(classes.image),
 					onClick: !!onClickImage && onClickImage,
 					sizes: sizes,
+					alt: image.alt,
 					src: image.src,
 					srcSet: srcset,
 					style: {
 						cursor: this.props.onClickImage ? 'pointer' : 'auto',
-						maxHeight: 'calc(100vh - ' + heightOffset + ')'
+						maxHeight: 'calc(100vh - ' + heightOffset + ')',
+						transform: 'rotate(' + this.state.rotate + 'deg)'
 					}
 				}),
 				_react2['default'].createElement(_componentsFooter2['default'], {
@@ -1899,6 +1986,7 @@ var Lightbox = (function (_Component) {
 
 Lightbox.propTypes = {
 	backdropClosesModal: _react.PropTypes.bool,
+	closeButtonTitle: _react.PropTypes.string,
 	currentImage: _react.PropTypes.number,
 	customControls: _react.PropTypes.arrayOf(_react.PropTypes.node),
 	enableKeyboardInput: _react.PropTypes.bool,
@@ -1910,11 +1998,13 @@ Lightbox.propTypes = {
 		thumbnail: _react.PropTypes.string
 	})).isRequired,
 	isOpen: _react.PropTypes.bool,
+	leftArrowTitle: _react.PropTypes.string,
 	onClickImage: _react.PropTypes.func,
 	onClickNext: _react.PropTypes.func,
 	onClickPrev: _react.PropTypes.func,
 	onClose: _react.PropTypes.func.isRequired,
 	preloadNextImage: _react.PropTypes.bool,
+	rightArrowTitle: _react.PropTypes.string,
 	showCloseButton: _react.PropTypes.bool,
 	showImageCount: _react.PropTypes.bool,
 	showThumbnails: _react.PropTypes.bool,
@@ -1923,13 +2013,18 @@ Lightbox.propTypes = {
 	width: _react.PropTypes.number
 };
 Lightbox.defaultProps = {
+	closeButtonTitle: 'Close (Esc)',
+	rotateButtonTitle: 'Rotate',
 	currentImage: 0,
 	enableKeyboardInput: true,
 	imageCountSeparator: ' of ',
+	leftArrowTitle: 'Previous (Left arrow key)',
 	onClickShowNextImage: true,
 	preloadNextImage: true,
+	rightArrowTitle: 'Next (Right arrow key)',
 	showCloseButton: true,
 	showImageCount: true,
+	showRotateButton: true,
 	theme: {},
 	thumbnailOffset: 2,
 	width: 1024
@@ -1966,7 +2061,7 @@ https://fb.me/react-unknown-prop is resolved
 */
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./components/Arrow":25,"./components/Container":26,"./components/Footer":27,"./components/Header":28,"./components/PaginatedThumbnails":30,"./components/Portal":32,"./theme":38,"./utils":42,"aphrodite/no-important":6,"react-scrolllock":undefined}],25:[function(require,module,exports){
+},{"./components/Arrow":28,"./components/Container":29,"./components/Footer":30,"./components/Header":31,"./components/PaginatedThumbnails":33,"./components/Portal":35,"./theme":42,"./utils":46,"aphrodite/no-important":6,"react-scrolllock":undefined}],28:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2077,7 +2172,7 @@ var defaultStyles = {
 module.exports = Arrow;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../theme":38,"../utils":42,"./Icon":29,"aphrodite/no-important":6}],26:[function(require,module,exports){
+},{"../theme":42,"../utils":46,"./Icon":32,"aphrodite/no-important":6}],29:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2138,7 +2233,7 @@ var defaultStyles = {
 module.exports = Container;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../theme":38,"../utils":42,"aphrodite/no-important":6}],27:[function(require,module,exports){
+},{"../theme":42,"../utils":46,"aphrodite/no-important":6}],30:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2233,7 +2328,7 @@ var defaultStyles = {
 module.exports = Footer;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../theme":38,"../utils":42,"aphrodite/no-important":6}],28:[function(require,module,exports){
+},{"../theme":42,"../utils":46,"aphrodite/no-important":6}],31:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2262,9 +2357,13 @@ var _Icon2 = _interopRequireDefault(_Icon);
 function Header(_ref, _ref2) {
 	var customControls = _ref.customControls;
 	var onClose = _ref.onClose;
+	var onRotate = _ref.onRotate;
 	var showCloseButton = _ref.showCloseButton;
+	var showRotateButton = _ref.showRotateButton;
+	var closeButtonTitle = _ref.closeButtonTitle;
+	var rotateButtonTitle = _ref.rotateButtonTitle;
 
-	var props = _objectWithoutProperties(_ref, ['customControls', 'onClose', 'showCloseButton']);
+	var props = _objectWithoutProperties(_ref, ['customControls', 'onClose', 'onRotate', 'showCloseButton', 'showRotateButton', 'closeButtonTitle', 'rotateButtonTitle']);
 
 	var theme = _ref2.theme;
 
@@ -2273,11 +2372,20 @@ function Header(_ref, _ref2) {
 	return _react2['default'].createElement(
 		'div',
 		_extends({ className: (0, _aphroditeNoImportant.css)(classes.header) }, props),
+		!!showRotateButton && _react2['default'].createElement(
+			'button',
+			{
+				title: rotateButtonTitle,
+				className: (0, _aphroditeNoImportant.css)(classes.rotate),
+				onClick: onRotate
+			},
+			_react2['default'].createElement(_Icon2['default'], { fill: !!theme.rotate && theme.rotate.fill || _theme2['default'].rotate.fill, type: 'rotate' })
+		),
 		customControls ? customControls : _react2['default'].createElement('span', null),
 		!!showCloseButton && _react2['default'].createElement(
 			'button',
 			{
-				title: 'Close (Esc)',
+				title: closeButtonTitle,
 				className: (0, _aphroditeNoImportant.css)(classes.close),
 				onClick: onClose
 			},
@@ -2315,13 +2423,28 @@ var defaultStyles = {
 		marginRight: -10,
 		padding: 10,
 		width: _theme2['default'].close.width + 20
+	},
+	rotate: {
+		background: 'none',
+		border: 'none',
+		cursor: 'pointer',
+		outline: 'none',
+		position: 'relative',
+		top: 0,
+		verticalAlign: 'bottom',
+
+		// increase hit area
+		height: _theme2['default'].close.height + 20,
+		marginLeft: -10,
+		padding: 10,
+		width: _theme2['default'].close.width + 20
 	}
 };
 
 module.exports = Header;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../theme":38,"../utils":42,"./Icon":29,"aphrodite/no-important":6}],29:[function(require,module,exports){
+},{"../theme":42,"../utils":46,"./Icon":32,"aphrodite/no-important":6}],32:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2368,7 +2491,7 @@ exports['default'] = Icon;
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../icons":37}],30:[function(require,module,exports){
+},{"../icons":40}],33:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2600,7 +2723,7 @@ PaginatedThumbnails.propTypes = {
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../theme":38,"./Arrow":25,"./Thumbnail":33,"aphrodite/no-important":6}],31:[function(require,module,exports){
+},{"../theme":42,"./Arrow":28,"./Thumbnail":36,"aphrodite/no-important":6}],34:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2658,7 +2781,7 @@ exports['default'] = PassContext;
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],32:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2760,7 +2883,7 @@ Portal.contextTypes = {
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./PassContext":31,"react-addons-css-transition-group":undefined,"react-dom":undefined}],33:[function(require,module,exports){
+},{"./PassContext":34,"react-addons-css-transition-group":undefined,"react-dom":undefined}],36:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2798,7 +2921,6 @@ function Thumbnail(_ref, _ref2) {
 		onClick: function (e) {
 			e.preventDefault();
 			e.stopPropagation();
-
 			onClick(index);
 		},
 		style: { backgroundImage: 'url("' + url + '")' }
@@ -2839,7 +2961,7 @@ exports['default'] = Thumbnail;
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../theme":38,"../utils":42,"aphrodite/no-important":6}],34:[function(require,module,exports){
+},{"../theme":42,"../utils":46,"aphrodite/no-important":6}],37:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2852,7 +2974,7 @@ exports["default"] = function (fill) {
 
 module.exports = exports["default"];
 
-},{}],35:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2865,7 +2987,7 @@ exports["default"] = function (fill) {
 
 module.exports = exports["default"];
 
-},{}],36:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2878,16 +3000,30 @@ exports["default"] = function (fill) {
 
 module.exports = exports["default"];
 
-},{}],37:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 'use strict';
 
 module.exports = {
 	arrowLeft: require('./arrowLeft'),
 	arrowRight: require('./arrowRight'),
-	close: require('./close')
+	close: require('./close'),
+	rotate: require('./rotate')
 };
 
-},{"./arrowLeft":34,"./arrowRight":35,"./close":36}],38:[function(require,module,exports){
+},{"./arrowLeft":37,"./arrowRight":38,"./close":39,"./rotate":41}],41:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+exports["default"] = function (fill) {
+	return "<svg fill=\"" + fill + "\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" width=\"100%\" height=\"100%\" viewBox=\"0 0 385 385\" style=\"enable-background:new 0 0 512 512;\" xml:space=\"preserve\">\n\t\t<path d=\"M385,32.0833333 L385,144.375 C385,148.719618 383.412543,152.479384 380.23763,155.654297 C377.062717,158.82921 373.302951,160.416667 368.958333,160.416667 L256.666667,160.416667 C249.648438,160.416667 244.718967,157.074653 241.878255,150.390625 C239.037543,143.873698 240.207248,138.108724 245.38737,133.095703 L279.977214,98.5058594 C255.246311,75.6130642 226.08724,64.1666667 192.5,64.1666667 C175.121528,64.1666667 158.536784,67.5504557 142.745768,74.3180339 C126.954753,81.085612 113.294271,90.234375 101.764323,101.764323 C90.234375,113.294271 81.085612,126.954753 74.3180339,142.745768 C67.5504557,158.536784 64.1666667,175.121528 64.1666667,192.5 C64.1666667,209.878472 67.5504557,226.463216 74.3180339,242.254232 C81.085612,258.045247 90.234375,271.705729 101.764323,283.235677 C113.294271,294.765625 126.954753,303.914388 142.745768,310.681966 C158.536784,317.449544 175.121528,320.833333 192.5,320.833333 C212.384983,320.833333 231.183811,316.488715 248.896484,307.799479 C266.609158,299.110243 281.56467,286.828342 293.763021,270.953776 C294.932726,269.282769 296.854384,268.280165 299.527995,267.945964 C301.867405,267.945964 303.956163,268.697917 305.794271,270.201823 L340.133464,304.791667 C341.63737,306.128472 342.431098,307.841254 342.514648,309.930013 C342.598199,312.018772 341.971571,313.898655 340.634766,315.569661 C322.42079,337.626953 300.363498,354.712999 274.462891,366.827799 C248.562283,378.9426 221.241319,385 192.5,385 C166.432292,385 141.534288,379.903429 117.80599,369.710286 C94.077691,359.517144 73.6078559,345.814887 56.3964844,328.603516 C39.1851128,311.392144 25.4828559,290.922309 15.2897135,267.19401 C5.09657118,243.465712 0,218.567708 0,192.5 C0,166.432292 5.09657118,141.534288 15.2897135,117.80599 C25.4828559,94.077691 39.1851128,73.6078559 56.3964844,56.3964844 C73.6078559,39.1851128 94.077691,25.4828559 117.80599,15.2897135 C141.534288,5.09657118 166.432292,0 192.5,0 C217.063802,0 240.833876,4.63704427 263.810221,13.9111328 C286.786567,23.1852214 307.214627,36.2608507 325.094401,53.1380208 L357.679036,20.8040365 C362.524957,15.6239149 368.373481,14.4542101 375.224609,17.2949219 C381.741536,20.1356337 385,25.0651042 385,32.0833333 Z\" id=\"Shape\" fill=\"" + fill + "\"></path>\n\t</svg>";
+};
+
+module.exports = exports["default"];
+
+},{}],42:[function(require,module,exports){
 // ==============================
 // THEME
 // ==============================
@@ -2911,6 +3047,11 @@ theme.header = {
 	height: 40
 };
 theme.close = {
+	fill: 'white',
+	height: 20,
+	width: 20
+};
+theme.rotate = {
 	fill: 'white',
 	height: 20,
 	width: 20
@@ -2946,7 +3087,7 @@ theme.arrow = {
 
 module.exports = theme;
 
-},{}],39:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 /**
 	Bind multiple component methods:
 
@@ -2969,14 +3110,14 @@ module.exports = function bindFunctions(functions) {
 	});
 };
 
-},{}],40:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 // Return true if window + document
 
 'use strict';
 
 module.exports = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 
-},{}],41:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -3003,7 +3144,7 @@ function deepMerge(target) {
 
 module.exports = deepMerge;
 
-},{}],42:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -3026,5 +3167,5 @@ module.exports = {
 	deepMerge: _deepMerge2['default']
 };
 
-},{"./bindFunctions":39,"./canUseDom":40,"./deepMerge":41}]},{},[24])(24)
+},{"./bindFunctions":43,"./canUseDom":44,"./deepMerge":45}]},{},[27])(27)
 });

@@ -9,8 +9,11 @@ import Icon from './Icon';
 function Header ({
 	customControls,
 	onClose,
+	onRotate,
 	showCloseButton,
+	showRotateButton,
 	closeButtonTitle,
+	rotateButtonTitle,
 	...props,
 }, {
 	theme,
@@ -19,6 +22,15 @@ function Header ({
 
 	return (
 		<div className={css(classes.header)} {...props}>
+			{!!showRotateButton && (
+				<button
+					title={rotateButtonTitle}
+					className={css(classes.rotate)}
+					onClick={onRotate}
+				>
+					<Icon fill={!!theme.rotate && theme.rotate.fill || defaults.rotate.fill} type="rotate" />
+				</button>
+			)}
 			{customControls ? customControls : <span />}
 			{!!showCloseButton && (
 				<button
@@ -60,6 +72,21 @@ const defaultStyles = {
 		// increase hit area
 		height: defaults.close.height + 20,
 		marginRight: -10,
+		padding: 10,
+		width: defaults.close.width + 20,
+	},
+	rotate: {
+		background: 'none',
+		border: 'none',
+		cursor: 'pointer',
+		outline: 'none',
+		position: 'relative',
+		top: 0,
+		verticalAlign: 'bottom',
+
+		// increase hit area
+		height: defaults.close.height + 20,
+		marginLeft: -10,
 		padding: 10,
 		width: defaults.close.width + 20,
 	},
