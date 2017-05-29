@@ -48,6 +48,12 @@ const defaultStyles = {
 		justifyContent: 'space-between',
 		height: defaults.header.height,
 	},
+	headerTitle: {
+		fontSize: '14px',
+		margin: 0,
+		position: 'absolute',
+		top: '15px'
+	},
 	close: {
 		background: 'none',
 		border: 'none',
