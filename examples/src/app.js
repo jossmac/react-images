@@ -2,8 +2,8 @@ import React from 'react';
 import { render } from 'react-dom';
 import Gallery from './components/Gallery';
 
-function makeUnsplashSrc (id) {
-	return `https://images.unsplash.com/photo-${id}?dpr=2&auto=format&w=1024&h=1024`;
+function makeUnsplashSrc (id, width = 1024, height = 1024) {
+	return `https://images.unsplash.com/photo-${id}?dpr=2&auto=format&w=${width}&h=${height}`;
 }
 function makeUnsplashSrcSet (id, size) {
 	return `https://images.unsplash.com/photo-${id}?dpr=2&auto=format&w=${size} ${size}w`;
@@ -111,6 +111,7 @@ render(
 		<Gallery images={DEFAULT_IMAGES.map(({ caption, id, orientation, useForDemo }) => ({
 			src: makeUnsplashSrc(id),
 			thumbnail: makeUnsplashThumbnail(id, orientation),
+			initialImage: makeUnsplashSrc(id, 50, 50),
 			srcset: [
 				makeUnsplashSrcSet(id, 1024),
 				makeUnsplashSrcSet(id, 800),
@@ -125,6 +126,7 @@ render(
 		<h3>With Thumbnails</h3>
 		<Gallery images={THUMBNAIL_IMAGES.map(({ caption, id, orientation, useForDemo }) => ({
 			src: makeUnsplashSrc(id),
+			initialImage: makeUnsplashSrc(id, 50, 50),
 			thumbnail: makeUnsplashThumbnail(id, orientation),
 			srcset: [
 				makeUnsplashSrcSet(id, 1024),
@@ -140,6 +142,7 @@ render(
 		<h3>Themed Lightbox</h3>
 		<Gallery images={THEMED_IMAGES.map(({ caption, id, orientation, useForDemo }) => ({
 			src: makeUnsplashSrc(id),
+			initialImage: makeUnsplashSrc(id, 50, 50),
 			thumbnail: makeUnsplashThumbnail(id, orientation),
 			srcset: [
 				makeUnsplashSrcSet(id, 1024),
