@@ -158,3 +158,6 @@ rightArrowTitle | string | ' Next (Right arrow key) ' | Customize right arrow ti
 showCloseButton | bool  | true | Optionally display a close "X" button in top right corner
 showImageCount | bool  | true | Optionally display image index, e.g., "3 of 20"
 width | number  | 1024 | Maximum width of the carousel; defaults to 1024px
+containerStyle | object | undefined | Specify a custom style for lightbox container element
+imageStyle | object | undefined | Specify a custom style for lightbox container element
+Details | func | undefined | Specify a custom render method for the lightbox image details (overriding Footer)
