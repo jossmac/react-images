@@ -161,8 +161,14 @@ class Lightbox extends Component {
 			onClose,
 			showCloseButton,
 			showThumbnails,
-			width,
+			width
 		} = this.props;
+
+		const Details = (
+			(this.props.Details)
+			? this.props.Details
+			: Footer
+		)
 
 		if (!isOpen) return <span key="closed" />;
 
@@ -184,7 +190,7 @@ class Lightbox extends Component {
 						showCloseButton={showCloseButton}
 						closeButtonTitle={this.props.closeButtonTitle}
 					/>
-					{this.renderImages()}
+					{this.renderImages(Details)}
 				</div>
 				{this.renderThumbnails()}
 				{this.renderArrowPrev()}
@@ -193,14 +199,14 @@ class Lightbox extends Component {
 			</Container>
 		);
 	}
-	renderImages () {
+	renderImages (Details) {
 		const {
 			currentImage,
 			images,
 			imageCountSeparator,
 			onClickImage,
 			showImageCount,
-			showThumbnails,
+			showThumbnails
 		} = this.props;
 
 		if (!images || !images.length) return null;
@@ -237,7 +243,7 @@ class Lightbox extends Component {
 						maxHeight: `calc(100vh - ${heightOffset})`,
 					}}
 				/>
-				<Footer
+				<Details
 					caption={images[currentImage].caption}
 					countCurrent={currentImage + 1}
 					countSeparator={imageCountSeparator}
