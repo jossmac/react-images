@@ -108,7 +108,32 @@ const LIGHTBOX_IMAGE_SET = [
 
 ```
 
+### Customization
+
+Example passing custom styles and a custom function to render the details (caption, pagination etc.)
+
+```
+const renderDetails = (props) => {
+  const { caption, countCurrent, countSeparator, countTotal, showCount } = props
+  return (
+    <div>
+      You are seeing image { countCurrent } / { countTotal }
+    </div>
+  )
+}
+
+const render = (props) => (
+  <Lightbox
+    { ...props }
+    containerStyle={{ background: '#FFF' }}
+    imageStyle={{ border: '1px solid #333' }}
+    Details={this.renderDetails}
+  />
+)
+```
+
 Note that the caption is an entirely optional property, as can be seen in the first gallery on the [example page](http://jossmac.github.io/react-images/). The first image has a single line caption, the second demonstrates multiline, and the remaining images are without captions, entirely.
+
 
 ## Options
 
