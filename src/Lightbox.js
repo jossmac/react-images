@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 import ScrollLock from 'react-scrolllock';
 
-import theme from './theme';
+import defaultTheme from './theme';
 import Arrow from './components/Arrow';
 import Container from './components/Container';
 import Footer from './components/Footer';
@@ -11,12 +11,12 @@ import Header from './components/Header';
 import PaginatedThumbnails from './components/PaginatedThumbnails';
 import Portal from './components/Portal';
 
-import { bindFunctions, canUseDom } from './utils';
+import { bindFunctions, canUseDom, deepMerge } from './utils';
 
 class Lightbox extends Component {
-	constructor () {
-		super();
-
+	constructor (props) {
+		super(props);
+		this.theme = deepMerge(defaultTheme, props.theme);
 		bindFunctions.call(this, [
 			'gotoNext',
 			'gotoPrev',
@@ -25,7 +25,7 @@ class Lightbox extends Component {
 	}
 	getChildContext () {
 		return {
-			theme: this.props.theme,
+			theme: this.theme,
 		};
 	}
 	componentDidMount () {
@@ -168,7 +168,7 @@ class Lightbox extends Component {
 
 		let offsetThumbnails = 0;
 		if (showThumbnails) {
-			offsetThumbnails = theme.thumbnail.size + theme.container.gutter.vertical;
+			offsetThumbnails = this.theme.thumbnail.size + this.theme.container.gutter.vertical;
 		}
 
 		return (
@@ -215,8 +215,9 @@ class Lightbox extends Component {
 			sizes = '100vw';
 		}
 
-		const thumbnailsSize = showThumbnails ? theme.thumbnail.size : 0;
-		const heightOffset = `${theme.header.height + theme.footer.height + thumbnailsSize + (theme.container.gutter.vertical)}px`;
+		const thumbnailsSize = showThumbnails ? this.theme.thumbnail.size : 0;
+		const heightOffset = `${this.theme.header.height + this.theme.footer.height + thumbnailsSize
+			+ (this.theme.container.gutter.vertical)}px`;
 
 		return (
 			<figure className={css(classes.figure)}>
