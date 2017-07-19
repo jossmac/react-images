@@ -78,36 +78,36 @@ class Gallery extends Component {
 		);
 	}
 	render () {
-	    if (this.state.lightboxIsOpen){
-		return (
-			<div className="section">
-				{this.props.heading && <h2>{this.props.heading}</h2>}
-				{this.props.subheading && <p>{this.props.subheading}</p>}
-				{this.renderGallery()}
-				<Lightbox
-					currentImage={this.state.currentImage}
-					images={this.props.images}
-					onClickImage={this.handleClickImage}
-					onClickNext={this.gotoNext}
-					onClickPrev={this.gotoPrevious}
-					onClickThumbnail={this.gotoImage}
-					onClose={this.closeLightbox}
-					showThumbnails={this.props.showThumbnails}
-					theme={this.props.theme}
-				/>
-				<ScrollLock/>
-			</div>
-		);
-	    }
-	    else{
-		    return (
-			<div className="section">
-				{this.props.heading && <h2>{this.props.heading}</h2>}
-				{this.props.subheading && <p>{this.props.subheading}</p>}
-				{this.renderGallery()}
-			</div>
-		    );
-	    }
+		if (this.state.lightboxIsOpen) {
+			return (
+				<div className="section">
+					{this.props.heading && <h2>{this.props.heading}</h2>}
+					{this.props.subheading && <p>{this.props.subheading}</p>}
+					{this.renderGallery()}
+					<Lightbox
+						currentImage={this.state.currentImage}
+						images={this.props.images}
+						onClickImage={this.handleClickImage}
+						onClickNext={this.gotoNext}
+						onClickPrev={this.gotoPrevious}
+						onClickThumbnail={this.gotoImage}
+						onClose={this.closeLightbox}
+						showThumbnails={this.props.showThumbnails}
+						theme={this.props.theme}
+					/>
+					<ScrollLock/>
+				</div>
+			);
+		}
+		else {
+			return (
+				<div className="section">
+					{this.props.heading && <h2>{this.props.heading}</h2>}
+					{this.props.subheading && <p>{this.props.subheading}</p>}
+					{this.renderGallery()}
+				</div>
+			);
+		}
 	}
 }
 
@@ -171,5 +171,4 @@ const classes = StyleSheet.create({
 		width: 'auto',
 	},
 });
-
 export default Gallery;
