@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 import Lightbox from 'react-images';
+import ScrollLock from 'react-scrolllock';
 
 class Gallery extends Component {
 	constructor () {
@@ -77,6 +78,7 @@ class Gallery extends Component {
 		);
 	}
 	render () {
+	    if (this.state.lightboxIsOpen){
 		return (
 			<div className="section">
 				{this.props.heading && <h2>{this.props.heading}</h2>}
@@ -85,7 +87,6 @@ class Gallery extends Component {
 				<Lightbox
 					currentImage={this.state.currentImage}
 					images={this.props.images}
-					isOpen={this.state.lightboxIsOpen}
 					onClickImage={this.handleClickImage}
 					onClickNext={this.gotoNext}
 					onClickPrev={this.gotoPrevious}
@@ -94,8 +95,19 @@ class Gallery extends Component {
 					showThumbnails={this.props.showThumbnails}
 					theme={this.props.theme}
 				/>
+				<ScrollLock/>
 			</div>
 		);
+	    }
+	    else{
+		    return (
+			<div className="section">
+				{this.props.heading && <h2>{this.props.heading}</h2>}
+				{this.props.subheading && <p>{this.props.subheading}</p>}
+				{this.renderGallery()}
+			</div>
+		    );
+	    }
 	}
 }
 

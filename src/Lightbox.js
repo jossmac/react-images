@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
-import ScrollLock from 'react-scrolllock';
 
 import theme from './theme';
 import Arrow from './components/Arrow';
@@ -29,7 +28,7 @@ class Lightbox extends Component {
 		};
 	}
 	componentDidMount () {
-		if (this.props.isOpen && this.props.enableKeyboardInput) {
+		if (this.props.enableKeyboardInput) {
 			window.addEventListener('keydown', this.handleKeyboardInput);
 		}
 	}
@@ -59,13 +58,6 @@ class Lightbox extends Component {
 			}
 		}
 
-		// add/remove event listeners
-		if (!this.props.isOpen && nextProps.isOpen && nextProps.enableKeyboardInput) {
-			window.addEventListener('keydown', this.handleKeyboardInput);
-		}
-		if (!nextProps.isOpen && nextProps.enableKeyboardInput) {
-			window.removeEventListener('keydown', this.handleKeyboardInput);
-		}
 	}
 	componentWillUnmount () {
 		if (this.props.enableKeyboardInput) {
@@ -157,14 +149,12 @@ class Lightbox extends Component {
 		const {
 			backdropClosesModal,
 			customControls,
-			isOpen,
 			onClose,
 			showCloseButton,
 			showThumbnails,
 			width,
 		} = this.props;
 
-		if (!isOpen) return <span key="closed" />;
 
 		let offsetThumbnails = 0;
 		if (showThumbnails) {
@@ -189,7 +179,6 @@ class Lightbox extends Component {
 				{this.renderThumbnails()}
 				{this.renderArrowPrev()}
 				{this.renderArrowNext()}
-				<ScrollLock />
 			</Container>
 		);
 	}
@@ -285,7 +274,6 @@ Lightbox.propTypes = {
 			thumbnail: PropTypes.string,
 		})
 	).isRequired,
-	isOpen: PropTypes.bool,
 	leftArrowTitle: PropTypes.string,
 	onClickImage: PropTypes.func,
 	onClickNext: PropTypes.func,
