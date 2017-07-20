@@ -58,10 +58,10 @@ const defaultStyles = {
 		verticalAlign: 'bottom',
 
 		// increase hit area
-		height: defaults.close.height + 20,
+		height: 40,
 		marginRight: -10,
 		padding: 10,
-		width: defaults.close.width + 20,
+		width: 40,
 	},
 };
 

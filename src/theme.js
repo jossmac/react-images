@@ -20,8 +20,6 @@ theme.header = {
 };
 theme.close = {
 	fill: 'white',
-	height: 20,
-	width: 20,
 };
 
 // footer
