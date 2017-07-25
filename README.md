@@ -22,7 +22,6 @@ export default class Sample extends React.Component {
     return (
       <Lightbox
         images={[{ src: 'http://example.com/img1.jpg' }, { src: 'http://example.com/img2.jpg' }]}
-        isOpen={this.state.lightboxIsOpen}
         onClickPrev={this.gotoPrevious}
         onClickNext={this.gotoNext}
         onClose={this.closeLightbox}
@@ -121,7 +120,6 @@ currentImage  | number  | 0 | The index of the image to display initially
 customControls | array | undefined | An array of elements to display as custom controls on the top of lightbox
 images  | array | undefined | Required. An array of objects containing valid src and srcset values of img element
 imageCountSeparator  | String  | ' of ' | Customize separator in the image count
-isOpen  | bool  | false | Whether or not the lightbox is displayed
 leftArrowTitle | string | ' Previous (Left arrow key) ' | Customize of left arrow title
 onClickPrev | func | undefined | Fired on request of the previous image
 onClickNext | func | undefined | Fired on request of the next image
