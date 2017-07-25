@@ -76,12 +76,6 @@ const theme = {
 	},
 	arrow__direction__left: { marginLeft: 10 },
 	arrow__direction__right: { marginRight: 10 },
-
-	// header
-	header: {
-		height: 200,
-	},
-
 	close: {
 		fill: '#D40000',
 		opacity: 0.6,
@@ -94,7 +88,6 @@ const theme = {
 	// footer
 	footer: {
 		color: 'black',
-		height: 200,
 	},
 	footerCount: {
 		color: 'rgba(0, 0, 0, 0.6)',
