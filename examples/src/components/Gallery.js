@@ -47,10 +47,7 @@ class Gallery extends Component {
 			currentImage: index,
 		});
 	}
-	handleClickImage (event) {
-		if (event){
-			event.stopPropagation();
-		}
+	handleClickImage () {
 		if (this.state.currentImage === this.props.images.length - 1) return;
 
 		this.gotoNext();
