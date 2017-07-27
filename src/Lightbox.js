@@ -20,6 +20,7 @@ class Lightbox extends Component {
 		bindFunctions.call(this, [
 			'gotoNext',
 			'gotoPrev',
+			'closeBackdrop',
 			'handleKeyboardInput',
 		]);
 	}
@@ -108,6 +109,11 @@ class Lightbox extends Component {
 		this.props.onClickPrev();
 
 	}
+	closeBackdrop (event) {
+		if (event.target.id === 'lightboxBackdrop') {
+			this.props.onClose();
+		}
+	}
 	handleKeyboardInput (event) {
 		if (event.keyCode === 37) { // left
 			this.gotoPrev(event);
@@ -174,8 +180,8 @@ class Lightbox extends Component {
 		return (
 			<Container
 				key="open"
-				onClick={!!backdropClosesModal && onClose}
-				onTouchEnd={!!backdropClosesModal && onClose}
+				onClick={!!backdropClosesModal && this.closeBackdrop}
+				onTouchEnd={!!backdropClosesModal && this.closeBackdrop}
 			>
 				<div className={css(classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
 					<Header
