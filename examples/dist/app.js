@@ -57,7 +57,9 @@ var THUMBNAIL_IMAGES = [{ id: '1454991727061-be514eae86f7', caption: 'Photo by T
 // https://unsplash.com/photos/NUMlxTPsznM coyote?
 var theme = {
 	// container
-	container: { background: 'rgba(255, 255, 255, 0.9)' },
+	container: {
+		background: 'rgba(255, 255, 255, 0.9)'
+	},
 
 	// arrows
 	arrow: {
@@ -82,13 +84,10 @@ var theme = {
 	},
 	arrow__direction__left: { marginLeft: 10 },
 	arrow__direction__right: { marginRight: 10 },
-
-	// header
 	close: {
 		fill: '#D40000',
 		opacity: 0.6,
 		transition: 'all 200ms',
-
 		':hover': {
 			opacity: 1
 		}

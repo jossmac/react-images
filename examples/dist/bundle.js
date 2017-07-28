@@ -2992,7 +2992,7 @@ function Container(_ref, _ref2) {
 
 	var classes = _aphroditeNoImportant.StyleSheet.create((0, _utils.deepMerge)(defaultStyles, theme));
 
-	return _react2['default'].createElement('div', _extends({
+	return _react2['default'].createElement('div', _extends({ id: 'lightboxBackdrop',
 		className: (0, _aphroditeNoImportant.css)(classes.container)
 	}, props));
 }
@@ -3202,10 +3202,10 @@ var defaultStyles = {
 		verticalAlign: 'bottom',
 
 		// increase hit area
-		height: _theme2['default'].close.height + 20,
+		height: 40,
 		marginRight: -10,
 		padding: 10,
-		width: _theme2['default'].close.width + 20
+		width: 40
 	}
 };
 
@@ -3441,7 +3441,7 @@ var PaginatedThumbnails = (function (_Component) {
 				icon: 'arrowRight',
 				onClick: this.gotoNext,
 				style: arrowStyles,
-				title: 'Previous (Right arrow key)',
+				title: 'Next (Right arrow key)',
 				type: 'button'
 			});
 		}
@@ -3810,9 +3810,7 @@ theme.header = {
 	height: 40
 };
 theme.close = {
-	fill: 'white',
-	height: 20,
-	width: 20
+	fill: 'white'
 };
 
 // footer
@@ -3989,19 +3987,19 @@ var _utils = require('./utils');
 var Lightbox = (function (_Component) {
 	_inherits(Lightbox, _Component);
 
-	function Lightbox() {
+	function Lightbox(props) {
 		_classCallCheck(this, Lightbox);
 
-		_get(Object.getPrototypeOf(Lightbox.prototype), 'constructor', this).call(this);
-
-		_utils.bindFunctions.call(this, ['gotoNext', 'gotoPrev', 'handleKeyboardInput']);
+		_get(Object.getPrototypeOf(Lightbox.prototype), 'constructor', this).call(this, props);
+		this.theme = (0, _utils.deepMerge)(_theme2['default'], props.theme);
+		_utils.bindFunctions.call(this, ['gotoNext', 'gotoPrev', 'closeBackdrop', 'handleKeyboardInput']);
 	}
 
 	_createClass(Lightbox, [{
 		key: 'getChildContext',
 		value: function getChildContext() {
 			return {
-				theme: this.props.theme
+				theme: this.theme
 			};
 		}
 	}, {
@@ -4095,6 +4093,13 @@ var Lightbox = (function (_Component) {
 			this.props.onClickPrev();
 		}
 	}, {
+		key: 'closeBackdrop',
+		value: function closeBackdrop(event) {
+			if (event.target.id === 'lightboxBackdrop') {
+				this.props.onClose();
+			}
+		}
+	}, {
 		key: 'handleKeyboardInput',
 		value: function handleKeyboardInput(event) {
 			if (event.keyCode === 37) {
@@ -4159,15 +4164,15 @@ var Lightbox = (function (_Component) {
 
 			var offsetThumbnails = 0;
 			if (showThumbnails) {
-				offsetThumbnails = _theme2['default'].thumbnail.size + _theme2['default'].container.gutter.vertical;
+				offsetThumbnails = this.theme.thumbnail.size + this.theme.container.gutter.vertical;
 			}
 
 			return _react2['default'].createElement(
 				_componentsContainer2['default'],
 				{
 					key: 'open',
-					onClick: !!backdropClosesModal && onClose,
-					onTouchEnd: !!backdropClosesModal && onClose
+					onClick: !!backdropClosesModal && this.closeBackdrop,
+					onTouchEnd: !!backdropClosesModal && this.closeBackdrop
 				},
 				_react2['default'].createElement(
 					'div',
@@ -4209,8 +4214,8 @@ var Lightbox = (function (_Component) {
 				sizes = '100vw';
 			}
 
-			var thumbnailsSize = showThumbnails ? _theme2['default'].thumbnail.size : 0;
-			var heightOffset = _theme2['default'].header.height + _theme2['default'].footer.height + thumbnailsSize + _theme2['default'].container.gutter.vertical + 'px';
+			var thumbnailsSize = showThumbnails ? this.theme.thumbnail.size : 0;
+			var heightOffset = this.theme.header.height + this.theme.footer.height + thumbnailsSize + this.theme.container.gutter.vertical + 'px';
 
 			return _react2['default'].createElement(
 				'figure',
