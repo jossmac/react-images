@@ -1,5 +1,10 @@
 # React-Images
 
+### v0.5.5 / 2017-07-28
+- Fix: let user override all possible properties with theme object thanks to [clintharris](https://github.com/clintharris)
+- Fix: clicking on image closes lightbox when backdropClosesModal is set to true #152
+- Fix: clicking close lightbox button fired onClose handler twice #155
+
 ### v0.5.4 / 2017-05-31
 - Update: separate out prop-types for React 16 thanks to [hiyamamo](https:github.com/hiyamamo)
 - Update: update react-addons-css-transition-group to react-transition-group thanks to [neptunian](https://github.com/neptunian)
