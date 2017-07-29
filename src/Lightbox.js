@@ -1,37 +1,41 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
+import ScrollLock from 'react-scrolllock';
 
-import theme from './theme';
+import defaultTheme from './theme';
 import Arrow from './components/Arrow';
 import Container from './components/Container';
 import SwipeContainer from './components/SwipeContainer';
 import PaginatedThumbnails from './components/PaginatedThumbnails';
 import Portal from './components/Portal';
-import ScrollLock from './components/ScrollLock';
 
-import { bindFunctions, canUseDom } from './utils';
+import { bindFunctions, canUseDom, deepMerge } from './utils';
 
 class Lightbox extends Component {
-	constructor () {
-		super();
-
-		this.state = {
-			swipeDeltaX: 0
-		}
-
+	constructor (props) {
+		super(props);
+		this.theme = deepMerge(defaultTheme, props.theme);
+		this.state = { swipeDeltaX: 0 };
 		bindFunctions.call(this, [
       'onClose',
 			'gotoNext',
 			'gotoPrev',
 			'onSwiping',
 			'onStopSwiping',
+			'closeBackdrop',
 			'handleKeyboardInput',
 		]);
 	}
 	getChildContext () {
 		return {
-			theme: this.props.theme,
+			theme: this.theme,
 		};
+	}
+	componentDidMount () {
+		if (this.props.isOpen && this.props.enableKeyboardInput) {
+			window.addEventListener('keydown', this.handleKeyboardInput);
+		}
 	}
 	componentWillReceiveProps (nextProps) {
 		if (!canUseDom) return;
@@ -63,10 +67,11 @@ class Lightbox extends Component {
 			}
 		}
 
-		// add event listeners
-		if (nextProps.enableKeyboardInput) {
+		// add/remove event listeners
+		if (!this.props.isOpen && nextProps.isOpen && nextProps.enableKeyboardInput) {
 			window.addEventListener('keydown', this.handleKeyboardInput);
-		} else {
+		}
+		if (!nextProps.isOpen && nextProps.enableKeyboardInput) {
 			window.removeEventListener('keydown', this.handleKeyboardInput);
 		}
 	}
@@ -119,15 +124,20 @@ class Lightbox extends Component {
 		this.props.onClickPrev();
 
 	}
+	closeBackdrop (event) {
+		if (event.target.id === 'lightboxBackdrop') {
+			this.props.onClose();
+		}
+	}
 	handleKeyboardInput (event) {
-		if (event.keyCode === 37) {
+		if (event.keyCode === 37) { // left
 			this.gotoPrev(event);
 			return true;
-		} else if (event.keyCode === 39) {
+		} else if (event.keyCode === 39) { // right
 			this.gotoNext(event);
 			return true;
-		} else if (event.keyCode === 27) {
-			this.onClose();
+		} else if (event.keyCode === 27) { // esc
+			this.props.onClose();
 			return true;
 		}
 		return false;
@@ -135,7 +145,6 @@ class Lightbox extends Component {
 	}
 	onSwiping (event, deltaX, deltaY, absX, absY, velocity) {
 		if ( (this.isFirstImage() && deltaX < 0) || (this.isLastImage() && deltaX > 0) ) return;
-    console.log('deltaX ' + deltaX + '  velocity ' + velocity);
 		this.setState({
 			swipeDeltaX: -deltaX
 		});
@@ -186,7 +195,7 @@ class Lightbox extends Component {
 				direction="left"
 				icon="arrowLeft"
 				onClick={this.gotoPrev}
-				title="Previous (Left arrow key)"
+				title={this.props.leftArrowTitle}
 				type="button"
 			/>
 		);
@@ -199,7 +208,7 @@ class Lightbox extends Component {
 				direction="right"
 				icon="arrowRight"
 				onClick={this.gotoNext}
-				title="Previous (Right arrow key)"
+				title={this.props.rightArrowTitle}
 				type="button"
 			/>
 		);
@@ -207,6 +216,7 @@ class Lightbox extends Component {
 	renderDialog () {
 		const {
 			backdropClosesModal,
+			closeButtonTitle,
 			isOpen,
 		} = this.props;
 
@@ -215,8 +225,8 @@ class Lightbox extends Component {
 		return (
 			<Container
 				key="open"
-				onClick={!!backdropClosesModal && this.onClose}
-				onTouchEnd={!!backdropClosesModal && this.onClose}
+				onClick={!!backdropClosesModal && this.closeBackdrop}
+				onTouchEnd={!!backdropClosesModal && this.closeBackdrop}
 			>
         <SwipeContainer
 					deltaX={this.state.swipeDeltaX}
@@ -259,6 +269,7 @@ class Lightbox extends Component {
 
 Lightbox.propTypes = {
 	backdropClosesModal: PropTypes.bool,
+	closeButtonTitle: PropTypes.string,
 	currentImage: PropTypes.number,
 	customControls: PropTypes.arrayOf(PropTypes.node),
 	enableKeyboardInput: PropTypes.bool,
@@ -272,12 +283,13 @@ Lightbox.propTypes = {
 		})
 	).isRequired,
 	isOpen: PropTypes.bool,
+	leftArrowTitle: PropTypes.string,
 	onClickImage: PropTypes.func,
 	onClickNext: PropTypes.func,
 	onClickPrev: PropTypes.func,
 	onClose: PropTypes.func.isRequired,
 	preloadNextImage: PropTypes.bool,
-	sheet: PropTypes.object,
+	rightArrowTitle: PropTypes.string,
 	showCloseButton: PropTypes.bool,
 	showImageCount: PropTypes.bool,
 	showThumbnails: PropTypes.bool,
@@ -286,11 +298,14 @@ Lightbox.propTypes = {
 	width: PropTypes.number,
 };
 Lightbox.defaultProps = {
+	closeButtonTitle: 'Close (Esc)',
 	currentImage: 0,
 	enableKeyboardInput: true,
 	imageCountSeparator: ' of ',
+	leftArrowTitle: 'Previous (Left arrow key)',
 	onClickShowNextImage: true,
 	preloadNextImage: true,
+	rightArrowTitle: 'Next (Right arrow key)',
 	showCloseButton: true,
 	showImageCount: true,
 	theme: {},

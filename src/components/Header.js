@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 
 import defaults from '../theme';
@@ -9,6 +10,7 @@ function Header ({
 	customControls,
 	onClose,
 	showCloseButton,
+	closeButtonTitle,
 	...props,
 }, {
 	theme,
@@ -20,7 +22,7 @@ function Header ({
 			{customControls ? customControls : <span />}
 			{!!showCloseButton && (
 				<button
-					title="Close (Esc)"
+					title={closeButtonTitle}
 					className={css(classes.close)}
 					onClick={onClose}
 				>
@@ -29,7 +31,7 @@ function Header ({
 			)}
 		</div>
 	);
-};
+}
 
 Header.propTypes = {
 	customControls: PropTypes.array,
@@ -56,10 +58,10 @@ const defaultStyles = {
 		verticalAlign: 'bottom',
 
 		// increase hit area
-		height: defaults.close.height + 20,
+		height: 40,
 		marginRight: -10,
 		padding: 10,
-		width: defaults.close.width + 20,
+		width: 40,
 	},
 };
 

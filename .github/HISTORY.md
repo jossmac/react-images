@@ -1,10 +1,25 @@
 # React-Images
 
-### v0.5.1 / 2016-21-15
+### v0.5.5 / 2017-07-28
+- Fix: let user override all possible properties with theme object thanks to [clintharris](https://github.com/clintharris)
+- Fix: clicking on image closes lightbox when backdropClosesModal is set to true #152
+- Fix: clicking close lightbox button fired onClose handler twice #155
+
+### v0.5.4 / 2017-05-31
+- Update: separate out prop-types for React 16 thanks to [hiyamamo](https:github.com/hiyamamo)
+- Update: update react-addons-css-transition-group to react-transition-group thanks to [neptunian](https://github.com/neptunian)
+- Fix: React warnings in React v15.5.0
+
+### v0.5.2 / 2016-11-17
+- Fix: keydown listeners thanks to [aknuds1](https:github.com/aknuds1) [archr](https:github.com/archr)
+- Fix: thumbnail click propagation thanks to [GregoryPotdevin](https://github.com/GregoryPotdevin)
+- Update: use abstracted ScrollLock component
+
+### v0.5.1 / 2016-08-21
 * Feature: Support theming with aphrodite classes
 * Examples: Update options with new new prop details
 
-### v0.5.0 / 2016-20-15
+### v0.5.0 / 2016-08-20
 * Feature: Added a thumbnail preview beneath the lightbox thanks to [GregoryPotdevin](https://github.com/GregoryPotdevin)
 * Feature: Re-implemented the layout using `flexbox`
 * Examples: Replaced local images with hot-linked Unsplash photographs

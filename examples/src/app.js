@@ -49,7 +49,9 @@ const THUMBNAIL_IMAGES = [
 
 const theme = {
 	// container
-	container: { background: 'rgba(255, 255, 255, 0.9)' },
+	container: {
+		background: 'rgba(255, 255, 255, 0.9)',
+	},
 
 	// arrows
 	arrow: {
@@ -74,13 +76,10 @@ const theme = {
 	},
 	arrow__direction__left: { marginLeft: 10 },
 	arrow__direction__right: { marginRight: 10 },
-
-	// header
 	close: {
 		fill: '#D40000',
 		opacity: 0.6,
 		transition: 'all 200ms',
-
 		':hover': {
 			opacity: 1,
 		},

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 
 import Thumbnail from './Thumbnail';
@@ -118,7 +119,7 @@ export default class PaginatedThumbnails extends Component {
 				icon="arrowRight"
 				onClick={this.gotoNext}
 				style={arrowStyles}
-				title="Previous (Right arrow key)"
+				title="Next (Right arrow key)"
 				type="button"
 			/>
 		);

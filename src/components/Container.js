@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 
 import defaults from '../theme';
@@ -8,12 +9,12 @@ function Container ({ ...props }, { theme }) {
 	const classes = StyleSheet.create(deepMerge(defaultStyles, theme));
 
 	return (
-		<div
+		<div id="lightboxBackdrop"
 			className={css(classes.container)}
 			{...props}
 		/>
 	);
-};
+}
 
 Container.contextTypes = {
 	theme: PropTypes.object.isRequired,

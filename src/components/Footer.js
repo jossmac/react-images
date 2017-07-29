@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 import defaults from '../theme';
 import { deepMerge } from '../utils';
@@ -35,7 +36,7 @@ function Footer ({
 			{imageCount}
 		</div>
 	);
-};
+}
 
 Footer.propTypes = {
 	caption: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),

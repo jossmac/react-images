@@ -1,12 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Swipeable from 'react-swipeable';
 import {Motion, spring} from 'react-motion';
 import { css, StyleSheet } from 'aphrodite/no-important';
 
-import theme from '../theme';
 import ImageContainer from './ImageContainer';
 
-function isImageVisible (imageIndex, deltaXWithContainerPadding) {
+function isImageVisible (theme, imageIndex, deltaXWithContainerPadding) {
   const containerPadding = theme.container.gutter.horizontal;
   const marginLeft = Math.abs(deltaXWithContainerPadding) - containerPadding;
   const visibleIndex = Math.floor(marginLeft / window.innerWidth);
@@ -18,7 +18,7 @@ function isImageVisible (imageIndex, deltaXWithContainerPadding) {
   return isNextImageVisible && imageIndex === visibleIndex + 1;
 }
 
-const SwipeContainer = (props) => {
+const SwipeContainer = (props, context) => {
   const {
     currentImage,
     showThumbnails,
@@ -26,6 +26,10 @@ const SwipeContainer = (props) => {
     onSwiping,
     onStopSwiping,
   } = props;
+
+  const {
+    theme,
+  } = context;
 
   let offsetThumbnails = 0;
   if (showThumbnails) {
@@ -64,7 +68,7 @@ const SwipeContainer = (props) => {
                     index={index}
                     marginBottom={offsetThumbnails}
                     image={image}
-                    isVisible={isImageVisible(index, deltaX)}
+                    isVisible={isImageVisible(theme, index, deltaX)}
                     {...props}
                   />
                 ))
@@ -75,6 +79,10 @@ const SwipeContainer = (props) => {
       </Motion>
     </Swipeable>
   )
+};
+
+SwipeContainer.contextTypes = {
+  theme: PropTypes.object.isRequired,
 };
 
 const classes = StyleSheet.create({

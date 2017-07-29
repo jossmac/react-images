@@ -1,3 +1,9 @@
+# Webstorm
+.idea/
+
+# MacOS generated file
+.DS_Store
+
 # Logs
 logs
 *.log

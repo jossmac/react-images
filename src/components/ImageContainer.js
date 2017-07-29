@@ -1,11 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { css, StyleSheet } from 'aphrodite/no-important';
 
-import theme from '../theme';
 import Footer from './Footer';
 import Header from './Header';
 
-function renderImage ({ props, image, isVisible }) {
+function renderImage ({ props, theme, image, isVisible }) {
   const {
     images,
     imageCountSeparator,
@@ -24,7 +24,8 @@ function renderImage ({ props, image, isVisible }) {
   }
 
   const thumbnailsSize = showThumbnails ? theme.thumbnail.size : 0;
-  const heightOffset = `${theme.header.height + theme.footer.height + thumbnailsSize + (theme.container.gutter.vertical)}px`;
+	const heightOffset = `${theme.header.height + theme.footer.height + thumbnailsSize
+          + (theme.container.gutter.vertical)}px`;
 
   return (
     <figure className={css(classes.figure)}>
@@ -32,8 +33,9 @@ function renderImage ({ props, image, isVisible }) {
         className={css(classes.image)}
         onClick={!!onClickImage && onClickImage}
         sizes={sizes}
-        src={isVisible ? image.src : "data:"}
+        src={isVisible ? image.src : 'data:'}
         srcSet={isVisible ? srcset : null}
+        alt={image.alt}
         style={{
 						cursor: onClickImage ? 'pointer' : 'auto',
 						maxHeight: `calc(100vh - ${heightOffset})`
@@ -50,16 +52,21 @@ function renderImage ({ props, image, isVisible }) {
   );
 }
 
-const ImageContainer = (props) => {
+const ImageContainer = (props, context) => {
   const {
     customControls,
     showCloseButton,
+    closeButtonTitle,
     width,
     image,
     isVisible,
     onClose,
     marginBottom
   } = props;
+
+  const {
+    theme,
+  } = context;
 
   const horizontalPadding = theme.container.gutter.horizontal;
 
@@ -73,8 +80,9 @@ const ImageContainer = (props) => {
           customControls={customControls}
           onClose={onClose}
           showCloseButton={showCloseButton}
+          closeButtonTitle={closeButtonTitle}
         />
-        {renderImage({ props, image, isVisible })}
+        {renderImage({ props, theme, image, isVisible })}
       </div>
     </div>
   )
@@ -103,5 +111,9 @@ const classes = StyleSheet.create({
     userSelect: 'none'
   }
 });
+
+ImageContainer.contextTypes = {
+  theme: PropTypes.object.isRequired,
+};
 
 export default ImageContainer;
