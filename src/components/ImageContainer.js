@@ -33,7 +33,8 @@ function renderImage ({ props, theme, image, isVisible }) {
         className={css(classes.image)}
         onClick={!!onClickImage && onClickImage}
         sizes={sizes}
-        src={isVisible ? image.src : 'data:'}
+        /* https://stackoverflow.com/questions/8425817/setting-image-src-attribute-not-working-in-chrome/8425853#8425853 */
+        src={isVisible ? image.src : 'data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='}
         srcSet={isVisible ? srcset : null}
         alt={image.alt}
         style={{
