@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import { render } from 'react-dom';
 import PassContext from './PassContext';
-
+import { StyleSheet, css } from 'aphrodite';
 
 export default class Portal extends Component {
 	constructor () {
@@ -19,20 +19,24 @@ export default class Portal extends Component {
 	componentDidUpdate () {
 		// Animate fade on mount/unmount
 		const duration = 200;
-		const styles = `
-				.fade-enter { opacity: 0.01; }
-				.fade-enter.fade-enter-active { opacity: 1; transition: opacity ${duration}ms; }
-				.fade-leave { opacity: 1; }
-				.fade-leave.fade-leave-active { opacity: 0.01; transition: opacity ${duration}ms; }
-		`;
+		const styles = StyleSheet.create({
+			fadeEnter: { opacity: 0.01 },
+			fadeEnterActive: { opacity: 1, transition: `opacity ${duration}ms` },
+			fadeLeave: { opacity: 1 },
+			fadeLeaveActive: { opacity: 0.01, transition: `opacity ${duration}ms` },
+		});
 
 		render(
 			<PassContext context={this.context}>
 				<div>
-					<style>{styles}</style>
 					<CSSTransitionGroup
 						component="div"
-						transitionName="fade"
+						transitionName={{
+							enter: css(styles.fadeEnter),
+							enterActive: css(styles.fadeEnterActive),
+							leave: css(styles.fadeLeave),
+							leaveActive: css(styles.fadeLeaveActive),
+						}}
 						transitionEnterTimeout={duration}
 						transitionLeaveTimeout={duration}
 						{...this.props}
