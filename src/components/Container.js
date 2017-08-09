@@ -22,12 +22,12 @@ Container.contextTypes = {
 
 const defaultStyles = {
 	container: {
-		alignItems: 'center',
+		//alignItems: 'center',
 		backgroundColor: defaults.container.background,
 		boxSizing: 'border-box',
-		display: 'flex',
+		//display: 'flex',
 		height: '100%',
-		justifyContent: 'center',
+		//justifyContent: 'center',
 		left: 0,
 		paddingBottom: defaults.container.gutter.vertical,
 		paddingLeft: defaults.container.gutter.horizontal,
