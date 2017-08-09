@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 import ScrollLock from 'react-scrolllock';
+import SwipeableViews from 'react-swipeable-views';
 
 import defaultTheme from './theme';
 import Arrow from './components/Arrow';
@@ -17,7 +18,9 @@ class Lightbox extends Component {
 	constructor (props) {
 		super(props);
 		this.theme = deepMerge(defaultTheme, props.theme);
+		this.state = { isTouchSupported: false };
 		bindFunctions.call(this, [
+			'detectTouchDevice',
 			'gotoNext',
 			'gotoPrev',
 			'closeBackdrop',
@@ -30,8 +33,12 @@ class Lightbox extends Component {
 		};
 	}
 	componentDidMount () {
-		if (this.props.isOpen && this.props.enableKeyboardInput) {
-			window.addEventListener('keydown', this.handleKeyboardInput);
+		this.detectTouchDevice();
+		if (this.props.isOpen) {
+
+			if (this.props.enableKeyboardInput) {
+				window.addEventListener('keydown', this.handleKeyboardInput);
+			}
 		}
 	}
 	componentWillReceiveProps (nextProps) {
@@ -78,6 +85,15 @@ class Lightbox extends Component {
 	// METHODS
 	// ==============================
 
+	detectTouchDevice () {
+		console.log('detectTouchDevice');
+		function onFirstTouch () {
+			console.log('onFirstTouch');
+			this.setState({ isTouchSupported: true });
+		}
+		window.addEventListener('touchstart', onFirstTouch, false);
+		window.removeEventListener('touchstart', onFirstTouch, false);
+	}
 	preloadImage (idx) {
 		const image = this.props.images[idx];
 
@@ -169,6 +185,7 @@ class Lightbox extends Component {
 			showThumbnails,
 			width,
 		} = this.props;
+		const { isTouchSupported } = this.state;
 
 		if (!isOpen) return <span key="closed" />;
 
@@ -176,6 +193,8 @@ class Lightbox extends Component {
 		if (showThumbnails) {
 			offsetThumbnails = this.theme.thumbnail.size + this.theme.container.gutter.vertical;
 		}
+
+		console.log('isTouchSupported', isTouchSupported);
 
 		return (
 			<Container
@@ -190,7 +209,9 @@ class Lightbox extends Component {
 						showCloseButton={showCloseButton}
 						closeButtonTitle={this.props.closeButtonTitle}
 					/>
-					{this.renderImages()}
+					<SwipeableViews>
+						{this.renderImages()}
+					</SwipeableViews>
 				</div>
 				{this.renderThumbnails()}
 				{this.renderArrowPrev()}
@@ -211,22 +232,22 @@ class Lightbox extends Component {
 
 		if (!images || !images.length) return null;
 
-		const image = images[currentImage];
+		// const image = images[currentImage];
 
-		let srcset;
-		let sizes;
+		// let srcset;
+		// let sizes;
 
-		if (image.srcset) {
-			srcset = image.srcset.join();
-			sizes = '100vw';
-		}
+		// if (image.srcset) {
+		// 	srcset = image.srcset.join();
+		// 	sizes = '100vw';
+		// }
 
 		const thumbnailsSize = showThumbnails ? this.theme.thumbnail.size : 0;
 		const heightOffset = `${this.theme.header.height + this.theme.footer.height + thumbnailsSize
 			+ (this.theme.container.gutter.vertical)}px`;
 
-		return (
-			<figure className={css(classes.figure)}>
+		return images.map((image, idx) => (
+			<figure key={idx} className={css(classes.figure)}>
 				{/*
 					Re-implement when react warning "unknown props"
 					https://fb.me/react-unknown-prop is resolved
@@ -235,10 +256,10 @@ class Lightbox extends Component {
 				<img
 					className={css(classes.image)}
 					onClick={!!onClickImage && onClickImage}
-					sizes={sizes}
+					// sizes={sizes}
 					alt={image.alt}
 					src={image.src}
-					srcSet={srcset}
+					// srcSet={srcset}
 					style={{
 						cursor: this.props.onClickImage ? 'pointer' : 'auto',
 						maxHeight: `calc(100vh - ${heightOffset})`,
@@ -252,7 +273,7 @@ class Lightbox extends Component {
 					showCount={showImageCount}
 				/>
 			</figure>
-		);
+		));
 	}
 	renderThumbnails () {
 		const { images, currentImage, onClickThumbnail, showThumbnails, thumbnailOffset } = this.props;

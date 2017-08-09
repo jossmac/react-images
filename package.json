@@ -12,23 +12,24 @@
   "dependencies": {
     "aphrodite": "^0.5.0",
     "prop-types": "^15.5.8",
-    "react-transition-group": "^1.1.3",
-    "react-scrolllock": "^1.0.5"
+    "react-scrolllock": "^1.0.5",
+    "react-swipeable-views": "^0.12.5",
+    "react-transition-group": "^1.1.3"
   },
   "devDependencies": {
-    "babel-eslint": "^6.0.4",
     "babel": "^6.5.2",
+    "babel-eslint": "^6.0.4",
+    "eslint": "2.9.0",
     "eslint-config-keystone": "2.2.0",
     "eslint-plugin-react": "5.1.1",
-    "eslint": "2.9.0",
     "gulp": "^3.9.0",
+    "react": "^15.3.0",
     "react-component-gulp-tasks": "^0.7.0",
-    "react-dom": "^15.3.0",
-    "react": "^15.3.0"
+    "react-dom": "^15.3.0"
   },
   "peerDependencies": {
-    "react-dom": "^0.14 || ^15.0",
-    "react": "^0.14 || ^15.0"
+    "react": "^0.14 || ^15.0",
+    "react-dom": "^0.14 || ^15.0"
   },
   "browserify-shim": {
     "react": "global:React"
