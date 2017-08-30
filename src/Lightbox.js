@@ -115,6 +115,9 @@ class Lightbox extends Component {
 		}
 	}
 	handleKeyboardInput (event) {
+		if (this.props.handleKeyboardInput) {
+			this.props.handleKeyboardInput(event);
+		}
 		if (event.keyCode === 37) { // left
 			this.gotoPrev(event);
 			return true;
@@ -126,7 +129,6 @@ class Lightbox extends Component {
 			return true;
 		}
 		return false;
-
 	}
 
 	// ==============================
