@@ -86,6 +86,7 @@ class Lightbox extends Component {
 		const img = new Image();
 
 		img.src = image.src;
+		img.srcset = img.srcSet || img.srcset;
 
 		if (image.srcset) {
 			img.srcset = image.srcset.join();
@@ -212,6 +213,7 @@ class Lightbox extends Component {
 		if (!images || !images.length) return null;
 
 		const image = images[currentImage];
+		image.srcset = image.srcSet || image.srcset;
 
 		let srcset;
 		let sizes;
