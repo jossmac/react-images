@@ -171,6 +171,12 @@ class Lightbox extends Component {
 			width,
 		} = this.props;
 
+		const Details = (
+			(this.props.Details)
+			? this.props.Details
+			: Footer
+		);
+
 		if (!isOpen) return <span key="closed" />;
 
 		let offsetThumbnails = 0;
@@ -191,7 +197,7 @@ class Lightbox extends Component {
 						showCloseButton={showCloseButton}
 						closeButtonTitle={this.props.closeButtonTitle}
 					/>
-					{this.renderImages()}
+					{this.renderImages(Details)}
 				</div>
 				{this.renderThumbnails()}
 				{this.renderArrowPrev()}
@@ -200,7 +206,7 @@ class Lightbox extends Component {
 			</Container>
 		);
 	}
-	renderImages () {
+	renderImages (Details) {
 		const {
 			currentImage,
 			images,
@@ -208,6 +214,8 @@ class Lightbox extends Component {
 			onClickImage,
 			showImageCount,
 			showThumbnails,
+			containerStyle,
+			imageStyle,
 		} = this.props;
 
 		if (!images || !images.length) return null;
@@ -228,7 +236,7 @@ class Lightbox extends Component {
 			+ (this.theme.container.gutter.vertical)}px`;
 
 		return (
-			<figure className={css(classes.figure)}>
+			<figure className={css(classes.figure)} style={containerStyle || {}}>
 				{/*
 					Re-implement when react warning "unknown props"
 					https://fb.me/react-unknown-prop is resolved
@@ -242,11 +250,12 @@ class Lightbox extends Component {
 					src={image.src}
 					srcSet={srcset}
 					style={{
+						...(imageStyle || {}),
 						cursor: this.props.onClickImage ? 'pointer' : 'auto',
 						maxHeight: `calc(100vh - ${heightOffset})`,
 					}}
 				/>
-				<Footer
+				<Details
 					caption={images[currentImage].caption}
 					countCurrent={currentImage + 1}
 					countSeparator={imageCountSeparator}
