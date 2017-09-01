@@ -10,6 +10,7 @@ function Footer ({
 	countSeparator,
 	countTotal,
 	showCount,
+	customControls,
 	...props,
 }, {
 	theme,
@@ -33,6 +34,7 @@ function Footer ({
 					{caption}
 				</figcaption>
 			) : <span />}
+			{customControls ? customControls : <span />}
 			{imageCount}
 		</div>
 	);
