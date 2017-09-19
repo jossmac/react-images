@@ -9,7 +9,7 @@ function Container ({ ...props }, { theme }) {
 	const classes = StyleSheet.create(deepMerge(defaultStyles, theme));
 
 	return (
-		<div id="lightboxBackdrop"
+		<div id="react-images-lightbox-container"
 			className={css(classes.container)}
 			{...props}
 		/>
