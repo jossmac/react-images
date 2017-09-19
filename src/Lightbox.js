@@ -112,7 +112,9 @@ class Lightbox extends Component {
 
 	}
 	closeBackdrop (event) {
-		if (event.target.id === 'lightboxBackdrop') {
+    // make sure event only happens if they click the backdrop
+    // and if the caption is widening the figure element let that respond too
+		if (event.target.id === 'lightboxBackdrop' || event.target.tagName === 'FIGURE') {
 			this.props.onClose();
 		}
 	}
