@@ -45,7 +45,7 @@ theme.thumbnail = {
 
 // arrow
 theme.arrow = {
-	background: 'black',
+	background: 'none',
 	fill: 'white',
 	height: 120,
 };

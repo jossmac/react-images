@@ -60,7 +60,7 @@ const defaultStyles = {
 		userSelect: 'none',
 	},
 
-	// sizees
+	// sizes
 	arrow__size__medium: {
 		height: defaults.arrow.height,
 		marginTop: defaults.arrow.height / -2,
