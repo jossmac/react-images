@@ -17,6 +17,7 @@ class Lightbox extends Component {
 	constructor (props) {
 		super(props);
 		this.theme = deepMerge(defaultTheme, props.theme);
+    this.classes = StyleSheet.create(deepMerge(defaultStyles, this.theme));
 		bindFunctions.call(this, [
 			'gotoNext',
 			'gotoPrev',
@@ -184,7 +185,7 @@ class Lightbox extends Component {
 				onClick={!!backdropClosesModal && this.closeBackdrop}
 				onTouchEnd={!!backdropClosesModal && this.closeBackdrop}
 			>
-				<div className={css(classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
+				<div className={css(this.classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
 					<Header
 						customControls={customControls}
 						onClose={onClose}
@@ -228,14 +229,14 @@ class Lightbox extends Component {
 			+ (this.theme.container.gutter.vertical)}px`;
 
 		return (
-			<figure className={css(classes.figure)}>
+			<figure className={css(this.classes.figure)}>
 				{/*
 					Re-implement when react warning "unknown props"
 					https://fb.me/react-unknown-prop is resolved
 					<Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
 				*/}
 				<img
-					className={css(classes.image)}
+					className={css(this.classes.image)}
 					onClick={!!onClickImage && onClickImage}
 					sizes={sizes}
 					alt={image.alt}
@@ -328,7 +329,7 @@ Lightbox.childContextTypes = {
 	theme: PropTypes.object.isRequired,
 };
 
-const classes = StyleSheet.create({
+const defaultStyles = {
 	content: {
 		position: 'relative',
 	},
@@ -345,6 +346,7 @@ const classes = StyleSheet.create({
 		WebkitTouchCallout: 'none',
 		userSelect: 'none',
 	},
-});
+};
+
 
 export default Lightbox;
