@@ -1,5 +1,12 @@
 # React-Images
 
+### v0.5.6 / 2017-09-20
+- Update: Let user pass in srcSet as prop in addition to srcset thanks to [smeijer](https://github.com/smeijer)
+- Fix: default arrow bg color is none
+- Fix: make content div, figure, image respond to theme props #127
+- Fix: caption extending and disabling backdropClosesModal click issue #156
+- Fix: alignment in safari issue #105
+
 ### v0.5.5 / 2017-07-28
 - Fix: let user override all possible properties with theme object thanks to [clintharris](https://github.com/clintharris)
 - Fix: clicking on image closes lightbox when backdropClosesModal is set to true #152
