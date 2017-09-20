@@ -14,8 +14,8 @@ const classes = StyleSheet.create({
 		position: 'absolute',
 		textAlign: 'center',
 		whiteSpace: 'nowrap',
-    left: '50%',
-    transform: 'translateX(-50%)'
+		left: '50%',
+		transform: 'translateX(-50%)',
 	},
 });
 

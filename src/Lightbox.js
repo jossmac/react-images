@@ -17,7 +17,7 @@ class Lightbox extends Component {
 	constructor (props) {
 		super(props);
 		this.theme = deepMerge(defaultTheme, props.theme);
-    this.classes = StyleSheet.create(deepMerge(defaultStyles, this.theme));
+		this.classes = StyleSheet.create(deepMerge(defaultStyles, this.theme));
 		bindFunctions.call(this, [
 			'gotoNext',
 			'gotoPrev',
