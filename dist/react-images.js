@@ -3101,8 +3101,8 @@ var Lightbox = (function (_Component) {
 				_componentsContainer2['default'],
 				{
 					key: 'open',
-					onClick: !!backdropClosesModal && this.closeBackdrop,
-					onTouchEnd: !!backdropClosesModal && this.closeBackdrop
+					onClick: backdropClosesModal && this.closeBackdrop,
+					onTouchEnd: backdropClosesModal && this.closeBackdrop
 				},
 				_react2['default'].createElement(
 					'div',
