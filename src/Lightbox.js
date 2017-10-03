@@ -184,8 +184,8 @@ class Lightbox extends Component {
 		return (
 			<Container
 				key="open"
-				onClick={!!backdropClosesModal && this.closeBackdrop}
-				onTouchEnd={!!backdropClosesModal && this.closeBackdrop}
+				onClick={backdropClosesModal && this.closeBackdrop}
+				onTouchEnd={backdropClosesModal && this.closeBackdrop}
 			>
 				<div className={css(this.classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
 					<Header
