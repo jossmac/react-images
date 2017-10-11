@@ -5,7 +5,7 @@ var taskConfig = {
 
 	component: {
 		name: 'Lightbox',
-    dependencies:['prop-types']
+    dependencies:['react', 'react-dom']
 	},
 
 	example: {
