@@ -4,7 +4,8 @@ var gulp = require('gulp'),
 var taskConfig = {
 
 	component: {
-		name: 'Lightbox'
+		name: 'Lightbox',
+    dependencies:['prop-types']
 	},
 
 	example: {
