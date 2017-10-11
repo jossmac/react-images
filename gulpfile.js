@@ -4,8 +4,7 @@ var gulp = require('gulp'),
 var taskConfig = {
 
 	component: {
-		name: 'Lightbox',
-    dependencies:['react', 'react-dom']
+		name: 'Lightbox'
 	},
 
 	example: {
