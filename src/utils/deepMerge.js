@@ -16,4 +16,4 @@ function deepMerge (target, source = {}) {
 	return extended;
 }
 
-module.exports = deepMerge;
+export default deepMerge;

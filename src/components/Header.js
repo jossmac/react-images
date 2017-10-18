@@ -3,7 +3,7 @@ import React from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 
 import defaults from '../theme';
-import { deepMerge } from '../utils';
+import deepMerge from '../utils/deepMerge';
 import Icon from './Icon';
 
 function Header ({
@@ -65,4 +65,4 @@ const defaultStyles = {
 	},
 };
 
-module.exports = Header;
+export default Header;

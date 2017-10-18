@@ -51,4 +51,4 @@ theme.arrow = {
 };
 
 
-module.exports = theme;
+export default theme;

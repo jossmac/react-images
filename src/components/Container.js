@@ -3,7 +3,7 @@ import React from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 
 import defaults from '../theme';
-import { deepMerge } from '../utils';
+import deepMerge from '../utils/deepMerge';
 
 function Container ({ ...props }, { theme }) {
 	const classes = StyleSheet.create(deepMerge(defaultStyles, theme));
@@ -40,4 +40,4 @@ const defaultStyles = {
 	},
 };
 
-module.exports = Container;
+export default Container;

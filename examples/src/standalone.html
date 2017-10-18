@@ -1,0 +1,93 @@
+<!doctype html>
+<head>
+	<meta charset="utf-8">
+	<title>React-Images</title>
+	<meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width">
+	<meta name="keywords" content="react,reactjs,react component,lightbox,react lightbox,react images,image,images,ui,javascript">
+	<meta name="description" content="A simple, responsive Lightbox component for displaying an array of images.">
+	<meta property="og:locale" content="en-us">
+	<meta property="og:title" content="React-Images">
+	<meta property="og:description" content="A simple, responsive Lightbox component for displaying an array of images.">
+	<meta property="og:url" content="https://jossmac.github.io/react-images">
+	<meta property="og:site_name" content="React-Images">
+	<meta property="og:type" content="article">
+	<link rel="stylesheet" href="example.css">
+	<link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+	<div class="page-wrapper">
+		<div id="app">
+		</div>
+	</div>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js" charset="utf-8"></script>
+  <script src="https://unpkg.com/react@15.6.1/dist/react.js"></script>
+  <script src="https://unpkg.com/react-dom@15.6.1/dist/react-dom.js"></script>
+  <script src="https://unpkg.com/prop-types@15.5.10/prop-types.js"></script>
+  <script src="https://unpkg.com/aphrodite/dist/aphrodite.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-transition-group/1.1.3/react-transition-group.js"></script>
+  <script src="https://unpkg.com/react-photo-gallery@6.0.13/dist/react-photo-gallery.min.js"></script>
+  <script src="https://rawgit.com/neptunian/react-scrolllock/master/dist/react-scrolllock.min.js"></script>
+  <script src="https://unpkg.com/react-images@0.5.10/dist/react-images.min.js"></script>
+  <script type="text/babel">
+const photos = [
+    {src: 'https://images.unsplash.com/photo-1470619549108-b85c56fe5be8?w=1024&h=1024', width:1, height:1},
+    {src: 'https://images.unsplash.com/photo-1471079502516-250c19af6928?w=1024&h=1024', width:1, height:1},
+    {src: 'https://images.unsplash.com/photo-1454023492550-5696f8ff10e1?w=1024&h=1024', width:1, height:1},
+    {src: 'https://images.unsplash.com/photo-1470854989922-5be2f7456d78?w=1024&h=1024', width:1, height:1},
+];
+  class App extends React.Component{
+    constructor(){
+      super();
+      this.state = { currentImage: 0 }; 
+    this.closeLightbox = this.closeLightbox.bind(this);
+    this.openLightbox = this.openLightbox.bind(this);
+    this.gotoNext = this.gotoNext.bind(this);
+    this.gotoPrevious = this.gotoPrevious.bind(this);
+    }
+  openLightbox(event, obj) {
+    this.setState({
+      currentImage: obj.index,
+      lightboxIsOpen: true,
+}); 
+  
+}
+  closeLightbox() {
+    this.setState({
+      currentImage: 0,
+      lightboxIsOpen: false,
+}); 
+  
+}
+  gotoPrevious() {
+    this.setState({
+      currentImage: this.state.currentImage - 1,
+    
+}); 
+  
+}
+  gotoNext() {
+    this.setState({
+      currentImage: this.state.currentImage + 1,
+    
+}); 
+  
+}
+
+    render(){
+      return(
+<div>
+        <Gallery photos={photos} onClick={this.openLightbox}/>   
+        <Lightbox images={photos} 
+          onClose={this.closeLightbox}
+          onClickPrev={this.gotoPrevious}
+          onClickNext={this.gotoNext}
+          currentImage={this.state.currentImage}
+          isOpen={this.state.lightboxIsOpen}
+        />
+</div>
+      )
+  }
+}
+ReactDOM.render(<App />, document.getElementById('app'));
+  </script>
+</body>

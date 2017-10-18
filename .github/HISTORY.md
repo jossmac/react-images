@@ -1,5 +1,14 @@
 # React-Images
 
+### v0.5.10 / 2017-10-18
+- New build
+
+### v0.5.8 / 2017-10-06
+- Incorrect peer dependency in package.json file
+
+### v0.5.7 / 2017-10-04
+- Fix warnings for React 16.0.0 and update dependencies
+
 ### v0.5.6 / 2017-09-20
 - Update: Let user pass in srcSet as prop in addition to srcset thanks to [smeijer](https://github.com/smeijer)
 - Fix: default arrow bg color is none

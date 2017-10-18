@@ -3,7 +3,7 @@ import React from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 
 import defaults from '../theme';
-import { deepMerge } from '../utils';
+import deepMerge from '../utils/deepMerge';
 
 function Thumbnail ({ index, src, thumbnail, active, onClick }, { theme }) {
 	const url = thumbnail ? thumbnail : src;

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { css, StyleSheet } from 'aphrodite/no-important';
+import { css, StyleSheet } from 'aphrodite';
 import ScrollLock from 'react-scrolllock';
 
 import defaultTheme from './theme';
@@ -11,7 +11,9 @@ import Header from './components/Header';
 import PaginatedThumbnails from './components/PaginatedThumbnails';
 import Portal from './components/Portal';
 
-import { bindFunctions, canUseDom, deepMerge } from './utils';
+import bindFunctions from './utils/bindFunctions';
+import canUseDom from './utils/canUseDom';
+import deepMerge from './utils/deepMerge';
 
 class Lightbox extends Component {
 	constructor (props) {

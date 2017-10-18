@@ -1,6 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import icons from '../icons';
+import arrowLeft from '../icons/arrowLeft';
+import arrowRight from '../icons/arrowRight';
+import close from '../icons/close';
+
+const icons = { arrowLeft, arrowRight, close };
 
 const Icon = ({ fill, type, ...props }) => {
 	const icon = icons[type];

@@ -1,6 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 import Gallery from './components/Gallery';
+import './example.less';
 
 function makeUnsplashSrc (id) {
 	return `https://images.unsplash.com/photo-${id}?dpr=2&auto=format&w=1024&h=1024`;
