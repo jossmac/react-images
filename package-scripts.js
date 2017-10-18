@@ -6,12 +6,6 @@ const concurrent = npsUtils.concurrent;
 
 module.exports = {
 	scripts: {
-    start:{
-      default: series(
-        'nps build',
-        'webpack-dev-server --progress'
-      )
-    },
 		build: {
 			description: 'clean dist directory and run all builds',
 			default: series(

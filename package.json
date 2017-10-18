@@ -1,6 +1,6 @@
 {
   "name": "react-images",
-  "version": "0.5.10",
+  "version": "0.5.11",
   "description": "A simple, responsive lightbox component for displaying an array of images with React.js",
   "main": "lib/Lightbox.js",
   "jsnext:main": "dist/react-images.es.js",
@@ -56,7 +56,7 @@
   "scripts": {
     "build": "nps build",
     "publish:examples": "NODE_ENV=production nps publish",
-    "start": "nps start",
+    "start": "webpack-dev-server --progress",
     "lint": "eslint src/** examples/src/app.js examples/src/components/Gallery.js"
   },
   "bugs": {
