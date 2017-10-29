@@ -224,7 +224,7 @@ class Lightbox extends Component {
 		let sizes;
 
 		if (image.srcset) {
-			srcset = image.srcset.join();
+			srcset = image.srcset.join ? image.srcset.join() : image.srcset;
 			sizes = '100vw';
 		}
 
@@ -294,6 +294,7 @@ Lightbox.propTypes = {
 	images: PropTypes.arrayOf(
 		PropTypes.shape({
 			src: PropTypes.string.isRequired,
+			srcSet: PropTypes.string,
 			srcset: PropTypes.array,
 			caption: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 			thumbnail: PropTypes.string,
