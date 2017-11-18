@@ -1,43 +1,20 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import { css, StyleSheet } from 'aphrodite/no-important';
+import glamorous from 'glamorous';
 
-import defaults from '../theme';
-import { deepMerge } from '../utils';
-
-function Container ({ ...props }, { theme }) {
-	const classes = StyleSheet.create(deepMerge(defaultStyles, theme));
-
-	return (
-		<div id="lightboxBackdrop"
-			className={css(classes.container)}
-			{...props}
-		/>
-	);
-}
-
-Container.contextTypes = {
-	theme: PropTypes.object.isRequired,
-};
-
-const defaultStyles = {
-	container: {
-		alignItems: 'center',
-		backgroundColor: defaults.container.background,
-		boxSizing: 'border-box',
-		display: 'flex',
-		height: '100%',
-		justifyContent: 'center',
-		left: 0,
-		paddingBottom: defaults.container.gutter.vertical,
-		paddingLeft: defaults.container.gutter.horizontal,
-		paddingRight: defaults.container.gutter.horizontal,
-		paddingTop: defaults.container.gutter.vertical,
-		position: 'fixed',
-		top: 0,
-		width: '100%',
-		zIndex: defaults.container.zIndex,
-	},
-};
-
-module.exports = Container;
+export default glamorous.div({
+	alignItems: 'center',
+	boxSizing: 'border-box',
+	display: 'flex',
+	height: '100%',
+	justifyContent: 'center',
+	left: 0,
+	position: 'fixed',
+	top: 0,
+	width: '100%',
+}, ({ theme }) => ({
+	backgroundColor: theme.container.background,
+	paddingBottom: theme.container.gutter.vertical,
+	paddingLeft: theme.container.gutter.horizontal,
+	paddingRight: theme.container.gutter.horizontal,
+	paddingTop: theme.container.gutter.vertical,
+	zIndex: theme.container.zIndex,
+}));

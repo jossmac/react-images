@@ -1,10 +1,7 @@
+import glamorous from 'glamorous';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { css, StyleSheet } from 'aphrodite/no-important';
-
-import defaults from '../theme';
-import { deepMerge } from '../utils';
-import Icon from './Icon';
+import { Close } from '../icons';
 
 function Header ({
 	customControls,
@@ -12,24 +9,20 @@ function Header ({
 	showCloseButton,
 	closeButtonTitle,
 	...props,
-}, {
-	theme,
 }) {
-	const classes = StyleSheet.create(deepMerge(defaultStyles, theme));
-
 	return (
-		<div className={css(classes.header)} {...props}>
+		<Wrapper {...props}>
 			{customControls ? customControls : <span />}
 			{!!showCloseButton && (
-				<button
+				<Button
 					title={closeButtonTitle}
-					className={css(classes.close)}
+					type="button"
 					onClick={onClose}
 				>
-					<Icon fill={!!theme.close && theme.close.fill || defaults.close.fill} type="close" />
-				</button>
+					<Close fill="white" type="close" />
+				</Button>
 			)}
-		</div>
+		</Wrapper>
 	);
 }
 
@@ -38,31 +31,29 @@ Header.propTypes = {
 	onClose: PropTypes.func.isRequired,
 	showCloseButton: PropTypes.bool,
 };
-Header.contextTypes = {
-	theme: PropTypes.object.isRequired,
-};
 
-const defaultStyles = {
-	header: {
-		display: 'flex',
-		justifyContent: 'space-between',
-		height: defaults.header.height,
-	},
-	close: {
-		background: 'none',
-		border: 'none',
-		cursor: 'pointer',
-		outline: 'none',
-		position: 'relative',
-		top: 0,
-		verticalAlign: 'bottom',
 
-		// increase hit area
-		height: 40,
-		marginRight: -10,
-		padding: 10,
-		width: 40,
-	},
-};
+const Wrapper = glamorous.div({
+	display: 'flex',
+	justifyContent: 'space-between',
+}, ({ theme }) => ({
+	height: theme.header.height,
+}));
+
+const Button = glamorous.button({
+	background: 'none',
+	border: 'none',
+	cursor: 'pointer',
+	outline: 'none',
+	position: 'relative',
+	top: 0,
+	verticalAlign: 'bottom',
+
+	// increase hit area
+	height: 40,
+	marginRight: -10,
+	padding: 10,
+	width: 40,
+});
 
 module.exports = Header;

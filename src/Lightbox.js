@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types';
+import TransitionGroup from 'react-transition-group/TransitionGroup';
+import glamorous, { ThemeProvider } from 'glamorous';
 import React, { Component } from 'react';
-import { css, StyleSheet } from 'aphrodite/no-important';
 import ScrollLock from 'react-scrolllock';
 
 import defaultTheme from './theme';
+import AnimationWrapper from './components/AnimationWrapper';
 import Arrow from './components/Arrow';
 import Container from './components/Container';
 import Footer from './components/Footer';
@@ -170,11 +172,12 @@ class Lightbox extends Component {
 			width,
 		} = this.props;
 
-		if (!isOpen) return <span key="closed" />;
+		// if (!isOpen) return <span key="closed" />;
+		if (!isOpen) return null;
 
 		let offsetThumbnails = 0;
 		if (showThumbnails) {
-			offsetThumbnails = this.theme.thumbnail.size + this.theme.container.gutter.vertical;
+			offsetThumbnails = this.theme.pagination.thumbnail.size + this.theme.container.gutter.vertical;
 		}
 
 		return (
@@ -183,7 +186,7 @@ class Lightbox extends Component {
 				onClick={!!backdropClosesModal && this.closeBackdrop}
 				onTouchEnd={!!backdropClosesModal && this.closeBackdrop}
 			>
-				<div className={css(classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
+				<Content style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
 					<Header
 						customControls={customControls}
 						onClose={onClose}
@@ -191,7 +194,7 @@ class Lightbox extends Component {
 						closeButtonTitle={this.props.closeButtonTitle}
 					/>
 					{this.renderImages()}
-				</div>
+				</Content>
 				{this.renderThumbnails()}
 				{this.renderArrowPrev()}
 				{this.renderArrowNext()}
@@ -221,19 +224,18 @@ class Lightbox extends Component {
 			sizes = '100vw';
 		}
 
-		const thumbnailsSize = showThumbnails ? this.theme.thumbnail.size : 0;
+		const thumbnailsSize = showThumbnails ? this.theme.pagination.thumbnail.size : 0;
 		const heightOffset = `${this.theme.header.height + this.theme.footer.height + thumbnailsSize
 			+ (this.theme.container.gutter.vertical)}px`;
 
 		return (
-			<figure className={css(classes.figure)}>
+			<Figure>
 				{/*
 					Re-implement when react warning "unknown props"
 					https://fb.me/react-unknown-prop is resolved
 					<Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
 				*/}
-				<img
-					className={css(classes.image)}
+				<Image
 					onClick={!!onClickImage && onClickImage}
 					sizes={sizes}
 					alt={image.alt}
@@ -251,7 +253,7 @@ class Lightbox extends Component {
 					countTotal={images.length}
 					showCount={showImageCount}
 				/>
-			</figure>
+			</Figure>
 		);
 	}
 	renderThumbnails () {
@@ -269,10 +271,16 @@ class Lightbox extends Component {
 		);
 	}
 	render () {
+		const { theme } = this.props;
+
 		return (
-			<Portal>
-				{this.renderDialog()}
-			</Portal>
+			<ThemeProvider theme={deepMerge(defaultTheme, theme)}>
+				<TransitionGroup>
+					<AnimationWrapper>
+						{this.renderDialog()}
+					</AnimationWrapper>
+				</TransitionGroup>
+			</ThemeProvider>
 		);
 	}
 }
@@ -326,23 +334,21 @@ Lightbox.childContextTypes = {
 	theme: PropTypes.object.isRequired,
 };
 
-const classes = StyleSheet.create({
-	content: {
-		position: 'relative',
-	},
-	figure: {
-		margin: 0, // remove browser default
-	},
-	image: {
-		display: 'block', // removes browser default gutter
-		height: 'auto',
-		margin: '0 auto', // maintain center on very short screens OR very narrow image
-		maxWidth: '100%',
+const Content = glamorous.div({
+	position: 'relative',
+});
+const Figure = glamorous.div({
+	margin: 0, // remove browser default
+});
+const Image = glamorous.img({
+	display: 'block', // removes browser default gutter
+	height: 'auto',
+	margin: '0 auto', // maintain center on very short screens OR very narrow image
+	maxWidth: '100%',
 
-		// disable user select
-		WebkitTouchCallout: 'none',
-		userSelect: 'none',
-	},
+	// disable user select
+	WebkitTouchCallout: 'none',
+	userSelect: 'none',
 });
 
 export default Lightbox;

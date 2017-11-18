@@ -37,10 +37,18 @@ theme.footer = {
 };
 
 // thumbnails
-theme.thumbnail = {
-	activeBorderColor: 'white',
-	size: 50,
-	gutter: 2,
+theme.pagination = {
+	arrow: {
+		background: 'black',
+		fill: 'white',
+		size: 50,
+	},
+	thumbnail: {
+		borderColor: 'hsla(0, 0%, 100%, 0.2)',
+		selectedBorderColor: 'white',
+		size: 50,
+		gutter: 2,
+	},
 };
 
 // arrow

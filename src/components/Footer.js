@@ -1,40 +1,34 @@
+import glamorous from 'glamorous';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { css, StyleSheet } from 'aphrodite/no-important';
-import defaults from '../theme';
-import { deepMerge } from '../utils';
 
-function Footer ({
+export default function Footer ({
 	caption,
 	countCurrent,
 	countSeparator,
 	countTotal,
 	showCount,
 	...props,
-}, {
-	theme,
 }) {
 	if (!caption && !showCount) return null;
 
-	const classes = StyleSheet.create(deepMerge(defaultStyles, theme));
-
 	const imageCount = showCount ? (
-		<div className={css(classes.footerCount)}>
+		<Count>
 			{countCurrent}
 			{countSeparator}
 			{countTotal}
-		</div>)
+		</Count>)
 		: <span />;
 
 	return (
-		<div className={css(classes.footer)} {...props}>
+		<Wrapper {...props}>
 			{caption ? (
-				<figcaption className={css(classes.footerCaption)}>
+				<Caption>
 					{caption}
-				</figcaption>
+				</Caption>
 			) : <span />}
 			{imageCount}
-		</div>
+		</Wrapper>
 	);
 }
 
@@ -45,32 +39,29 @@ Footer.propTypes = {
 	countTotal: PropTypes.number,
 	showCount: PropTypes.bool,
 };
-Footer.contextTypes = {
-	theme: PropTypes.object.isRequired,
-};
 
-const defaultStyles = {
-	footer: {
-		boxSizing: 'border-box',
-		color: defaults.footer.color,
-		cursor: 'auto',
-		display: 'flex',
-		justifyContent: 'space-between',
-		left: 0,
-		lineHeight: 1.3,
-		paddingBottom: defaults.footer.gutter.vertical,
-		paddingLeft: defaults.footer.gutter.horizontal,
-		paddingRight: defaults.footer.gutter.horizontal,
-		paddingTop: defaults.footer.gutter.vertical,
-	},
-	footerCount: {
-		color: defaults.footer.count.color,
-		fontSize: defaults.footer.count.fontSize,
-		paddingLeft: '1em', // add a small gutter for the caption
-	},
-	footerCaption: {
-		flex: '1 1 0',
-	},
-};
+const	Wrapper = glamorous.div({
+	boxSizing: 'border-box',
+	cursor: 'auto',
+	display: 'flex',
+	justifyContent: 'space-between',
+	left: 0,
+	lineHeight: 1.3,
+}, ({ theme }) => ({
+	color: theme.footer.color,
+	paddingBottom: theme.footer.gutter.vertical,
+	paddingLeft: theme.footer.gutter.horizontal,
+	paddingRight: theme.footer.gutter.horizontal,
+	paddingTop: theme.footer.gutter.vertical,
+}));
 
-module.exports = Footer;
+const	Count = glamorous.div({
+	paddingLeft: '1em', // add a small gutter for the caption
+}, ({ theme }) => ({
+	color: theme.footer.count.color,
+	fontSize: theme.footer.count.fontSize,
+}));
+
+const	Caption = glamorous.figcaption({
+	flex: '1 1 0',
+});

@@ -1,24 +1,18 @@
+import glamorous from 'glamorous';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { css, StyleSheet } from 'aphrodite/no-important';
 
-import defaults from '../theme';
-import { deepMerge } from '../utils';
-
-function Thumbnail ({ index, src, thumbnail, active, onClick }, { theme }) {
+function Thumbnail ({ index, src, thumbnail, active, onClick }) {
 	const url = thumbnail ? thumbnail : src;
-	const classes = StyleSheet.create(deepMerge(defaultStyles, theme));
+	const style = { backgroundImage: 'url("' + url + '")' };
+	const handleClick = (e) => {
+		e.preventDefault();
+		e.stopPropagation();
+		onClick(index);
+	};
 
 	return (
-		<div
-			className={css(classes.thumbnail, active && classes.thumbnail__active)}
-			onClick={(e) => {
-				e.preventDefault();
-				e.stopPropagation();
-				onClick(index);
-			}}
-			style={{ backgroundImage: 'url("' + url + '")' }}
-		/>
+		<Div isSelected={active} onClick={handleClick} style={style} />
 	);
 }
 
@@ -34,22 +28,21 @@ Thumbnail.contextTypes = {
 	theme: PropTypes.object.isRequired,
 };
 
-const defaultStyles = {
-	thumbnail: {
-		backgroundPosition: 'center',
-		backgroundSize: 'cover',
-		borderRadius: 2,
-		boxShadow: 'inset 0 0 0 1px hsla(0,0%,100%,.2)',
-		cursor: 'pointer',
-		display: 'inline-block',
-		height: defaults.thumbnail.size,
-		margin: defaults.thumbnail.gutter,
-		overflow: 'hidden',
-		width: defaults.thumbnail.size,
-	},
-	thumbnail__active: {
-		boxShadow: `inset 0 0 0 2px ${defaults.thumbnail.activeBorderColor}`,
-	},
-};
+const Div = glamorous.div({
+	backgroundPosition: 'center',
+	backgroundSize: 'cover',
+	borderRadius: 2,
+	cursor: 'pointer',
+	display: 'inline-block',
+	overflow: 'hidden',
+}, ({ isSelected, theme }) => ({
+	boxShadow: `inset 0 0 0 2px ${isSelected
+		? theme.thumbnail.borderColor
+		: theme.thumbnail.selectedBorderColor
+	}`,
+	height: theme.thumbnail.size,
+	margin: theme.thumbnail.gutter,
+	width: theme.thumbnail.size,
+}));
 
 export default Thumbnail;

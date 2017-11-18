@@ -1,26 +1,24 @@
+import glamorous from 'glamorous';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { css, StyleSheet } from 'aphrodite/no-important';
 
 import Thumbnail from './Thumbnail';
 import Arrow from './Arrow';
-import theme from '../theme';
 
-const classes = StyleSheet.create({
-	paginatedThumbnails: {
-		bottom: theme.container.gutter.vertical,
-		height: theme.thumbnail.size,
-		padding: '0 50px',
-		position: 'absolute',
-		textAlign: 'center',
-		whiteSpace: 'nowrap',
-	},
-});
+const Wrapper = glamorous({
+	padding: '0 50px',
+	position: 'absolute',
+	textAlign: 'center',
+	whiteSpace: 'nowrap',
+}, ({ theme }) => ({
+	bottom: theme.container.gutter.vertical,
+	height: theme.thumbnail.size,
+}));
 
-const arrowStyles = {
-	height: theme.thumbnail.size + (theme.thumbnail.gutter * 2),
-	width: 40,
-};
+// const arrowStyles = {
+// 	height: theme.thumbnail.size + (theme.thumbnail.gutter * 2),
+// 	width: 40,
+// };
 
 export default class PaginatedThumbnails extends Component {
 	constructor (props) {
@@ -101,7 +99,6 @@ export default class PaginatedThumbnails extends Component {
 				size="small"
 				icon="arrowLeft"
 				onClick={this.gotoPrev}
-				style={arrowStyles}
 				title="Previous (Left arrow key)"
 				type="button"
 			/>
@@ -118,7 +115,6 @@ export default class PaginatedThumbnails extends Component {
 				size="small"
 				icon="arrowRight"
 				onClick={this.gotoNext}
-				style={arrowStyles}
 				title="Next (Right arrow key)"
 				type="button"
 			/>
@@ -138,7 +134,7 @@ export default class PaginatedThumbnails extends Component {
 		}
 
 		return (
-			<div className={css(classes.paginatedThumbnails)}>
+			<Wrapper>
 				{this.renderArrowPrev()}
 				{thumbnails.map((img, idx) => (
 					<Thumbnail key={baseOffset + idx}
@@ -148,7 +144,7 @@ export default class PaginatedThumbnails extends Component {
 						active={baseOffset + idx === currentImage} />
 				))}
 				{this.renderArrowNext()}
-			</div>
+			</Wrapper>
 		);
 	}
 }
