@@ -1187,13 +1187,13 @@ var Lightbox = function (_Component) {
 				{ className: aphrodite.css(this.classes.figure) },
 				React__default.createElement('img', {
 					className: aphrodite.css(this.classes.image),
-					onClick: !!onClickImage && onClickImage,
+					onClick: onClickImage,
 					sizes: sizes,
 					alt: image.alt,
 					src: image.src,
 					srcSet: srcset,
 					style: {
-						cursor: this.props.onClickImage ? 'pointer' : 'auto',
+						cursor: onClickImage ? 'pointer' : 'auto',
 						maxHeight: 'calc(100vh - ' + heightOffset + ')'
 					}
 				}),
