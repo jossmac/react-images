@@ -1020,17 +1020,12 @@ var Lightbox = function (_Component) {
 		key: 'preloadImage',
 		value: function preloadImage(idx) {
 			var image = this.props.images[idx];
-
 			if (!image) return;
 
 			var img = new Image();
 
 			img.src = image.src;
-			img.srcset = img.srcSet || img.srcset;
-
-			if (image.srcset) {
-				img.srcset = image.srcset.join();
-			}
+			img.srcSet = image.srcSet || image.srcset;
 		}
 	}, {
 		key: 'gotoNext',
@@ -1169,13 +1164,13 @@ var Lightbox = function (_Component) {
 			if (!images || !images.length) return null;
 
 			var image = images[currentImage];
-			image.srcset = image.srcSet || image.srcset;
+			image.srcSet = image.srcSet || image.srcset;
 
-			var srcset = void 0;
+			var srcSet = void 0;
 			var sizes = void 0;
 
-			if (image.srcset) {
-				srcset = image.srcset.join();
+			if (image.srcSet) {
+				srcSet = image.srcSet.join();
 				sizes = '100vw';
 			}
 
@@ -1191,7 +1186,7 @@ var Lightbox = function (_Component) {
 					sizes: sizes,
 					alt: image.alt,
 					src: image.src,
-					srcSet: srcset,
+					srcSet: srcSet,
 					style: {
 						cursor: onClickImage ? 'pointer' : 'auto',
 						maxHeight: 'calc(100vh - ' + heightOffset + ')'
@@ -1248,7 +1243,7 @@ Lightbox.propTypes = {
 	imageCountSeparator: PropTypes.string,
 	images: PropTypes.arrayOf(PropTypes.shape({
 		src: PropTypes.string.isRequired,
-		srcset: PropTypes.array,
+		srcSet: PropTypes.array,
 		caption: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 		thumbnail: PropTypes.string
 	})).isRequired,
