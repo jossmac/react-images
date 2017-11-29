@@ -83,17 +83,13 @@ class Lightbox extends Component {
 
 	preloadImage (idx) {
 		const image = this.props.images[idx];
-
 		if (!image) return;
 
 		const img = new Image();
 
 		img.src = image.src;
-		img.srcset = img.srcSet || img.srcset;
+		img.srcSet = image.srcSet || image.srcset;
 
-		if (image.srcset) {
-			img.srcset = image.srcset.join();
-		}
 	}
 	gotoNext (event) {
 		if (this.props.currentImage === (this.props.images.length - 1)) return;
@@ -218,13 +214,13 @@ class Lightbox extends Component {
 		if (!images || !images.length) return null;
 
 		const image = images[currentImage];
-		image.srcset = image.srcSet || image.srcset;
+		image.srcSet = image.srcSet || image.srcset;
 
-		let srcset;
+		let srcSet;
 		let sizes;
 
-		if (image.srcset) {
-			srcset = image.srcset.join();
+		if (image.srcSet) {
+			srcSet = image.srcSet.join();
 			sizes = '100vw';
 		}
 
@@ -245,7 +241,7 @@ class Lightbox extends Component {
 					sizes={sizes}
 					alt={image.alt}
 					src={image.src}
-					srcSet={srcset}
+					srcSet={srcSet}
 					style={{
 						cursor: onClickImage ? 'pointer' : 'auto',
 						maxHeight: `calc(100vh - ${heightOffset})`,
@@ -294,7 +290,7 @@ Lightbox.propTypes = {
 	images: PropTypes.arrayOf(
 		PropTypes.shape({
 			src: PropTypes.string.isRequired,
-			srcset: PropTypes.array,
+			srcSet: PropTypes.array,
 			caption: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 			thumbnail: PropTypes.string,
 		})

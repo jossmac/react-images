@@ -111,7 +111,7 @@ render(
 		<Gallery images={DEFAULT_IMAGES.map(({ caption, id, orientation, useForDemo }) => ({
 			src: makeUnsplashSrc(id),
 			thumbnail: makeUnsplashThumbnail(id, orientation),
-			srcset: [
+			srcSet: [
 				makeUnsplashSrcSet(id, 1024),
 				makeUnsplashSrcSet(id, 800),
 				makeUnsplashSrcSet(id, 500),
@@ -126,7 +126,7 @@ render(
 		<Gallery images={THUMBNAIL_IMAGES.map(({ caption, id, orientation, useForDemo }) => ({
 			src: makeUnsplashSrc(id),
 			thumbnail: makeUnsplashThumbnail(id, orientation),
-			srcset: [
+			srcSet: [
 				makeUnsplashSrcSet(id, 1024),
 				makeUnsplashSrcSet(id, 800),
 				makeUnsplashSrcSet(id, 500),
@@ -141,7 +141,7 @@ render(
 		<Gallery images={THEMED_IMAGES.map(({ caption, id, orientation, useForDemo }) => ({
 			src: makeUnsplashSrc(id),
 			thumbnail: makeUnsplashThumbnail(id, orientation),
-			srcset: [
+			srcSet: [
 				makeUnsplashSrcSet(id, 1024),
 				makeUnsplashSrcSet(id, 800),
 				makeUnsplashSrcSet(id, 500),
