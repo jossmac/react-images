@@ -1,5 +1,11 @@
 # React-Images
 
+### v0.5.13 / 2017-11-29
+- change srcset to srcSet to fix intermittent warning: Invalid DOM property `srcset`. Did you mean `srcSet`?
+
+### v0.5.12 / 2017-11-29
+-  Fix React warning issue #171 thanks to [kachkaev] (https://github.com/(https://github.com/smeijer)
+
 ### v0.5.10 / 2017-10-18
 - New build
 
