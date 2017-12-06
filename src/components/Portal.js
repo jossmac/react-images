@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { CSSTransitionGroup } from 'react-transition-group';
-import { render } from 'react-dom';
+import { render, unmountComponentAtNode } from 'react-dom';
 import PassContext from './PassContext';
 
 
@@ -43,6 +43,7 @@ export default class Portal extends Component {
 		);
 	}
 	componentWillUnmount () {
+		unmountComponentAtNode(this.portalElement);
 		document.body.removeChild(this.portalElement);
 	}
 	render () {
