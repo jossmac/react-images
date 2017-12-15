@@ -1,5 +1,6 @@
 # React Images
 
+[![react-images on npm](https://img.shields.io/npm/dm/react-images.svg)](https://www.npmjs.com/package/react-images)
 [![Join the chat at https://gitter.im/react-images/Lobby](https://badges.gitter.im/react-images/Lobby.svg)](https://gitter.im/react-images/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 A simple, responsive lightbox component for displaying an array of images.
