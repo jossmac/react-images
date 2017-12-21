@@ -108,6 +108,7 @@ width | number  | 1024 | Maximum width of the carousel; defaults to 1024px
 
 Property	|	Type		|	Default		|	Description
 :-----------------------|:--------------|:--------------|:--------------------------------
-src  | string | undefined | Required 
-srcSet  | array of strings | undefined | Optional 
-caption  | string | undefined | Optional 
+src  | string | undefined | Required
+srcSet  | array of strings | undefined | Optional
+caption  | string | undefined | Optional
+alt  | string | undefined | Optional
