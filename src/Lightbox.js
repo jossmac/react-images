@@ -99,7 +99,9 @@ class Lightbox extends Component {
 		const img = new Image();
 
 		img.src = image.src;
-		img.setAttribute('srcset', image.srcSet || image.srcset);
+		img.srcSet = image.srcSet || image.srcset;
+
+		if (img.srcSet) img.setAttribute('srcset', img.srcSet);
 		img.onload = onload;
 
 		return img;
