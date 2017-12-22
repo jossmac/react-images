@@ -70,8 +70,8 @@ class Lightbox extends Component {
 
 		// preload current image
 		if (this.props.currentImage !== nextProps.currentImage || !this.props.isOpen && nextProps.isOpen) {
-			this.setState({ imageLoaded: false });
-			this.preloadImage(nextProps.currentImage, this.handleImageLoaded);
+			const img = this.preloadImage(nextProps.currentImage, this.handleImageLoaded);
+			this.setState({ imageLoaded: img.complete });
 		}
 
 		// add/remove event listeners
@@ -98,31 +98,41 @@ class Lightbox extends Component {
 
 		const img = new Image();
 
+		// TODO: add error handling for missing images
+		img.onerror = onload;
+		img.onload = onload;
 		img.src = image.src;
 		img.srcSet = image.srcSet || image.srcset;
 
 		if (img.srcSet) img.setAttribute('srcset', img.srcSet);
-		img.onload = onload;
 
 		return img;
 	}
 	gotoNext (event) {
-		if (this.props.currentImage === (this.props.images.length - 1)) return;
+		const { currentImage, images } = this.props;
+		const { imageLoaded } = this.state;
+
+		if (!imageLoaded || currentImage === (images.length - 1)) return;
+
 		if (event) {
 			event.preventDefault();
 			event.stopPropagation();
 		}
-		this.props.onClickNext();
 
+		this.props.onClickNext();
 	}
 	gotoPrev (event) {
-		if (this.props.currentImage === 0) return;
+		const { currentImage } = this.props;
+		const { imageLoaded } = this.state;
+
+		if (!imageLoaded || currentImage === 0) return;
+
 		if (event) {
 			event.preventDefault();
 			event.stopPropagation();
 		}
-		this.props.onClickPrev();
 
+		this.props.onClickPrev();
 	}
 	closeBackdrop (event) {
     // make sure event only happens if they click the backdrop
@@ -206,8 +216,8 @@ class Lightbox extends Component {
 					<div className={css(this.classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
 						{imageLoaded && this.renderHeader()}
 						{this.renderImages()}
+						{this.renderSpinner()}
 						{imageLoaded && this.renderFooter()}
-						{!imageLoaded && this.renderSpinner()}
 					</div>
 					{imageLoaded && this.renderThumbnails()}
 					{imageLoaded && this.renderArrowPrev()}
@@ -324,10 +334,11 @@ class Lightbox extends Component {
 			spinnerSize,
 		} = this.props;
 
+		const { imageLoaded } = this.state;
 		const Spinner = spinner;
 
 		return (
-			<div className={css(this.classes.spinner)}>
+			<div className={css(this.classes.spinner, !imageLoaded && this.classes.spinnerActive)}>
 				<Spinner
 					color={spinnerColor}
 					size={spinnerSize}
@@ -432,6 +443,13 @@ const defaultStyles = {
 		top: '50%',
 		left: '50%',
 		transform: 'translate(-50%, -50%)',
+
+		// opacity animation to make spinner appear with delay
+		opacity: 0,
+		transition: 'opacity 0.3s',
+	},
+	spinnerActive: {
+		opacity: 1,
 	},
 };
 
