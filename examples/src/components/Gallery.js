@@ -92,6 +92,9 @@ class Gallery extends Component {
 					onClickThumbnail={this.gotoImage}
 					onClose={this.closeLightbox}
 					showThumbnails={this.props.showThumbnails}
+					spinner={this.props.spinner}
+					spinnerColor={this.props.spinnerColor}
+					spinnerSize={this.props.spinnerSize}
 					theme={this.props.theme}
 				/>
 			</div>

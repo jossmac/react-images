@@ -1,5 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
+import { RingLoader } from 'react-spinners';
 import Gallery from './components/Gallery';
 import './example.less';
 
@@ -150,7 +151,13 @@ render(
 			caption,
 			orientation,
 			useForDemo,
-		}))} theme={theme} showThumbnails />
+		}))}
+			theme={theme}
+			spinner={RingLoader}
+			spinnerColor={'#D40000'}
+			spinnerSize={50}
+			showThumbnails
+	/>
 	</div>,
 	document.getElementById('example')
 );

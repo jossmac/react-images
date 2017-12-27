@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { css, StyleSheet } from 'aphrodite';
 import ScrollLock from 'react-scrolllock';
+import { BounceLoader } from 'react-spinners';
 
 import defaultTheme from './theme';
 import Arrow from './components/Arrow';
@@ -18,13 +19,17 @@ import deepMerge from './utils/deepMerge';
 class Lightbox extends Component {
 	constructor (props) {
 		super(props);
+
 		this.theme = deepMerge(defaultTheme, props.theme);
 		this.classes = StyleSheet.create(deepMerge(defaultStyles, this.theme));
+		this.state = { imageLoaded: false };
+
 		bindFunctions.call(this, [
 			'gotoNext',
 			'gotoPrev',
 			'closeBackdrop',
 			'handleKeyboardInput',
+			'handleImageLoaded',
 		]);
 	}
 	getChildContext () {
@@ -63,6 +68,12 @@ class Lightbox extends Component {
 			}
 		}
 
+		// preload current image
+		if (this.props.currentImage !== nextProps.currentImage || !this.props.isOpen && nextProps.isOpen) {
+			const img = this.preloadImage(nextProps.currentImage, this.handleImageLoaded);
+			this.setState({ imageLoaded: img.complete });
+		}
+
 		// add/remove event listeners
 		if (!this.props.isOpen && nextProps.isOpen && nextProps.enableKeyboardInput) {
 			window.addEventListener('keydown', this.handleKeyboardInput);
@@ -81,33 +92,47 @@ class Lightbox extends Component {
 	// METHODS
 	// ==============================
 
-	preloadImage (idx) {
+	preloadImage (idx, onload) {
 		const image = this.props.images[idx];
 		if (!image) return;
 
 		const img = new Image();
 
+		// TODO: add error handling for missing images
+		img.onerror = onload;
+		img.onload = onload;
 		img.src = image.src;
 		img.srcSet = image.srcSet || image.srcset;
 
+		if (img.srcSet) img.setAttribute('srcset', img.srcSet);
+
+		return img;
 	}
 	gotoNext (event) {
-		if (this.props.currentImage === (this.props.images.length - 1)) return;
+		const { currentImage, images } = this.props;
+		const { imageLoaded } = this.state;
+
+		if (!imageLoaded || currentImage === (images.length - 1)) return;
+
 		if (event) {
 			event.preventDefault();
 			event.stopPropagation();
 		}
-		this.props.onClickNext();
 
+		this.props.onClickNext();
 	}
 	gotoPrev (event) {
-		if (this.props.currentImage === 0) return;
+		const { currentImage } = this.props;
+		const { imageLoaded } = this.state;
+
+		if (!imageLoaded || currentImage === 0) return;
+
 		if (event) {
 			event.preventDefault();
 			event.stopPropagation();
 		}
-		this.props.onClickPrev();
 
+		this.props.onClickPrev();
 	}
 	closeBackdrop (event) {
     // make sure event only happens if they click the backdrop
@@ -129,6 +154,9 @@ class Lightbox extends Component {
 		}
 		return false;
 
+	}
+	handleImageLoaded () {
+		this.setState({ imageLoaded: true });
 	}
 
 	// ==============================
@@ -164,13 +192,12 @@ class Lightbox extends Component {
 	renderDialog () {
 		const {
 			backdropClosesModal,
-			customControls,
 			isOpen,
-			onClose,
-			showCloseButton,
 			showThumbnails,
 			width,
 		} = this.props;
+
+		const { imageLoaded } = this.state;
 
 		if (!isOpen) return <span key="closed" />;
 
@@ -185,19 +212,18 @@ class Lightbox extends Component {
 				onClick={backdropClosesModal && this.closeBackdrop}
 				onTouchEnd={backdropClosesModal && this.closeBackdrop}
 			>
-				<div className={css(this.classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
-					<Header
-						customControls={customControls}
-						onClose={onClose}
-						showCloseButton={showCloseButton}
-						closeButtonTitle={this.props.closeButtonTitle}
-					/>
-					{this.renderImages()}
+				<div>
+					<div className={css(this.classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
+						{imageLoaded && this.renderHeader()}
+						{this.renderImages()}
+						{this.renderSpinner()}
+						{imageLoaded && this.renderFooter()}
+					</div>
+					{imageLoaded && this.renderThumbnails()}
+					{imageLoaded && this.renderArrowPrev()}
+					{imageLoaded && this.renderArrowNext()}
+					<ScrollLock />
 				</div>
-				{this.renderThumbnails()}
-				{this.renderArrowPrev()}
-				{this.renderArrowNext()}
-				<ScrollLock />
 			</Container>
 		);
 	}
@@ -205,11 +231,11 @@ class Lightbox extends Component {
 		const {
 			currentImage,
 			images,
-			imageCountSeparator,
 			onClickImage,
-			showImageCount,
 			showThumbnails,
 		} = this.props;
+
+		const { imageLoaded } = this.state;
 
 		if (!images || !images.length) return null;
 
@@ -236,7 +262,7 @@ class Lightbox extends Component {
 					<Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
 				*/}
 				<img
-					className={css(this.classes.image)}
+					className={css(this.classes.image, imageLoaded && this.classes.imageLoaded)}
 					onClick={onClickImage}
 					sizes={sizes}
 					alt={image.alt}
@@ -246,13 +272,6 @@ class Lightbox extends Component {
 						cursor: onClickImage ? 'pointer' : 'auto',
 						maxHeight: `calc(100vh - ${heightOffset})`,
 					}}
-				/>
-				<Footer
-					caption={images[currentImage].caption}
-					countCurrent={currentImage + 1}
-					countSeparator={imageCountSeparator}
-					countTotal={images.length}
-					showCount={showImageCount}
 				/>
 			</figure>
 		);
@@ -271,6 +290,62 @@ class Lightbox extends Component {
 			/>
 		);
 	}
+	renderHeader () {
+		const {
+			closeButtonTitle,
+			customControls,
+			onClose,
+			showCloseButton,
+		} = this.props;
+
+		return (
+			<Header
+				customControls={customControls}
+				onClose={onClose}
+				showCloseButton={showCloseButton}
+				closeButtonTitle={closeButtonTitle}
+			/>
+		);
+	}
+	renderFooter () {
+		const {
+			currentImage,
+			images,
+			imageCountSeparator,
+			showImageCount,
+		} = this.props;
+
+		if (!images || !images.length) return null;
+
+		return (
+			<Footer
+				caption={images[currentImage].caption}
+				countCurrent={currentImage + 1}
+				countSeparator={imageCountSeparator}
+				countTotal={images.length}
+				showCount={showImageCount}
+			/>
+		);
+	}
+	renderSpinner () {
+		const {
+			spinner,
+			spinnerColor,
+			spinnerSize,
+		} = this.props;
+
+		const { imageLoaded } = this.state;
+		const Spinner = spinner;
+
+		return (
+			<div className={css(this.classes.spinner, !imageLoaded && this.classes.spinnerActive)}>
+				<Spinner
+					color={spinnerColor}
+					size={spinnerSize}
+				/>
+			</div>
+		);
+	}
 	render () {
 		return (
 			<Portal>
@@ -279,6 +354,10 @@ class Lightbox extends Component {
 		);
 	}
 }
+
+const DefaultSpinner = (props) => (
+	<BounceLoader {...props} />
+);
 
 Lightbox.propTypes = {
 	backdropClosesModal: PropTypes.bool,
@@ -306,6 +385,9 @@ Lightbox.propTypes = {
 	showCloseButton: PropTypes.bool,
 	showImageCount: PropTypes.bool,
 	showThumbnails: PropTypes.bool,
+	spinner: PropTypes.func,
+	spinnerColor: PropTypes.string,
+	spinnerSize: PropTypes.number,
 	theme: PropTypes.object,
 	thumbnailOffset: PropTypes.number,
 	width: PropTypes.number,
@@ -321,6 +403,9 @@ Lightbox.defaultProps = {
 	rightArrowTitle: 'Next (Right arrow key)',
 	showCloseButton: true,
 	showImageCount: true,
+	spinner: DefaultSpinner,
+	spinnerColor: 'white',
+	spinnerSize: 100,
 	theme: {},
 	thumbnailOffset: 2,
 	width: 1024,
@@ -345,6 +430,26 @@ const defaultStyles = {
 		// disable user select
 		WebkitTouchCallout: 'none',
 		userSelect: 'none',
+
+		// opacity animation on image load
+		opacity: 0,
+		transition: 'opacity 0.3s',
+	},
+	imageLoaded: {
+		opacity: 1,
+	},
+	spinner: {
+		position: 'absolute',
+		top: '50%',
+		left: '50%',
+		transform: 'translate(-50%, -50%)',
+
+		// opacity animation to make spinner appear with delay
+		opacity: 0,
+		transition: 'opacity 0.3s',
+	},
+	spinnerActive: {
+		opacity: 1,
 	},
 };
 
