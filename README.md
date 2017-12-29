@@ -12,6 +12,10 @@ A simple, responsive lightbox component for displaying an array of images.
 ```bash
 npm install --save react-images
 ```
+or
+```bash
+yarn add react-images
+```
 
 ```jsx
 import React from 'react';
@@ -41,8 +45,8 @@ Live demo: [jossmac.github.io/react-images](http://jossmac.github.io/react-image
 To build the examples locally, run:
 
 ```
-npm install
-npm start
+yarn install
+yarn start
 ```
 
 Then open [`localhost:8000`](http://localhost:8000) in a browser.
@@ -89,7 +93,7 @@ closeButtonTitle | string | ' Close (Esc) ' | Customize close esc title
 enableKeyboardInput | bool  | true  | Supports keyboard input - <code>esc</code>, <code>arrow left</code>, and <code>arrow right</code>
 currentImage  | number  | 0 | The index of the image to display initially
 customControls | array | undefined | An array of elements to display as custom controls on the top of lightbox
-images  | array | undefined | Required. Array of image objects See image options table below 
+images  | array | undefined | Required. Array of image objects See image options table below
 imageCountSeparator  | String  | ' of ' | Customize separator in the image count
 isOpen  | bool  | false | Whether or not the lightbox is displayed
 leftArrowTitle | string | ' Previous (Left arrow key) ' | Customize of left arrow title

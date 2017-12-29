@@ -12,6 +12,6 @@
 
 **Checks:**
 
-- [ ] Please confirm `npm run lint` ran successfully
+- [ ] Please confirm `yarn run lint` ran successfully
 - [ ] Please confirm that only `/src` and `/examples/src` are committed
 - [ ] [if new feature] Please confirm that documentation was added to the README.md
