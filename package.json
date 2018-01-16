@@ -15,8 +15,14 @@
     "type": "git",
     "url": "https://github.com/jossmac/react-images.git"
   },
-  "devDependencies": {
+  "dependencies": {
     "aphrodite": "^0.5.0",
+    "prop-types": "^15.6.0",
+    "react-scrolllock": "^2.0.1",
+    "react-spinners": "^0.2.5",
+    "react-transition-group": "^1.2.1"
+  },
+  "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.1",
@@ -37,12 +43,8 @@
     "less-loader": "^4.0.5",
     "nps": "^5.7.1",
     "nps-utils": "^1.4.0",
-    "prop-types": "^15.6.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
-    "react-scrolllock": "^2.0.1",
-    "react-spinners": "^0.2.5",
-    "react-transition-group": "^1.2.1",
     "require-dir": "^0.3.2",
     "rollup": "^0.50.0",
     "rollup-plugin-babel": "^3.0.2",
