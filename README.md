@@ -115,3 +115,4 @@ Property	|	Type		|	Default		|	Description
 src  | string | undefined | Required 
 srcSet  | array of strings | undefined | Optional 
 caption  | string | undefined | Optional 
+alt  | string | undefined | Optional
