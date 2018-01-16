@@ -10,7 +10,7 @@ A simple, responsive lightbox component for displaying an array of images.
 
 
 ```bash
-npm install --save react-images
+yarn add react-images --save
 ```
 
 ```jsx
@@ -41,8 +41,8 @@ Live demo: [jossmac.github.io/react-images](http://jossmac.github.io/react-image
 To build the examples locally, run:
 
 ```
-npm install
-npm start
+yarn install
+yarn start
 ```
 
 Then open [`localhost:8000`](http://localhost:8000) in a browser.
