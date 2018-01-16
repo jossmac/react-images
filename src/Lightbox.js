@@ -135,8 +135,8 @@ class Lightbox extends Component {
 		this.props.onClickPrev();
 	}
 	closeBackdrop (event) {
-    // make sure event only happens if they click the backdrop
-    // and if the caption is widening the figure element let that respond too
+		// make sure event only happens if they click the backdrop
+		// and if the caption is widening the figure element let that respond too
 		if (event.target.id === 'lightboxBackdrop' || event.target.tagName === 'FIGURE') {
 			this.props.onClose();
 		}
@@ -222,7 +222,7 @@ class Lightbox extends Component {
 					{imageLoaded && this.renderThumbnails()}
 					{imageLoaded && this.renderArrowPrev()}
 					{imageLoaded && this.renderArrowNext()}
-          {this.props.preventScroll && <ScrollLock />}
+					{this.props.preventScroll && <ScrollLock />}
 				</div>
 			</Container>
 		);

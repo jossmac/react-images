@@ -157,7 +157,7 @@ render(
 			spinnerColor={'#D40000'}
 			spinnerSize={50}
 			showThumbnails
-	/>
+		/>
 	</div>,
 	document.getElementById('example')
 );

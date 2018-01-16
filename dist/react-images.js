@@ -1,8 +1,8 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('prop-types'), require('react'), require('aphrodite'), require('react-scrolllock'), require('aphrodite/no-important'), require('react-transition-group'), require('react-dom')) :
-	typeof define === 'function' && define.amd ? define(['prop-types', 'react', 'aphrodite', 'react-scrolllock', 'aphrodite/no-important', 'react-transition-group', 'react-dom'], factory) :
-	(global.Lightbox = factory(global.PropTypes,global.React,global.aphrodite,global.ScrollLock,global.aphrodite,global.ReactTransitionGroup,global.ReactDOM));
-}(this, (function (PropTypes,React,aphrodite,ScrollLock,noImportant,reactTransitionGroup,reactDom) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('prop-types'), require('react'), require('aphrodite'), require('react-scrolllock'), require('react-spinners'), require('aphrodite/no-important'), require('react-transition-group'), require('react-dom')) :
+	typeof define === 'function' && define.amd ? define(['prop-types', 'react', 'aphrodite', 'react-scrolllock', 'react-spinners', 'aphrodite/no-important', 'react-transition-group', 'react-dom'], factory) :
+	(global.Lightbox = factory(global.PropTypes,global.React,global.aphrodite,global.ScrollLock,global.BounceLoader,global.aphrodite,global.ReactTransitionGroup,global.ReactDOM));
+}(this, (function (PropTypes,React,aphrodite,ScrollLock,reactSpinners,noImportant,reactTransitionGroup,reactDom) { 'use strict';
 
 PropTypes = PropTypes && PropTypes.hasOwnProperty('default') ? PropTypes['default'] : PropTypes;
 var React__default = 'default' in React ? React['default'] : React;
@@ -950,7 +950,9 @@ var Lightbox = function (_Component) {
 
 		_this.theme = deepMerge(theme, props.theme);
 		_this.classes = aphrodite.StyleSheet.create(deepMerge(defaultStyles, _this.theme));
-		bindFunctions.call(_this, ['gotoNext', 'gotoPrev', 'closeBackdrop', 'handleKeyboardInput']);
+		_this.state = { imageLoaded: false };
+
+		bindFunctions.call(_this, ['gotoNext', 'gotoPrev', 'closeBackdrop', 'handleKeyboardInput', 'handleImageLoaded']);
 		return _this;
 	}
 
@@ -996,6 +998,12 @@ var Lightbox = function (_Component) {
 				}
 			}
 
+			// preload current image
+			if (this.props.currentImage !== nextProps.currentImage || !this.props.isOpen && nextProps.isOpen) {
+				var img = this.preloadImage(nextProps.currentImage, this.handleImageLoaded);
+				this.setState({ imageLoaded: img.complete });
+			}
+
 			// add/remove event listeners
 			if (!this.props.isOpen && nextProps.isOpen && nextProps.enableKeyboardInput) {
 				window.addEventListener('keydown', this.handleKeyboardInput);
@@ -1018,33 +1026,54 @@ var Lightbox = function (_Component) {
 
 	}, {
 		key: 'preloadImage',
-		value: function preloadImage(idx) {
+		value: function preloadImage(idx, onload) {
 			var image = this.props.images[idx];
 			if (!image) return;
 
 			var img = new Image();
 
+			// TODO: add error handling for missing images
+			img.onerror = onload;
+			img.onload = onload;
 			img.src = image.src;
 			img.srcSet = image.srcSet || image.srcset;
+
+			if (img.srcSet) img.setAttribute('srcset', img.srcSet);
+
+			return img;
 		}
 	}, {
 		key: 'gotoNext',
 		value: function gotoNext(event) {
-			if (this.props.currentImage === this.props.images.length - 1) return;
+			var _props = this.props,
+			    currentImage = _props.currentImage,
+			    images = _props.images;
+			var imageLoaded = this.state.imageLoaded;
+
+
+			if (!imageLoaded || currentImage === images.length - 1) return;
+
 			if (event) {
 				event.preventDefault();
 				event.stopPropagation();
 			}
+
 			this.props.onClickNext();
 		}
 	}, {
 		key: 'gotoPrev',
 		value: function gotoPrev(event) {
-			if (this.props.currentImage === 0) return;
+			var currentImage = this.props.currentImage;
+			var imageLoaded = this.state.imageLoaded;
+
+
+			if (!imageLoaded || currentImage === 0) return;
+
 			if (event) {
 				event.preventDefault();
 				event.stopPropagation();
 			}
+
 			this.props.onClickPrev();
 		}
 	}, {
@@ -1073,6 +1102,11 @@ var Lightbox = function (_Component) {
 				return true;
 			}
 			return false;
+		}
+	}, {
+		key: 'handleImageLoaded',
+		value: function handleImageLoaded() {
+			this.setState({ imageLoaded: true });
 		}
 
 		// ==============================
@@ -1108,14 +1142,12 @@ var Lightbox = function (_Component) {
 	}, {
 		key: 'renderDialog',
 		value: function renderDialog() {
-			var _props = this.props,
-			    backdropClosesModal = _props.backdropClosesModal,
-			    customControls = _props.customControls,
-			    isOpen = _props.isOpen,
-			    onClose = _props.onClose,
-			    showCloseButton = _props.showCloseButton,
-			    showThumbnails = _props.showThumbnails,
-			    width = _props.width;
+			var _props2 = this.props,
+			    backdropClosesModal = _props2.backdropClosesModal,
+			    isOpen = _props2.isOpen,
+			    showThumbnails = _props2.showThumbnails,
+			    width = _props2.width;
+			var imageLoaded = this.state.imageLoaded;
 
 
 			if (!isOpen) return React__default.createElement('span', { key: 'closed' });
@@ -1134,31 +1166,31 @@ var Lightbox = function (_Component) {
 				},
 				React__default.createElement(
 					'div',
-					{ className: aphrodite.css(this.classes.content), style: { marginBottom: offsetThumbnails, maxWidth: width } },
-					React__default.createElement(Header, {
-						customControls: customControls,
-						onClose: onClose,
-						showCloseButton: showCloseButton,
-						closeButtonTitle: this.props.closeButtonTitle
-					}),
-					this.renderImages()
-				),
-				this.renderThumbnails(),
-				this.renderArrowPrev(),
-				this.renderArrowNext(),
-				React__default.createElement(ScrollLock, null)
+					null,
+					React__default.createElement(
+						'div',
+						{ className: aphrodite.css(this.classes.content), style: { marginBottom: offsetThumbnails, maxWidth: width } },
+						imageLoaded && this.renderHeader(),
+						this.renderImages(),
+						this.renderSpinner(),
+						imageLoaded && this.renderFooter()
+					),
+					imageLoaded && this.renderThumbnails(),
+					imageLoaded && this.renderArrowPrev(),
+					imageLoaded && this.renderArrowNext(),
+					this.props.preventScroll && React__default.createElement(ScrollLock, null)
+				)
 			);
 		}
 	}, {
 		key: 'renderImages',
 		value: function renderImages() {
-			var _props2 = this.props,
-			    currentImage = _props2.currentImage,
-			    images = _props2.images,
-			    imageCountSeparator = _props2.imageCountSeparator,
-			    onClickImage = _props2.onClickImage,
-			    showImageCount = _props2.showImageCount,
-			    showThumbnails = _props2.showThumbnails;
+			var _props3 = this.props,
+			    currentImage = _props3.currentImage,
+			    images = _props3.images,
+			    onClickImage = _props3.onClickImage,
+			    showThumbnails = _props3.showThumbnails;
+			var imageLoaded = this.state.imageLoaded;
 
 
 			if (!images || !images.length) return null;
@@ -1181,7 +1213,7 @@ var Lightbox = function (_Component) {
 				'figure',
 				{ className: aphrodite.css(this.classes.figure) },
 				React__default.createElement('img', {
-					className: aphrodite.css(this.classes.image),
+					className: aphrodite.css(this.classes.image, imageLoaded && this.classes.imageLoaded),
 					onClick: onClickImage,
 					sizes: sizes,
 					alt: image.alt,
@@ -1191,25 +1223,18 @@ var Lightbox = function (_Component) {
 						cursor: onClickImage ? 'pointer' : 'auto',
 						maxHeight: 'calc(100vh - ' + heightOffset + ')'
 					}
-				}),
-				React__default.createElement(Footer, {
-					caption: images[currentImage].caption,
-					countCurrent: currentImage + 1,
-					countSeparator: imageCountSeparator,
-					countTotal: images.length,
-					showCount: showImageCount
 				})
 			);
 		}
 	}, {
 		key: 'renderThumbnails',
 		value: function renderThumbnails() {
-			var _props3 = this.props,
-			    images = _props3.images,
-			    currentImage = _props3.currentImage,
-			    onClickThumbnail = _props3.onClickThumbnail,
-			    showThumbnails = _props3.showThumbnails,
-			    thumbnailOffset = _props3.thumbnailOffset;
+			var _props4 = this.props,
+			    images = _props4.images,
+			    currentImage = _props4.currentImage,
+			    onClickThumbnail = _props4.onClickThumbnail,
+			    showThumbnails = _props4.showThumbnails,
+			    thumbnailOffset = _props4.thumbnailOffset;
 
 
 			if (!showThumbnails) return;
@@ -1220,6 +1245,63 @@ var Lightbox = function (_Component) {
 				offset: thumbnailOffset,
 				onClickThumbnail: onClickThumbnail
 			});
+		}
+	}, {
+		key: 'renderHeader',
+		value: function renderHeader() {
+			var _props5 = this.props,
+			    closeButtonTitle = _props5.closeButtonTitle,
+			    customControls = _props5.customControls,
+			    onClose = _props5.onClose,
+			    showCloseButton = _props5.showCloseButton;
+
+
+			return React__default.createElement(Header, {
+				customControls: customControls,
+				onClose: onClose,
+				showCloseButton: showCloseButton,
+				closeButtonTitle: closeButtonTitle
+			});
+		}
+	}, {
+		key: 'renderFooter',
+		value: function renderFooter() {
+			var _props6 = this.props,
+			    currentImage = _props6.currentImage,
+			    images = _props6.images,
+			    imageCountSeparator = _props6.imageCountSeparator,
+			    showImageCount = _props6.showImageCount;
+
+
+			if (!images || !images.length) return null;
+
+			return React__default.createElement(Footer, {
+				caption: images[currentImage].caption,
+				countCurrent: currentImage + 1,
+				countSeparator: imageCountSeparator,
+				countTotal: images.length,
+				showCount: showImageCount
+			});
+		}
+	}, {
+		key: 'renderSpinner',
+		value: function renderSpinner() {
+			var _props7 = this.props,
+			    spinner = _props7.spinner,
+			    spinnerColor = _props7.spinnerColor,
+			    spinnerSize = _props7.spinnerSize;
+			var imageLoaded = this.state.imageLoaded;
+
+			var Spinner = spinner;
+
+			return React__default.createElement(
+				'div',
+				{ className: aphrodite.css(this.classes.spinner, !imageLoaded && this.classes.spinnerActive) },
+				React__default.createElement(Spinner, {
+					color: spinnerColor,
+					size: spinnerSize
+				})
+			);
 		}
 	}, {
 		key: 'render',
@@ -1233,6 +1315,10 @@ var Lightbox = function (_Component) {
 	}]);
 	return Lightbox;
 }(React.Component);
+
+var DefaultSpinner = function DefaultSpinner(props) {
+	return React__default.createElement(reactSpinners.BounceLoader, props);
+};
 
 Lightbox.propTypes = {
 	backdropClosesModal: PropTypes.bool,
@@ -1254,10 +1340,14 @@ Lightbox.propTypes = {
 	onClickPrev: PropTypes.func,
 	onClose: PropTypes.func.isRequired,
 	preloadNextImage: PropTypes.bool,
+	preventScroll: PropTypes.bool,
 	rightArrowTitle: PropTypes.string,
 	showCloseButton: PropTypes.bool,
 	showImageCount: PropTypes.bool,
 	showThumbnails: PropTypes.bool,
+	spinner: PropTypes.func,
+	spinnerColor: PropTypes.string,
+	spinnerSize: PropTypes.number,
 	theme: PropTypes.object,
 	thumbnailOffset: PropTypes.number,
 	width: PropTypes.number
@@ -1270,9 +1360,13 @@ Lightbox.defaultProps = {
 	leftArrowTitle: 'Previous (Left arrow key)',
 	onClickShowNextImage: true,
 	preloadNextImage: true,
+	preventScroll: true,
 	rightArrowTitle: 'Next (Right arrow key)',
 	showCloseButton: true,
 	showImageCount: true,
+	spinner: DefaultSpinner,
+	spinnerColor: 'white',
+	spinnerSize: 100,
 	theme: {},
 	thumbnailOffset: 2,
 	width: 1024
@@ -1296,7 +1390,27 @@ var defaultStyles = {
 
 		// disable user select
 		WebkitTouchCallout: 'none',
-		userSelect: 'none'
+		userSelect: 'none',
+
+		// opacity animation on image load
+		opacity: 0,
+		transition: 'opacity 0.3s'
+	},
+	imageLoaded: {
+		opacity: 1
+	},
+	spinner: {
+		position: 'absolute',
+		top: '50%',
+		left: '50%',
+		transform: 'translate(-50%, -50%)',
+
+		// opacity animation to make spinner appear with delay
+		opacity: 0,
+		transition: 'opacity 0.3s'
+	},
+	spinnerActive: {
+		opacity: 1
 	}
 };
 

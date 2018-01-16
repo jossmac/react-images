@@ -11,7 +11,7 @@ function Header ({
 	onClose,
 	showCloseButton,
 	closeButtonTitle,
-	...props,
+	...props
 }, {
 	theme,
 }) {

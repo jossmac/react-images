@@ -9,11 +9,13 @@ const globals = {
 	'prop-types': 'PropTypes',
 	'react-dom': 'ReactDOM',
 	react: 'React',
-  aphrodite: 'aphrodite',
-  'aphrodite/no-important': 'aphrodite',
-  'react-scrolllock': 'ScrollLock',
-  'react-transition-group': 'ReactTransitionGroup'
+	aphrodite: 'aphrodite',
+	'aphrodite/no-important': 'aphrodite',
+	'react-scrolllock': 'ScrollLock',
+	'react-transition-group': 'ReactTransitionGroup',
+	'react-spinners': 'BounceLoader',
 };
+
 const external = Object.keys(globals);
 const babelOptions = (production) => {
 	let result = {
@@ -21,9 +23,11 @@ const babelOptions = (production) => {
 		presets: [['es2015', { modules: false }], 'stage-0', 'react'],
 		plugins: ['external-helpers'],
 	};
+
 	if (production) {
 		result.plugins.push('transform-react-remove-prop-types');
-	};
+	}
+
 	return result;
 };
 
