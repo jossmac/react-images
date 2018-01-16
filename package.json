@@ -43,6 +43,7 @@
     "react-scrolllock": "^2.0.1",
     "react-spinners": "^0.2.5",
     "react-transition-group": "^1.2.1",
+    "require-dir": "^0.3.2",
     "rollup": "^0.50.0",
     "rollup-plugin-babel": "^3.0.2",
     "rollup-plugin-commonjs": "^8.2.1",
