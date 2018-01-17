@@ -223,7 +223,7 @@ class Lightbox extends Component {
 				onClick={backdropClosesModal && this.closeBackdrop}
 				onTouchEnd={backdropClosesModal && this.closeBackdrop}
 			>
-				<div>
+				<div className={css(this.classes.wrapper)} style={this.theme.wrapper}>
 					{imageLoaded && this.renderHeader()}
 					<div
 						className={css(this.classes.content)}
@@ -439,6 +439,9 @@ Lightbox.childContextTypes = {
 };
 
 const defaultStyles = {
+	wrapper: {
+		color: '#000',
+	},
 	content: {
 		position: 'relative',
 	},

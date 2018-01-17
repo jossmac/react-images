@@ -469,11 +469,7 @@ function Footer(_ref, _ref2) {
 	return React.createElement(
 		'div',
 		_extends({ className: css$1(classes.footer) }, props),
-		caption ? React.createElement(
-			'figcaption',
-			{ className: css$1(classes.footerCaption) },
-			caption
-		) : React.createElement('span', null),
+		caption ? React.createElement('figcaption', { className: css$1(classes.footerCaption), dangerouslySetInnerHTML: { __html: caption } }) : React.createElement('span', null),
 		imageCount
 	);
 }
@@ -1165,7 +1161,7 @@ var Lightbox = function (_Component) {
 				},
 				React.createElement(
 					'div',
-					null,
+					{ className: css(this.classes.wrapper), style: this.theme.wrapper },
 					imageLoaded && this.renderHeader(),
 					React.createElement(
 						'div',
@@ -1380,6 +1376,9 @@ Lightbox.childContextTypes = {
 };
 
 var defaultStyles = {
+	wrapper: {
+		color: '#000'
+	},
 	content: {
 		position: 'relative'
 	},
