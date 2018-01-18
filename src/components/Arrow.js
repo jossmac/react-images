@@ -11,7 +11,7 @@ function Arrow ({
 	icon,
 	onClick,
 	size,
-	...props,
+	...props
 },
 {
 	theme,

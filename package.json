@@ -1,10 +1,15 @@
 {
   "name": "react-images",
-  "version": "0.5.14",
+  "version": "0.5.20",
   "description": "A simple, responsive lightbox component for displaying an array of images with React.js",
   "main": "lib/Lightbox.js",
   "jsnext:main": "dist/react-images.es.js",
   "author": "Joss Mackison",
+  "contributors": [
+    {
+      "name": "Rick de Graaff <rick@rickdegraaff.nl>"
+    }
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -13,9 +18,9 @@
   "dependencies": {
     "aphrodite": "^0.5.0",
     "prop-types": "^15.6.0",
-    "react-scrolllock": "^1.0.5",
+    "react-scrolllock": "^2.0.1",
     "react-spinners": "^0.2.5",
-    "react-transition-group": "^1.1.3"
+    "react-transition-group": "^1.2.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -28,7 +33,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "css-loader": "^0.28.7",
-    "eslint": "2.9.0",
+    "eslint": "^4.15.0",
     "eslint-config-keystone": "2.2.0",
     "eslint-plugin-react": "5.1.1",
     "extract-text-webpack-plugin": "^3.0.1",
@@ -40,6 +45,7 @@
     "nps-utils": "^1.4.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
+    "require-dir": "^0.3.2",
     "rollup": "^0.50.0",
     "rollup-plugin-babel": "^3.0.2",
     "rollup-plugin-commonjs": "^8.2.1",
@@ -58,7 +64,7 @@
     "build": "nps build",
     "publish:examples": "NODE_ENV=production nps publish",
     "start": "webpack-dev-server --progress",
-    "lint": "eslint src/** examples/src/app.js examples/src/components/Gallery.js"
+    "lint": "eslint src/ --ext .js,.jsx"
   },
   "bugs": {
     "url": "https://github.com/jossmac/react-images/issues"

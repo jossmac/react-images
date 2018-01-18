@@ -32,16 +32,19 @@ class Lightbox extends Component {
 			'handleImageLoaded',
 		]);
 	}
+
 	getChildContext () {
 		return {
 			theme: this.theme,
 		};
 	}
+
 	componentDidMount () {
 		if (this.props.isOpen && this.props.enableKeyboardInput) {
 			window.addEventListener('keydown', this.handleKeyboardInput);
 		}
 	}
+
 	componentWillReceiveProps (nextProps) {
 		if (!canUseDom) return;
 
@@ -82,6 +85,7 @@ class Lightbox extends Component {
 			window.removeEventListener('keydown', this.handleKeyboardInput);
 		}
 	}
+
 	componentWillUnmount () {
 		if (this.props.enableKeyboardInput) {
 			window.removeEventListener('keydown', this.handleKeyboardInput);
@@ -108,6 +112,7 @@ class Lightbox extends Component {
 
 		return img;
 	}
+
 	gotoNext (event) {
 		const { currentImage, images } = this.props;
 		const { imageLoaded } = this.state;
@@ -121,6 +126,7 @@ class Lightbox extends Component {
 
 		this.props.onClickNext();
 	}
+
 	gotoPrev (event) {
 		const { currentImage } = this.props;
 		const { imageLoaded } = this.state;
@@ -134,13 +140,15 @@ class Lightbox extends Component {
 
 		this.props.onClickPrev();
 	}
+
 	closeBackdrop (event) {
-    // make sure event only happens if they click the backdrop
-    // and if the caption is widening the figure element let that respond too
+		// make sure event only happens if they click the backdrop
+		// and if the caption is widening the figure element let that respond too
 		if (event.target.id === 'lightboxBackdrop' || event.target.tagName === 'FIGURE') {
 			this.props.onClose();
 		}
 	}
+
 	handleKeyboardInput (event) {
 		if (event.keyCode === 37) { // left
 			this.gotoPrev(event);
@@ -155,6 +163,7 @@ class Lightbox extends Component {
 		return false;
 
 	}
+
 	handleImageLoaded () {
 		this.setState({ imageLoaded: true });
 	}
@@ -176,6 +185,7 @@ class Lightbox extends Component {
 			/>
 		);
 	}
+
 	renderArrowNext () {
 		if (this.props.currentImage === (this.props.images.length - 1)) return null;
 
@@ -189,6 +199,7 @@ class Lightbox extends Component {
 			/>
 		);
 	}
+
 	renderDialog () {
 		const {
 			backdropClosesModal,
@@ -199,7 +210,7 @@ class Lightbox extends Component {
 
 		const { imageLoaded } = this.state;
 
-		if (!isOpen) return <span key="closed" />;
+		if (!isOpen) return <span key="closed"/>;
 
 		let offsetThumbnails = 0;
 		if (showThumbnails) {
@@ -212,21 +223,25 @@ class Lightbox extends Component {
 				onClick={backdropClosesModal && this.closeBackdrop}
 				onTouchEnd={backdropClosesModal && this.closeBackdrop}
 			>
-				<div>
-					<div className={css(this.classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
-						{imageLoaded && this.renderHeader()}
+				<div className={css(this.classes.wrapper)} style={this.theme.wrapper}>
+					{imageLoaded && this.renderHeader()}
+					<div
+						className={css(this.classes.content)}
+						style={{ marginBottom: offsetThumbnails, maxWidth: width }}
+					>
 						{this.renderImages()}
 						{this.renderSpinner()}
-						{imageLoaded && this.renderFooter()}
 					</div>
+					{imageLoaded && this.renderFooter()}
 					{imageLoaded && this.renderThumbnails()}
 					{imageLoaded && this.renderArrowPrev()}
 					{imageLoaded && this.renderArrowNext()}
-					<ScrollLock />
+					{this.props.preventScroll && <ScrollLock/>}
 				</div>
 			</Container>
 		);
 	}
+
 	renderImages () {
 		const {
 			currentImage,
@@ -252,7 +267,7 @@ class Lightbox extends Component {
 
 		const thumbnailsSize = showThumbnails ? this.theme.thumbnail.size : 0;
 		const heightOffset = `${this.theme.header.height + this.theme.footer.height + thumbnailsSize
-			+ (this.theme.container.gutter.vertical)}px`;
+		+ (this.theme.container.gutter.vertical)}px`;
 
 		return (
 			<figure className={css(this.classes.figure)}>
@@ -276,6 +291,7 @@ class Lightbox extends Component {
 			</figure>
 		);
 	}
+
 	renderThumbnails () {
 		const { images, currentImage, onClickThumbnail, showThumbnails, thumbnailOffset } = this.props;
 
@@ -290,6 +306,7 @@ class Lightbox extends Component {
 			/>
 		);
 	}
+
 	renderHeader () {
 		const {
 			closeButtonTitle,
@@ -307,6 +324,7 @@ class Lightbox extends Component {
 			/>
 		);
 	}
+
 	renderFooter () {
 		const {
 			currentImage,
@@ -327,6 +345,7 @@ class Lightbox extends Component {
 			/>
 		);
 	}
+
 	renderSpinner () {
 		const {
 			spinner,
@@ -346,6 +365,7 @@ class Lightbox extends Component {
 			</div>
 		);
 	}
+
 	render () {
 		return (
 			<Portal>
@@ -381,6 +401,7 @@ Lightbox.propTypes = {
 	onClickPrev: PropTypes.func,
 	onClose: PropTypes.func.isRequired,
 	preloadNextImage: PropTypes.bool,
+	preventScroll: PropTypes.bool,
 	rightArrowTitle: PropTypes.string,
 	showCloseButton: PropTypes.bool,
 	showImageCount: PropTypes.bool,
@@ -392,6 +413,7 @@ Lightbox.propTypes = {
 	thumbnailOffset: PropTypes.number,
 	width: PropTypes.number,
 };
+
 Lightbox.defaultProps = {
 	closeButtonTitle: 'Close (Esc)',
 	currentImage: 0,
@@ -400,6 +422,7 @@ Lightbox.defaultProps = {
 	leftArrowTitle: 'Previous (Left arrow key)',
 	onClickShowNextImage: true,
 	preloadNextImage: true,
+	preventScroll: true,
 	rightArrowTitle: 'Next (Right arrow key)',
 	showCloseButton: true,
 	showImageCount: true,
@@ -410,11 +433,15 @@ Lightbox.defaultProps = {
 	thumbnailOffset: 2,
 	width: 1024,
 };
+
 Lightbox.childContextTypes = {
 	theme: PropTypes.object.isRequired,
 };
 
 const defaultStyles = {
+	wrapper: {
+		color: '#000',
+	},
 	content: {
 		position: 'relative',
 	},

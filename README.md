@@ -10,7 +10,7 @@ A simple, responsive lightbox component for displaying an array of images.
 
 
 ```bash
-npm install --save react-images
+yarn add react-images --save
 ```
 
 ```jsx
@@ -41,8 +41,8 @@ Live demo: [jossmac.github.io/react-images](http://jossmac.github.io/react-image
 To build the examples locally, run:
 
 ```
-npm install
-npm start
+yarn install
+yarn start
 ```
 
 Then open [`localhost:8000`](http://localhost:8000) in a browser.
@@ -106,6 +106,24 @@ width | number  | 1024 | Maximum width of the carousel; defaults to 1024px
 spinner | func | BounceLoader | [react-spinners](https://github.com/davidhu2000/react-spinners) spinner component or custom spinner component
 spinnerColor | string | 'white' | Color of spinner
 spinnerSize | number | 100 | Size of spinner
+preventScroll | bool | true | Determines whether scrolling is prevented via [react-scrolllock](https://github.com/jossmac/react-scrolllock)
+theme | object | object | Change the style of the lightbox using the theme object
+
+## Theme object
+
+Property	|	Type	|	Description
+:-----------------------|:--------------|:--------------|:--------------------------------
+wrapper  | object | The outer wrapper containing all the lightbox elements
+close  | object | Used to style the close button
+header  | object | The header (which also contains the close button)
+content | object | The content, mostly used to give the lightbox a background
+figure | object | The wrapper containing the image
+image | object | The actual image
+footer | object | Well.. the footer containing the caption and the caption-counter
+footerCaption | object | The footer caption
+footerCount | object | The counting part inside the footer displaying the amount of images
+spinner | object | The spinner, this is pretty default by the spinner loaded by default
+
 
 ## Images object
 
@@ -114,3 +132,4 @@ Property	|	Type		|	Default		|	Description
 src  | string | undefined | Required 
 srcSet  | array of strings | undefined | Optional 
 caption  | string | undefined | Optional 
+alt  | string | undefined | Optional
