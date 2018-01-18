@@ -521,8 +521,7 @@ function Header(_ref, _ref2) {
 
 	return React.createElement(
 		'div',
-		_extends({ className: css$1(classes.header) }, props),
-		customControls ? customControls : React.createElement('span', null),
+		null,
 		!!showCloseButton && React.createElement(
 			'button',
 			{
@@ -531,6 +530,11 @@ function Header(_ref, _ref2) {
 				onClick: onClose
 			},
 			React.createElement(Icon, { fill: !!theme$$1.close && theme$$1.close.fill || theme.close.fill, type: 'close' })
+		),
+		React.createElement(
+			'div',
+			_extends({ className: css$1(classes.header) }, props),
+			customControls ? customControls : React.createElement('span', null)
 		)
 	);
 }
