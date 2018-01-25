@@ -111,6 +111,7 @@ spinnerSize | number | 100 | Size of spinner
 
 Property	|	Type		|	Default		|	Description
 :-----------------------|:--------------|:--------------|:--------------------------------
-src  | string | undefined | Required 
-srcSet  | array of strings | undefined | Optional 
-caption  | string | undefined | Optional 
+src  | string | undefined | Required
+srcSet  | array of strings | undefined | Optional
+caption  | string | undefined | Optional
+alt  | string | undefined | Optional
