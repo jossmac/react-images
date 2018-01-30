@@ -5,7 +5,7 @@ import ScrollLock from 'react-scrolllock';
 import { BounceLoader } from 'react-spinners';
 import { StyleSheet as StyleSheet$1, css as css$1 } from 'aphrodite/no-important';
 import { CSSTransitionGroup } from 'react-transition-group';
-import { render } from 'react-dom';
+import { render, unmountComponentAtNode } from 'react-dom';
 
 // ==============================
 // THEME
@@ -900,6 +900,7 @@ var Portal = function (_Component) {
 	}, {
 		key: 'componentWillUnmount',
 		value: function componentWillUnmount() {
+			unmountComponentAtNode(this.portalElement);
 			document.body.removeChild(this.portalElement);
 		}
 	}, {
@@ -965,8 +966,13 @@ var Lightbox = function (_Component) {
 	}, {
 		key: 'componentDidMount',
 		value: function componentDidMount() {
-			if (this.props.isOpen && this.props.enableKeyboardInput) {
-				window.addEventListener('keydown', this.handleKeyboardInput);
+			if (this.props.isOpen) {
+				if (this.props.enableKeyboardInput) {
+					window.addEventListener('keydown', this.handleKeyboardInput);
+				}
+				if (this.props.currentImage) {
+					this.preloadImage(this.props.currentImage, this.handleImageLoaded);
+				}
 			}
 		}
 	}, {

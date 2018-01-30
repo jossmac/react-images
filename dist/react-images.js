@@ -901,6 +901,7 @@ var Portal = function (_Component) {
 	}, {
 		key: 'componentWillUnmount',
 		value: function componentWillUnmount() {
+			reactDom.unmountComponentAtNode(this.portalElement);
 			document.body.removeChild(this.portalElement);
 		}
 	}, {
@@ -966,8 +967,13 @@ var Lightbox = function (_Component) {
 	}, {
 		key: 'componentDidMount',
 		value: function componentDidMount() {
-			if (this.props.isOpen && this.props.enableKeyboardInput) {
-				window.addEventListener('keydown', this.handleKeyboardInput);
+			if (this.props.isOpen) {
+				if (this.props.enableKeyboardInput) {
+					window.addEventListener('keydown', this.handleKeyboardInput);
+				}
+				if (this.props.currentImage) {
+					this.preloadImage(this.props.currentImage, this.handleImageLoaded);
+				}
 			}
 		}
 	}, {

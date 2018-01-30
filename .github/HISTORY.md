@@ -1,5 +1,11 @@
 # React-Images
 
+### v0.5.16 / 2018-01-30
+- add preloadImage call to componentDidMount PR #200 thanks to [ilker0] (https://github.com/(https://github.com/ilker0)
+- Changes some docs to clarify that yarn is the preferred package manager for this project. Removes package-lock.json. PR #191 Thanks to [jorrit](https://github.com/(https://github.com/jorrit)
+- Unmount the component tree before removing the portal node from DOM PR #180 thanks to  [pleunv](https://github.com/(https://github.com/pleunv)
+- Fix react warnings by updating react-scrolllock version [jorrit] (https://github.com/(https://github.com/jorrit))
+
 ### v0.5.15 / 2018-01-25
 - spinner functionality pull request #187 thanks to [mkalygin] (https://github.com/(https://github.com/mkalygin)
 
