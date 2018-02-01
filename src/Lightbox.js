@@ -109,7 +109,7 @@ class Lightbox extends Component {
 		img.src = image.src;
 		img.srcSet = image.srcSet || image.srcset;
 
-		if (img.srcSet) img.setAttribute('srcset', img.srcSet);
+		if (img.srcSet) img.setAttribute('srcset', img.srcSet.join(',\n'));
 
 		return img;
 	}
