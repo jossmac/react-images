@@ -4,15 +4,12 @@ import React from 'react';
 import glam from 'glam';
 import { Div } from '../primitives';
 
-export const Blanket = ({
-  isFullscreen,
-  ...props
-}: {
-  isFullscreen: boolean,
-}) => (
+type BlanketType = { isFullscreen: boolean };
+
+export const Blanket = ({ isFullscreen, ...props }: BlanketType) => (
   <Div
     css={{
-      backgroundColor: `rgba(0, 0, 0, ${isFullscreen ? 1 : 0.8})`,
+      backgroundColor: isFullscreen ? 'black' : 'rgba(0, 0, 0, 0.8)',
       bottom: 0,
       left: 0,
       position: 'fixed',

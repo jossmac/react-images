@@ -23,7 +23,7 @@ export const Fade = ({
   const enter = 300;
   const exit = 500;
   const fadeStyle = {
-    transition: `opacity 200ms`,
+    transition: 'opacity 200ms',
     opacity: 0,
   };
   const fadeTransition = {
@@ -66,7 +66,7 @@ export const SlideUp = ({
 }: Props) => {
   const enter = 300;
   const exit = 500;
-  const restingTransform = `translate3d(0, 0, 0)`;
+  const restingTransform = 'translate3d(0, 0, 0)';
   const slideStyle = {
     transition: `transform ${enter}ms ${easing}, opacity ${enter}ms ${easing}`,
     transform: restingTransform,

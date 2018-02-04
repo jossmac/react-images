@@ -10,7 +10,7 @@ import {
   defaultComponents,
   type CarouselComponents,
 } from './defaultComponents';
-import { type ModalPropsForCarousel } from './Modal';
+import { type ModalPropsForCarousel } from './Modal/Modal';
 import { isTouch } from './utils';
 
 type SpringConfig = { [key: string]: number };

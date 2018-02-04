@@ -1,2 +1,2 @@
-export { Modal, ModalGateway, ModalType } from './Modal';
-export { default, CarouselType } from './Carousel';
+export { Modal, ModalGateway } from './Modal';
+export { default } from './Carousel';

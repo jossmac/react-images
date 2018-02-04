@@ -5,7 +5,7 @@ import glam from 'glam';
 import { Button, Div, Img, Span } from './primitives';
 import { Close, FullscreenEnter, FullscreenExit } from './svg';
 import { type CarouselProps, type CarouselState } from './Carousel';
-import { type ModalPropsForCarousel } from './Modal';
+import { type ModalPropsForCarousel } from './Modal/Modal';
 
 type ElementProps = CarouselProps & CarouselState & ModalPropsForCarousel;
 
@@ -164,6 +164,7 @@ export const View = ({
 }: ElementProps & ViewProps) => {
   const div = {
     padding: `0 ${modalProps ? 10 : 0}px`,
+    position: 'relative',
     textAlign: 'center',
   };
   const img = {
