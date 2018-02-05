@@ -110,6 +110,7 @@ width | number  | 1024 | Maximum width of the carousel; defaults to 1024px
 spinner | func | BounceLoader | [react-spinners](https://github.com/davidhu2000/react-spinners) spinner component or custom spinner component
 spinnerColor | string | 'white' | Color of spinner
 spinnerSize | number | 100 | Size of spinner
+preventScroll | bool | true | Determines whether scrolling is prevented via [react-scrolllock](https://github.com/jossmac/react-scrolllock)
 
 ## Images object
 
