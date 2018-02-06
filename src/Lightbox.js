@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { css, StyleSheet } from 'aphrodite';
 import ScrollLock from 'react-scrolllock';
-import { BounceLoader } from 'react-spinners';
 
 import defaultTheme from './theme';
 import Arrow from './components/Arrow';
@@ -11,6 +10,7 @@ import Footer from './components/Footer';
 import Header from './components/Header';
 import PaginatedThumbnails from './components/PaginatedThumbnails';
 import Portal from './components/Portal';
+import DefaultSpinner from './components/Spinner';
 
 import bindFunctions from './utils/bindFunctions';
 import canUseDom from './utils/canUseDom';
@@ -359,10 +359,6 @@ class Lightbox extends Component {
 		);
 	}
 }
-
-const DefaultSpinner = (props) => (
-	<BounceLoader {...props} />
-);
 
 Lightbox.propTypes = {
 	backdropClosesModal: PropTypes.bool,

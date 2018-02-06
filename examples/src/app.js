@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { RingLoader } from 'react-spinners';
 import Gallery from './components/Gallery';
+import CustomSpinner from './components/Spinner';
 import './example.less';
 
 function makeUnsplashSrc (id) {
@@ -153,9 +153,9 @@ render(
 			useForDemo,
 		}))}
 			theme={theme}
-			spinner={RingLoader}
+			spinner={CustomSpinner}
 			spinnerColor={'#D40000'}
-			spinnerSize={50}
+			spinnerSize={150}
 			showThumbnails
 	/>
 	</div>,

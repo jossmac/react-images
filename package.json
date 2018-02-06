@@ -14,7 +14,6 @@
     "aphrodite": "^0.5.0",
     "prop-types": "^15.6.0",
     "react-scrolllock": "^2.0.1",
-    "react-spinners": "^0.2.5",
     "react-transition-group": "^1.1.3"
   },
   "devDependencies": {
