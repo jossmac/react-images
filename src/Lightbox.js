@@ -42,7 +42,7 @@ class Lightbox extends Component {
 			if (this.props.enableKeyboardInput) {
 				window.addEventListener('keydown', this.handleKeyboardInput);
 			}
-			if (this.props.currentImage) {
+			if (typeof this.props.currentImage === 'number') {
 				this.preloadImage(this.props.currentImage, this.handleImageLoaded);
 			}
 		}
