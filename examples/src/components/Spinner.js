@@ -7,7 +7,7 @@ const Spinner = (props) => {
 
 	return (
 		<div className={css(classes.spinner)}>
-			<div className={css(classes.ripple)}/>
+			<div className={css(classes.square)}/>
 		</div>
 	);
 };
@@ -17,7 +17,7 @@ Spinner.propTypes = {
 	size: PropTypes.number,
 };
 
-const rippleKeyframes = {
+const squareKeyframes = {
 	'0%': {
 		top: 0,
 		left: '25%',
@@ -47,14 +47,14 @@ const styles = ({ color, size }) => ({
 		width: size,
 		height: size,
 	},
-	ripple: {
+	square: {
 		position: 'absolute',
 		width: size / 10,
 		height: size / 10,
 		border: `4px solid ${color}`,
 		borderRadius: '50%',
 		background: color,
-		animationName: rippleKeyframes,
+		animationName: squareKeyframes,
 		animationDuration: '2s',
 		animationTimingFunction: 'linear',
 		animationIterationCount: 'infinite',
