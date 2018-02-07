@@ -61,6 +61,8 @@
 * Feature: Re-implemented the layout using `flexbox`
 * Examples: Replaced local images with hot-linked Unsplash photographs
 
+* * *
+
 ### v0.4.11 / 2016-08-15
 * Feature: Pre-load the next image based on user intention, uses new prop `preloadNextImage`
 * Fix: bug with `enableKeyboardInput` where images fail to render thanks to [benhowell](https://github.com/benhowell)
