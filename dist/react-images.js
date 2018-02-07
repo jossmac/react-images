@@ -1,8 +1,8 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('prop-types'), require('react'), require('aphrodite'), require('react-scrolllock'), require('react-spinners'), require('aphrodite/no-important'), require('react-transition-group'), require('react-dom')) :
-	typeof define === 'function' && define.amd ? define(['prop-types', 'react', 'aphrodite', 'react-scrolllock', 'react-spinners', 'aphrodite/no-important', 'react-transition-group', 'react-dom'], factory) :
-	(global.Lightbox = factory(global.PropTypes,global.React,global.aphrodite,global.ScrollLock,global.BounceLoader,global.aphrodite,global.ReactTransitionGroup,global.ReactDOM));
-}(this, (function (PropTypes,React,aphrodite,ScrollLock,reactSpinners,noImportant,reactTransitionGroup,reactDom) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('prop-types'), require('react'), require('aphrodite'), require('react-scrolllock'), require('aphrodite/no-important'), require('react-transition-group'), require('react-dom')) :
+	typeof define === 'function' && define.amd ? define(['prop-types', 'react', 'aphrodite', 'react-scrolllock', 'aphrodite/no-important', 'react-transition-group', 'react-dom'], factory) :
+	(global.Lightbox = factory(global.PropTypes,global.React,global.aphrodite,global.ScrollLock,global.aphrodite,global.ReactTransitionGroup,global.ReactDOM));
+}(this, (function (PropTypes,React,aphrodite,ScrollLock,noImportant,reactTransitionGroup,reactDom) { 'use strict';
 
 PropTypes = PropTypes && PropTypes.hasOwnProperty('default') ? PropTypes['default'] : PropTypes;
 var React__default = 'default' in React ? React['default'] : React;
@@ -917,6 +917,61 @@ Portal.contextTypes = {
 	theme: PropTypes.object.isRequired
 };
 
+var Spinner = function Spinner(props) {
+	var classes = noImportant.StyleSheet.create(styles(props));
+
+	return React__default.createElement(
+		'div',
+		{ className: noImportant.css(classes.spinner) },
+		React__default.createElement('div', { className: noImportant.css(classes.ripple) })
+	);
+};
+
+Spinner.propTypes = {
+	color: PropTypes.string,
+	size: PropTypes.number
+};
+
+var rippleKeyframes = {
+	'0%': {
+		top: '50%',
+		left: '50%',
+		width: 0,
+		height: 0,
+		opacity: 1
+	},
+	'100%': {
+		top: 0,
+		left: 0,
+		width: '100%',
+		height: '100%',
+		opacity: 0
+	}
+};
+
+var styles = function styles(_ref) {
+	var color = _ref.color,
+	    size = _ref.size;
+	return {
+		spinner: {
+			display: 'inline-block',
+			position: 'relative',
+			width: size,
+			height: size
+		},
+		ripple: {
+			position: 'absolute',
+			border: '4px solid ' + color,
+			opacity: 1,
+			borderRadius: '50%',
+			animationName: rippleKeyframes,
+			animationDuration: '1s',
+			animationTimingFunction: 'cubic-bezier(0, 0.2, 0.8, 1)',
+			animationIterationCount: 'infinite'
+		}
+	};
+};
+
 /**
 	Bind multiple component methods:
 
@@ -940,6 +995,17 @@ function bindFunctions(functions) {
 // Return true if window + document
 
 var canUseDom = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
+
+// consumers sometimes provide incorrect type or casing
+function normalizeSourceSet(data) {
+	var sourceSet = data.srcSet || data.srcset;
+
+	if (Array.isArray(sourceSet)) {
+		return sourceSet.join();
+	}
+
+	return sourceSet;
+}
 
 var Lightbox = function (_Component) {
 	inherits(Lightbox, _Component);
@@ -971,7 +1037,7 @@ var Lightbox = function (_Component) {
 				if (this.props.enableKeyboardInput) {
 					window.addEventListener('keydown', this.handleKeyboardInput);
 				}
-				if (this.props.currentImage) {
+				if (typeof this.props.currentImage === 'number') {
 					this.preloadImage(this.props.currentImage, this.handleImageLoaded);
 				}
 			}
@@ -1033,18 +1099,19 @@ var Lightbox = function (_Component) {
 	}, {
 		key: 'preloadImage',
 		value: function preloadImage(idx, onload) {
-			var image = this.props.images[idx];
-			if (!image) return;
+			var data = this.props.images[idx];
+
+			if (!data) return;
 
 			var img = new Image();
+			var sourceSet = normalizeSourceSet(data);
 
 			// TODO: add error handling for missing images
 			img.onerror = onload;
 			img.onload = onload;
-			img.src = image.src;
-			img.srcSet = image.srcSet || image.srcset;
+			img.src = data.src;
 
-			if (img.srcSet) img.setAttribute('srcset', img.srcSet);
+			if (sourceSet) img.srcset = sourceSet;
 
 			return img;
 		}
@@ -1184,7 +1251,7 @@ var Lightbox = function (_Component) {
 					imageLoaded && this.renderThumbnails(),
 					imageLoaded && this.renderArrowPrev(),
 					imageLoaded && this.renderArrowNext(),
-					React__default.createElement(ScrollLock, null)
+					this.props.preventScroll && React__default.createElement(ScrollLock, null)
 				)
 			);
 		}
@@ -1202,15 +1269,8 @@ var Lightbox = function (_Component) {
 			if (!images || !images.length) return null;
 
 			var image = images[currentImage];
-			image.srcSet = image.srcSet || image.srcset;
-
-			var srcSet = void 0;
-			var sizes = void 0;
-
-			if (image.srcSet) {
-				srcSet = image.srcSet.join();
-				sizes = '100vw';
-			}
+			var sourceSet = normalizeSourceSet(image);
+			var sizes = sourceSet ? '100vw' : null;
 
 			var thumbnailsSize = showThumbnails ? this.theme.thumbnail.size : 0;
 			var heightOffset = this.theme.header.height + this.theme.footer.height + thumbnailsSize + this.theme.container.gutter.vertical + 'px';
@@ -1224,7 +1284,7 @@ var Lightbox = function (_Component) {
 					sizes: sizes,
 					alt: image.alt,
 					src: image.src,
-					srcSet: srcSet,
+					srcSet: sourceSet,
 					style: {
 						cursor: onClickImage ? 'pointer' : 'auto',
 						maxHeight: 'calc(100vh - ' + heightOffset + ')'
@@ -1298,12 +1358,12 @@ var Lightbox = function (_Component) {
 			    spinnerSize = _props7.spinnerSize;
 			var imageLoaded = this.state.imageLoaded;
 
-			var Spinner = spinner;
+			var Spinner$$1 = spinner;
 
 			return React__default.createElement(
 				'div',
 				{ className: aphrodite.css(this.classes.spinner, !imageLoaded && this.classes.spinnerActive) },
-				React__default.createElement(Spinner, {
+				React__default.createElement(Spinner$$1, {
 					color: spinnerColor,
 					size: spinnerSize
 				})
@@ -1321,10 +1381,6 @@ var Lightbox = function (_Component) {
 	}]);
 	return Lightbox;
 }(React.Component);
-
-var DefaultSpinner = function DefaultSpinner(props) {
-	return React__default.createElement(reactSpinners.BounceLoader, props);
-};
 
 Lightbox.propTypes = {
 	backdropClosesModal: PropTypes.bool,
@@ -1346,6 +1402,7 @@ Lightbox.propTypes = {
 	onClickPrev: PropTypes.func,
 	onClose: PropTypes.func.isRequired,
 	preloadNextImage: PropTypes.bool,
+	preventScroll: PropTypes.bool,
 	rightArrowTitle: PropTypes.string,
 	showCloseButton: PropTypes.bool,
 	showImageCount: PropTypes.bool,
@@ -1365,10 +1422,11 @@ Lightbox.defaultProps = {
 	leftArrowTitle: 'Previous (Left arrow key)',
 	onClickShowNextImage: true,
 	preloadNextImage: true,
+	preventScroll: true,
 	rightArrowTitle: 'Next (Right arrow key)',
 	showCloseButton: true,
 	showImageCount: true,
-	spinner: DefaultSpinner,
+	spinner: Spinner,
 	spinnerColor: 'white',
 	spinnerSize: 100,
 	theme: {},

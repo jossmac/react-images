@@ -1,19 +1,25 @@
 # React-Images
 
+### v0.5.17 / 2018-02-07
+- fix for "srcSet" inconsistency #204 thanks to [kripod](https://github.com/kripod) and [wmertens](https://github.com/wmertens)
+- fix for preload bug when mounted with `isOpen` set to true thanks to [mkalygin](https://github.com/mkalygin)
+- removed `react-spinners` dependency which was bloating the bundle, and implemented a simple loading component, thanks [kripod](https://github.com/kripod)
+- support for conditional ScrollLock via new property `preventScroll` thanks to [Josh-a-e](https://github.com/Josh-a-e)
+
 ### v0.5.16 / 2018-01-30
-- add preloadImage call to componentDidMount PR #200 thanks to [ilker0] (https://github.com/(https://github.com/ilker0)
-- Changes some docs to clarify that yarn is the preferred package manager for this project. Removes package-lock.json. PR #191 Thanks to [jorrit](https://github.com/(https://github.com/jorrit)
-- Unmount the component tree before removing the portal node from DOM PR #180 thanks to  [pleunv](https://github.com/(https://github.com/pleunv)
-- Fix react warnings by updating react-scrolllock version [jorrit] (https://github.com/(https://github.com/jorrit))
+- add preloadImage call to componentDidMount PR #200 thanks to [ilker0](https://github.com/ilker0)
+- Changes some docs to clarify that yarn is the preferred package manager for this project. Removes package-lock.json. PR #191 Thanks to [jorrit](https://github.com/jorrit)
+- Unmount the component tree before removing the portal node from DOM PR #180 thanks to  [pleunv](https://github.com/pleunv)
+- Fix react warnings by updating react-scrolllock version [jorrit](https://github.com/jorrit))
 
 ### v0.5.15 / 2018-01-25
-- spinner functionality pull request #187 thanks to [mkalygin] (https://github.com/(https://github.com/mkalygin)
+- spinner functionality pull request #187 thanks to [mkalygin](https://github.com/mkalygin)
 
 ### v0.5.13 / 2017-11-29
 - change srcset to srcSet to fix intermittent warning: Invalid DOM property `srcset`. Did you mean `srcSet`?
 
 ### v0.5.12 / 2017-11-29
--  Fix React warning issue #171 thanks to [kachkaev] (https://github.com/(https://github.com/kachkaev)
+-  Fix React warning issue #171 thanks to [kachkaev](https://github.com/kachkaev)
 
 ### v0.5.10 / 2017-10-18
 - New build
