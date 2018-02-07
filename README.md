@@ -107,7 +107,7 @@ rightArrowTitle | string | ' Next (Right arrow key) ' | Customize right arrow ti
 showCloseButton | bool  | true | Optionally display a close "X" button in top right corner
 showImageCount | bool  | true | Optionally display image index, e.g., "3 of 20"
 width | number  | 1024 | Maximum width of the carousel; defaults to 1024px
-spinner | func | BounceLoader | [react-spinners](https://github.com/davidhu2000/react-spinners) spinner component or custom spinner component
+spinner | func | DefaultSpinner | Spinner component class
 spinnerColor | string | 'white' | Color of spinner
 spinnerSize | number | 100 | Size of spinner
 preventScroll | bool | true | Determines whether scrolling is prevented via [react-scrolllock](https://github.com/jossmac/react-scrolllock)
