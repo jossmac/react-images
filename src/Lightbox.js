@@ -375,7 +375,7 @@ Lightbox.propTypes = {
 	images: PropTypes.arrayOf(
 		PropTypes.shape({
 			src: PropTypes.string.isRequired,
-			srcSet: PropTypes.array,
+			srcSet: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
 			caption: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 			thumbnail: PropTypes.string,
 		})
