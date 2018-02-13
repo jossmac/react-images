@@ -1,7 +1,10 @@
 // @flow
 
+import Container from './Container';
+import Footer from './Footer';
+import Header from './Header';
 import { Navigation, NavigationItem } from './Navigation';
-import { Container, Footer, Header, View } from './Layout';
+import View from './View';
 
 export type CarouselComponents = {
   Container: typeof Container,

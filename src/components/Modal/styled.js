@@ -4,59 +4,64 @@ import React from 'react';
 import glam from 'glam';
 import { Div } from '../primitives';
 
-type BlanketType = { isFullscreen: boolean };
+// ==============================
+// Blanket
+// ==============================
 
-export const Blanket = ({ isFullscreen, ...props }: BlanketType) => (
-  <Div
-    css={{
-      backgroundColor: isFullscreen ? 'black' : 'rgba(0, 0, 0, 0.8)',
-      bottom: 0,
-      left: 0,
-      position: 'fixed',
-      right: 0,
-      top: 0,
-      zIndex: 1,
-    }}
-    {...props}
-  />
-);
-export const Positioner = ({
-  isFullscreen,
-  ...props
-}: {
-  isFullscreen: boolean,
-}) => (
-  <Div
-    css={{
-      alignItems: 'center',
-      bottom: 0,
-      color: 'white',
-      display: 'flex ',
-      justifyContent: 'center',
-      left: 0,
-      // padding: isFullscreen ? 0 : "10px 20px",
-      position: 'fixed',
-      right: 0,
-      top: 0,
-      zIndex: 1,
-    }}
-    {...props}
-  />
-);
-export const Dialog = ({
-  isFullscreen,
-  maxWidth,
-  ...props
-}: {
-  isFullscreen: boolean,
-  maxWidth: number,
-}) => (
-  <Div
-    css={
-      {
-        // maxWidth: isFullscreen ? 'none' : maxWidth,
-      }
-    }
-    {...props}
-  />
-);
+type Props = { isFullscreen: boolean };
+
+export const blanketCSS = ({ isFullscreen }: Props) => ({
+  backgroundColor: isFullscreen ? 'black' : 'rgba(0, 0, 0, 0.8)',
+  bottom: 0,
+  left: 0,
+  position: 'fixed',
+  right: 0,
+  top: 0,
+  zIndex: 1,
+});
+
+export const Blanket = (props: Props) => {
+  const { getStyles, innerProps } = props;
+  return <Div css={getStyles('blanket', props)} {...innerProps} />;
+};
+
+// ==============================
+// Positioner
+// ==============================
+
+export const positionerCSS = () => ({
+  alignItems: 'center',
+  bottom: 0,
+  color: 'white',
+  display: 'flex ',
+  justifyContent: 'center',
+  left: 0,
+  position: 'fixed',
+  right: 0,
+  top: 0,
+  zIndex: 1,
+});
+
+export const Positioner = (props: Props) => {
+  const { children, getStyles, innerProps } = props;
+  return (
+    <Div css={getStyles('positioner', props)} {...innerProps}>
+      {children}
+    </Div>
+  );
+};
+
+// ==============================
+// Dialog
+// ==============================
+
+export const dialogCSS = () => ({});
+
+export const Dialog = (props: Props) => {
+  const { children, getStyles, innerProps } = props;
+  return (
+    <Div css={getStyles('dialog', props)} {...innerProps}>
+      {children}
+    </Div>
+  );
+};

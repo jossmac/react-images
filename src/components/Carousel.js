@@ -10,6 +10,7 @@ import {
   defaultComponents,
   type CarouselComponents,
 } from './defaultComponents';
+import { defaultStyles, type StylesConfig } from '../styles';
 import { type ModalPropsForCarousel } from './Modal/Modal';
 import { isTouch } from './utils';
 
@@ -31,6 +32,8 @@ export type CarouselProps = {
   hideControlsWhenIdle?: boolean,
   /* When envoked within a modal, props are cloned from the modal */
   modalProps?: ModalPropsForCarousel,
+  /* Style modifier methods */
+  styles: StylesConfig,
   // See https://github.com/souporserious/react-view-pager#track-props
   trackProps: {
     align: number,
@@ -66,6 +69,7 @@ export type CarouselState = {
 };
 const defaultProps = {
   hideControlsWhenIdle: true,
+  styles: {},
   trackProps: {
     currentView: 0,
     instant: !isTouch(),
@@ -74,6 +78,7 @@ const defaultProps = {
 };
 
 class Carousel extends Component<CarouselProps, CarouselState> {
+  commonProps: any; // TODO
   components: CarouselComponents;
   container: HTMLElement;
   footer: HTMLElement;
@@ -170,6 +175,13 @@ class Carousel extends Component<CarouselProps, CarouselState> {
 
     return trackProps.infinite || !activeIndices.includes(views.length - 1);
   };
+
+  getStyles = (key: string, props: {}): {} => {
+    const base = defaultStyles[key](props);
+    base.boxSizing = 'border-box';
+    const custom = this.props.styles[key];
+    return custom ? custom(base, props) : base;
+  };
   getDimensions = () => {
     const headerHeight = this.header ? this.header.clientHeight : 0;
     const footerHeight = this.footer ? this.footer.clientHeight : 0;
@@ -185,6 +197,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
       this.frame.focus();
     }
   };
+
   prev = () => {
     this.track.prev();
     this.focusViewFrame();
@@ -236,6 +249,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
       activeIndices,
       footerHeight,
       frameProps,
+      getStyles: this.getStyles,
       headerHeight,
       isFullscreen,
       modalProps,
@@ -268,16 +282,10 @@ class Carousel extends Component<CarouselProps, CarouselState> {
         {Header ? (
           <Header {...commonProps} innerProps={{ innerRef: this.getHeader }} />
         ) : null}
-        <ViewPager instant tag="main" style={viewPagerStyles}>
-          <Frame
-            {...frameProps}
-            instant
-            ref={this.getFrame}
-            style={frameStyles}
-          >
+        <ViewPager tag="main" style={viewPagerStyles}>
+          <Frame {...frameProps} ref={this.getFrame} style={frameStyles}>
             <Track
               {...trackProps}
-              instant
               onViewChange={this.handleViewChange}
               ref={this.getTrack}
             >
@@ -293,6 +301,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
             <Navigation {...commonProps}>
               {showPrev && (
                 <NavigationItem
+                  {...commonProps}
                   align="left"
                   innerProps={{
                     onClick: this.prev,
@@ -302,6 +311,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
               )}
               {showNext && (
                 <NavigationItem
+                  {...commonProps}
                   align="right"
                   innerProps={{
                     onClick: this.next,

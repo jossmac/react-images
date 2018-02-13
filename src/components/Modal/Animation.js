@@ -13,11 +13,16 @@ type Props = {
   in: boolean,
 };
 
+// ==============================
+// Fade
+// ==============================
+
 export const Fade = ({
   component: Tag,
   onEntered,
   onExited,
   in: inProp,
+  innerProps: originalProps,
   ...props
 }: Props) => {
   const enter = 300;
@@ -44,24 +49,32 @@ export const Fade = ({
       timeout={{ enter, exit }}
     >
       {status => {
-        const style = {
-          ...fadeStyle,
-          ...fadeTransition[status],
+        const innerProps = {
+          ...originalProps,
+          style: {
+            ...fadeStyle,
+            ...fadeTransition[status],
+          },
         };
 
         if (status === 'exited') return null;
 
-        return <Tag style={style} {...props} />;
+        return <Tag innerProps={innerProps} {...props} />;
       }}
     </Transition>
   );
 };
+
+// ==============================
+// Slide Up
+// ==============================
 
 export const SlideUp = ({
   component: Tag,
   onEntered,
   onExited,
   in: inProp,
+  innerProps: originalProps,
   ...props
 }: Props) => {
   const enter = 300;
@@ -100,12 +113,15 @@ export const SlideUp = ({
       {status => {
         if (status === 'exited') return null;
 
-        const style = {
-          ...slideStyle,
-          ...slideTransition[status],
+        const innerProps = {
+          ...originalProps,
+          style: {
+            ...slideStyle,
+            ...slideTransition[status],
+          },
         };
 
-        return <Tag style={style} {...props} />;
+        return <Tag innerProps={innerProps} {...props} />;
       }}
     </Transition>
   );

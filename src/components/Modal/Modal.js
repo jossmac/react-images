@@ -9,13 +9,13 @@ import focusStore from 'a11y-focus-store';
 import { Fade, SlideUp } from './Animation';
 import { type CarouselType } from '../Carousel';
 import { Blanket, Positioner, Dialog } from './styled';
+import { defaultStyles, type StylesConfig } from '../../styles';
 
 type MouseOrKeyboardEvent = MouseEvent | KeyboardEvent;
 export type CloseType = (event: MouseOrKeyboardEvent) => void;
 export type ModalPropsForCarousel = {
   allowFullscreen: boolean,
   isFullscreen: boolean,
-  maxWidth: number,
   onClose: CloseType,
   toggleFullscreen: any => void,
 };
@@ -36,18 +36,19 @@ export type ModalProps = {
   in: boolean,
   /* Function called to request close of the modal */
   onClose: CloseType,
-  /* Maximum width of the dialog */
-  maxWidth: number,
+  /* Style modifier methods */
+  styles: StylesConfig,
 };
 type ModalState = { isFullscreen: boolean };
 const defaultProps = {
   allowFullscreen: true,
   closeOnBackdropClick: true,
   closeOnEsc: true,
-  maxWidth: 1024,
+  styles: {},
 };
 class Modal extends Component<ModalProps, ModalState> {
   positioner: HTMLElement;
+  commonProps: any; // TODO
   state: ModalState = { isFullscreen: false };
 
   static defaultProps = defaultProps;
@@ -102,9 +103,26 @@ class Modal extends Component<ModalProps, ModalState> {
     // call the consumer's onClose func
     onClose(event);
   };
-  render() {
-    const { allowFullscreen, children, maxWidth } = this.props;
+
+  getStyles = (key: string, props: {}): {} => {
+    const base = defaultStyles[key](props);
+    base.boxSizing = 'border-box';
+    const custom = this.props.styles[key];
+    return custom ? custom(base, props) : base;
+  };
+  getCommonProps() {
     const { isFullscreen } = this.state;
+
+    return {
+      getStyles: this.getStyles,
+      isFullscreen,
+      modalProps: this.props,
+    };
+  }
+  render() {
+    const { allowFullscreen, children } = this.props;
+    const { isFullscreen } = this.state;
+    const commonProps = (this.commonProps = this.getCommonProps());
 
     // $FlowFixMe
     const transitionIn = this.props.in;
@@ -113,7 +131,6 @@ class Modal extends Component<ModalProps, ModalState> {
     const modalProps: ModalPropsForCarousel = {
       allowFullscreen,
       isFullscreen,
-      maxWidth,
       onClose: this.handleClose,
       toggleFullscreen: this.toggleFullscreen,
     };
@@ -126,23 +143,19 @@ class Modal extends Component<ModalProps, ModalState> {
 
     return (
       <Fullscreen enabled={isFullscreen} onChange={this.handleFullscreenChange}>
-        <Fade
-          component={Blanket}
-          isFullscreen={isFullscreen}
-          in={transitionIn}
-        />
+        <Fade {...commonProps} component={Blanket} in={transitionIn} />
         <SlideUp
+          {...commonProps}
           component={Positioner}
           in={transitionIn}
-          innerRef={this.getPositioner}
-          isFullscreen={isFullscreen}
-          onClick={this.handleBackdropClick}
+          innerProps={{
+            innerRef: this.getPositioner,
+            onClick: this.handleBackdropClick,
+          }}
           onEntered={this.modalDidMount}
           onExited={this.modalWillUnmount}
         >
-          <Dialog isFullscreen={isFullscreen} maxWidth={maxWidth}>
-            {carouselComponent}
-          </Dialog>
+          <Dialog {...commonProps}>{carouselComponent}</Dialog>
           <ScrollLock />
         </SlideUp>
       </Fullscreen>
