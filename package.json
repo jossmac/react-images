@@ -62,6 +62,7 @@
   "scripts": {
     "build": "nps build",
     "watch": "nps build.watch",
+    "delete": "rm -rf node_modules",
     "lint": "eslint .",
     "deploy": "cross-env NODE_ENV=production nps publish",
     "start": "webpack-dev-server --progress",

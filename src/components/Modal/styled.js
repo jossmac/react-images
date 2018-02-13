@@ -52,9 +52,11 @@ export const Dialog = ({
   maxWidth: number,
 }) => (
   <Div
-    css={{
-      maxWidth: isFullscreen ? 'none' : maxWidth,
-    }}
+    css={
+      {
+        // maxWidth: isFullscreen ? 'none' : maxWidth,
+      }
+    }
     {...props}
   />
 );

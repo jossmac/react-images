@@ -79,7 +79,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
   footer: HTMLElement;
   frame: ElementRef<Frame>;
   header: HTMLElement;
-  _isMounted: boolean;
+  mounted: boolean = false;
   track: ElementRef<Track>;
   timer: number; // flow doesn't have a SetTimeout type. node thinks it's a number...
 
@@ -104,7 +104,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
     const { hideControlsWhenIdle, modalProps } = this.props;
     const isModal = Boolean(modalProps);
 
-    this._isMounted = true;
+    this.mounted = true;
 
     this.getDimensions();
 
@@ -122,7 +122,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
     }
   }
   componentWillUnmount() {
-    this._isMounted = false;
+    this.mounted = false;
 
     if (this.props.hideControlsWhenIdle && this.container) {
       this.container.removeEventListener('mousedown', this.handleMouseActivity);
@@ -194,7 +194,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
     }
 
     this.timer = setTimeout(() => {
-      if (this._isMounted) {
+      if (this.mounted) {
         this.setState({ mouseIsIdle: true });
       }
     }, 3000);

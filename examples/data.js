@@ -3,7 +3,7 @@ function unsplash(id) {
 }
 
 const quality = 80;
-const width = 1024;
+const width = 1440;
 
 export const images = [
   {

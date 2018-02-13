@@ -57,7 +57,9 @@ export const Footer = ({
         flex: '0 0 auto',
         fontSize: 13,
         justifyContent: 'space-between',
-        padding: `10px ${modalProps ? 10 : 0}px`,
+        opacity: mouseIsIdle ? 0 : 1,
+        padding: `20px ${modalProps ? 20 : 0}px`,
+        transition: 'opacity 300ms',
       }}
       {...props}
     >
@@ -132,11 +134,11 @@ export const Header = ({
               isFullscreen ? 'Exit fullscreen (f)' : 'Enter fullscreen (f)'
             }
           >
-            <FsIcon size={24} />
+            <FsIcon size={32} />
           </HeaderButton>
         ) : null}
         <HeaderButton onClick={onClose} title="Close (esc)">
-          <Close size={24} />
+          <Close size={32} />
         </HeaderButton>
       </span>
     </Div>

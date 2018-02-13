@@ -68,7 +68,7 @@ export const NavigationItem = ({
       }}
       {...props}
     >
-      <Icon />
+      <Icon size={48} />
     </Button>
   );
 };

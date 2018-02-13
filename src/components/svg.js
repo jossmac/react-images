@@ -7,6 +7,7 @@ type Props = { size: number };
 
 const Svg = ({ size, ...props }: Props) => (
   <svg
+    role="presentation"
     viewBox="0 0 24 24"
     css={{
       display: 'inline-block',
