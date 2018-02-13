@@ -2,7 +2,7 @@
 // @jsx glam
 import React from 'react';
 import glam from 'glam';
-import { Button, Div } from './primitives';
+import { Button, Div } from '../primitives';
 import { Close, FullscreenEnter, FullscreenExit } from './svg';
 
 type State = { mouseIsIdle: boolean };

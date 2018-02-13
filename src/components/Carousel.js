@@ -13,6 +13,7 @@ import {
 import { defaultStyles, type StylesConfig } from '../styles';
 import { type ModalPropsForCarousel } from './Modal/Modal';
 import { isTouch } from './utils';
+import { formatCount } from '../builtins';
 
 type SpringConfig = { [key: string]: number };
 export type fn = any => void;
@@ -28,6 +29,8 @@ export type CarouselProps = {
     springConfig: SpringConfig,
     tag: any,
   },
+  /* Formatter for the the count text in the footer */
+  formatCount?: typeof formatCount,
   /* Hide controls when the user is idle (listens to mouse move) */
   hideControlsWhenIdle?: boolean,
   /* When envoked within a modal, props are cloned from the modal */
@@ -68,6 +71,7 @@ export type CarouselState = {
   mouseIsIdle: boolean,
 };
 const defaultProps = {
+  formatCount: formatCount,
   hideControlsWhenIdle: true,
   styles: {},
   trackProps: {
@@ -269,6 +273,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
       View,
     } = this.components;
     const { frameProps, trackProps, views } = this.props;
+    const { activeIndices } = this.state;
 
     const showPrev = this.hasPreviousView();
     const showNext = this.hasNextView();
@@ -276,6 +281,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
     const commonProps = (this.commonProps = this.getCommonProps());
     const viewPagerStyles = { flex: '1 1 auto', position: 'relative' };
     const frameStyles = { outline: 0 };
+    const index = activeIndices[0];
 
     return (
       <Container {...commonProps} innerProps={{ innerRef: this.getContainer }}>
@@ -323,7 +329,15 @@ class Carousel extends Component<CarouselProps, CarouselState> {
           ) : null}
         </ViewPager>
         {Footer ? (
-          <Footer {...commonProps} innerProps={{ innerRef: this.getFooter }} />
+          <Footer
+            {...commonProps}
+            count={this.props.formatCount({
+              activeView: index + 1,
+              totalViews: views.length,
+            })}
+            data={views[index]}
+            innerProps={{ innerRef: this.getFooter }}
+          />
         ) : null}
       </Container>
     );

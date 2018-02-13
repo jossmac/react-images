@@ -2,7 +2,7 @@
 // @jsx glam
 import React, { type Node } from 'react';
 import glam from 'glam';
-import { Button, Nav } from './primitives';
+import { Button, Nav } from '../primitives';
 import { ChevronLeft, ChevronRight } from './svg';
 
 // ==============================

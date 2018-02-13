@@ -2,7 +2,7 @@
 // @jsx glam
 import React from 'react';
 import glam from 'glam';
-import { Div } from '../primitives';
+import { Div } from '../../primitives';
 
 // ==============================
 // Blanket

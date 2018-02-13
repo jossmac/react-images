@@ -2,11 +2,13 @@
 // @jsx glam
 import React from 'react';
 import glam from 'glam';
-import { Div, Span } from './primitives';
+import { Div, Span } from '../primitives';
 
 type State = { modalProps: Object, mouseIsIdle: boolean };
 type Props = State & {
   activeIndices: any,
+  count: any,
+  data: any,
   innerProps: any,
   modalProps: any,
   mouseIsIdle: any,
@@ -22,7 +24,7 @@ export const footerCSS = ({ modalProps: isModal, mouseIsIdle }: State) => ({
   fontSize: 13,
   justifyContent: 'space-between',
   left: isModal ? 0 : null,
-  opacity: mouseIsIdle ? 0 : 1,
+  opacity: mouseIsIdle && isModal ? 0 : 1,
   padding: isModal ? '30px 20px 20px' : '10px 0',
   position: isModal ? 'absolute' : null,
   right: isModal ? 0 : null,
@@ -32,12 +34,8 @@ export const footerCSS = ({ modalProps: isModal, mouseIsIdle }: State) => ({
 });
 
 const Footer = (props: Props) => {
-  const { activeIndices, getStyles, innerProps, modalProps, views } = props;
-  const index = activeIndices[0];
-  const activeView = index + 1;
-  const data = views[index];
+  const { count, data, getStyles, innerProps, modalProps } = props;
   const description = data ? data.description : null;
-  const totalViews = views.length;
   const style = modalProps
     ? { background: 'linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.33))' }
     : null;
@@ -52,11 +50,7 @@ const Footer = (props: Props) => {
     >
       {description ? <Span>{description}</Span> : null}
       {/* TODO replace with function for i18n support  */}
-      {activeView && totalViews ? (
-        <Span>
-          {activeView} of {totalViews}
-        </Span>
-      ) : null}
+      {count}
     </Div>
   );
 };
