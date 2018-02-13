@@ -5,7 +5,6 @@ import React, { Component } from 'react';
 import Lorem from 'react-lorem-component';
 
 import Carousel, { Modal, ModalGateway } from '../../src/components';
-import { components } from '../../src/components/defaultComponents';
 import { images } from '../data';
 
 const features = [
@@ -46,16 +45,17 @@ type State = {
 };
 
 export default class Home extends Component<{}, State> {
-  state = { carouselViews: [], currentView: undefined, lightboxIsOpen: false };
+  state = {
+    carouselViews: images,
+    currentView: undefined,
+    lightboxIsOpen: false,
+  };
   toggleLightbox = (currentView: number) => {
     this.setState(state => ({
       lightboxIsOpen: !state.lightboxIsOpen,
       currentView,
     }));
   };
-  componentDidMount() {
-    this.setState({ carouselViews: images });
-  }
   render() {
     const { carouselViews, currentView, lightboxIsOpen } = this.state;
 
@@ -75,14 +75,13 @@ export default class Home extends Component<{}, State> {
         </h1>
         <List items={features} />
         <div css={{ display: 'flex ', marginLeft: -2, marginRight: -2 }}>
-          {images.map((i, j) => {
-            const img = images[j];
+          {images.map((data, j) => {
             return (
-              <div css={{ flex: 1, marginLeft: 2, marginRight: 2 }}>
+              <div key={j} css={{ flex: 1, marginLeft: 2, marginRight: 2 }}>
                 <img
                   onClick={() => this.toggleLightbox(j)}
-                  src={img.src}
-                  alt={img.description}
+                  src={data.src}
+                  alt={data.description}
                   css={{ cursor: 'pointer', maxWidth: '100%' }}
                 />
               </div>
@@ -95,10 +94,7 @@ export default class Home extends Component<{}, State> {
             frameProps={{ autoSize: 'height' }}
             trackProps={{ infinite: true }}
             views={images}
-            components={{
-              Footer: null,
-              Header: components.Footer,
-            }}
+            components={{ Header: null }}
           />
         )}
         <Lorem count={1} />

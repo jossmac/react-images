@@ -68,7 +68,7 @@ const defaultProps = {
   hideControlsWhenIdle: true,
   trackProps: {
     currentView: 0,
-    instant: true,
+    instant: !isTouch(),
     swipe: 'touch',
   },
 };
@@ -158,6 +158,18 @@ class Carousel extends Component<CarouselProps, CarouselState> {
   // Utilities
   // ==============================
 
+  hasPreviousView = (): boolean => {
+    const { trackProps } = this.props;
+    const { activeIndices } = this.state;
+
+    return trackProps.infinite || !activeIndices.includes(0);
+  };
+  hasNextView = (): boolean => {
+    const { trackProps, views } = this.props;
+    const { activeIndices } = this.state;
+
+    return trackProps.infinite || !activeIndices.includes(views.length - 1);
+  };
   getDimensions = () => {
     const headerHeight = this.header ? this.header.clientHeight : 0;
     const footerHeight = this.footer ? this.footer.clientHeight : 0;
@@ -210,31 +222,9 @@ class Carousel extends Component<CarouselProps, CarouselState> {
     }
   };
 
-  renderNavigation = () => {
-    const { Navigation, NavigationItem } = this.components;
-    const { trackProps, views } = this.props;
-    const { activeIndices, mouseIsIdle } = this.state;
-
-    const hasNext =
-      trackProps.infinite || !activeIndices.includes(views.length - 1);
-    const hasPrev = trackProps.infinite || !activeIndices.includes(0);
-
-    if (!hasPrev && !hasNext) return null;
-
-    return (
-      <Navigation mouseIsIdle={mouseIsIdle}>
-        {hasPrev && (
-          <NavigationItem align="left" onClick={this.prev} title="Prev" />
-        )}
-        {hasNext && (
-          <NavigationItem align="right" onClick={this.next} title="Next" />
-        )}
-      </Navigation>
-    );
-  };
-  render() {
-    const { Container, Footer, Header, View } = this.components;
+  getCommonProps() {
     const { frameProps, trackProps, modalProps, views } = this.props;
+    const isFullscreen = Boolean(modalProps && modalProps.isFullscreen);
     const {
       activeIndices,
       footerHeight,
@@ -242,51 +232,88 @@ class Carousel extends Component<CarouselProps, CarouselState> {
       mouseIsIdle,
     } = this.state;
 
-    const isFullscreen = Boolean(modalProps && modalProps.isFullscreen);
+    return {
+      activeIndices,
+      footerHeight,
+      frameProps,
+      headerHeight,
+      isFullscreen,
+      modalProps,
+      mouseIsIdle,
+      trackProps,
+      views,
+      carouselProps: this.props,
+    };
+  }
+  render() {
+    const {
+      Container,
+      Footer,
+      Header,
+      Navigation,
+      NavigationItem,
+      View,
+    } = this.components;
+    const { frameProps, trackProps, views } = this.props;
+
+    const showPrev = this.hasPreviousView();
+    const showNext = this.hasNextView();
+    const showNav = showPrev || showNext;
+    const commonProps = (this.commonProps = this.getCommonProps());
+    const viewPagerStyles = { flex: '1 1 auto', position: 'relative' };
+    const frameStyles = { outline: 0 };
 
     return (
-      <Container isFullscreen={isFullscreen} innerRef={this.getContainer}>
+      <Container {...commonProps} innerProps={{ innerRef: this.getContainer }}>
         {Header ? (
-          <Header
-            activeIndices={activeIndices}
-            mouseIsIdle={mouseIsIdle}
-            innerRef={this.getHeader}
-            {...this.props}
-            {...this.state}
-          />
+          <Header {...commonProps} innerProps={{ innerRef: this.getHeader }} />
         ) : null}
-        <ViewPager
-          tag="main"
-          style={{ flex: '1 1 auto', position: 'relative' }}
-        >
-          <Frame {...frameProps} ref={this.getFrame} style={{ outline: 0 }}>
+        <ViewPager instant tag="main" style={viewPagerStyles}>
+          <Frame
+            {...frameProps}
+            instant
+            ref={this.getFrame}
+            style={frameStyles}
+          >
             <Track
               {...trackProps}
+              instant
               onViewChange={this.handleViewChange}
               ref={this.getTrack}
             >
               {views &&
                 views.map((view, idx) => (
                   <PageView key={idx}>
-                    <View
-                      {...view}
-                      footerHeight={footerHeight}
-                      headerHeight={headerHeight}
-                    />
+                    <View {...commonProps} data={view} />
                   </PageView>
                 ))}
             </Track>
           </Frame>
-          {this.renderNavigation()}
+          {showNav ? (
+            <Navigation {...commonProps}>
+              {showPrev && (
+                <NavigationItem
+                  align="left"
+                  innerProps={{
+                    onClick: this.prev,
+                    title: 'Prev',
+                  }}
+                />
+              )}
+              {showNext && (
+                <NavigationItem
+                  align="right"
+                  innerProps={{
+                    onClick: this.next,
+                    title: 'Next',
+                  }}
+                />
+              )}
+            </Navigation>
+          ) : null}
         </ViewPager>
         {Footer ? (
-          <Footer
-            activeIndices={activeIndices}
-            mouseIsIdle={mouseIsIdle}
-            innerRef={this.getFooter}
-            {...this.props}
-            {...this.state}
-          />
+          <Footer {...commonProps} innerProps={{ innerRef: this.getFooter }} />
         ) : null}
       </Container>
     );

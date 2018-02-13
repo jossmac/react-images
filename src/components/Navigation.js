@@ -12,12 +12,8 @@ const icon = {
   right: ChevronRight,
 };
 
-export const Navigation = ({
-  mouseIsIdle,
-  ...props
-}: {
-  mouseIsIdle: boolean,
-}) => (
+type NavProps = { mouseIsIdle: boolean };
+export const Navigation = ({ children, mouseIsIdle }: NavProps) => (
   <Nav
     css={{
       display: 'flex ',
@@ -26,16 +22,19 @@ export const Navigation = ({
       opacity: mouseIsIdle ? 0 : 1,
       transition: 'opacity 300ms',
     }}
-    {...props}
-  />
+  >
+    {children}
+  </Nav>
 );
 
-export const NavigationItem = ({
-  align,
-  ...props
-}: {
+type ItemProps = {
   align: 'left' | 'right',
-}) => {
+  innerProps: {
+    onClick: any => void,
+    title: string,
+  },
+};
+export const NavigationItem = ({ align, innerProps }: ItemProps) => {
   const Icon = icon[align];
 
   return (
@@ -66,7 +65,7 @@ export const NavigationItem = ({
           background: 'rgba(255, 255, 255, 0.2)',
         },
       }}
-      {...props}
+      {...innerProps}
     >
       <Icon size={48} />
     </Button>
