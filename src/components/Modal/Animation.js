@@ -13,17 +13,22 @@ type Props = {
   in: boolean,
 };
 
+// ==============================
+// Fade
+// ==============================
+
 export const Fade = ({
   component: Tag,
   onEntered,
   onExited,
   in: inProp,
+  innerProps: originalProps,
   ...props
 }: Props) => {
   const enter = 300;
   const exit = 500;
   const fadeStyle = {
-    transition: `opacity 200ms`,
+    transition: 'opacity 200ms',
     opacity: 0,
   };
   const fadeTransition = {
@@ -44,29 +49,37 @@ export const Fade = ({
       timeout={{ enter, exit }}
     >
       {status => {
-        const style = {
-          ...fadeStyle,
-          ...fadeTransition[status],
+        const innerProps = {
+          ...originalProps,
+          style: {
+            ...fadeStyle,
+            ...fadeTransition[status],
+          },
         };
 
         if (status === 'exited') return null;
 
-        return <Tag style={style} {...props} />;
+        return <Tag innerProps={innerProps} {...props} />;
       }}
     </Transition>
   );
 };
+
+// ==============================
+// Slide Up
+// ==============================
 
 export const SlideUp = ({
   component: Tag,
   onEntered,
   onExited,
   in: inProp,
+  innerProps: originalProps,
   ...props
 }: Props) => {
   const enter = 300;
   const exit = 500;
-  const restingTransform = `translate3d(0, 0, 0)`;
+  const restingTransform = 'translate3d(0, 0, 0)';
   const slideStyle = {
     transition: `transform ${enter}ms ${easing}, opacity ${enter}ms ${easing}`,
     transform: restingTransform,
@@ -100,12 +113,15 @@ export const SlideUp = ({
       {status => {
         if (status === 'exited') return null;
 
-        const style = {
-          ...slideStyle,
-          ...slideTransition[status],
+        const innerProps = {
+          ...originalProps,
+          style: {
+            ...slideStyle,
+            ...slideTransition[status],
+          },
         };
 
-        return <Tag style={style} {...props} />;
+        return <Tag innerProps={innerProps} {...props} />;
       }}
     </Transition>
   );

@@ -10,8 +10,10 @@ import {
   defaultComponents,
   type CarouselComponents,
 } from './defaultComponents';
-import { type ModalPropsForCarousel } from './Modal';
+import { defaultStyles, type StylesConfig } from '../styles';
+import { type ModalPropsForCarousel } from './Modal/Modal';
 import { isTouch } from './utils';
+import { formatCount } from '../builtins';
 
 type SpringConfig = { [key: string]: number };
 export type fn = any => void;
@@ -27,10 +29,14 @@ export type CarouselProps = {
     springConfig: SpringConfig,
     tag: any,
   },
+  /* Formatter for the the count text in the footer */
+  formatCount?: typeof formatCount,
   /* Hide controls when the user is idle (listens to mouse move) */
   hideControlsWhenIdle?: boolean,
   /* When envoked within a modal, props are cloned from the modal */
   modalProps?: ModalPropsForCarousel,
+  /* Style modifier methods */
+  styles: StylesConfig,
   // See https://github.com/souporserious/react-view-pager#track-props
   trackProps: {
     align: number,
@@ -65,21 +71,24 @@ export type CarouselState = {
   mouseIsIdle: boolean,
 };
 const defaultProps = {
+  formatCount: formatCount,
   hideControlsWhenIdle: true,
+  styles: {},
   trackProps: {
     currentView: 0,
-    instant: true,
+    instant: !isTouch(),
     swipe: 'touch',
   },
 };
 
 class Carousel extends Component<CarouselProps, CarouselState> {
+  commonProps: any; // TODO
   components: CarouselComponents;
   container: HTMLElement;
   footer: HTMLElement;
   frame: ElementRef<Frame>;
   header: HTMLElement;
-  _isMounted: boolean;
+  mounted: boolean = false;
   track: ElementRef<Track>;
   timer: number; // flow doesn't have a SetTimeout type. node thinks it's a number...
 
@@ -104,7 +113,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
     const { hideControlsWhenIdle, modalProps } = this.props;
     const isModal = Boolean(modalProps);
 
-    this._isMounted = true;
+    this.mounted = true;
 
     this.getDimensions();
 
@@ -122,7 +131,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
     }
   }
   componentWillUnmount() {
-    this._isMounted = false;
+    this.mounted = false;
 
     if (this.props.hideControlsWhenIdle && this.container) {
       this.container.removeEventListener('mousedown', this.handleMouseActivity);
@@ -158,6 +167,25 @@ class Carousel extends Component<CarouselProps, CarouselState> {
   // Utilities
   // ==============================
 
+  hasPreviousView = (): boolean => {
+    const { trackProps } = this.props;
+    const { activeIndices } = this.state;
+
+    return trackProps.infinite || !activeIndices.includes(0);
+  };
+  hasNextView = (): boolean => {
+    const { trackProps, views } = this.props;
+    const { activeIndices } = this.state;
+
+    return trackProps.infinite || !activeIndices.includes(views.length - 1);
+  };
+
+  getStyles = (key: string, props: {}): {} => {
+    const base = defaultStyles[key](props);
+    base.boxSizing = 'border-box';
+    const custom = this.props.styles[key];
+    return custom ? custom(base, props) : base;
+  };
   getDimensions = () => {
     const headerHeight = this.header ? this.header.clientHeight : 0;
     const footerHeight = this.footer ? this.footer.clientHeight : 0;
@@ -173,6 +201,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
       this.frame.focus();
     }
   };
+
   prev = () => {
     this.track.prev();
     this.focusViewFrame();
@@ -194,7 +223,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
     }
 
     this.timer = setTimeout(() => {
-      if (this._isMounted) {
+      if (this.mounted) {
         this.setState({ mouseIsIdle: true });
       }
     }, 3000);
@@ -210,31 +239,9 @@ class Carousel extends Component<CarouselProps, CarouselState> {
     }
   };
 
-  renderNavigation = () => {
-    const { Navigation, NavigationItem } = this.components;
-    const { trackProps, views } = this.props;
-    const { activeIndices, mouseIsIdle } = this.state;
-
-    const hasNext =
-      trackProps.infinite || !activeIndices.includes(views.length - 1);
-    const hasPrev = trackProps.infinite || !activeIndices.includes(0);
-
-    if (!hasPrev && !hasNext) return null;
-
-    return (
-      <Navigation mouseIsIdle={mouseIsIdle}>
-        {hasPrev && (
-          <NavigationItem align="left" onClick={this.prev} title="Prev" />
-        )}
-        {hasNext && (
-          <NavigationItem align="right" onClick={this.next} title="Next" />
-        )}
-      </Navigation>
-    );
-  };
-  render() {
-    const { Container, Footer, Header, View } = this.components;
+  getCommonProps() {
     const { frameProps, trackProps, modalProps, views } = this.props;
+    const isFullscreen = Boolean(modalProps && modalProps.isFullscreen);
     const {
       activeIndices,
       footerHeight,
@@ -242,24 +249,47 @@ class Carousel extends Component<CarouselProps, CarouselState> {
       mouseIsIdle,
     } = this.state;
 
-    const isFullscreen = Boolean(modalProps && modalProps.isFullscreen);
+    return {
+      activeIndices,
+      footerHeight,
+      frameProps,
+      getStyles: this.getStyles,
+      headerHeight,
+      isFullscreen,
+      modalProps,
+      mouseIsIdle,
+      trackProps,
+      views,
+      carouselProps: this.props,
+    };
+  }
+  render() {
+    const {
+      Container,
+      Footer,
+      Header,
+      Navigation,
+      NavigationItem,
+      View,
+    } = this.components;
+    const { frameProps, trackProps, views } = this.props;
+    const { activeIndices } = this.state;
+
+    const showPrev = this.hasPreviousView();
+    const showNext = this.hasNextView();
+    const showNav = showPrev || showNext;
+    const commonProps = (this.commonProps = this.getCommonProps());
+    const viewPagerStyles = { flex: '1 1 auto', position: 'relative' };
+    const frameStyles = { outline: 0 };
+    const index = activeIndices[0];
 
     return (
-      <Container isFullscreen={isFullscreen} innerRef={this.getContainer}>
+      <Container {...commonProps} innerProps={{ innerRef: this.getContainer }}>
         {Header ? (
-          <Header
-            activeIndices={activeIndices}
-            mouseIsIdle={mouseIsIdle}
-            innerRef={this.getHeader}
-            {...this.props}
-            {...this.state}
-          />
+          <Header {...commonProps} innerProps={{ innerRef: this.getHeader }} />
         ) : null}
-        <ViewPager
-          tag="main"
-          style={{ flex: '1 1 auto', position: 'relative' }}
-        >
-          <Frame {...frameProps} ref={this.getFrame} style={{ outline: 0 }}>
+        <ViewPager tag="main" style={viewPagerStyles}>
+          <Frame {...frameProps} ref={this.getFrame} style={frameStyles}>
             <Track
               {...trackProps}
               onViewChange={this.handleViewChange}
@@ -268,24 +298,45 @@ class Carousel extends Component<CarouselProps, CarouselState> {
               {views &&
                 views.map((view, idx) => (
                   <PageView key={idx}>
-                    <View
-                      {...view}
-                      footerHeight={footerHeight}
-                      headerHeight={headerHeight}
-                    />
+                    <View {...commonProps} data={view} />
                   </PageView>
                 ))}
             </Track>
           </Frame>
-          {this.renderNavigation()}
+          {showNav ? (
+            <Navigation {...commonProps}>
+              {showPrev && (
+                <NavigationItem
+                  {...commonProps}
+                  align="left"
+                  innerProps={{
+                    onClick: this.prev,
+                    title: 'Prev',
+                  }}
+                />
+              )}
+              {showNext && (
+                <NavigationItem
+                  {...commonProps}
+                  align="right"
+                  innerProps={{
+                    onClick: this.next,
+                    title: 'Next',
+                  }}
+                />
+              )}
+            </Navigation>
+          ) : null}
         </ViewPager>
         {Footer ? (
           <Footer
-            activeIndices={activeIndices}
-            mouseIsIdle={mouseIsIdle}
-            innerRef={this.getFooter}
-            {...this.props}
-            {...this.state}
+            {...commonProps}
+            count={this.props.formatCount({
+              activeView: index + 1,
+              totalViews: views.length,
+            })}
+            data={views[index]}
+            innerProps={{ innerRef: this.getFooter }}
           />
         ) : null}
       </Container>
