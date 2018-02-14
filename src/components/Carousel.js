@@ -75,7 +75,7 @@ const defaultProps = {
   hideControlsWhenIdle: true,
   styles: {},
   trackProps: {
-    currentView: [0],
+    currentView: 0,
     instant: !isTouch(),
     swipe: 'touch',
   },
@@ -102,7 +102,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
     const trackProps = this.getTrackProps(props);
 
     this.state = {
-      activeIndices: trackProps.currentView,
+      activeIndices: [trackProps.currentView],
       footerHeight: 0,
       headerHeight: 0,
       mouseIsIdle: isTouch(),
