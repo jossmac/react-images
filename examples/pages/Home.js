@@ -79,8 +79,16 @@ class Home extends Component<Props, State> {
           <small css={{ color: '#999', fontWeight: 500 }}>(alpha)</small>
         </h1>
         <p>
-          A simple, responsive Lightbox component for <strong>ReactJS</strong>{' '}
-          to display an array of images.
+          A simple, responsive Lightbox component for ReactJS to display an
+          array of images.
+        </p>
+        <p>
+          Images courtesy of{' '}
+          <strong>
+            <a href="https://unsplash.com" target="_blank">
+              Unsplash
+            </a>
+          </strong>.
         </p>
         <div
           css={{
