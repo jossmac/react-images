@@ -6,8 +6,8 @@ import uglify from 'rollup-plugin-uglify';
 import replace from 'rollup-plugin-replace';
 import { minify } from 'uglify-es';
 
-const name = 'Select';
-const path = 'dist/react-select';
+const name = 'Images';
+const path = 'dist/react-images';
 const globals = {
   classnames: 'classNames',
   glam: 'glam',

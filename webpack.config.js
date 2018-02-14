@@ -39,7 +39,7 @@ module.exports = {
   },
   resolve: {
     alias: {
-      'react-select': path.resolve(__dirname, 'src/index'),
+      'react-images': path.resolve(__dirname, 'src/index'),
     },
   },
   plugins: [

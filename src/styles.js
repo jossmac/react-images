@@ -46,7 +46,7 @@ export const defaultStyles: Styles = {
 };
 
 // Merge Utility
-// Allows consumers to extend a base Select with additional styles
+// Allows consumers to extend a base Carousel or Modal with additional styles
 
 export function mergeStyles(source: Object, target: Object = {}) {
   // initialize with source styles
