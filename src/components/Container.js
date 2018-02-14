@@ -1,22 +1,25 @@
 // @flow
 // @jsx glam
-import React from 'react';
+import React, { type ElementRef, type Node } from 'react';
 import glam from 'glam';
 import { Div } from '../primitives';
+import { type PropsWithStyles } from '../types';
 
-type ContainerState = { isFullscreen: boolean };
-type ContainerProps = ContainerState & {
-  innerProps: { innerRef: ElementRef<*> },
-};
+type State = { isFullscreen: boolean };
+type Props = State &
+  PropsWithStyles & {
+    children: Node,
+    innerProps: { innerRef: ElementRef<*> },
+  };
 
-export const containerCSS = ({ isFullscreen }: ContainerState) => ({
+export const containerCSS = ({ isFullscreen }: State) => ({
   backgroundColor: isFullscreen ? 'black' : null,
   display: 'flex ',
   flexDirection: 'column',
   height: '100%',
 });
 
-const Container = (props: ContainerProps) => {
+const Container = (props: Props) => {
   const { children, getStyles, innerProps } = props;
   return (
     <Div css={getStyles('container', props)} {...innerProps}>

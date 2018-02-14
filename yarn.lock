@@ -2116,6 +2116,10 @@ domutils@1.5.1:
     dom-serializer "0"
     domelementtype "1"
 
+dotenv@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-5.0.0.tgz#0206eb5b336639bf377618a2a304ff00c6a1fddb"
+
 duplexer@~0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/duplexer/-/duplexer-0.1.1.tgz#ace6ff808c1ce66b57d1ebf97977acb02334cfc1"
@@ -5805,6 +5809,14 @@ rollup-plugin-node-resolve@^3.0.0:
     builtin-modules "^1.1.0"
     is-module "^1.0.0"
     resolve "^1.1.6"
+
+rollup-plugin-replace@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-replace/-/rollup-plugin-replace-2.0.0.tgz#19074089c8ed57184b8cc64e967a03d095119277"
+  dependencies:
+    magic-string "^0.22.4"
+    minimatch "^3.0.2"
+    rollup-pluginutils "^2.0.1"
 
 rollup-plugin-uglify@^2.0.1:
   version "2.0.1"

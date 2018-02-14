@@ -13,14 +13,14 @@ import { defaultStyles, type StylesConfig } from '../../styles';
 
 type MouseOrKeyboardEvent = MouseEvent | KeyboardEvent;
 export type CloseType = (event: MouseOrKeyboardEvent) => void;
-export type ModalPropsForCarousel = {
+export type ModalProps = {
   allowFullscreen: boolean,
   isFullscreen: boolean,
   onClose: CloseType,
   toggleFullscreen: any => void,
 };
 
-export type ModalProps = {
+export type Props = {
   /* Enable/disable the ability to "fullscreen" the dialog */
   allowFullscreen: boolean,
   /* Carousel only supported */
@@ -39,17 +39,17 @@ export type ModalProps = {
   /* Style modifier methods */
   styles: StylesConfig,
 };
-type ModalState = { isFullscreen: boolean };
+type State = { isFullscreen: boolean };
 const defaultProps = {
   allowFullscreen: true,
   closeOnBackdropClick: true,
   closeOnEsc: true,
   styles: {},
 };
-class Modal extends Component<ModalProps, ModalState> {
+class Modal extends Component<Props, State> {
   positioner: HTMLElement;
   commonProps: any; // TODO
-  state: ModalState = { isFullscreen: false };
+  state: State = { isFullscreen: false };
 
   static defaultProps = defaultProps;
 
@@ -128,7 +128,7 @@ class Modal extends Component<ModalProps, ModalState> {
     const transitionIn = this.props.in;
 
     // forward props to modal for use in internal components
-    const modalProps: ModalPropsForCarousel = {
+    const modalProps: ModalProps = {
       allowFullscreen,
       isFullscreen,
       onClose: this.handleClose,
@@ -136,6 +136,7 @@ class Modal extends Component<ModalProps, ModalState> {
     };
 
     // augment user carousel with modal props
+    // $FlowFixMe
     const carouselComponent: CarouselType = cloneElement(children, {
       isModal: true,
       modalProps,

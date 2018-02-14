@@ -10,3 +10,11 @@ body {
   padding: 0;
   text-rendering: optimizeLegibility;
 }
+
+a {
+  color: #00d7ff;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}

@@ -3,6 +3,8 @@
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
+require('dotenv').config();
 
 module.exports = {
   context: path.resolve(__dirname, 'examples'),
@@ -41,6 +43,10 @@ module.exports = {
     },
   },
   plugins: [
+    new webpack.DefinePlugin({
+      // $FlowFixMe: This definitely exists here.
+      'process.env.UNSPLASH_API_KEY': `'${process.env.unsplash_api_key}'`,
+    }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       inject: false,

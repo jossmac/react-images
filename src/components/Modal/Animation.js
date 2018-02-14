@@ -8,9 +8,10 @@ const verticalOffset = 40;
 type func = () => void;
 type Props = {
   component: ElementType,
+  in: boolean,
+  innerProps: Object, // TODO
   onEntered?: func,
   onExited?: func,
-  in: boolean,
 };
 
 // ==============================

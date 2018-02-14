@@ -1,13 +1,20 @@
 {
   "name": "react-images",
   "version": "1.0.0",
-  "description":
-    "A mobile-friendly, carousel component for displaying views in ReactJS",
+  "description": "A mobile-friendly, carousel component for displaying views in ReactJS",
   "main": "lib/index.js",
   "jsnext:main": "dist/react-select.es.js",
   "module": "dist/react-select.es.js",
   "author": "Jed Watson",
   "license": "MIT",
+  "keywords": [
+    "react",
+    "images",
+    "carousel",
+    "lightbox",
+    "gallery",
+    "modal"
+  ],
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
@@ -21,6 +28,7 @@
     "babel-preset-react": "^6.24.1",
     "copy-webpack-plugin": "^4.3.1",
     "css-loader": "^0.28.9",
+    "dotenv": "^5.0.0",
     "eslint": "^4.6.1",
     "eslint-plugin-react": "^7.3.0",
     "flow-bin": "^0.63.1",
@@ -38,6 +46,7 @@
     "rollup-plugin-babel": "^3.0.2",
     "rollup-plugin-commonjs": "^8.2.0",
     "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-replace": "^2.0.0",
     "rollup-plugin-uglify": "^2.0.1",
     "style-loader": "^0.20.1",
     "uglify-es": "^3.0.28",
@@ -68,7 +77,11 @@
     "start": "webpack-dev-server --progress",
     "precommit": "flow check && lint-staged"
   },
-  "files": ["dist", "lib", "src"],
+  "files": [
+    "dist",
+    "lib",
+    "src"
+  ],
   "lint-staged": {
     "*.js": "eslint"
   }

@@ -3,27 +3,33 @@
 import React from 'react';
 import glam from 'glam';
 import { Div, Img } from '../primitives';
+import { type PropsWithStyles } from '../types';
 
-type Props = { data: Object };
+type Props = PropsWithStyles & { data: Object, isFullscreen: boolean };
 
 export const viewCSS = () => ({
+  lineHeight: 0,
   position: 'relative',
   textAlign: 'center',
 });
 
 const View = (props: Props) => {
-  const { data, getStyles } = props;
+  const { data, isFullscreen, getStyles } = props;
   const img = {
     height: 'auto',
-    lineHeight: 0,
     maxHeight: '100vh',
     maxWidth: '100%',
     userSelect: 'none',
   };
+  const src = isFullscreen ? data.urls.full : data.urls.regular;
 
   return (
     <Div css={getStyles('view', props)}>
-      <Img css={img} src={data.src} alt={data.description} />
+      <Img
+        css={img}
+        src={src}
+        alt={data.description || `by ${data.photographer}`}
+      />
     </Div>
   );
 };

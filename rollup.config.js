@@ -3,6 +3,7 @@
 import babel from 'rollup-plugin-babel';
 import resolve from 'rollup-plugin-node-resolve';
 import uglify from 'rollup-plugin-uglify';
+import replace from 'rollup-plugin-replace';
 import { minify } from 'uglify-es';
 
 const name = 'Select';
@@ -15,6 +16,9 @@ const globals = {
   'react-input-autosize': 'AutosizeInput',
   react: 'React',
 };
+import createEnv from 'dotenv';
+
+createEnv.config();
 const external = Object.keys(globals);
 const babelOptions = prod => {
   let result = {
@@ -31,6 +35,13 @@ const babelOptions = prod => {
   }
   return result;
 };
+const injectSecret = () => {
+  return replace({
+    'process.env.UNSPLASH_API_KEY': JSON.stringify(
+      process.env.unsplash_api_key
+    ),
+  });
+};
 
 export default [
   {
@@ -40,7 +51,7 @@ export default [
       format: 'es',
     },
     external: external,
-    plugins: [babel(babelOptions(false))],
+    plugins: [babel(babelOptions(false)), injectSecret()],
   },
   {
     input: 'src/index.umd.js',
@@ -51,7 +62,7 @@ export default [
       globals: globals,
     },
     external: external,
-    plugins: [babel(babelOptions(false)), resolve()],
+    plugins: [babel(babelOptions(false)), injectSecret(), resolve()],
   },
   {
     input: 'src/index.umd.js',
@@ -62,6 +73,11 @@ export default [
       globals: globals,
     },
     external: external,
-    plugins: [babel(babelOptions(true)), resolve(), uglify({}, minify)],
+    plugins: [
+      babel(babelOptions(true)),
+      injectSecret(),
+      resolve(),
+      uglify({}, minify),
+    ],
   },
 ];
