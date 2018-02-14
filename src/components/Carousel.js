@@ -12,7 +12,7 @@ import {
 } from './defaultComponents';
 import { defaultStyles, type StylesConfig } from '../styles';
 import { type ModalProps } from './Modal/Modal';
-import { isTouch } from './utils';
+import { className, isTouch } from '../utils';
 import { formatCount } from '../builtins';
 
 type SpringConfig = { [key: string]: number };
@@ -290,16 +290,26 @@ class Carousel extends Component<CarouselProps, CarouselState> {
         {Header ? (
           <Header {...commonProps} innerProps={{ innerRef: this.getHeader }} />
         ) : null}
-        <ViewPager tag="main" style={viewPagerStyles}>
-          <Frame {...frameProps} ref={this.getFrame} style={frameStyles}>
+        <ViewPager
+          tag="main"
+          style={viewPagerStyles}
+          className={className('pager')}
+        >
+          <Frame
+            {...frameProps}
+            ref={this.getFrame}
+            className={className('frame')}
+            style={frameStyles}
+          >
             <Track
               {...trackProps}
+              className={className('track')}
               onViewChange={this.handleViewChange}
               ref={this.getTrack}
             >
               {views &&
                 views.map((view, idx) => (
-                  <PageView key={idx}>
+                  <PageView className={className('view-wrapper')} key={idx}>
                     <View {...commonProps} data={view} />
                   </PageView>
                 ))}

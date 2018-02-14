@@ -3,6 +3,7 @@
 import React from 'react';
 import glam from 'glam';
 import { Button, Div } from '../primitives';
+import { className } from '../utils';
 import { Close, FullscreenEnter, FullscreenExit } from './svg';
 
 type State = { mouseIsIdle: boolean };
@@ -42,6 +43,10 @@ const Header = (props: Props) => {
   return (
     <Div
       css={getStyles('header', props)}
+      className={className('header', {
+        isFullscreen,
+        isModal: Boolean(modalProps),
+      })}
       // TODO glam prefixer fails on gradients
       // https://github.com/threepointone/glam/issues/35
       style={{

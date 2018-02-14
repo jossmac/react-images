@@ -4,6 +4,7 @@ import React from 'react';
 import glam from 'glam';
 import { Div } from '../../primitives';
 import { type PropsWithStyles } from '../../types';
+import { className } from '../../utils';
 
 // ==============================
 // Blanket
@@ -26,18 +27,26 @@ export const blanketCSS = ({ isFullscreen }: BlanketState) => ({
 });
 
 export const Blanket = (props: BlanketProps) => {
-  const { getStyles, innerProps } = props;
-  return <Div css={getStyles('blanket', props)} {...innerProps} />;
+  const { getStyles, innerProps, isFullscreen } = props;
+  return (
+    <Div
+      css={getStyles('blanket', props)}
+      className={className('blanket', { isFullscreen })}
+      {...innerProps}
+    />
+  );
 };
 
 // ==============================
 // Positioner
 // ==============================
 
-type PositionerProps = PropsWithStyles & {
-  children: Node,
-  innerProps: Object, // TODO
-};
+type PositionerState = { isFullscreen: boolean };
+type PositionerProps = PositionerState &
+  PropsWithStyles & {
+    children: Node,
+    innerProps: Object, // TODO
+  };
 
 export const positionerCSS = () => ({
   alignItems: 'center',
@@ -53,9 +62,13 @@ export const positionerCSS = () => ({
 });
 
 export const Positioner = (props: PositionerProps) => {
-  const { children, getStyles, innerProps } = props;
+  const { children, getStyles, innerProps, isFullscreen } = props;
   return (
-    <Div css={getStyles('positioner', props)} {...innerProps}>
+    <Div
+      css={getStyles('positioner', props)}
+      className={className('positioner', { isFullscreen })}
+      {...innerProps}
+    >
       {children}
     </Div>
   );
@@ -65,17 +78,23 @@ export const Positioner = (props: PositionerProps) => {
 // Dialog
 // ==============================
 
-type DialogProps = PropsWithStyles & {
-  children: Node,
-  innerProps: Object, // TODO
-};
+type DialogState = { isFullscreen: boolean };
+type DialogProps = DialogState &
+  PropsWithStyles & {
+    children: Node,
+    innerProps: Object, // TODO
+  };
 
 export const dialogCSS = () => ({});
 
 export const Dialog = (props: DialogProps) => {
-  const { children, getStyles, innerProps } = props;
+  const { children, getStyles, innerProps, isFullscreen } = props;
   return (
-    <Div css={getStyles('dialog', props)} {...innerProps}>
+    <Div
+      css={getStyles('dialog', props)}
+      className={className('dialog', { isFullscreen })}
+      {...innerProps}
+    >
       {children}
     </Div>
   );

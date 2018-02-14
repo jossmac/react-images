@@ -2,8 +2,19 @@
 
 import React, { Component, type ComponentType } from 'react';
 
-type Props = {};
-type State = { images: Array<Object> | null };
+type Images = Array<{
+  description: string,
+  photographer: string,
+  urls: {
+    regular: string,
+    thumb: string,
+  },
+}>;
+export type ProviderProps = {
+  images: Images,
+  isLoading: boolean,
+};
+type State = { images: Images | null, isLoading: boolean };
 
 function formatImages(arr) {
   return arr.map(img => ({
@@ -15,8 +26,8 @@ function formatImages(arr) {
 }
 
 export default function withImages(WrappedComponent: ComponentType<*>) {
-  return class ImageProvider extends Component<Props, State> {
-    state = { images: null };
+  return class ImageProvider extends Component<{}, State> {
+    state = { images: null, isLoading: true };
     componentDidMount() {
       const query = 'wildlife,animal';
       const url =
@@ -27,18 +38,20 @@ export default function withImages(WrappedComponent: ComponentType<*>) {
       fetch(`${url}${query}&client_id=${process.env.UNSPLASH_API_KEY}`)
         .then(res => res.json())
         .then(data => {
-          this.setState({ images: data.results });
+          this.setState({ images: data.results, isLoading: false });
         })
         .catch(err => {
           console.error('Error occured when fetching images', err);
         });
     }
     render() {
-      const { images } = this.state;
+      const { images, isLoading } = this.state;
+
       return (
         <WrappedComponent
           images={images ? formatImages(images) : []}
-          isLoading={!images}
+          isLoading={isLoading}
+          {...this.props}
         />
       );
     }

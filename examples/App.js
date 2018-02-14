@@ -6,7 +6,9 @@ import glam from 'glam';
 import React, { Component } from 'react';
 import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
 
-import { Home, NoMatch } from './pages';
+import { Home, NoMatch, ReactRouter } from './pages';
+import ImageRoute from './ImageRoute';
+import withImages, { type ProviderProps } from './ImageProvider';
 
 const borderColor = 'hsl(0, 0%, 88%)';
 const navWidth = 180;
@@ -37,9 +39,13 @@ const AppContainer = props => (
 const PageContent = props => (
   <div
     css={{
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      maxWidth: 640,
       paddingBottom: contentGutter,
+      paddingLeft: 20,
+      paddingRight: 20,
       paddingTop: contentGutter,
-      paddingRight: navWidth / 2,
 
       [smallDevice]: {
         paddingTop: contentGutter * 2,
@@ -137,10 +143,15 @@ const NavItem = ({ selected, ...props }) => (
     {...props}
   />
 );
-const links = [{ label: 'Home', value: '/' }];
+const links = [
+  { label: 'Home', value: '/' },
+  { label: 'React Router', value: '/react-router' },
+];
 
-export default class App extends Component<*> {
+class App extends Component<*> {
+  routeProps: ProviderProps;
   render() {
+    const routeProps = (this.routeProps = this.props);
     return (
       <BrowserRouter>
         <Route>
@@ -162,7 +173,14 @@ export default class App extends Component<*> {
             <AppContent>
               <PageContent>
                 <Switch>
-                  <Route exact path="/" component={Home} />
+                  <ImageRoute exact path="/" component={Home} {...routeProps} />
+                  <BrowserRouter basename="/react-router">
+                    <ImageRoute
+                      path="/:activeIndices"
+                      component={ReactRouter}
+                      {...routeProps}
+                    />
+                  </BrowserRouter>
                   <Route component={NoMatch} />
                 </Switch>
               </PageContent>
@@ -173,3 +191,5 @@ export default class App extends Component<*> {
     );
   }
 }
+
+export default withImages(App);
