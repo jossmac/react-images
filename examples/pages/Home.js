@@ -4,7 +4,6 @@ import glam from 'glam';
 import React, { Component } from 'react';
 
 import Carousel, { Modal, ModalGateway } from '../../src/components';
-import withImages from '../ImageProvider';
 
 const flow = (
   <a href="https://flow.org" target="_blank">
@@ -49,7 +48,7 @@ type State = {
   lightboxIsOpen: boolean,
 };
 
-class Home extends Component<Props, State> {
+export default class Home extends Component<Props, State> {
   state = {
     currentView: undefined,
     lightboxIsOpen: false,
@@ -65,15 +64,7 @@ class Home extends Component<Props, State> {
     const { currentView, lightboxIsOpen } = this.state;
 
     return (
-      <div
-        css={{
-          maxWidth: 640,
-          marginLeft: 'auto',
-          marginRight: 'auto',
-          paddingLeft: 20,
-          paddingRight: 20,
-        }}
-      >
+      <div>
         <h1>
           React Images v1{' '}
           <small css={{ color: '#999', fontWeight: 500 }}>(alpha)</small>
@@ -154,5 +145,3 @@ class Home extends Component<Props, State> {
     );
   }
 }
-
-export default withImages(Home);
