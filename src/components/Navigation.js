@@ -3,6 +3,7 @@
 import React, { type Node } from 'react';
 import glam from 'glam';
 import { Button, Nav } from '../primitives';
+import { type PropsWithStyles } from '../types';
 import { ChevronLeft, ChevronRight } from './svg';
 
 // ==============================
@@ -10,9 +11,10 @@ import { ChevronLeft, ChevronRight } from './svg';
 // ==============================
 
 type NavState = { mouseIsIdle: boolean };
-type NavProps = NavState & {
-  children: Node,
-};
+type NavProps = NavState &
+  PropsWithStyles & {
+    children: Node,
+  };
 
 export const navigationCSS = ({ mouseIsIdle }: NavState) => ({
   display: 'flex ',
@@ -39,12 +41,13 @@ const icon = {
 };
 
 type ItemState = { align: 'left' | 'right' };
-type ItemProps = ItemState & {
-  innerProps: {
-    onClick: any => void,
-    title: string,
-  },
-};
+type ItemProps = ItemState &
+  PropsWithStyles & {
+    innerProps: {
+      onClick: any => void,
+      title: string,
+    },
+  };
 
 export const navigationItemCSS = ({ align }: ItemState) => ({
   [align]: 16,

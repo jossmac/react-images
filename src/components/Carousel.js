@@ -11,7 +11,7 @@ import {
   type CarouselComponents,
 } from './defaultComponents';
 import { defaultStyles, type StylesConfig } from '../styles';
-import { type ModalPropsForCarousel } from './Modal/Modal';
+import { type ModalProps } from './Modal/Modal';
 import { isTouch } from './utils';
 import { formatCount } from '../builtins';
 
@@ -34,7 +34,7 @@ export type CarouselProps = {
   /* Hide controls when the user is idle (listens to mouse move) */
   hideControlsWhenIdle?: boolean,
   /* When envoked within a modal, props are cloned from the modal */
-  modalProps?: ModalPropsForCarousel,
+  modalProps?: ModalProps,
   /* Style modifier methods */
   styles: StylesConfig,
   // See https://github.com/souporserious/react-view-pager#track-props
@@ -241,6 +241,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
 
   getCommonProps() {
     const { frameProps, trackProps, modalProps, views } = this.props;
+    const isModal = Boolean(modalProps);
     const isFullscreen = Boolean(modalProps && modalProps.isFullscreen);
     const {
       activeIndices,
@@ -256,6 +257,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
       getStyles: this.getStyles,
       headerHeight,
       isFullscreen,
+      isModal,
       modalProps,
       mouseIsIdle,
       trackProps,
@@ -331,10 +333,14 @@ class Carousel extends Component<CarouselProps, CarouselState> {
         {Footer ? (
           <Footer
             {...commonProps}
-            count={this.props.formatCount({
-              activeView: index + 1,
-              totalViews: views.length,
-            })}
+            count={
+              this.props.formatCount
+                ? this.props.formatCount({
+                    activeView: index + 1,
+                    totalViews: views.length,
+                  })
+                : null
+            }
             data={views[index]}
             innerProps={{ innerRef: this.getFooter }}
           />

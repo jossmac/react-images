@@ -2,22 +2,17 @@
 // @jsx glam
 import glam from 'glam';
 import React, { Component } from 'react';
-import Lorem from 'react-lorem-component';
 
 import Carousel, { Modal, ModalGateway } from '../../src/components';
-import { images } from '../data';
+import withImages from '../ImageProvider';
 
+const flow = (
+  <a href="https://flow.org" target="_blank">
+    flow
+  </a>
+);
 const features = [
-  {
-    icon: '🛠',
-    text: (
-      <span>
-        Comprehensively typed (<a href="https://flow.org" target="_blank">
-          flow
-        </a>)
-      </span>
-    ),
-  },
+  { icon: '🛠', text: <span>Comprehensively typed ({flow})</span> },
   { icon: '📱', text: 'Support for touch devices' },
   { icon: '📺', text: 'Fullscreen support on desktop devices' },
   { icon: '🖼', text: 'Carousel without modal dialog' },
@@ -38,15 +33,24 @@ const List = ({ items }) => (
   </ul>
 );
 
+type Props = {
+  images: Array<{
+    description: string,
+    photographer: string,
+    urls: {
+      regular: string,
+      thumb: string,
+    },
+  }>,
+  isLoading: boolean,
+};
 type State = {
-  carouselViews: Array<{ src: string, description: string }>,
   currentView?: number,
   lightboxIsOpen: boolean,
 };
 
-export default class Home extends Component<{}, State> {
+class Home extends Component<Props, State> {
   state = {
-    carouselViews: images,
     currentView: undefined,
     lightboxIsOpen: false,
   };
@@ -57,7 +61,8 @@ export default class Home extends Component<{}, State> {
     }));
   };
   render() {
-    const { carouselViews, currentView, lightboxIsOpen } = this.state;
+    const { images, isLoading } = this.props;
+    const { currentView, lightboxIsOpen } = this.state;
 
     return (
       <div
@@ -73,23 +78,49 @@ export default class Home extends Component<{}, State> {
           React Images v1{' '}
           <small css={{ color: '#999', fontWeight: 500 }}>(alpha)</small>
         </h1>
-        <List items={features} />
-        <div css={{ display: 'flex ', marginLeft: -2, marginRight: -2 }}>
+        <p>
+          A simple, responsive Lightbox component for ReactJS to display an
+          array of images.
+        </p>
+        <div
+          css={{
+            display: 'flex ',
+            flexWrap: 'wrap',
+            marginLeft: -2,
+            marginRight: -2,
+          }}
+        >
           {images.map((data, j) => {
             return (
-              <div key={j} css={{ flex: 1, marginLeft: 2, marginRight: 2 }}>
+              <div
+                key={j}
+                css={{
+                  boxSizing: 'border-box',
+                  flex: '0 1 calc(25% - 4px)',
+                  margin: 2,
+                  overflow: 'hidden',
+                  paddingBottom: '16%',
+                  position: 'relative',
+                }}
+              >
                 <img
                   onClick={() => this.toggleLightbox(j)}
-                  src={data.src}
+                  src={data.urls.thumb}
                   alt={data.description}
-                  css={{ cursor: 'pointer', maxWidth: '100%' }}
+                  css={{
+                    cursor: 'pointer',
+                    position: 'absolute',
+                    maxWidth: '100%',
+                  }}
                 />
               </div>
             );
           })}
         </div>
-        <Lorem count={1} />
-        {carouselViews.length && (
+
+        <h4>Features and updates:</h4>
+        <List items={features} />
+        {/* {images.length && (
           <Carousel
             frameProps={{ autoSize: 'height' }}
             trackProps={{ infinite: true }}
@@ -97,10 +128,10 @@ export default class Home extends Component<{}, State> {
             components={{ Header: null }}
           />
         )}
-        <Lorem count={1} />
+        <Lorem count={1} /> */}
 
         <ModalGateway>
-          {lightboxIsOpen && images.length ? (
+          {lightboxIsOpen && !isLoading ? (
             <Modal onClose={this.toggleLightbox}>
               <Carousel
                 frameProps={{ autoSize: 'height' }}
@@ -114,3 +145,5 @@ export default class Home extends Component<{}, State> {
     );
   }
 }
+
+export default withImages(Home);

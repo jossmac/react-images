@@ -3,20 +3,22 @@
 import React from 'react';
 import glam from 'glam';
 import { Div, Span } from '../primitives';
+import { type PropsWithStyles } from '../types';
 
 type State = { modalProps: Object, mouseIsIdle: boolean };
-type Props = State & {
-  activeIndices: any,
-  count: any,
-  data: any,
-  innerProps: any,
-  modalProps: any,
-  mouseIsIdle: any,
-  views: any,
-};
+type Props = State &
+  PropsWithStyles & {
+    activeIndices: any,
+    count: any,
+    data: any,
+    innerProps: any,
+    modalProps: any,
+    mouseIsIdle: any,
+    views: any,
+  };
 
 export const footerCSS = ({ modalProps: isModal, mouseIsIdle }: State) => ({
-  alignItems: 'center',
+  alignItems: 'top',
   bottom: isModal ? 0 : null,
   color: isModal ? 'rgba(255, 255, 255, 0.9)' : '#666',
   display: 'flex ',
@@ -33,9 +35,26 @@ export const footerCSS = ({ modalProps: isModal, mouseIsIdle }: State) => ({
   zIndex: isModal ? 1 : null,
 });
 
+const Anchor = p => (
+  <a
+    css={{
+      color: 'inherit',
+      textDecoration: 'none',
+      ':hover': {
+        textDecoration: 'underline',
+      },
+    }}
+    {...p}
+  />
+);
+
+const app_name = 'react-images';
+
 const Footer = (props: Props) => {
   const { count, data, getStyles, innerProps, modalProps } = props;
-  const description = data ? data.description : null;
+  const unsplashUser = `https://unsplash.com/${
+    data.username
+  }?utm_source=${app_name}&utm_medium=referral`;
   const style = modalProps
     ? { background: 'linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.33))' }
     : null;
@@ -48,8 +67,14 @@ const Footer = (props: Props) => {
       style={style}
       {...innerProps}
     >
-      {description ? <Span>{description}</Span> : null}
-      {/* TODO replace with function for i18n support  */}
+      <Span>
+        <strong>
+          <Anchor href={unsplashUser} target="_blank">
+            {data.photographer}{' '}
+          </Anchor>
+        </strong>
+        {data.description}
+      </Span>
       {count}
     </Div>
   );
