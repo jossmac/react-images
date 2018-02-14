@@ -4,6 +4,7 @@ import React, { type Node } from 'react';
 import glam from 'glam';
 import { Button, Nav } from '../primitives';
 import { type PropsWithStyles } from '../types';
+import { className } from '../utils';
 import { ChevronLeft, ChevronRight } from './svg';
 
 // ==============================
@@ -14,6 +15,8 @@ type NavState = { mouseIsIdle: boolean };
 type NavProps = NavState &
   PropsWithStyles & {
     children: Node,
+    isFullscreen: boolean,
+    isModal: boolean,
   };
 
 export const navigationCSS = ({ mouseIsIdle }: NavState) => ({
@@ -25,8 +28,15 @@ export const navigationCSS = ({ mouseIsIdle }: NavState) => ({
 });
 
 export const Navigation = (props: NavProps) => {
-  const { children, getStyles } = props;
-  return <Nav css={getStyles('navigation', props)}>{children}</Nav>;
+  const { children, getStyles, isFullscreen, isModal } = props;
+  return (
+    <Nav
+      css={getStyles('navigation', props)}
+      className={className('navigation', { isFullscreen, isModal })}
+    >
+      {children}
+    </Nav>
+  );
 };
 
 // ==============================
