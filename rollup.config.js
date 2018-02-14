@@ -38,7 +38,7 @@ const babelOptions = prod => {
 const injectSecret = () => {
   return replace({
     'process.env.UNSPLASH_API_KEY': JSON.stringify(
-      process.env.unsplash_api_key
+      process.env.UNSPLASH_API_KEY
     ),
   });
 };

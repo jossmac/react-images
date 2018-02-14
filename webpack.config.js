@@ -45,7 +45,7 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       // $FlowFixMe: This definitely exists here.
-      'process.env.UNSPLASH_API_KEY': `'${process.env.unsplash_api_key}'`,
+      'process.env.UNSPLASH_API_KEY': `'${process.env.UNSPLASH_API_KEY}'`,
     }),
     new HtmlWebpackPlugin({
       filename: 'index.html',

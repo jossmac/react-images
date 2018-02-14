@@ -103,6 +103,7 @@ class Home extends Component<Props, State> {
               <div
                 key={j}
                 css={{
+                  backgroundColor: '#eee',
                   boxSizing: 'border-box',
                   flex: '0 1 calc(25% - 4px)',
                   margin: 2,

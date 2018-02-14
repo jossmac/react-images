@@ -12,7 +12,7 @@ import {
 } from './defaultComponents';
 import { defaultStyles, type StylesConfig } from '../styles';
 import { type ModalProps } from './Modal/Modal';
-import { isTouch } from './utils';
+import { isTouch } from '../utils';
 import { formatCount } from '../builtins';
 
 type SpringConfig = { [key: string]: number };
