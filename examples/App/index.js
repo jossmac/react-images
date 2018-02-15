@@ -53,13 +53,11 @@ class App extends Component<*> {
                     path="/customization"
                     component={Customization}
                   />
-                  <BrowserRouter basename="/react-router">
-                    <ImageRoute
-                      path="/:activeIndices"
-                      component={ReactRouter}
-                      {...routeProps}
-                    />
-                  </BrowserRouter>
+                  <ImageRoute
+                    path="/react-router/:currentView?"
+                    component={ReactRouter}
+                    {...routeProps}
+                  />
                   <Route component={NoMatch} />
                 </Switch>
               </PageContent>

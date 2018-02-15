@@ -8,22 +8,20 @@ import { type ProviderProps } from '../ImageProvider';
 
 type IndicesType = Array<number>;
 type Props = ProviderProps & {
-  activeIndices: IndicesType,
   history: any, // TODO
   location: any, // TODO
+  match: any, // TODO
 };
 
 export default class ReactRouter extends Component<Props> {
-  static defaultProps = {
-    activeIndices: [0],
-  };
-  handleViewChange = (activeIndices: IndicesType) => {
+  handleViewChange = (currentView: IndicesType) => {
     const { history } = this.props;
-    history.push(activeIndices);
-    console.log('activeIndices', activeIndices);
+
+    history.push(`/react-router/${currentView[0].toString()}`);
   };
   render() {
-    const { activeIndices, images, isLoading } = this.props;
+    const { images, isLoading, match } = this.props;
+    const currentView = match ? parseInt(match.params.currentView, 10) || 0 : 0;
 
     console.log('router example', this.props);
 
@@ -35,7 +33,7 @@ export default class ReactRouter extends Component<Props> {
             frameProps={{ autoSize: 'height' }}
             trackProps={{
               infinite: true,
-              currentView: activeIndices,
+              currentView,
               onViewChange: this.handleViewChange,
             }}
             views={images}
