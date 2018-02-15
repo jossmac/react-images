@@ -19,14 +19,15 @@ export const viewCSS = () => ({
   textAlign: 'center',
 });
 
+const imageCSS = {
+  height: 'auto',
+  maxHeight: '100vh',
+  maxWidth: '100%',
+  userSelect: 'none',
+};
+
 const View = (props: Props) => {
   const { data, isFullscreen, isModal, getStyles } = props;
-  const img = {
-    height: 'auto',
-    maxHeight: '100vh',
-    maxWidth: '100%',
-    userSelect: 'none',
-  };
   const src = isFullscreen ? data.urls.full : data.urls.regular;
 
   return (
@@ -35,7 +36,7 @@ const View = (props: Props) => {
       className={className('view', { isFullscreen, isModal })}
     >
       <Img
-        css={img}
+        css={imageCSS}
         className={className('view-image', { isFullscreen, isModal })}
         src={src}
         alt={data.description || `by ${data.photographer}`}

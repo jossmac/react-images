@@ -19,7 +19,6 @@ export type ProviderProps = {
   images: Images,
   isLoading: boolean,
 };
-type State = { images: Images, isLoading: boolean };
 
 function formatImages(arr) {
   return arr.map(img => ({
@@ -31,9 +30,18 @@ function formatImages(arr) {
 }
 
 export default function withImages(WrappedComponent: ComponentType<*>) {
-  return class ImageProvider extends Component<{}, State> {
-    state = { images: [], isLoading: true };
+  return class ImageProvider extends Component<{}> {
+    images: Images = [];
+    isLoading: boolean = true;
     componentDidMount() {
+      this.images = JSON.parse(window.localStorage.getItem('reactImagesData'));
+
+      if (this.images) {
+        this.isLoading = false;
+        this.forceUpdate();
+        return;
+      }
+
       const query = 'wildlife,animal';
       const url =
         'https://api.unsplash.com/search/photos/?page=1&per_page=12&query=';
@@ -43,19 +51,22 @@ export default function withImages(WrappedComponent: ComponentType<*>) {
       fetch(`${url}${query}&client_id=${process.env.UNSPLASH_API_KEY}`)
         .then(res => res.json())
         .then(data => {
-          this.setState({ images: data.results, isLoading: false });
+          this.images = window.localStorage.setItem(
+            'reactImagesData',
+            JSON.stringify(formatImages(data.results))
+          );
+          this.isLoading = false;
+          this.forceUpdate();
         })
         .catch(err => {
           console.error('Error occured when fetching images', err);
         });
     }
     render() {
-      const { images, isLoading } = this.state;
-
       return (
         <WrappedComponent
-          images={images ? formatImages(images) : []}
-          isLoading={isLoading}
+          images={this.images}
+          isLoading={this.isLoading}
           {...this.props}
         />
       );

@@ -18,3 +18,7 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+h1 {
+  margin-top: 0;
+}

@@ -3,9 +3,9 @@
 
 import glam from 'glam';
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { HashRouter, Route, Switch } from 'react-router-dom';
 
-import { Customization, Home, NoMatch, ReactRouter } from '../pages';
+import { Customization, Home, NoMatch, RoutedGallery } from '../pages';
 import ImageRoute from '../ImageRoute';
 import withImages, { type ProviderProps } from '../ImageProvider';
 import {
@@ -18,7 +18,7 @@ import {
 
 const links = [
   { label: 'Home', value: '/' },
-  { label: 'React Router', value: '/react-router' },
+  { label: 'Routed Gallery', value: '/routed-gallery' },
   { label: 'Customization', value: '/customization' },
 ];
 
@@ -27,14 +27,17 @@ class App extends Component<*> {
   render() {
     const routeProps = (this.routeProps = this.props);
     return (
-      <BrowserRouter>
+      <HashRouter>
         <Route>
           <AppContainer>
             <Route
               render={({ location }) => (
                 <Nav>
                   {links.map(l => {
-                    const selected = location.pathname === l.value;
+                    const selected =
+                      l.value.length > 1
+                        ? location.pathname.includes(l.value)
+                        : location.pathname === l.value;
                     return (
                       <NavItem key={l.value} selected={selected} to={l.value}>
                         {l.label}
@@ -54,8 +57,8 @@ class App extends Component<*> {
                     component={Customization}
                   />
                   <ImageRoute
-                    path="/react-router/:currentView?"
-                    component={ReactRouter}
+                    path="/routed-gallery/:currentView?"
+                    component={RoutedGallery}
                     {...routeProps}
                   />
                   <Route component={NoMatch} />
@@ -64,7 +67,7 @@ class App extends Component<*> {
             </AppContent>
           </AppContainer>
         </Route>
-      </BrowserRouter>
+      </HashRouter>
     );
   }
 }
