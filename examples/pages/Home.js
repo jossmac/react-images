@@ -100,11 +100,9 @@ export default class Home extends Component<Props, State> {
         </p>
         <p>
           Images courtesy of{' '}
-          <strong>
-            <a href="https://unsplash.com" target="_blank">
-              Unsplash
-            </a>
-          </strong>.
+          <a href="https://unsplash.com" target="_blank">
+            Unsplash
+          </a>
         </p>
         <Gallery>
           {images.map((data, j) => {
