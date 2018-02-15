@@ -10,7 +10,7 @@ import type { RouterProps } from '../../src/types';
 type IndicesType = Array<number>;
 type Props = ProviderProps & RouterProps;
 
-export default class RoutedGallery extends Component<Props> {
+export default class RouterGallery extends Component<Props> {
   handleViewChange = (currentView: IndicesType) => {
     const { history } = this.props;
 
@@ -25,7 +25,7 @@ export default class RoutedGallery extends Component<Props> {
 
     return (
       <div>
-        <h1>Routed Gallery</h1>
+        <h1>Router Gallery</h1>
         <p>
           In this example we sync the <code>currentView</code> with the URL
           using react-router's <code>history.push</code> method

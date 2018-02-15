@@ -5,7 +5,7 @@ import glam from 'glam';
 import React, { Component } from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
 
-import { Customization, Home, NoMatch, RoutedGallery } from '../pages';
+import { Customization, Home, NoMatch, RouterGallery } from '../pages';
 import ImageRoute from '../ImageRoute';
 import withImages, { type ProviderProps } from '../ImageProvider';
 import {
@@ -18,8 +18,8 @@ import {
 
 const links = [
   { label: 'Home', value: '/' },
-  { label: 'Routed Gallery', value: '/routed-gallery' },
-  // { label: 'Customization', value: '/customization' },
+  { label: 'Router Gallery', value: '/router-gallery' },
+  { label: 'Customization', value: '/customization' },
 ];
 
 class App extends Component<*> {
@@ -57,8 +57,8 @@ class App extends Component<*> {
                     component={Customization}
                   />
                   <ImageRoute
-                    path="/routed-gallery/:currentView?"
-                    component={RoutedGallery}
+                    path="/router-gallery/:currentView?"
+                    component={RouterGallery}
                     {...routeProps}
                   />
                   <Route component={NoMatch} />
