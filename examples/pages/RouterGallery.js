@@ -14,7 +14,7 @@ export default class RouterGallery extends Component<Props> {
   handleViewChange = (currentView: IndicesType) => {
     const { history } = this.props;
 
-    history.push(`/routed-gallery/${currentView[0].toString()}`);
+    history.push(`/router-gallery/${currentView[0].toString()}`);
   };
   getCurrentView() {
     const { match } = this.props;
