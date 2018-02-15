@@ -19,7 +19,7 @@ import {
 const links = [
   { label: 'Home', value: '/' },
   { label: 'Routed Gallery', value: '/routed-gallery' },
-  { label: 'Customization', value: '/customization' },
+  // { label: 'Customization', value: '/customization' },
 ];
 
 class App extends Component<*> {
