@@ -21,10 +21,9 @@ export default class Customization extends Component<Props, State> {
       <div>
         <h1>Customization</h1>
         <p>
-          In this example the data passed to <code>views</code> is contains
-          source and poster information. The <code>&lt;View /&gt;</code>{' '}
-          component has been replaced to render an HTML5 video tag and custom
-          controls.
+          In this example the data passed to <code>views</code> contains source
+          and poster information. The <code>&lt;View /&gt;</code> component has
+          been replaced to render an HTML5 video tag and custom controls.
         </p>
         <p>
           Videos courtesy of{' '}
