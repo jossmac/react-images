@@ -31,6 +31,31 @@ const List = ({ items }) => (
     ))}
   </ul>
 );
+const Gallery = props => (
+  <div
+    css={{
+      display: 'flex ',
+      flexWrap: 'wrap',
+      marginLeft: -2,
+      marginRight: -2,
+    }}
+    {...props}
+  />
+);
+const Image = props => (
+  <div
+    css={{
+      backgroundColor: '#eee',
+      boxSizing: 'border-box',
+      flex: '0 1 calc(25% - 4px)',
+      margin: 2,
+      overflow: 'hidden',
+      paddingBottom: '16%',
+      position: 'relative',
+    }}
+    {...props}
+  />
+);
 
 type Props = {
   images: Array<{
@@ -81,28 +106,10 @@ export default class Home extends Component<Props, State> {
             </a>
           </strong>.
         </p>
-        <div
-          css={{
-            display: 'flex ',
-            flexWrap: 'wrap',
-            marginLeft: -2,
-            marginRight: -2,
-          }}
-        >
+        <Gallery>
           {images.map((data, j) => {
             return (
-              <div
-                key={j}
-                css={{
-                  backgroundColor: '#eee',
-                  boxSizing: 'border-box',
-                  flex: '0 1 calc(25% - 4px)',
-                  margin: 2,
-                  overflow: 'hidden',
-                  paddingBottom: '16%',
-                  position: 'relative',
-                }}
-              >
+              <Image key={data.username}>
                 <img
                   onClick={() => this.toggleLightbox(j)}
                   src={data.urls.thumb}
@@ -113,10 +120,10 @@ export default class Home extends Component<Props, State> {
                     maxWidth: '100%',
                   }}
                 />
-              </div>
+              </Image>
             );
           })}
-        </div>
+        </Gallery>
 
         <h4>Features and updates:</h4>
         <List items={features} />

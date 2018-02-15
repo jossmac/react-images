@@ -66,7 +66,6 @@ class View extends Component<Props, State> {
 export default class Customization extends Component<Props> {
   render() {
     // const { images, isLoading } = this.props;
-    console.log('customization', this.props);
 
     return (
       <div>
