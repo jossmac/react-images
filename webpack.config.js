@@ -52,6 +52,11 @@ module.exports = {
       inject: false,
       template: path.resolve(__dirname, 'examples/index.html'),
     }),
-    new CopyWebpackPlugin(['_redirects', 'favicon.ico', 'index.css']),
+    new CopyWebpackPlugin([
+      '_redirects',
+      'logo.svg',
+      'favicon.ico',
+      'index.css',
+    ]),
   ],
 };

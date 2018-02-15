@@ -113,7 +113,8 @@ export const NavItem = ({ selected, ...props }: { selected: boolean }) => (
       whiteSpace: 'nowrap',
 
       ':hover, :active': {
-        color: selected ? 'hsl(0, 0%, 10%)' : '#2684FF',
+        color: selected ? 'hsl(0, 0%, 10%)' : '#00d7ff',
+        textDecoration: 'none',
       },
 
       [smallDevice]: {

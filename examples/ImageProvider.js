@@ -28,48 +28,53 @@ function formatImages(arr) {
     urls: img.urls,
   }));
 }
+function unsplashUrl() {
+  const query = 'wildlife,animal';
+  const url =
+    'https://api.unsplash.com/search/photos/?page=1&per_page=12&query=';
+
+  // $FlowFixMe: escape global `process.env.UNSPLASH_API_KEY`
+  return `${url}${query}&client_id=${process.env.UNSPLASH_API_KEY}`;
+}
+
+const dataKey = 'example_images_data';
+
+function getData() {
+  return JSON.parse(window.localStorage.getItem(dataKey));
+}
+function setData(data) {
+  window.localStorage.setItem(dataKey, JSON.stringify(data));
+
+  return data;
+}
 
 export default function withImages(WrappedComponent: ComponentType<*>) {
-  return class ImageProvider extends Component<{}> {
-    images: Images = [];
-    isLoading: boolean = true;
-    componentDidMount() {
-      this.images = JSON.parse(window.localStorage.getItem('reactImagesData'));
+  return class ImageProvider extends Component<{}, ProviderProps> {
+    state = { images: [], isLoading: true };
+    componentWillMount() {
+      // using local storage to prevent API requests, don't want to exceed
+      // the applications Unsplash limit
+      const storedData = getData();
 
-      if (this.images) {
-        this.isLoading = false;
-        this.forceUpdate();
+      // bail if images already available
+      if (storedData) {
+        this.setState({ images: storedData, isLoading: false });
         return;
       }
 
-      const query = 'wildlife,animal';
-      const url =
-        'https://api.unsplash.com/search/photos/?page=1&per_page=12&query=';
-      // const query = 'skyline,city';
-
-      // $FlowFixMe: escape global `process.env.UNSPLASH_API_KEY`
-      fetch(`${url}${query}&client_id=${process.env.UNSPLASH_API_KEY}`)
+      // set state to force re-render on the route
+      fetch(unsplashUrl())
         .then(res => res.json())
         .then(data => {
-          this.images = window.localStorage.setItem(
-            'reactImagesData',
-            JSON.stringify(formatImages(data.results))
-          );
-          this.isLoading = false;
-          this.forceUpdate();
+          const images = setData(formatImages(data.results));
+          this.setState({ images, isLoading: false });
         })
         .catch(err => {
           console.error('Error occured when fetching images', err);
         });
     }
     render() {
-      return (
-        <WrappedComponent
-          images={this.images}
-          isLoading={this.isLoading}
-          {...this.props}
-        />
-      );
+      return <WrappedComponent {...this.props} {...this.state} />;
     }
   };
 }
