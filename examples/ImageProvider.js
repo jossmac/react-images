@@ -5,6 +5,11 @@ import React, { Component, type ComponentType } from 'react';
 type Images = Array<{
   description: string,
   photographer: string,
+  user: {
+    first_name: string,
+    last_name: string,
+    username: string,
+  },
   urls: {
     regular: string,
     thumb: string,
@@ -14,7 +19,7 @@ export type ProviderProps = {
   images: Images,
   isLoading: boolean,
 };
-type State = { images: Images | null, isLoading: boolean };
+type State = { images: Images, isLoading: boolean };
 
 function formatImages(arr) {
   return arr.map(img => ({
@@ -27,14 +32,14 @@ function formatImages(arr) {
 
 export default function withImages(WrappedComponent: ComponentType<*>) {
   return class ImageProvider extends Component<{}, State> {
-    state = { images: null, isLoading: true };
+    state = { images: [], isLoading: true };
     componentDidMount() {
       const query = 'wildlife,animal';
       const url =
         'https://api.unsplash.com/search/photos/?page=1&per_page=12&query=';
       // const query = 'skyline,city';
 
-      // $FlowFixMe: this is a thing
+      // $FlowFixMe: escape global `process.env.UNSPLASH_API_KEY`
       fetch(`${url}${query}&client_id=${process.env.UNSPLASH_API_KEY}`)
         .then(res => res.json())
         .then(data => {

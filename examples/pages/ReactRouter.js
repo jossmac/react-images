@@ -6,13 +6,20 @@ import React, { Component } from 'react';
 import Carousel from '../../src/components';
 import { type ProviderProps } from '../ImageProvider';
 
-export default class ReactRouter extends Component<ProviderProps> {
+type IndicesType = Array<number>;
+type Props = ProviderProps & {
+  activeIndices: IndicesType,
+  history: any, // TODO
+  location: any, // TODO
+};
+
+export default class ReactRouter extends Component<Props> {
   static defaultProps = {
     activeIndices: [0],
   };
-  handleViewChange = activeIndices => {
-    const { history, location } = this.props;
-    history.push(`${activeIndices}`);
+  handleViewChange = (activeIndices: IndicesType) => {
+    const { history } = this.props;
+    history.push(activeIndices);
     console.log('activeIndices', activeIndices);
   };
   render() {

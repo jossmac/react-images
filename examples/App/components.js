@@ -1,14 +1,9 @@
 // @flow
 // @jsx glam
 
-import './index.css';
 import glam from 'glam';
-import React, { Component } from 'react';
-import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
-
-import { Home, NoMatch, ReactRouter } from './pages';
-import ImageRoute from './ImageRoute';
-import withImages, { type ProviderProps } from './ImageProvider';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 const borderColor = 'hsl(0, 0%, 88%)';
 const navWidth = 180;
@@ -19,7 +14,7 @@ const pagePadding = 260;
 const smallDevice = '@media (max-width: 769px)';
 const largeDevice = '@media (min-width: 770px)';
 
-const AppContainer = props => (
+export const AppContainer = (props: any) => (
   <div
     css={{
       boxSizing: 'border-box',
@@ -36,7 +31,7 @@ const AppContainer = props => (
     {...props}
   />
 );
-const PageContent = props => (
+export const PageContent = (props: any) => (
   <div
     css={{
       marginLeft: 'auto',
@@ -54,7 +49,7 @@ const PageContent = props => (
     {...props}
   />
 );
-const AppContent = props => (
+export const AppContent = (props: any) => (
   <div
     css={{
       flex: '1 1 auto',
@@ -77,7 +72,7 @@ const AppContent = props => (
     {...props}
   />
 );
-const Nav = props => (
+export const Nav = (props: any) => (
   <div
     css={{
       [smallDevice]: {
@@ -107,7 +102,7 @@ const Nav = props => (
     {...props}
   />
 );
-const NavItem = ({ selected, ...props }) => (
+export const NavItem = ({ selected, ...props }: { selected: boolean }) => (
   <Link
     css={{
       color: selected ? 'hsl(0, 0%, 0%)' : 'hsl(0, 0%, 40%)',
@@ -143,53 +138,3 @@ const NavItem = ({ selected, ...props }) => (
     {...props}
   />
 );
-const links = [
-  { label: 'Home', value: '/' },
-  { label: 'React Router', value: '/react-router' },
-];
-
-class App extends Component<*> {
-  routeProps: ProviderProps;
-  render() {
-    const routeProps = (this.routeProps = this.props);
-    return (
-      <BrowserRouter>
-        <Route>
-          <AppContainer>
-            <Route
-              render={({ location }) => (
-                <Nav>
-                  {links.map(l => {
-                    const selected = location.pathname === l.value;
-                    return (
-                      <NavItem key={l.value} selected={selected} to={l.value}>
-                        {l.label}
-                      </NavItem>
-                    );
-                  })}
-                </Nav>
-              )}
-            />
-            <AppContent>
-              <PageContent>
-                <Switch>
-                  <ImageRoute exact path="/" component={Home} {...routeProps} />
-                  <BrowserRouter basename="/react-router">
-                    <ImageRoute
-                      path="/:activeIndices"
-                      component={ReactRouter}
-                      {...routeProps}
-                    />
-                  </BrowserRouter>
-                  <Route component={NoMatch} />
-                </Switch>
-              </PageContent>
-            </AppContent>
-          </AppContainer>
-        </Route>
-      </BrowserRouter>
-    );
-  }
-}
-
-export default withImages(App);

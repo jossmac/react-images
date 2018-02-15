@@ -32,6 +32,8 @@ export const headerCSS = ({ mouseIsIdle }: State) => ({
 
 const Header = (props: Props) => {
   const { getStyles, innerProps, modalProps } = props;
+  if (!modalProps) return null;
+
   const {
     allowFullscreen,
     isFullscreen,
