@@ -4,14 +4,11 @@ import glam from 'glam';
 import React, { Component } from 'react';
 
 import Carousel from '../../src/components';
-import { type ProviderProps } from '../ImageProvider';
+import type { ProviderProps } from '../ImageProvider';
+import type { RouterProps } from '../../src/types';
 
 type IndicesType = Array<number>;
-type Props = ProviderProps & {
-  history: any, // TODO
-  location: any, // TODO
-  match: any, // TODO
-};
+type Props = ProviderProps & RouterProps;
 
 export default class ReactRouter extends Component<Props> {
   handleViewChange = (currentView: IndicesType) => {
