@@ -5,12 +5,9 @@ import React, { Component, type ComponentType } from 'react';
 type Images = Array<{
   description: string,
   photographer: string,
-  user: {
-    first_name: string,
-    last_name: string,
-    username: string,
-  },
+  username: string,
   urls: {
+    full: string,
     regular: string,
     thumb: string,
   },

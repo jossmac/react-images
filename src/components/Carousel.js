@@ -6,6 +6,9 @@ import glam from 'glam';
 import rafScheduler from 'raf-schd';
 import { ViewPager, Frame, Track, View as PageView } from 'react-view-pager';
 
+const viewPagerStyles = { flex: '1 1 auto', position: 'relative' };
+const frameStyles = { outline: 0 };
+
 import {
   defaultComponents,
   type CarouselComponents,
@@ -13,12 +16,12 @@ import {
 import { defaultStyles, type StylesConfig } from '../styles';
 import { type ModalProps } from './Modal/Modal';
 import { className, isTouch } from '../utils';
-import { formatCount } from '../builtins';
+import { formatCaption, formatCount } from '../builtins';
+import { type ViewsType } from '../types';
 
 type SpringConfig = { [key: string]: number };
 export type fn = any => void;
 export type IndicesType = Array<number>;
-export type ViewsType = Array<{ [key: string]: any }>;
 export type CarouselProps = {
   /* Replace any of the carousel components */
   components?: CarouselComponents,
@@ -29,6 +32,8 @@ export type CarouselProps = {
     springConfig: SpringConfig,
     tag: any,
   },
+  /* Formatter for the the caption text in the footer */
+  formatCaption?: typeof formatCaption,
   /* Formatter for the the count text in the footer */
   formatCount?: typeof formatCount,
   /* Hide controls when the user is idle (listens to mouse move) */
@@ -71,6 +76,7 @@ export type CarouselState = {
   mouseIsIdle: boolean,
 };
 const defaultProps = {
+  formatCaption: formatCaption,
   formatCount: formatCount,
   hideControlsWhenIdle: true,
   styles: {},
@@ -276,13 +282,12 @@ class Carousel extends Component<CarouselProps, CarouselState> {
     } = this.components;
     const { frameProps, trackProps, views } = this.props;
     const { activeIndices } = this.state;
+    const commonProps = (this.commonProps = this.getCommonProps());
 
     const showPrev = this.hasPreviousView();
     const showNext = this.hasNextView();
     const showNav = showPrev || showNext;
-    const commonProps = (this.commonProps = this.getCommonProps());
-    const viewPagerStyles = { flex: '1 1 auto', position: 'relative' };
-    const frameStyles = { outline: 0 };
+
     const index = activeIndices[0];
 
     return (
@@ -343,14 +348,8 @@ class Carousel extends Component<CarouselProps, CarouselState> {
         {Footer ? (
           <Footer
             {...commonProps}
-            count={
-              this.props.formatCount
-                ? this.props.formatCount({
-                    activeView: index + 1,
-                    totalViews: views.length,
-                  })
-                : null
-            }
+            formatCaption={this.props.formatCaption}
+            formatCount={this.props.formatCount}
             data={views[index]}
             innerProps={{ innerRef: this.getFooter }}
           />

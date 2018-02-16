@@ -8,16 +8,36 @@ import type { ViewShape } from './View';
 
 type Props = { data: ViewShape, onClick: any => void };
 
-const Poster = ({ data, onClick }: Props) => (
+const ratio = `${9 / 16 * 100 / 2}%`;
+const gutter = 2;
+
+export const Posters = (props: any) => (
   <div
     css={{
-      background: '#eee',
+      display: 'flex ',
+      marginLeft: -gutter,
+      marginRight: -gutter,
+    }}
+    {...props}
+  />
+);
+
+export const Poster = ({ data, onClick }: Props) => (
+  <div
+    role="image"
+    css={{
+      backgroundColor: '#eee',
+      backgroundImage: `url(${data.poster})`,
+      backgroundSize: 'cover',
+      backgroundRepeat: 'no-repeat',
+      flex: 1,
       lineHeight: 0,
-      marginBottom: '1em',
+      margin: gutter,
+      paddingBottom: ratio,
+      overflow: 'hidden',
       position: 'relative',
     }}
   >
-    <img src={data.poster} css={{ maxWidth: '100%' }} />
     <button
       onClick={onClick}
       css={{
@@ -44,5 +64,3 @@ const Poster = ({ data, onClick }: Props) => (
     </button>
   </div>
 );
-
-export default Poster;

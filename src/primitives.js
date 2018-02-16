@@ -21,6 +21,7 @@ export const Base = ({ css, innerRef, tag: Tag, ...props }: Props) => (
   />
 );
 
+export const A = (props: {}) => <Base tag="a" {...props} />;
 export const Button = (props: {}) => <Base tag="button" {...props} />;
 export const Div = (props: {}) => <Base tag="div" {...props} />;
 export const Img = (props: {}) => <Base tag="img" {...props} />;

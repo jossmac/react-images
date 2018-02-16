@@ -4,6 +4,7 @@ import glam from 'glam';
 import React, { Component } from 'react';
 
 import Carousel, { Modal, ModalGateway } from '../../src/components';
+import { type ProviderProps } from '../ImageProvider';
 
 const features = [
   {
@@ -88,23 +89,12 @@ const Image = props => (
   />
 );
 
-type Props = {
-  images: Array<{
-    description: string,
-    photographer: string,
-    urls: {
-      regular: string,
-      thumb: string,
-    },
-  }>,
-  isLoading: boolean,
-};
 type State = {
   currentView?: number,
   lightboxIsOpen: boolean,
 };
 
-export default class Home extends Component<Props, State> {
+export default class Home extends Component<ProviderProps, State> {
   state = {
     currentView: undefined,
     lightboxIsOpen: false,

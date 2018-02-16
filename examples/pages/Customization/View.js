@@ -5,6 +5,8 @@ import React, { Component, type ElementRef } from 'react';
 import rafScheduler from 'raf-schd';
 
 import Icon from './Icon';
+import ProgressBar from './Progress';
+import { colors } from '../../theme';
 
 type UrlShape = {
   type: 'video/mp4' | 'video/ogg',
@@ -16,25 +18,75 @@ export type ViewShape = {
   urls: Array<UrlShape>,
 };
 
-type ViewProps = { data: ViewShape, mouseIsIdle: boolean };
+type ViewProps = {
+  activeIndices: Array<number>,
+  data: ViewShape,
+  mouseIsIdle: boolean,
+};
 type ViewState = { paused: boolean, progress: number };
 
 function calculateProgress({ currentTime, duration }) {
   return 100 / duration * currentTime;
 }
 
+const Footer = ({ mouseIsIdle, ...props }) => (
+  <div
+    css={{
+      alignItems: 'center',
+      bottom: 0,
+      display: 'flex ',
+      left: 0,
+      opacity: mouseIsIdle ? 0 : 1,
+      padding: 10,
+      paddingRight: 15,
+      position: 'absolute',
+      right: 0,
+      transition: 'opacity 300ms',
+    }}
+    style={{
+      background: 'linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.44))',
+    }}
+    {...props}
+  />
+);
+const Button = props => (
+  <button
+    css={{
+      background: 0,
+      border: 0,
+      color: 'white',
+      cursor: 'pointer',
+      height: 32,
+      marginRight: 10,
+      outline: 0,
+      padding: 0,
+      opacity: 0.66,
+      width: 32,
+
+      ':hover': { opacity: 1 },
+      ':active': { color: colors.primary },
+    }}
+    {...props}
+  />
+);
+
 export default class View extends Component<ViewProps, ViewState> {
   video: HTMLVideoElement;
   state = { paused: true, progress: 0 };
   componentDidMount() {
     this.video.addEventListener('play', this.handlePlay, false);
-    this.video.addEventListener('timeupdate', this.handleTimeUpdate, false);
     this.video.addEventListener('pause', this.handlePause, false);
+    this.video.addEventListener('timeupdate', this.handleTimeUpdate, false);
   }
   componentWillUnmount() {
     this.video.removeEventListener('play', this.handlePlay);
-    this.video.addEventListener('timeupdate', this.handleTimeUpdate);
     this.video.removeEventListener('pause', this.handlePause);
+    this.video.removeEventListener('timeupdate', this.handleTimeUpdate);
+  }
+  componentWillReceiveProps(nextProps: ViewProps) {
+    if (this.props.activeIndices !== nextProps.activeIndices) {
+      this.playOrPause('pause');
+    }
   }
   handlePlay = () => {
     this.setState({ paused: false });
@@ -50,13 +102,22 @@ export default class View extends Component<ViewProps, ViewState> {
   handlePause = () => {
     this.setState({ paused: true });
   };
-  playOrPause = () => {
+  playOrPause = (type: 'play' | 'pause' | 'toggle' = 'toggle') => {
     const { video } = this;
 
-    if (video.paused || video.ended) {
-      video.play();
-    } else {
-      video.pause();
+    switch (type) {
+      case 'play':
+        video.play();
+        break;
+      case 'pause':
+        video.pause();
+        break;
+      default:
+        if (video.paused || video.ended) {
+          video.play();
+        } else {
+          video.pause();
+        }
     }
   };
   getVideo = (ref: ElementRef<*>) => {
@@ -87,68 +148,18 @@ export default class View extends Component<ViewProps, ViewState> {
           ref={this.getVideo}
           width={width}
         >
-          {data.urls.map(vid => <source src={vid.src} type={vid.type} />)}
+          {data.urls.map((vid, idx) => (
+            <source key={idx} src={vid.src} type={vid.type} />
+          ))}
           Your browser does not support HTML5 video.
         </video>
         {this.video ? (
-          <div
-            css={{
-              alignItems: 'center',
-              bottom: 0,
-              display: 'flex ',
-              left: 0,
-              opacity: mouseIsIdle ? 0 : 1,
-              padding: 10,
-              position: 'absolute',
-              right: 0,
-              transition: 'opacity 300ms',
-            }}
-            style={{
-              background: 'linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.44))',
-            }}
-          >
-            <button
-              css={{
-                background: 0,
-                border: 0,
-                color: 'white',
-                cursor: 'pointer',
-                marginRight: 10,
-                outline: 0,
-                padding: 0,
-                opacity: 0.66,
-                ':hover': { opacity: 1 },
-              }}
-              onClick={this.playOrPause}
-            >
+          <Footer mouseIsIdle={mouseIsIdle}>
+            <Button onClick={this.playOrPause}>
               <Icon type={this.state.paused ? 'play' : 'pause'} size={32} />
-            </button>
-            <div
-              css={{
-                backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                borderRadius: 4,
-                flex: 1,
-                height: 8,
-                overflow: 'hidden',
-                position: 'relative',
-              }}
-            >
-              <div
-                css={{
-                  backgroundColor: 'white',
-                  borderRadius: 4,
-                  top: 0,
-                  left: 0,
-                  bottom: 0,
-                  position: 'absolute',
-                  transition: 'width 333ms',
-                }}
-                style={{
-                  width: `${progress}%`,
-                }}
-              />
-            </div>
-          </div>
+            </Button>
+            <ProgressBar progress={progress} />
+          </Footer>
         ) : null}
       </div>
     );

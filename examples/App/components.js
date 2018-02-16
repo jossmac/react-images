@@ -4,6 +4,7 @@
 import glam from 'glam';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { colors } from '../theme';
 
 const borderColor = 'hsl(0, 0%, 88%)';
 const navWidth = 180;
@@ -113,7 +114,7 @@ export const NavItem = ({ selected, ...props }: { selected: boolean }) => (
       whiteSpace: 'nowrap',
 
       ':hover, :active': {
-        color: selected ? 'hsl(0, 0%, 10%)' : '#00d7ff',
+        color: selected ? 'hsl(0, 0%, 10%)' : colors.primary,
         textDecoration: 'none',
       },
 

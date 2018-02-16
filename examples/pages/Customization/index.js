@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import Carousel, { Modal, ModalGateway } from '../../../src/components';
 
 import { videos } from './data';
-import Poster from './Poster';
+import { Poster, Posters } from './Poster';
 import View from './View';
 
 type Props = {};
@@ -29,15 +29,21 @@ export default class Customization extends Component<Props, State> {
           Videos courtesy of{' '}
           <a href="https://peach.blender.org/" target="_blank">
             "Big Buck Bunny"
-          </a>
-          and
+          </a>{' '}
+          and{' '}
           <a href="https://durian.blender.org/" target="_blank">
             "Sintel"
           </a>
         </p>
-        {videos.map((vid, idx) => (
-          <Poster data={vid} onClick={() => this.toggleModal(idx)} />
-        ))}
+        <Posters>
+          {videos.map((vid, idx) => (
+            <Poster
+              key={idx}
+              data={vid}
+              onClick={() => this.toggleModal(idx)}
+            />
+          ))}
+        </Posters>
         <ModalGateway>
           {Number.isInteger(currentModal) ? (
             <Modal
