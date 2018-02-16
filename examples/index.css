@@ -2,6 +2,7 @@ body {
   -moz-font-feature-settings: 'liga' on;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
+  color: #24292e;
   font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica,
     sans-serif;
   font-style: normal;
@@ -19,6 +20,21 @@ a:hover {
   text-decoration: underline;
 }
 
+p,
+ul,
+ol {
+  line-height: 1.5;
+}
+
 h1 {
   margin-top: 0;
+}
+h2,
+h3 {
+  margin-top: 1.66em;
+}
+h6 {
+  color: #777;
+  margin-bottom: 0.25em;
+  text-transform: uppercase;
 }

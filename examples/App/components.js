@@ -8,7 +8,7 @@ import { colors } from '../theme';
 
 const borderColor = 'hsl(0, 0%, 88%)';
 const navWidth = 180;
-const appWidth = 640;
+const appWidth = 840;
 const appGutter = 20;
 const contentGutter = 30;
 const pagePadding = 260;
@@ -21,13 +21,9 @@ export const AppContainer = (props: any) => (
       boxSizing: 'border-box',
       marginLeft: 'auto',
       marginRight: 'auto',
-      maxWidth: appWidth + navWidth / 2,
+      maxWidth: appWidth,
       minHeight: '100vh',
       padding: `0 ${appGutter}px ${pagePadding}px`,
-
-      [smallDevice]: {
-        maxWidth: appWidth,
-      },
     }}
     {...props}
   />

@@ -1,3 +1,5 @@
+import React from 'react';
+
 export const videos = [
   {
     poster: 'https://peach.blender.org/wp-content/uploads/bbb-splash.png',

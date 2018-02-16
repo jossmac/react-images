@@ -6,7 +6,7 @@ import rafScheduler from 'raf-schd';
 
 import Icon from './Icon';
 import ProgressBar from './Progress';
-import { colors } from '../../theme';
+import { colors } from '../../../theme';
 
 type UrlShape = {
   type: 'video/mp4' | 'video/ogg',

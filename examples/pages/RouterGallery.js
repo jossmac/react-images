@@ -6,6 +6,7 @@ import React, { Component } from 'react';
 import Carousel from '../../src/components';
 import type { ProviderProps } from '../ImageProvider';
 import type { RouterProps } from '../../src/types';
+import { Code } from '../components';
 
 type IndicesType = Array<number>;
 type Props = ProviderProps & RouterProps;
@@ -27,13 +28,13 @@ export default class RouterGallery extends Component<Props> {
       <div>
         <h1>Router Gallery</h1>
         <p>
-          In this example we sync the <code>currentView</code> with the URL
-          using react-router's <code>history.push</code> method
+          In this example we sync the <Code>currentView</Code> with the URL
+          using react-router's <Code>history.push</Code> method
         </p>
         <p>
           Try navigating with the Carousel's buttons, then with the browser's
           back and forward buttons. The current view is also maintained on page
-          refresh via <code>match.params</code>
+          refresh via <Code>match.params</Code>
         </p>
         {!isLoading ? (
           <Carousel

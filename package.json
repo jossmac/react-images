@@ -1,14 +1,20 @@
 {
   "name": "react-images",
   "version": "1.0.0",
-  "description":
-    "A mobile-friendly, carousel component for displaying views in ReactJS",
+  "description": "A mobile-friendly, carousel component for displaying views in ReactJS",
   "main": "lib/index.js",
   "jsnext:main": "dist/react-images.es.js",
   "module": "dist/react-images.es.js",
   "author": "Jed Watson",
   "license": "MIT",
-  "keywords": ["react", "images", "carousel", "lightbox", "gallery", "modal"],
+  "keywords": [
+    "react",
+    "images",
+    "carousel",
+    "lightbox",
+    "gallery",
+    "modal"
+  ],
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
@@ -36,6 +42,7 @@
     "react-dom": "^16.2.0",
     "react-lorem-component": "^0.12.2",
     "react-router-dom": "^4.2.2",
+    "react-syntax-highlighter": "^7.0.0",
     "rollup": "^0.53.3",
     "rollup-plugin-babel": "^3.0.2",
     "rollup-plugin-commonjs": "^8.2.0",
@@ -71,7 +78,11 @@
     "start": "webpack-dev-server --progress",
     "precommit": "flow check && lint-staged"
   },
-  "files": ["dist", "lib", "src"],
+  "files": [
+    "dist",
+    "lib",
+    "src"
+  ],
   "lint-staged": {
     "*.js": "eslint"
   }

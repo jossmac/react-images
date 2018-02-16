@@ -52,8 +52,6 @@ const Footer = (props: Props) => {
     ? { background: 'linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.33))' }
     : null;
 
-  console.log('Footer', data);
-
   return (
     <Div
       css={getStyles('footer', props)}
@@ -63,7 +61,7 @@ const Footer = (props: Props) => {
       style={style}
       {...innerProps}
     >
-      {formatCaption && formatCaption(data)}
+      {formatCaption && formatCaption({ data, isFullscreen, isModal })}
       {formatCount && formatCount(props)}
     </Div>
   );

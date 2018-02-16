@@ -1,15 +1,16 @@
 // @flow
 
 import React, { Component } from 'react';
-import Carousel, { Modal, ModalGateway } from '../../../src/components';
+import Carousel, { Modal, ModalGateway } from '../../../../src/components';
 
 import { videos } from './data';
 import { Poster, Posters } from './Poster';
 import View from './View';
+import { Code, Heading } from '../../components';
 
 type Props = {};
 type State = { currentModal: number | null };
-export default class Customization extends Component<Props, State> {
+export default class AlternativeMedia extends Component<Props, State> {
   state = { currentModal: null };
   toggleModal = (index: number | null = null) => {
     this.setState({ currentModal: index });
@@ -19,10 +20,12 @@ export default class Customization extends Component<Props, State> {
 
     return (
       <div>
-        <h1>Customization</h1>
+        <Heading source="/CustomComponents/AlternativeMedia/index.js">
+          Alternative Media
+        </Heading>
         <p>
-          In this example the data passed to <code>views</code> contains source
-          and poster information. The <code>&lt;View /&gt;</code> component has
+          In this example the data passed to <Code>views</Code> contains source
+          and poster information. The <Code>&lt;View /&gt;</Code> component has
           been replaced to render an HTML5 video tag and custom controls.
         </p>
         <p>

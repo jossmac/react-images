@@ -1,4 +1,5 @@
-export { default as Customization } from './Customization';
+export { default as CustomComponents } from './CustomComponents';
+export { default as CustomStyles } from './CustomStyles';
 export { default as Home } from './Home';
 export { default as NoMatch } from './NoMatch';
 export { default as RouterGallery } from './RouterGallery';
