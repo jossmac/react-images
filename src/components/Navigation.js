@@ -2,6 +2,7 @@
 // @jsx glam
 import React, { type Node } from 'react';
 import glam from 'glam';
+
 import { Button, Nav } from '../primitives';
 import { type PropsWithStyles } from '../types';
 import { className } from '../utils';
@@ -60,7 +61,6 @@ type ItemProps = ItemState &
   };
 
 export const navigationItemCSS = ({ align }: ItemState) => ({
-  [align]: 16,
   alignItems: 'center',
   background: 'rgba(255, 255, 255, 0.2)',
   border: 0,
@@ -77,6 +77,7 @@ export const navigationItemCSS = ({ align }: ItemState) => ({
   top: '50%',
   transition: 'background-color 200ms',
   width: BUTTON_SIZE,
+  [align]: 20, // 'left' | 'right'
 
   '&:hover': {
     background: 'rgba(255, 255, 255, 0.3)',

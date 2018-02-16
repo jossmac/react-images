@@ -2,6 +2,8 @@
 // @jsx glam
 import React from 'react';
 import glam from 'glam';
+
+import { smallDevice } from './helpers';
 import { Div } from '../primitives';
 import { type PropsWithStyles } from '../types';
 import { className } from '../utils';
@@ -36,6 +38,10 @@ export const footerCSS = ({ isModal, mouseIsIdle }: State) => ({
   transform: isModal ? `translateY(${mouseIsIdle ? 10 : 0}px)` : null,
   transition: 'opacity 300ms, transform 300ms',
   zIndex: isModal ? 1 : null,
+
+  [smallDevice]: {
+    padding: isModal ? '20px 15px 15px' : '5px 0',
+  },
 });
 
 const Footer = (props: Props) => {

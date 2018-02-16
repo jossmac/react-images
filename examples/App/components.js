@@ -9,9 +9,9 @@ import { colors } from '../theme';
 const borderColor = 'hsl(0, 0%, 88%)';
 const navWidth = 180;
 const appWidth = 840;
-const appGutter = 20;
+const appGutter = 15;
 const contentGutter = 30;
-const pagePadding = 260;
+const pagePadding = 120;
 const smallDevice = '@media (max-width: 769px)';
 const largeDevice = '@media (min-width: 770px)';
 
@@ -33,10 +33,7 @@ export const PageContent = (props: any) => (
     css={{
       marginLeft: 'auto',
       marginRight: 'auto',
-      maxWidth: 640,
       paddingBottom: contentGutter,
-      paddingLeft: 20,
-      paddingRight: 20,
       paddingTop: contentGutter,
 
       [smallDevice]: {

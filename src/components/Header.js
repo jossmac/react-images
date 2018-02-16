@@ -2,6 +2,7 @@
 // @jsx glam
 import React from 'react';
 import glam from 'glam';
+
 import { Button, Div } from '../primitives';
 import { className } from '../utils';
 import { Close, FullscreenEnter, FullscreenExit } from './svg';
@@ -85,7 +86,7 @@ export const HeaderButton = (props: any) => (
       color: 'rgba(255, 255, 255, 0.75)',
       cursor: 'pointer',
       display: 'inline-flex ',
-      height: 48,
+      height: 44,
       justifyContent: 'center',
       outline: 0,
       padding: 0,

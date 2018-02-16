@@ -10,6 +10,7 @@ import { Fade, SlideUp } from './Animation';
 import { type CarouselType } from '../Carousel';
 import { Blanket, Positioner, Dialog } from './styled';
 import { defaultStyles, type StylesConfig } from '../../styles';
+import { isTouch } from '../../utils';
 
 type MouseOrKeyboardEvent = MouseEvent | KeyboardEvent;
 export type CloseType = (event: MouseOrKeyboardEvent) => void;
@@ -41,7 +42,7 @@ export type Props = {
 };
 type State = { isFullscreen: boolean };
 const defaultProps = {
-  allowFullscreen: true,
+  allowFullscreen: !isTouch(),
   closeOnBackdropClick: true,
   closeOnEsc: true,
   styles: {},

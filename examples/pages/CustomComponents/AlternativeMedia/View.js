@@ -146,7 +146,7 @@ export default class View extends Component<ViewProps, ViewState> {
           onClick={this.playOrPause}
           poster={data.poster}
           ref={this.getVideo}
-          width={width}
+          style={{ width: '100%', height: 'auto' }}
         >
           {data.urls.map((vid, idx) => (
             <source key={idx} src={vid.src} type={vid.type} />

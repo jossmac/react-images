@@ -96,7 +96,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
   header: HTMLElement;
   mounted: boolean = false;
   track: ElementRef<Track>;
-  timer: number; // flow doesn't have a SetTimeout type. node thinks it's a number...
+  timer: TimeoutID;
 
   static defaultProps = defaultProps;
 
@@ -126,6 +126,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
     if (hideControlsWhenIdle && this.container) {
       this.container.addEventListener('mousedown', this.handleMouseActivity);
       this.container.addEventListener('mousemove', this.handleMouseActivity);
+      this.container.addEventListener('touchmove', this.handleMouseActivity);
     }
     if (isModal) {
       this.focusViewFrame();
@@ -142,6 +143,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
     if (this.props.hideControlsWhenIdle && this.container) {
       this.container.removeEventListener('mousedown', this.handleMouseActivity);
       this.container.removeEventListener('mousemove', this.handleMouseActivity);
+      this.container.removeEventListener('touchmove', this.handleMouseActivity);
       this.handleMouseActivity.cancel();
     }
   }
@@ -286,7 +288,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
 
     const showPrev = this.hasPreviousView();
     const showNext = this.hasNextView();
-    const showNav = showPrev || showNext;
+    const showNav = (showPrev || showNext) && !isTouch();
 
     const index = activeIndices[0];
 

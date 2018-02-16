@@ -27,6 +27,7 @@ export const Heading = ({ source, ...props }: { source: string }) => (
       alignItems: 'baseline',
       display: 'flex ',
       justifyContent: 'space-between',
+      WebkitOverflowScrolling: 'touch',
     }}
   >
     <h3 css={{ marginBottom: 0, marginTop: '2em' }} {...props} />
