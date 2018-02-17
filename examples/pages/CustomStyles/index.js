@@ -7,6 +7,7 @@ import type { ProviderProps } from '../../ImageProvider';
 import type { RouterProps } from '../../../src/types';
 import { Code, CodeBlock } from '../components';
 import CarouselExample from './CarouselExample';
+import ModalExample from './ModalExample';
 
 type Props = ProviderProps & RouterProps;
 
@@ -103,6 +104,7 @@ const App = () => (
 );`}
         </CodeBlock>
         <CarouselExample {...this.props} />
+        <ModalExample {...this.props} />
       </div>
     );
   }
