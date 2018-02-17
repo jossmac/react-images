@@ -3,16 +3,19 @@
 import React from 'react';
 import glam from 'glam';
 
-import { Button, Div } from '../primitives';
+import { Button as Btn, Div } from '../primitives';
 import { className } from '../utils';
+import type { PropsWithStyles } from '../types';
 import { Close, FullscreenEnter, FullscreenExit } from './svg';
 
 type State = { mouseIsIdle: boolean };
-type Props = State & {
-  getStyles: any,
-  innerProps: any,
-  modalProps: any,
-};
+type Props = PropsWithStyles &
+  State & {
+    components: Object,
+    innerProps: Object,
+    isModal: boolean,
+    modalProps: Object,
+  };
 
 export const headerCSS = ({ mouseIsIdle }: State) => ({
   alignItems: 'center',
@@ -32,8 +35,9 @@ export const headerCSS = ({ mouseIsIdle }: State) => ({
 });
 
 const Header = (props: Props) => {
-  const { getStyles, innerProps, modalProps } = props;
-  if (!modalProps) return null;
+  const { components, getStyles, innerProps, isModal, modalProps } = props;
+
+  if (!isModal) return null;
 
   const {
     allowFullscreen,
@@ -42,14 +46,12 @@ const Header = (props: Props) => {
     toggleFullscreen,
   } = modalProps;
   const FsIcon = isFullscreen ? FullscreenExit : FullscreenEnter;
+  const { Button } = components;
 
   return (
     <Div
       css={getStyles('header', props)}
-      className={className('header', {
-        isFullscreen,
-        isModal: Boolean(modalProps),
-      })}
+      className={className('header', { isFullscreen, isModal })}
       // TODO glam prefixer fails on gradients
       // https://github.com/threepointone/glam/issues/35
       style={{
@@ -60,45 +62,58 @@ const Header = (props: Props) => {
       <span />
       <span>
         {allowFullscreen ? (
-          <HeaderButton
-            onClick={toggleFullscreen}
-            title={
-              isFullscreen ? 'Exit fullscreen (f)' : 'Enter fullscreen (f)'
-            }
+          <Button
+            getStyles={getStyles}
+            innerProps={{
+              onClick: toggleFullscreen,
+              title: isFullscreen
+                ? 'Exit fullscreen (f)'
+                : 'Enter fullscreen (f)',
+            }}
           >
             <FsIcon size={32} />
-          </HeaderButton>
+          </Button>
         ) : null}
-        <HeaderButton onClick={onClose} title="Close (esc)">
+        <Button
+          getStyles={getStyles}
+          innerProps={{
+            onClick: onClose,
+            title: 'Close (esc)',
+          }}
+        >
           <Close size={32} />
-        </HeaderButton>
+        </Button>
       </span>
     </Div>
   );
 };
 
-export const HeaderButton = (props: any) => (
-  <Button
-    css={{
-      alignItems: 'center',
-      background: 0,
-      border: 0,
-      color: 'rgba(255, 255, 255, 0.75)',
-      cursor: 'pointer',
-      display: 'inline-flex ',
-      height: 44,
-      justifyContent: 'center',
-      outline: 0,
-      padding: 0,
-      position: 'relative',
-      width: 44,
+export const headerButtonCSS = () => ({
+  alignItems: 'center',
+  background: 0,
+  border: 0,
+  color: 'rgba(255, 255, 255, 0.75)',
+  cursor: 'pointer',
+  display: 'inline-flex ',
+  height: 44,
+  justifyContent: 'center',
+  outline: 0,
+  padding: 0,
+  position: 'relative',
+  width: 44,
 
-      '&:hover': {
-        color: 'white',
-      },
-    }}
-    {...props}
-  />
-);
+  '&:hover': {
+    color: 'white',
+  },
+});
+
+export const HeaderButton = (props: any) => {
+  const { children, getStyles, innerProps } = props;
+  return (
+    <Btn css={getStyles('headerButton', props)} {...innerProps}>
+      {children}
+    </Btn>
+  );
+};
 
 export default Header;

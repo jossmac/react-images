@@ -11,7 +11,7 @@ import CarouselExample from './CarouselExample';
 type Props = ProviderProps & RouterProps;
 
 const keyFn = (k, i) => (
-  <span>
+  <span key={k}>
     {i ? ' ' : null}
     <Code>{k}</Code>
   </span>
@@ -19,9 +19,13 @@ const keyFn = (k, i) => (
 const carouselKeys = [
   'container',
   'footer',
+  'footerCaption',
+  'footerCount',
   'header',
+  'headerButton',
   'navigation',
   'navigationItem',
+  'view',
 ];
 const modalKeys = ['blanket', 'dialog', 'positioner'];
 
@@ -29,7 +33,7 @@ export default class CustomStyles extends Component<Props> {
   render() {
     return (
       <div>
-        <h1>Custom Styles</h1>
+        <h1>Styles</h1>
         <p>
           React-Images offers a flexible, light-weight styling framework which
           is a thin abstraction over simple javascript objects using{' '}
@@ -37,6 +41,17 @@ export default class CustomStyles extends Component<Props> {
             glam
           </a>.
         </p>
+        <CodeBlock>
+          {`/**
+* @param {Object} base -- the component's default style
+* @param {Object} state -- the component's current state e.g. \`isModal\`
+* @returns {Object}
+*/
+function styleFn(base, state) {
+  // optionally spread base styles
+  return { ...base, color: state.isModal ? 'blue' : 'red' };
+}`}
+        </CodeBlock>
         <h3>Style Object</h3>
         <p>
           Each component is keyed, and ships with default styles. The
@@ -52,12 +67,12 @@ export default class CustomStyles extends Component<Props> {
         <p>{carouselKeys.map(keyFn)}</p>
         <h6>Modal Keys</h6>
         <p>{modalKeys.map(keyFn)}</p>
-        <h3>Spreading and State</h3>
+        <h3>Base and State</h3>
         <p>
-          Spreading the default styles into your returned object let's you
-          extend it however you like while maintaining existing styles.
-          Alternatively, you can omit the default and completely take control of
-          the component's styles.
+          Spreading the base styles into your returned object let's you extend
+          it however you like while maintaining existing styles. Alternatively,
+          you can omit the base and completely take control of the component's
+          styles.
         </p>
         <CodeBlock>
           {`const customStyles = {

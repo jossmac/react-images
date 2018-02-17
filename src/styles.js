@@ -4,8 +4,12 @@
 import { containerCSS } from './components/Container';
 import { navigationCSS, navigationItemCSS } from './components/Navigation';
 import { viewCSS } from './components/View';
-import { headerCSS } from './components/Header';
-import { footerCSS } from './components/Footer';
+import { headerCSS, headerButtonCSS } from './components/Header';
+import {
+  footerCSS,
+  footerCaptionCSS,
+  footerCountCSS,
+} from './components/Footer';
 
 // Modal
 import {
@@ -20,7 +24,10 @@ type StyleDef = Props => Object;
 export type Styles = {
   container: StyleDef,
   footer: StyleDef,
+  footerCaption: StyleDef,
+  footerCount: StyleDef,
   header: StyleDef,
+  headerButton: StyleDef,
   navigation: StyleDef,
   navigationItem: StyleDef,
   view: StyleDef,
@@ -35,7 +42,10 @@ export type GetStyles = (string, Props) => {};
 export const defaultStyles: Styles = {
   container: containerCSS,
   footer: footerCSS,
+  footerCaption: footerCaptionCSS,
+  footerCount: footerCountCSS,
   header: headerCSS,
+  headerButton: headerButtonCSS,
   navigation: navigationCSS,
   navigationItem: navigationItemCSS,
   view: viewCSS,

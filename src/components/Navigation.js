@@ -5,7 +5,7 @@ import glam from 'glam';
 
 import { Button, Nav } from '../primitives';
 import { type PropsWithStyles } from '../types';
-import { className } from '../utils';
+import { className, isTouch } from '../utils';
 import { ChevronLeft, ChevronRight } from './svg';
 
 // ==============================
@@ -30,14 +30,14 @@ export const navigationCSS = ({ mouseIsIdle }: NavState) => ({
 
 export const Navigation = (props: NavProps) => {
   const { children, getStyles, isFullscreen, isModal } = props;
-  return (
+  return !isTouch() ? (
     <Nav
       css={getStyles('navigation', props)}
       className={className('navigation', { isFullscreen, isModal })}
     >
       {children}
     </Nav>
-  );
+  ) : null;
 };
 
 // ==============================

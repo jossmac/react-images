@@ -64,7 +64,7 @@ export const CodeBlock = ({ children }: { children: Node }) => {
       style={tomorrow}
       customStyle={{
         borderRadius: 4,
-        fontSize: 13,
+        fontSize: 12,
         marginTop: '2em',
       }}
     >

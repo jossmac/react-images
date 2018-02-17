@@ -10,7 +10,7 @@ import {
   CustomStyles,
   Home,
   NoMatch,
-  RouterGallery,
+  Patterns,
 } from '../pages';
 import ImageRoute from '../ImageRoute';
 import withImages, { type ProviderProps } from '../ImageProvider';
@@ -20,13 +20,14 @@ import {
   AppContent,
   Nav,
   NavItem,
+  ScrollRestoration,
 } from './components';
 
 const links = [
-  { label: 'Home', value: '/' },
-  { label: 'Router Gallery', value: '/router-gallery' },
-  { label: 'Custom Components', value: '/custom-components' },
-  { label: 'Custom Styles', value: '/custom-styles' },
+  { label: '🏠 Home', value: '/' },
+  { label: '🏗 Components', value: '/components' },
+  { label: '🎨 Styles', value: '/styles' },
+  { label: '🎓 Patterns', value: '/patterns' },
 ];
 
 class App extends Component<*> {
@@ -35,7 +36,7 @@ class App extends Component<*> {
     const routeProps = (this.routeProps = this.props);
     return (
       <HashRouter>
-        <Route>
+        <ScrollRestoration>
           <AppContainer>
             <Route
               render={({ location }) => (
@@ -60,18 +61,18 @@ class App extends Component<*> {
                   <ImageRoute exact path="/" component={Home} {...routeProps} />
                   <ImageRoute
                     exact
-                    path="/custom-styles"
+                    path="/styles"
                     component={CustomStyles}
                     {...routeProps}
                   />
                   <ImageRoute
-                    path="/router-gallery/:currentView?"
-                    component={RouterGallery}
+                    path="/patterns/:currentView?"
+                    component={Patterns}
                     {...routeProps}
                   />
                   <Route
                     exact
-                    path="/custom-components"
+                    path="/components"
                     component={CustomComponents}
                   />
                   <Route component={NoMatch} />
@@ -79,7 +80,7 @@ class App extends Component<*> {
               </PageContent>
             </AppContent>
           </AppContainer>
-        </Route>
+        </ScrollRestoration>
       </HashRouter>
     );
   }

@@ -1,19 +1,17 @@
 // @flow
 // @jsx glam
-import React from 'react';
 import glam from 'glam';
+import React from 'react';
 
 import { smallDevice } from './helpers';
-import { Div } from '../primitives';
-import { type PropsWithStyles } from '../types';
+import { A, Div, Span } from '../primitives';
+import type { PropsWithStyles, ViewType } from '../types';
 import { className } from '../utils';
-import { formatCaption as fCap, formatCount as fCnt } from '../builtins';
 
 type State = { isModal: boolean, mouseIsIdle: boolean };
 type Props = State &
   PropsWithStyles & {
-    formatCaption: typeof fCap,
-    formatCount: typeof fCnt,
+    components: Object,
     data: any,
     innerProps: any,
     isFullscreen: boolean,
@@ -44,32 +42,96 @@ export const footerCSS = ({ isModal, mouseIsIdle }: State) => ({
   },
 });
 
+export const FooterContainer = Div;
+
 const Footer = (props: Props) => {
-  const {
-    data,
-    formatCaption,
-    formatCount,
-    getStyles,
-    innerProps,
-    isFullscreen,
-    isModal,
-  } = props;
+  const { components, getStyles, innerProps, isFullscreen, isModal } = props;
+
   const style = isModal
     ? { background: 'linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.33))' }
     : null;
 
+  const state = { isFullscreen, isModal };
+  const cn = {
+    container: className('footer', state),
+    caption: className('footer__caption', state),
+    count: className('footer__count', state),
+  };
+  const css = {
+    container: getStyles('footer', props),
+    caption: getStyles('footerCaption', props),
+    count: getStyles('footerCount', props),
+  };
+  const { Container, Caption, Count } = components;
+
   return (
-    <Div
-      css={getStyles('footer', props)}
-      className={className('footer', { isFullscreen, isModal })}
+    <Container
+      css={css.container}
+      className={cn.container}
       // TODO glam prefixer fails on gradients
       // https://github.com/threepointone/glam/issues/35
       style={style}
       {...innerProps}
     >
-      {formatCaption && formatCaption({ data, isFullscreen, isModal })}
-      {formatCount && formatCount(props)}
-    </Div>
+      <Caption css={css.caption} className={cn.caption} {...props} />
+      <Count css={css.count} className={cn.count} {...props} />
+    </Container>
+  );
+};
+
+// ==============================
+// Inner Elements
+// ==============================
+
+const Anchor = ({ isModal, ...props }) => (
+  <A
+    css={{
+      color: isModal ? 'white' : 'inherit',
+      textDecoration: 'none',
+
+      ':hover': { textDecoration: 'underline' },
+    }}
+    {...props}
+  />
+);
+
+function photoUrl(username) {
+  const id = 'react-images';
+  return `https://unsplash.com/${username}?utm_source=${id}&utm_medium=referral`;
+}
+
+export const footerCaptionCSS = () => ({});
+
+export const FooterCaption = (props: ViewType) => {
+  const { data, getStyles, isModal } = props;
+  const { description, photographer, username } = data;
+  return (
+    <Span css={getStyles('footerCaption', props)}>
+      {photographer && username ? (
+        <strong>
+          <Anchor href={photoUrl(username)} target="_blank" isModal={isModal}>
+            {photographer}{' '}
+          </Anchor>
+        </strong>
+      ) : null}
+      {description}
+    </Span>
+  );
+};
+
+export const footerCountCSS = () => ({ flexShrink: 0, marginLeft: '1em' });
+
+export const FooterCount = (props: ViewType) => {
+  const { activeIndices, getStyles, views } = props;
+  const activeView = activeIndices[0] + 1;
+  const totalViews = views.length;
+
+  if (!activeView || !totalViews) return null;
+
+  return (
+    <Span css={getStyles('footerCount', props)}>
+      {activeView} of {totalViews}
+    </Span>
   );
 };
 

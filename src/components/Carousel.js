@@ -16,7 +16,6 @@ import {
 import { defaultStyles, type StylesConfig } from '../styles';
 import { type ModalProps } from './Modal/Modal';
 import { className, isTouch } from '../utils';
-import { formatCaption, formatCount } from '../builtins';
 import { type ViewsType } from '../types';
 
 type SpringConfig = { [key: string]: number };
@@ -32,10 +31,6 @@ export type CarouselProps = {
     springConfig: SpringConfig,
     tag: any,
   },
-  /* Formatter for the the caption text in the footer */
-  formatCaption?: typeof formatCaption,
-  /* Formatter for the the count text in the footer */
-  formatCount?: typeof formatCount,
   /* Hide controls when the user is idle (listens to mouse move) */
   hideControlsWhenIdle?: boolean,
   /* When envoked within a modal, props are cloned from the modal */
@@ -76,8 +71,6 @@ export type CarouselState = {
   mouseIsIdle: boolean,
 };
 const defaultProps = {
-  formatCaption: formatCaption,
-  formatCount: formatCount,
   hideControlsWhenIdle: true,
   styles: {},
   trackProps: {
@@ -247,6 +240,69 @@ class Carousel extends Component<CarouselProps, CarouselState> {
     }
   };
 
+  // ==============================
+  // Renderers
+  // ==============================
+
+  renderNavigation = () => {
+    const { Navigation, NavigationItem } = this.components;
+    const { commonProps } = this;
+
+    const showPrev = this.hasPreviousView();
+    const showNext = this.hasNextView();
+    const showNav = (showPrev || showNext) && Navigation;
+
+    return showNav ? (
+      <Navigation {...commonProps}>
+        {showPrev && (
+          <NavigationItem
+            {...commonProps}
+            align="left"
+            innerProps={{
+              onClick: this.prev,
+              title: 'Prev',
+            }}
+          />
+        )}
+        {showNext && (
+          <NavigationItem
+            {...commonProps}
+            align="right"
+            innerProps={{
+              onClick: this.next,
+              title: 'Next',
+            }}
+          />
+        )}
+      </Navigation>
+    ) : null;
+  };
+  renderFooter = () => {
+    const {
+      Footer,
+      FooterContainer,
+      FooterCaption,
+      FooterCount,
+    } = this.components;
+    const { views } = this.props;
+    const { activeIndices } = this.state;
+    const { commonProps } = this;
+    const index = activeIndices[0];
+
+    return Footer ? (
+      <Footer
+        {...commonProps}
+        components={{
+          Container: FooterContainer,
+          Caption: FooterCaption,
+          Count: FooterCount,
+        }}
+        data={views[index]}
+        innerProps={{ innerRef: this.getFooter }}
+      />
+    ) : null;
+  };
+
   getCommonProps() {
     const { frameProps, trackProps, modalProps, views } = this.props;
     const isModal = Boolean(modalProps);
@@ -274,28 +330,18 @@ class Carousel extends Component<CarouselProps, CarouselState> {
     };
   }
   render() {
-    const {
-      Container,
-      Footer,
-      Header,
-      Navigation,
-      NavigationItem,
-      View,
-    } = this.components;
+    const { Container, Header, HeaderButton, View } = this.components;
     const { frameProps, trackProps, views } = this.props;
-    const { activeIndices } = this.state;
     const commonProps = (this.commonProps = this.getCommonProps());
-
-    const showPrev = this.hasPreviousView();
-    const showNext = this.hasNextView();
-    const showNav = (showPrev || showNext) && !isTouch();
-
-    const index = activeIndices[0];
 
     return (
       <Container {...commonProps} innerProps={{ innerRef: this.getContainer }}>
         {Header ? (
-          <Header {...commonProps} innerProps={{ innerRef: this.getHeader }} />
+          <Header
+            {...commonProps}
+            components={{ Button: HeaderButton }}
+            innerProps={{ innerRef: this.getHeader }}
+          />
         ) : null}
         <ViewPager
           tag="main"
@@ -322,40 +368,9 @@ class Carousel extends Component<CarouselProps, CarouselState> {
                 ))}
             </Track>
           </Frame>
-          {showNav ? (
-            <Navigation {...commonProps}>
-              {showPrev && (
-                <NavigationItem
-                  {...commonProps}
-                  align="left"
-                  innerProps={{
-                    onClick: this.prev,
-                    title: 'Prev',
-                  }}
-                />
-              )}
-              {showNext && (
-                <NavigationItem
-                  {...commonProps}
-                  align="right"
-                  innerProps={{
-                    onClick: this.next,
-                    title: 'Next',
-                  }}
-                />
-              )}
-            </Navigation>
-          ) : null}
+          {this.renderNavigation()}
         </ViewPager>
-        {Footer ? (
-          <Footer
-            {...commonProps}
-            formatCaption={this.props.formatCaption}
-            formatCount={this.props.formatCount}
-            data={views[index]}
-            innerProps={{ innerRef: this.getFooter }}
-          />
-        ) : null}
+        {this.renderFooter()}
       </Container>
     );
   }

@@ -3,10 +3,10 @@
 import glam from 'glam';
 import React, { Component } from 'react';
 
-import Carousel from '../../src/components';
-import type { ProviderProps } from '../ImageProvider';
-import type { RouterProps } from '../../src/types';
-import { Code } from '../components';
+import Carousel from '../../../src/components';
+import type { ProviderProps } from '../../ImageProvider';
+import type { RouterProps } from '../../../src/types';
+import { Code, Heading } from '../components';
 
 type IndicesType = Array<number>;
 type Props = ProviderProps & RouterProps;
@@ -15,7 +15,7 @@ export default class RouterGallery extends Component<Props> {
   handleViewChange = (currentView: IndicesType) => {
     const { history } = this.props;
 
-    history.push(`/router-gallery/${currentView[0].toString()}`);
+    history.push(`/patterns/${currentView[0].toString()}`);
   };
   getCurrentView() {
     const { match } = this.props;
@@ -26,7 +26,7 @@ export default class RouterGallery extends Component<Props> {
 
     return (
       <div>
-        <h1>Router Gallery</h1>
+        <Heading source="/Patterns/RouterGallery">Router Gallery</Heading>
         <p>
           In this example we sync the <Code>currentView</Code> with the URL
           using react-router's <Code>history.push</Code> method

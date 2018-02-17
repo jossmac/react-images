@@ -9,7 +9,7 @@ export default class CustomComponents extends Component<*> {
   render() {
     return (
       <div>
-        <h1>Custom Components</h1>
+        <h1>Components</h1>
         <p>
           The main feature of this library is providing consumers with the
           building blocks necessary to create <em>their</em> component.
