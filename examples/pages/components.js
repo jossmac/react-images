@@ -9,6 +9,7 @@ import SyntaxHighlighter, {
 } from 'react-syntax-highlighter/prism-light';
 import jsx from 'react-syntax-highlighter/languages/prism/jsx';
 import { tomorrow } from 'react-syntax-highlighter/styles/prism';
+import { colors } from '../theme';
 
 registerLanguage('jsx', jsx);
 
@@ -32,7 +33,21 @@ export const Heading = ({ source, ...props }: { source: string }) => (
   >
     <h3 css={{ marginBottom: 0, marginTop: '2em' }} {...props} />
     {source ? (
-      <a href={headingLink(source)} target="_blank">
+      <a
+        href={headingLink(source)}
+        target="_blank"
+        css={{
+          color: colors.primary,
+          borderBottom: '1px solid rgba(0, 215, 255, 0.25)',
+          color: '#00d7ff',
+          textDecoration: 'none',
+
+          ':hover': {
+            borderBottomColor: 'rgba(0, 215, 255, 0.66)',
+            textDecoration: 'none',
+          },
+        }}
+      >
         Source
       </a>
     ) : null}
@@ -46,8 +61,9 @@ export const Heading = ({ source, ...props }: { source: string }) => (
 export const Code = (props: any) => (
   <code
     css={{
-      backgroundColor: 'rgba(27,31,35,0.05)',
+      backgroundColor: 'rgba(0, 215, 255, 0.1)',
       borderRadius: 3,
+      color: colors.N100,
       fontSize: '85%',
       fontFamily: 'Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace',
       margin: 0,

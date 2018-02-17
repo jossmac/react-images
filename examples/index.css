@@ -2,7 +2,7 @@ body {
   -moz-font-feature-settings: 'liga' on;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  color: #24292e;
+  color: #253858;
   font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica,
     sans-serif;
   font-style: normal;
@@ -12,12 +12,22 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-a {
+/*  explicit anchor styles: don't interfere with Carousel or Modals styles */
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a,
+ul a,
+p a {
+  border-bottom: 1px solid rgba(0, 215, 255, 0.25);
   color: #00d7ff;
   text-decoration: none;
 }
 a:hover {
-  text-decoration: underline;
+  border-bottom-color: rgba(0, 215, 255, 0.66);
+  text-decoration: none;
 }
 
 p,
@@ -26,6 +36,13 @@ ol {
   line-height: 1.5;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5 {
+  color: #091e42;
+}
 h1 {
   margin-top: 0;
 }

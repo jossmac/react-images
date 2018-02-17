@@ -4,6 +4,7 @@
 import glam from 'glam';
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import { colors } from '../theme';
 
 const navWidth = 180;
 const appWidth = 840;
@@ -88,7 +89,8 @@ export const Nav = (props: any) => (
 export const NavItem = ({ selected, ...props }: { selected: boolean }) => (
   <Link
     css={{
-      color: selected ? 'hsl(0, 0%, 0%)' : 'hsl(0, 0%, 50%)',
+      border: 0,
+      color: selected ? colors.N100 : colors.N60,
       display: 'inline-block',
       fontWeight: selected ? 500 : null,
       padding: appGutter,
@@ -97,7 +99,7 @@ export const NavItem = ({ selected, ...props }: { selected: boolean }) => (
       whiteSpace: 'nowrap',
 
       ':hover, :active': {
-        color: 'hsl(0, 0%, 20%)',
+        color: colors.N80,
         textDecoration: 'none',
       },
 

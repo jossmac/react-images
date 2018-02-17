@@ -24,9 +24,10 @@ export default class ModalExample extends Component<ProviderProps, State> {
       <div>
         <Heading source="/CustomStyles/ModalExample.js">Modal Example</Heading>
         <p>
-          In this example some components are extended to appear like a
-          polaroid. Various elements react to <Code>mouseIsIdle</Code> by
-          dimming, changing color or applying a CSS filter.
+          In this example the <Code>blanket</Code>, <Code>footer</Code>, and{' '}
+          <Code>header</Code> have been <em>inverted</em> from the default style
+          of white on black. The dialog has been given a <Code>maxWidth</Code>{' '}
+          centering the entire element.
         </p>
 
         {!isLoading ? (
@@ -36,27 +37,30 @@ export default class ModalExample extends Component<ProviderProps, State> {
         <ModalGateway>
           {!isLoading && lightboxIsOpen ? (
             <Modal
+              allowFullscreen={false}
               onClose={this.toggleLightbox}
               styles={{
                 blanket: base => ({
                   ...base,
-                  backgroundColor: '#fafafa',
+                  backgroundColor: 'rgba(255,255,255,0.85)',
                 }),
                 dialog: base => ({
                   ...base,
-                  maxWidth: 740,
+                  maxWidth: 640,
                 }),
               }}
             >
               <Carousel
+                frameProps={{ autoSize: 'height' }}
                 views={images}
                 styles={{
                   footer: base => ({
                     ...base,
-                    background: '#fafafa !important',
-                    borderTop: '1px solid #e5e5e5',
+                    background: 'none !important',
                     color: '#666',
+                    padding: 0,
                     paddingTop: 20,
+                    position: 'static',
 
                     '& a': {
                       color: 'black',
@@ -64,9 +68,10 @@ export default class ModalExample extends Component<ProviderProps, State> {
                   }),
                   header: base => ({
                     ...base,
-                    background: '#fafafa !important',
-                    borderBottom: '1px solid #e5e5e5',
+                    background: 'none !important',
+                    padding: 0,
                     paddingBottom: 10,
+                    position: 'static',
                   }),
                   headerButton: base => ({
                     ...base,
