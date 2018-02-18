@@ -38,7 +38,7 @@ export default class CustomStyles extends Component<Props> {
   render() {
     return (
       <div>
-        <Title>🎨 Styles</Title>
+        <Title>Styles</Title>
         <p>
           React-Images offers a flexible, light-weight styling framework which
           is a thin abstraction over simple javascript objects using{' '}
@@ -65,8 +65,8 @@ function styleFn(base, state) {
         </p>
         <p>
           The second argument is the current state of the carousel, features
-          like <Code>interactionIsIdle</Code>, <Code>isModal</Code> etc. allowing you
-          to implement dynamic styles for each of the components.
+          like <Code>interactionIsIdle</Code>, <Code>isModal</Code> etc.
+          allowing you to implement dynamic styles for each of the components.
         </p>
         <h6>Carousel Keys</h6>
         <p>{carouselKeys.map(keyFn)}</p>

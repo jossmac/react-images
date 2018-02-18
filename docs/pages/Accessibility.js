@@ -42,7 +42,7 @@ export default class Accessibility extends Component<ProviderProps, State> {
 
     return (
       <div>
-        <Title>💖 Accessibility</Title>
+        <Title>Accessibility</Title>
         <p>
           React-Images comes with accessible features out-of-the box. Keyboard
           support, roles, and aria-attribution on the applicable elements.

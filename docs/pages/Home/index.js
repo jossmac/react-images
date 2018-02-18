@@ -32,7 +32,7 @@ export default class Home extends Component<ProviderProps, State> {
 
     return (
       <div>
-        <Title>🌄 React Images</Title>
+        <Title>React Images</Title>
         <p>
           A simple, responsive Lightbox component for ReactJS to display an
           array of images. Images courtesy of{' '}
