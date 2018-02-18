@@ -23,8 +23,9 @@ export const Title = (props: any) => (
   <h1
     css={{
       fontSize: '3.2em',
+      fontWeight: 300,
 
-      [smallDevice]: { fontSize: '1.8em' },
+      [smallDevice]: { fontSize: '2em' },
     }}
     {...props}
   />
