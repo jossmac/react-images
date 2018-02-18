@@ -17,13 +17,13 @@ module.exports = {
       rollup: 'rollup --config',
       babel: 'babel src -d lib',
       watch: 'babel src -d lib -w',
-      examples: series(rimraf('examples/dist'), 'webpack --progress -p'),
+      docs: series(rimraf('docs/dist'), 'webpack --progress -p'),
     },
     publish: {
       default: series(
-        'nps build.examples',
-        'gh-pages -d examples/dist',
-        rimraf('examples/dist')
+        'nps build.docs',
+        'gh-pages -d docs/dist',
+        rimraf('docs/dist')
       ),
     },
   },
