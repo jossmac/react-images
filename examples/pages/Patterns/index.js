@@ -10,7 +10,7 @@ export default class Patterns extends Component<*> {
   render() {
     return (
       <div>
-        <Title>🎓 Patterns</Title>
+        <Title>🤖 Patterns</Title>
         <p>
           A collection of common patterns you may like to implement with
           React-Images.

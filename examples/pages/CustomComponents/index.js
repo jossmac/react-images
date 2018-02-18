@@ -14,14 +14,15 @@ const propFn = k => {
   );
 };
 const commonProps = [
-  'activeIndices',
   'carouselProps',
+  'currentIndex',
+  'currentView',
   'frameProps',
   'getStyles',
   'isFullscreen',
   'isModal',
   'modalProps',
-  'mouseIsIdle',
+  'interactionIsIdle',
   'trackProps',
   'views',
 ];

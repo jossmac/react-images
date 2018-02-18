@@ -11,24 +11,24 @@ import { features } from './data';
 import { Code, CodeBlock, Title } from '../components';
 
 type State = {
-  currentView?: number,
+  selectedIndex?: number,
   lightboxIsOpen: boolean,
 };
 
 export default class Home extends Component<ProviderProps, State> {
   state = {
-    currentView: undefined,
+    selectedIndex: 0,
     lightboxIsOpen: false,
   };
-  toggleLightbox = (currentView: number) => {
+  toggleLightbox = (selectedIndex: number) => {
     this.setState(state => ({
       lightboxIsOpen: !state.lightboxIsOpen,
-      currentView,
+      selectedIndex,
     }));
   };
   render() {
     const { images, isLoading } = this.props;
-    const { currentView, lightboxIsOpen } = this.state;
+    const { selectedIndex, lightboxIsOpen } = this.state;
 
     return (
       <div>
@@ -100,14 +100,22 @@ class Component extends React.Component {
   }
 }`}</CodeBlock>
 
-        <h2>Example</h2>
+        <h2>Example Gallery</h2>
+        <p>
+          Below is a pretty typical implementation; the index of the selected
+          thumbnail is passed to the <Code>currentIndex</Code> property of the
+          carousel. All of the components, styles, getters, animations and
+          functionality are the defaults provided by the library.
+        </p>
         {!isLoading ? (
           <Gallery>
             {images.map((data, j) => {
               return (
-                <Image key={data.username}>
+                <Image
+                  onClick={() => this.toggleLightbox(j)}
+                  key={data.username}
+                >
                   <img
-                    onClick={() => this.toggleLightbox(j)}
                     src={data.urls.thumb}
                     alt={data.caption}
                     css={{
@@ -126,8 +134,8 @@ class Component extends React.Component {
           {lightboxIsOpen && !isLoading ? (
             <Modal onClose={this.toggleLightbox}>
               <Carousel
+                currentIndex={selectedIndex}
                 frameProps={{ autoSize: 'height' }}
-                trackProps={{ currentView }}
                 views={images}
               />
             </Modal>

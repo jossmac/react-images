@@ -31,7 +31,9 @@ export default class ModalExample extends Component<ProviderProps, State> {
         </p>
 
         {!isLoading ? (
-          <button onClick={this.toggleLightbox}>Open Modal</button>
+          <button type="button" onClick={this.toggleLightbox}>
+            Open Modal
+          </button>
         ) : null}
 
         <ModalGateway>

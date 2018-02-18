@@ -18,7 +18,7 @@ export default class CarouselExample extends Component<ProviderProps> {
         </Heading>
         <p>
           In this example some components are extended to appear like a
-          polaroid. Various elements react to <Code>mouseIsIdle</Code> by
+          polaroid. Various elements react to <Code>interactionIsIdle</Code> by
           dimming, changing color or applying a CSS filter.
         </p>
         {!isLoading ? (
@@ -39,7 +39,7 @@ export default class CarouselExample extends Component<ProviderProps> {
                 paddingBottom: 0,
 
                 '& a': {
-                  color: state.mouseIsIdle ? 'black' : '#00d7ff',
+                  color: state.interactionIsIdle ? 'black' : '#00d7ff',
                   transition: 'color 300ms',
                 },
                 '& strong': { textTransform: 'uppercase' },
@@ -58,7 +58,7 @@ export default class CarouselExample extends Component<ProviderProps> {
               }),
               view: (base, state) => ({
                 ...base,
-                filter: state.mouseIsIdle ? 'grayscale(100%)' : null,
+                filter: state.interactionIsIdle ? 'grayscale(100%)' : null,
                 paddingBottom: `${10 / 16 * 100}%`,
                 overflow: 'hidden',
                 position: 'relative',

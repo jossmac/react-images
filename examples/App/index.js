@@ -6,6 +6,7 @@ import React, { Component } from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
 
 import {
+  Accessibility,
   CustomComponents,
   CustomStyles,
   Home,
@@ -24,10 +25,11 @@ import {
 } from './components';
 
 const links = [
-  { icon: '🏠', label: 'Home', path: '/' },
+  { icon: '🌄', label: 'Intro', path: '/' },
   { icon: '🏗', label: 'Components', path: '/components' },
   { icon: '🎨', label: 'Styles', path: '/styles' },
-  { icon: '🎓', label: 'Patterns', path: '/patterns' },
+  { icon: '💖', label: 'Accessibility', path: '/accessibility' },
+  { icon: '🤖', label: 'Patterns', path: '/patterns' },
 ];
 
 class App extends Component<*> {
@@ -70,15 +72,21 @@ class App extends Component<*> {
                     component={CustomStyles}
                     {...routeProps}
                   />
-                  <ImageRoute
-                    path="/patterns/:currentView?"
-                    component={Patterns}
-                    {...routeProps}
-                  />
                   <Route
                     exact
                     path="/components"
                     component={CustomComponents}
+                  />
+                  <ImageRoute
+                    exact
+                    path="/accessibility"
+                    component={Accessibility}
+                    {...routeProps}
+                  />
+                  <ImageRoute
+                    path="/patterns/:currentIndex?"
+                    component={Patterns}
+                    {...routeProps}
                   />
                   <Route component={NoMatch} />
                 </Switch>

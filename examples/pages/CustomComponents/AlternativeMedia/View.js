@@ -19,9 +19,9 @@ export type ViewShape = {
 };
 
 type ViewProps = {
-  activeIndices: Array<number>,
+  currentIndex: number,
   data: ViewShape,
-  mouseIsIdle: boolean,
+  interactionIsIdle: boolean,
 };
 type ViewState = { paused: boolean, progress: number };
 
@@ -29,14 +29,14 @@ function calculateProgress({ currentTime, duration }) {
   return 100 / duration * currentTime;
 }
 
-const Footer = ({ mouseIsIdle, ...props }) => (
+const Footer = ({ interactionIsIdle, ...props }) => (
   <div
     css={{
       alignItems: 'center',
       bottom: 0,
       display: 'flex ',
       left: 0,
-      opacity: mouseIsIdle ? 0 : 1,
+      opacity: interactionIsIdle ? 0 : 1,
       padding: 10,
       paddingRight: 15,
       position: 'absolute',
@@ -51,6 +51,7 @@ const Footer = ({ mouseIsIdle, ...props }) => (
 );
 const Button = props => (
   <button
+    type="button"
     css={{
       background: 0,
       border: 0,
@@ -84,7 +85,7 @@ export default class View extends Component<ViewProps, ViewState> {
     this.video.removeEventListener('timeupdate', this.handleTimeUpdate);
   }
   componentWillReceiveProps(nextProps: ViewProps) {
-    if (this.props.activeIndices !== nextProps.activeIndices) {
+    if (this.props.currentIndex !== nextProps.currentIndex) {
       this.playOrPause('pause');
     }
   }
@@ -124,7 +125,7 @@ export default class View extends Component<ViewProps, ViewState> {
     this.video = ref;
   };
   render() {
-    const { data, mouseIsIdle } = this.props;
+    const { data, interactionIsIdle } = this.props;
     const { progress } = this.state;
     const width = 854;
 
@@ -154,7 +155,7 @@ export default class View extends Component<ViewProps, ViewState> {
           Your browser does not support HTML5 video.
         </video>
         {this.video ? (
-          <Footer mouseIsIdle={mouseIsIdle}>
+          <Footer interactionIsIdle={interactionIsIdle}>
             <Button onClick={this.playOrPause}>
               <Icon type={this.state.paused ? 'play' : 'pause'} size={32} />
             </Button>

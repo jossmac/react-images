@@ -1,3 +1,4 @@
+export { default as Accessibility } from './Accessibility';
 export { default as CustomComponents } from './CustomComponents';
 export { default as CustomStyles } from './CustomStyles';
 export { default as Home } from './Home';

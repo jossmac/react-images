@@ -57,9 +57,10 @@ export const AppContent = (props: any) => (
   />
 );
 export const Nav = ({ children }: { children: Node }) => (
-  <div
+  <nav
     css={{
       [smallDevice]: {
+        alignItems: 'center',
         backgroundColor: 'rgba(255, 255, 255, 0.96)',
         boxShadow: 'inset 0 -1px 0 rgba(0, 0, 0, 0.1)',
         display: 'flex ',
@@ -85,7 +86,7 @@ export const Nav = ({ children }: { children: Node }) => (
   >
     {children}
     <GithubButton />
-  </div>
+  </nav>
 );
 
 type ItemProps = {
@@ -94,39 +95,50 @@ type ItemProps = {
   isSelected: boolean,
   to: string,
 };
-export const NavItem = ({ children, icon, isSelected, to }: ItemProps) => (
-  <Link
-    to={to}
-    css={{
-      border: 0,
-      color: isSelected ? colors.N100 : colors.N60,
-      display: 'inline-block',
-      fontWeight: isSelected ? 500 : null,
-      position: 'relative',
-      textDecoration: 'none',
-      whiteSpace: 'nowrap',
-
-      ':hover, :active': {
-        color: colors.N80,
+export const NavItem = ({ children, icon, isSelected, to }: ItemProps) => {
+  const attrs = isSelected ? { 'aria-current': 'page' } : {};
+  return (
+    <Link
+      {...attrs}
+      to={to}
+      css={{
+        alignItems: 'center',
+        border: 0,
+        color: isSelected ? colors.N100 : colors.N60,
+        fontWeight: isSelected ? 500 : null,
+        position: 'relative',
         textDecoration: 'none',
-      },
+        whiteSpace: 'nowrap',
+        verticalAlign: 'middle',
 
-      [smallDevice]: {
-        boxShadow: isSelected ? 'inset 0 -2px 0 black' : null,
-        padding: `8px ${appGutter}px`,
-      },
+        ':hover, :active': {
+          color: colors.N80,
+          textDecoration: 'none',
+        },
 
-      [largeDevice]: {
-        backgroundColor: isSelected ? 'white' : 'transparent',
-        display: 'block',
-        padding: '8px 20px 8px 0',
-      },
-    }}
-  >
-    <span css={{ fontSize: '1.33em', marginRight: '0.5em' }}>{icon}</span>
-    {children}
-  </Link>
-);
+        [smallDevice]: {
+          boxShadow: isSelected ? 'inset 0 -2px 0 black' : null,
+          display: 'inline-flex ',
+          padding: `8px ${appGutter}px`,
+        },
+
+        [largeDevice]: {
+          backgroundColor: isSelected ? 'white' : 'transparent',
+          display: 'flex ',
+          padding: '8px 20px 8px 0',
+        },
+      }}
+    >
+      <span
+        css={{ fontSize: '1.33em', marginRight: '0.5em' }}
+        role="presentation"
+      >
+        {icon}
+      </span>
+      {children}
+    </Link>
+  );
+};
 
 const GithubButton = () => {
   const size = window.innerWidth > 769 ? 'large' : null;
@@ -135,7 +147,8 @@ const GithubButton = () => {
     <div
       css={{
         [smallDevice]: {
-          padding: appGutter,
+          paddingLeft: appGutter,
+          paddingRight: appGutter,
         },
         [largeDevice]: {
           position: 'fixed',

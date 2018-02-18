@@ -65,7 +65,7 @@ function styleFn(base, state) {
         </p>
         <p>
           The second argument is the current state of the carousel, features
-          like <Code>mouseIsIdle</Code>, <Code>isModal</Code> etc. allowing you
+          like <Code>interactionIsIdle</Code>, <Code>isModal</Code> etc. allowing you
           to implement dynamic styles for each of the components.
         </p>
         <h6>Carousel Keys</h6>
@@ -93,7 +93,7 @@ function styleFn(base, state) {
     width: 600,
   })
   footer: (base, state) => {
-    const opacity = state.mouseIsIdle ? 0 : 1;
+    const opacity = state.interactionIsIdle ? 0 : 1;
     const transition = 'opacity 300ms';
 
     return { ...base, opacity, transition };

@@ -24,7 +24,7 @@ export const Posters = (props: any) => (
 
 export const Poster = ({ data, onClick }: Props) => (
   <div
-    role="image"
+    role="img"
     css={{
       backgroundColor: '#eee',
       backgroundImage: `url(${data.poster})`,
@@ -40,6 +40,7 @@ export const Poster = ({ data, onClick }: Props) => (
   >
     <button
       onClick={onClick}
+      type="button"
       css={{
         background: 0,
         border: 0,
