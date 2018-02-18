@@ -8,19 +8,19 @@ import { A, Div, Span } from '../primitives';
 import type { PropsWithStyles, ViewType } from '../types';
 import { className } from '../utils';
 
-type State = { isModal: boolean, mouseIsIdle: boolean };
+type State = { isModal: boolean, interactionIsIdle: boolean };
 type Props = State &
   PropsWithStyles & {
     components: Object,
-    data: any,
+    currentView: ViewType,
     innerProps: any,
     isFullscreen: boolean,
     isModal: boolean,
     modalProps: any,
-    mouseIsIdle: any,
+    interactionIsIdle: any,
   };
 
-export const footerCSS = ({ isModal, mouseIsIdle }: State) => ({
+export const footerCSS = ({ isModal, interactionIsIdle }: State) => ({
   alignItems: 'top',
   bottom: isModal ? 0 : null,
   color: isModal ? 'rgba(255, 255, 255, 0.9)' : '#666',
@@ -29,11 +29,11 @@ export const footerCSS = ({ isModal, mouseIsIdle }: State) => ({
   fontSize: 13,
   justifyContent: 'space-between',
   left: isModal ? 0 : null,
-  opacity: mouseIsIdle && isModal ? 0 : 1,
+  opacity: interactionIsIdle && isModal ? 0 : 1,
   padding: isModal ? '30px 20px 20px' : '10px 0',
   position: isModal ? 'absolute' : null,
   right: isModal ? 0 : null,
-  transform: isModal ? `translateY(${mouseIsIdle ? 10 : 0}px)` : null,
+  transform: isModal ? `translateY(${interactionIsIdle ? 10 : 0}px)` : null,
   transition: 'opacity 300ms, transform 300ms',
   zIndex: isModal ? 1 : null,
 
@@ -71,8 +71,8 @@ const Footer = (props: Props) => {
       style={style}
       {...innerProps}
     >
-      <Caption css={css.caption} className={cn.caption} {...props} />
-      <Count css={css.count} className={cn.count} {...props} />
+      <Caption {...props} />
+      <Count {...props} />
     </Div>
   );
 };
@@ -101,10 +101,15 @@ function photoUrl(username) {
 export const footerCaptionCSS = () => ({});
 
 export const FooterCaption = (props: ViewType) => {
-  const { data, getStyles, isModal } = props;
-  const { caption, photographer, username } = data;
+  const { currentView, getStyles, isFullscreen, isModal } = props;
+  const { caption, photographer, username } = currentView;
+  const state = { isFullscreen, isModal };
+
   return (
-    <Span css={getStyles('footerCaption', props)}>
+    <Span
+      css={getStyles('footerCaption', props)}
+      className={className('footer__caption', state)}
+    >
       {photographer && username ? (
         <strong>
           <Anchor href={photoUrl(username)} target="_blank" isModal={isModal}>
@@ -120,14 +125,18 @@ export const FooterCaption = (props: ViewType) => {
 export const footerCountCSS = () => ({ flexShrink: 0, marginLeft: '1em' });
 
 export const FooterCount = (props: ViewType) => {
-  const { activeIndices, getStyles, views } = props;
-  const activeView = activeIndices[0] + 1;
+  const { currentIndex, getStyles, isFullscreen, isModal, views } = props;
+  const state = { isFullscreen, isModal };
+  const activeView = currentIndex + 1;
   const totalViews = views.length;
 
   if (!activeView || !totalViews) return null;
 
   return (
-    <Span css={getStyles('footerCount', props)}>
+    <Span
+      css={getStyles('footerCount', props)}
+      className={className('footer__count', state)}
+    >
       {activeView} of {totalViews}
     </Span>
   );

@@ -16,6 +16,7 @@ import {
 import { defaultStyles, type StylesConfig } from '../styles';
 import { type ModalProps } from './Modal/Modal';
 import { className, isTouch } from '../utils';
+import formatters from '../formatters';
 import { type ViewsType } from '../types';
 
 type SpringConfig = { [key: string]: number };
@@ -24,6 +25,8 @@ export type IndicesType = Array<number>;
 export type CarouselProps = {
   /* Replace any of the carousel components */
   components?: CarouselComponents,
+  /* Take control of the component's view index state */
+  currentIndex: number,
   // See https://github.com/souporserious/react-view-pager#frame-props
   frameProps: {
     accessibility: boolean,
@@ -31,6 +34,8 @@ export type CarouselProps = {
     springConfig: SpringConfig,
     tag: any,
   },
+  /* Formatters get called when language is used, defaults use english. */
+  formatters: typeof formatters,
   /* Hide controls when the user is idle (listens to mouse move) */
   hideControlsWhenIdle?: boolean,
   /* When envoked within a modal, props are cloned from the modal */
@@ -52,7 +57,7 @@ export type CarouselProps = {
     onSwipeEnd: fn,
     onSwipeMove: fn,
     onSwipeStart: fn,
-    onViewChange: IndicesType => void,
+    onViewChange: number => void,
     springConfig: SpringConfig,
     swipe: true | false | 'mouse' | 'touch',
     swipeThreshold: number,
@@ -65,14 +70,15 @@ export type CarouselProps = {
 };
 
 export type CarouselState = {
-  activeIndices: IndicesType,
-  mouseIsIdle: boolean,
+  currentIndex: number,
+  interactionIsIdle: boolean,
 };
 const defaultProps = {
+  currentIndex: 0,
+  formatters,
   hideControlsWhenIdle: true,
   styles: {},
   trackProps: {
-    currentView: 0,
     instant: !isTouch(),
     swipe: 'touch',
   },
@@ -96,11 +102,9 @@ class Carousel extends Component<CarouselProps, CarouselState> {
 
     this.cacheComponents(props.components);
 
-    const trackProps = this.getTrackProps(props);
-
     this.state = {
-      activeIndices: [trackProps.currentView],
-      mouseIsIdle: isTouch(),
+      currentIndex: props.currentIndex,
+      interactionIsIdle: isTouch(),
     };
   }
 
@@ -122,6 +126,11 @@ class Carousel extends Component<CarouselProps, CarouselState> {
   componentWillReceiveProps(nextProps: CarouselProps) {
     if (nextProps.components !== this.props.components) {
       this.cacheComponents(nextProps.components);
+    }
+
+    if (this.props.currentIndex !== nextProps.currentIndex) {
+      console.log('prop update', nextProps.currentIndex);
+      this.setState({ currentIndex: nextProps.currentIndex });
     }
   }
   componentWillUnmount() {
@@ -164,15 +173,15 @@ class Carousel extends Component<CarouselProps, CarouselState> {
 
   hasPreviousView = (): boolean => {
     const { trackProps } = this.props;
-    const { activeIndices } = this.state;
+    const { currentIndex } = this.state;
 
-    return trackProps.infinite || !activeIndices.includes(0);
+    return trackProps.infinite || currentIndex !== 0;
   };
   hasNextView = (): boolean => {
     const { trackProps, views } = this.props;
-    const { activeIndices } = this.state;
+    const { currentIndex } = this.state;
 
-    return trackProps.infinite || !activeIndices.includes(views.length - 1);
+    return trackProps.infinite || currentIndex !== views.length - 1;
   };
 
   getStyles = (key: string, props: {}): {} => {
@@ -181,16 +190,15 @@ class Carousel extends Component<CarouselProps, CarouselState> {
     const custom = this.props.styles[key];
     return custom ? custom(base, props) : base;
   };
+  // combine defaultProps with consumer props to maintain expected behaviour
   getTrackProps = (props: CarouselProps) => {
-    // combine defaultProps with consumer props to maintain expected behaviour
     return { ...defaultProps.trackProps, ...props.trackProps };
   };
   getViewData = () => {
     const { views } = this.props;
-    const { activeIndices } = this.state;
-    const index = activeIndices[0];
+    const { currentIndex } = this.state;
 
-    return views[index];
+    return views[currentIndex];
   };
   focusViewFrame = () => {
     if (this.frame && document.activeElement !== this.frame) {
@@ -214,24 +222,27 @@ class Carousel extends Component<CarouselProps, CarouselState> {
   handleMouseActivity = rafScheduler(() => {
     clearTimeout(this.timer);
 
-    if (this.state.mouseIsIdle) {
-      this.setState({ mouseIsIdle: false });
+    if (this.state.interactionIsIdle) {
+      this.setState({ interactionIsIdle: false });
     }
 
     this.timer = setTimeout(() => {
       if (this.mounted) {
-        this.setState({ mouseIsIdle: true });
+        this.setState({ interactionIsIdle: true });
       }
     }, 3000);
   });
-  handleViewChange = (activeIndices: IndicesType) => {
+  handleViewChange = (indicies: IndicesType) => {
     const { trackProps } = this.props;
 
-    this.setState({ activeIndices });
+    // simplify by enforcing number
+    const currentIndex = indicies[0];
+
+    this.setState({ currentIndex });
 
     // call the consumer's onViewChange fn
     if (trackProps && trackProps.onViewChange) {
-      trackProps.onViewChange(activeIndices);
+      trackProps.onViewChange(currentIndex);
     }
   };
 
@@ -240,6 +251,8 @@ class Carousel extends Component<CarouselProps, CarouselState> {
   // ==============================
 
   renderNavigation = () => {
+    const { formatters: getters } = this.props;
+    const { getNextLabel, getPrevLabel, getNextTitle, getPrevTitle } = getters;
     const { Navigation, NavigationPrev, NavigationNext } = this.components;
     const { commonProps } = this;
 
@@ -254,8 +267,9 @@ class Carousel extends Component<CarouselProps, CarouselState> {
             {...commonProps}
             align="left"
             innerProps={{
+              'aria-label': getPrevLabel(commonProps),
               onClick: this.prev,
-              title: 'Prev',
+              title: getPrevTitle(commonProps),
             }}
           />
         )}
@@ -264,8 +278,9 @@ class Carousel extends Component<CarouselProps, CarouselState> {
             {...commonProps}
             align="right"
             innerProps={{
+              'aria-label': getNextLabel(commonProps),
               onClick: this.next,
-              title: 'Next',
+              title: getNextTitle(commonProps),
             }}
           />
         )}
@@ -283,18 +298,21 @@ class Carousel extends Component<CarouselProps, CarouselState> {
           Caption: FooterCaption,
           Count: FooterCount,
         }}
-        data={this.getViewData()}
         innerProps={{ innerRef: this.getFooter }}
       />
     ) : null;
   };
   renderHeader = () => {
     const { Header, HeaderClose, HeaderFullscreen } = this.components;
+    const { formatters: getters } = this.props;
+    const { getCloseLabel, getFullscreenLabel } = getters;
     const { commonProps } = this;
 
     return Header ? (
       <Header
         {...commonProps}
+        getCloseLabel={getCloseLabel}
+        getFullscreenLabel={getFullscreenLabel}
         components={{
           CloseButton: HeaderClose,
           FullscreenButton: HeaderFullscreen,
@@ -309,24 +327,27 @@ class Carousel extends Component<CarouselProps, CarouselState> {
     const { frameProps, trackProps, modalProps, views } = this.props;
     const isModal = Boolean(modalProps);
     const isFullscreen = Boolean(modalProps && modalProps.isFullscreen);
-    const { activeIndices, mouseIsIdle } = this.state;
+    const { currentIndex, interactionIsIdle } = this.state;
+    const currentView = this.getViewData();
 
     return {
-      activeIndices,
+      carouselProps: this.props,
+      currentIndex,
+      currentView,
       frameProps,
       getStyles: this.getStyles,
       isFullscreen,
       isModal,
       modalProps,
-      mouseIsIdle,
+      interactionIsIdle,
       trackProps,
       views,
-      carouselProps: this.props,
     };
   }
   render() {
     const { Container, View } = this.components;
-    const { frameProps, trackProps, views } = this.props;
+    const { currentIndex } = this.state;
+    const { frameProps, views } = this.props;
     const commonProps = (this.commonProps = this.getCommonProps());
 
     return (
@@ -344,7 +365,8 @@ class Carousel extends Component<CarouselProps, CarouselState> {
             style={frameStyles}
           >
             <Track
-              {...trackProps}
+              {...this.getTrackProps(this.props)}
+              currentView={currentIndex}
               className={className('track')}
               onViewChange={this.handleViewChange}
               ref={this.getTrack}

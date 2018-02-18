@@ -12,7 +12,7 @@ import { ChevronLeft, ChevronRight } from './svg';
 // Navigation
 // ==============================
 
-type NavState = { mouseIsIdle: boolean };
+type NavState = { interactionIsIdle: boolean };
 type NavProps = NavState &
   PropsWithStyles & {
     children: Node,
@@ -20,11 +20,11 @@ type NavProps = NavState &
     isModal: boolean,
   };
 
-export const navigationCSS = ({ mouseIsIdle }: NavState) => ({
+export const navigationCSS = ({ interactionIsIdle }: NavState) => ({
   display: 'flex ',
   alignItems: 'center',
   justifyContent: 'space-between',
-  opacity: mouseIsIdle ? 0 : 1,
+  opacity: interactionIsIdle ? 0 : 1,
   transition: 'opacity 300ms',
 });
 

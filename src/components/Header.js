@@ -3,30 +3,32 @@
 import React, { type Node } from 'react';
 import glam from 'glam';
 
-import { Button as Btn, Div } from '../primitives';
+import { Button, Div } from '../primitives';
 import { className } from '../utils';
 import type { PropsWithStyles } from '../types';
 import { Close, FullscreenEnter, FullscreenExit } from './svg';
 
-type State = { mouseIsIdle: boolean };
+type State = { interactionIsIdle: boolean };
 type Props = PropsWithStyles &
   State & {
     components: Object,
+    getCloseLabel: Function,
+    getFullscreenLabel: Function,
     innerProps: Object,
     isModal: boolean,
     modalProps: Object,
   };
 
-export const headerCSS = ({ mouseIsIdle }: State) => ({
+export const headerCSS = ({ interactionIsIdle }: State) => ({
   alignItems: 'center',
   display: 'flex ',
   flex: '0 0 auto',
   justifyContent: 'space-between',
-  opacity: mouseIsIdle ? 0 : 1,
+  opacity: interactionIsIdle ? 0 : 1,
   padding: 10,
   paddingBottom: 20,
   position: 'absolute',
-  transform: `translateY(${mouseIsIdle ? -10 : 0}px)`,
+  transform: `translateY(${interactionIsIdle ? -10 : 0}px)`,
   transition: 'opacity 300ms, transform 300ms',
   top: 0,
   left: 0,
@@ -35,7 +37,15 @@ export const headerCSS = ({ mouseIsIdle }: State) => ({
 });
 
 const Header = (props: Props) => {
-  const { components, getStyles, innerProps, isModal, modalProps } = props;
+  const {
+    components,
+    getStyles,
+    getCloseLabel,
+    getFullscreenLabel,
+    innerProps,
+    isModal,
+    modalProps,
+  } = props;
 
   if (!isModal) return null;
 
@@ -47,11 +57,12 @@ const Header = (props: Props) => {
   } = modalProps;
   const FsIcon = isFullscreen ? FullscreenExit : FullscreenEnter;
   const { CloseButton, FullscreenButton } = components;
+  const state = { isFullscreen, isModal };
 
   return (
     <Div
       css={getStyles('header', props)}
-      className={className('header', { isFullscreen, isModal })}
+      className={className('header', state)}
       // TODO glam prefixer fails on gradients
       // https://github.com/threepointone/glam/issues/35
       style={{
@@ -66,9 +77,7 @@ const Header = (props: Props) => {
             getStyles={getStyles}
             innerProps={{
               onClick: toggleFullscreen,
-              title: isFullscreen
-                ? 'Exit fullscreen (f)'
-                : 'Enter fullscreen (f)',
+              title: getFullscreenLabel(state),
             }}
           >
             <FsIcon size={32} />
@@ -78,7 +87,7 @@ const Header = (props: Props) => {
           getStyles={getStyles}
           innerProps={{
             onClick: onClose,
-            title: 'Close (esc)',
+            title: getCloseLabel(state),
           }}
         >
           <Close size={32} />
@@ -118,13 +127,14 @@ export const HeaderFullscreen = (props: ButtonProps) => {
   const { children, getStyles, innerProps } = props;
 
   return (
-    <Btn
+    <Button
       css={getStyles('headerFullscreen', props)}
       className={className(['header_button', 'header_button--fullscreen'])}
+      type="button"
       {...innerProps}
     >
       {children}
-    </Btn>
+    </Button>
   );
 };
 
@@ -133,13 +143,14 @@ export const HeaderClose = (props: ButtonProps) => {
   const { children, getStyles, innerProps } = props;
 
   return (
-    <Btn
+    <Button
       css={getStyles('headerClose', props)}
       className={className(['header_button', 'header_button--close'])}
+      type="button"
       {...innerProps}
     >
       {children}
-    </Btn>
+    </Button>
   );
 };
 
