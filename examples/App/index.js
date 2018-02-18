@@ -42,7 +42,6 @@ class App extends Component<*> {
               render={({ location }) => (
                 <Nav>
                   {links.map(l => {
-                    console.log('path', l.path);
                     const isSelected =
                       l.path.length > 1
                         ? location.pathname.includes(l.path)
