@@ -75,13 +75,11 @@ export default class ModalExample extends Component<ProviderProps, State> {
                     paddingBottom: 10,
                     position: 'static',
                   }),
-                  headerButton: base => ({
+                  headerClose: base => ({
                     ...base,
                     color: '#666',
 
-                    ':hover': {
-                      color: 'black',
-                    },
+                    ':hover': { color: '#DE350B' },
                   }),
                   view: base => ({
                     ...base,
