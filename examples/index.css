@@ -20,6 +20,7 @@ h4 a,
 h5 a,
 h6 a,
 ul a,
+ol a,
 p a {
   border-bottom: 1px solid rgba(0, 215, 255, 0.25);
   color: #00d7ff;

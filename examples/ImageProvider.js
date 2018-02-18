@@ -3,7 +3,7 @@
 import React, { Component, type ComponentType } from 'react';
 
 type Images = Array<{
-  description: string,
+  caption: string,
   photographer: string,
   username: string,
   urls: {
@@ -19,7 +19,7 @@ export type ProviderProps = {
 
 function formatImages(arr) {
   return arr.map(img => ({
-    description: img.description,
+    caption: img.description,
     photographer: `${img.user.first_name} ${img.user.last_name}`,
     username: img.user.username,
     urls: img.urls,

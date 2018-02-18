@@ -42,8 +42,6 @@ export const footerCSS = ({ isModal, mouseIsIdle }: State) => ({
   },
 });
 
-export const FooterContainer = Div;
-
 const Footer = (props: Props) => {
   const { components, getStyles, innerProps, isFullscreen, isModal } = props;
 
@@ -62,10 +60,10 @@ const Footer = (props: Props) => {
     caption: getStyles('footerCaption', props),
     count: getStyles('footerCount', props),
   };
-  const { Container, Caption, Count } = components;
+  const { Caption, Count } = components;
 
   return (
-    <Container
+    <Div
       css={css.container}
       className={cn.container}
       // TODO glam prefixer fails on gradients
@@ -75,7 +73,7 @@ const Footer = (props: Props) => {
     >
       <Caption css={css.caption} className={cn.caption} {...props} />
       <Count css={css.count} className={cn.count} {...props} />
-    </Container>
+    </Div>
   );
 };
 
@@ -104,7 +102,7 @@ export const footerCaptionCSS = () => ({});
 
 export const FooterCaption = (props: ViewType) => {
   const { data, getStyles, isModal } = props;
-  const { description, photographer, username } = data;
+  const { caption, photographer, username } = data;
   return (
     <Span css={getStyles('footerCaption', props)}>
       {photographer && username ? (
@@ -114,7 +112,7 @@ export const FooterCaption = (props: ViewType) => {
           </Anchor>
         </strong>
       ) : null}
-      {description}
+      {caption}
     </Span>
   );
 };

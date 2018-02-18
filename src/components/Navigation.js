@@ -46,14 +46,10 @@ export const Navigation = (props: NavProps) => {
 
 const BUTTON_SIZE = 50;
 
-const icon = {
-  left: ChevronLeft,
-  right: ChevronRight,
-};
-
 type ItemState = { align: 'left' | 'right' };
 type ItemProps = ItemState &
   PropsWithStyles & {
+    children: Node,
     innerProps: {
       onClick: any => void,
       title: string,
@@ -87,13 +83,28 @@ export const navigationItemCSS = ({ align }: ItemState) => ({
   },
 });
 
-export const NavigationItem = (props: ItemProps) => {
-  const { align, getStyles, innerProps } = props;
-  const Icon = icon[align];
+export const navigationPrevCSS = navigationItemCSS;
+export const NavigationPrev = (props: ItemProps) => {
+  const { children = <ChevronLeft size={48} />, getStyles, innerProps } = props;
 
   return (
-    <Button css={getStyles('navigationItem', props)} {...innerProps}>
-      <Icon size={48} />
+    <Button css={getStyles('navigationPrev', props)} {...innerProps}>
+      {children}
+    </Button>
+  );
+};
+
+export const navigationNextCSS = navigationItemCSS;
+export const NavigationNext = (props: ItemProps) => {
+  const {
+    children = <ChevronRight size={48} />,
+    getStyles,
+    innerProps,
+  } = props;
+
+  return (
+    <Button css={getStyles('navigationNext', props)} {...innerProps}>
+      {children}
     </Button>
   );
 };

@@ -39,7 +39,7 @@ const View = (props: Props) => {
         css={imageCSS}
         className={className('view-image', { isFullscreen, isModal })}
         src={src}
-        alt={data.description || `by ${data.photographer}`}
+        alt={data.caption || `by ${data.photographer}`}
       />
     </Div>
   );

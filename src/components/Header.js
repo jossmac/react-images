@@ -1,6 +1,6 @@
 // @flow
 // @jsx glam
-import React from 'react';
+import React, { type Node } from 'react';
 import glam from 'glam';
 
 import { Button as Btn, Div } from '../primitives';
@@ -46,7 +46,7 @@ const Header = (props: Props) => {
     toggleFullscreen,
   } = modalProps;
   const FsIcon = isFullscreen ? FullscreenExit : FullscreenEnter;
-  const { Button } = components;
+  const { CloseButton, FullscreenButton } = components;
 
   return (
     <Div
@@ -62,7 +62,7 @@ const Header = (props: Props) => {
       <span />
       <span>
         {allowFullscreen ? (
-          <Button
+          <FullscreenButton
             getStyles={getStyles}
             innerProps={{
               onClick: toggleFullscreen,
@@ -72,9 +72,9 @@ const Header = (props: Props) => {
             }}
           >
             <FsIcon size={32} />
-          </Button>
+          </FullscreenButton>
         ) : null}
-        <Button
+        <CloseButton
           getStyles={getStyles}
           innerProps={{
             onClick: onClose,
@@ -82,11 +82,17 @@ const Header = (props: Props) => {
           }}
         >
           <Close size={32} />
-        </Button>
+        </CloseButton>
       </span>
     </Div>
   );
 };
+
+// ==============================
+// Header Buttons
+// ==============================
+
+type ButtonProps = Props & { children: Node };
 
 export const headerButtonCSS = () => ({
   alignItems: 'center',
@@ -107,10 +113,31 @@ export const headerButtonCSS = () => ({
   },
 });
 
-export const HeaderButton = (props: any) => {
+export const headerFullscreenCSS = headerButtonCSS;
+export const HeaderFullscreen = (props: ButtonProps) => {
   const { children, getStyles, innerProps } = props;
+
   return (
-    <Btn css={getStyles('headerButton', props)} {...innerProps}>
+    <Btn
+      css={getStyles('headerFullscreen', props)}
+      className={className(['header_button', 'header_button--fullscreen'])}
+      {...innerProps}
+    >
+      {children}
+    </Btn>
+  );
+};
+
+export const headerCloseCSS = headerButtonCSS;
+export const HeaderClose = (props: ButtonProps) => {
+  const { children, getStyles, innerProps } = props;
+
+  return (
+    <Btn
+      css={getStyles('headerClose', props)}
+      className={className(['header_button', 'header_button--close'])}
+      {...innerProps}
+    >
       {children}
     </Btn>
   );

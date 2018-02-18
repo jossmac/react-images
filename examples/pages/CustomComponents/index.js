@@ -3,13 +3,35 @@
 import React, { Component } from 'react';
 
 import AlternativeMedia from './AlternativeMedia';
-import { Code, CodeBlock } from '../components';
+import { Code, CodeBlock, Title } from '../components';
+
+const propFn = k => {
+  const style = { display: 'inline-block', marginBottom: 4, marginRight: 4 };
+  return (
+    <span key={k} style={style}>
+      <Code>{k}</Code>
+    </span>
+  );
+};
+const commonProps = [
+  'activeIndices',
+  'carouselProps',
+  'frameProps',
+  'getStyles',
+  'isFullscreen',
+  'isModal',
+  'modalProps',
+  'mouseIsIdle',
+  'trackProps',
+  'views',
+];
 
 export default class CustomComponents extends Component<*> {
   render() {
     return (
       <div>
-        <h1>Components</h1>
+        <Title>🏗 Components</Title>
+        <h2>Introduction</h2>
         <p>
           The main feature of this library is providing consumers with the
           building blocks necessary to create <em>their</em> component.
@@ -26,28 +48,101 @@ export default class CustomComponents extends Component<*> {
           All functional properties that the component needs are provided in{' '}
           <Code>innerProps</Code> which you must spread.
         </p>
+        <h3>Common Props</h3>
+        <p>
+          Every component receives <Code>commonProps</Code> which are spread
+          onto the component. These include:
+        </p>
+        <p>{commonProps.map(propFn)}</p>
         <CodeBlock>
-          {`const images = [
-  { src: '../image1.jpg', altText: 'Image one' },
-  { src: '../image2.jpg', altText: 'Image two' }
-];
+          {`import React from 'react';
+import Carousel from 'react-images';
 
-const CustomHeader = ({ data, innerProps, isModal }) => {
-  if (!isModal) return null;
-  return (
-    <div {...innerProps}>
-      <img src={data.src} alt={data.altText} />
-    </div>
-  );
-}
+const CustomHeader = ({ innerProps, isModal }) => isModal ? (
+  <div {...innerProps}>
+    // your component internals
+  </div>
+) : null;
 
-const App = () => (
-  <Carousel
-    components={{ Header: CustomHeader, Footer: null }}
-    views={images}
-  />
-)`}
+class Component extends React.Component {
+  render() {
+    return <Carousel components={{ Header: CustomHeader }} />;
+  }
+}`}
         </CodeBlock>
+
+        <h2>Component API</h2>
+
+        <h3>{'<Container />'}</h3>
+        <p>
+          Wrapper for the carousel. Attachment point for mouse and touch event
+          listeners.
+        </p>
+
+        <h3>{'<Footer />'}</h3>
+        <p>
+          Element displayed beneath the views. Renders{' '}
+          <Code>FooterCaption</Code> and <Code>FooterCount</Code> by default.
+        </p>
+
+        <h3>{'<FooterCaption />'}</h3>
+        <p>
+          Text associated with the current view. Renders{' '}
+          <Code>{'{viewData.caption}'}</Code> by default.
+        </p>
+
+        <h3>{'<FooterCount />'}</h3>
+        <p>
+          How far through the carousel the user is. Renders{' '}
+          <Code>
+            {'{currentIndex}'}&nbsp;of&nbsp;{'{totalViews}'}
+          </Code>{' '}
+          by default
+        </p>
+
+        <h3>{'<Header />'}</h3>
+        <p>
+          Element displayed above the views. Renders{' '}
+          <Code>FullscreenButton</Code> and <Code>CloseButton</Code> by default.
+        </p>
+
+        <h3>{'<HeaderClose />'}</h3>
+        <p>
+          The button to close the modal. Accepts the <Code>onClose</Code>{' '}
+          function.
+        </p>
+
+        <h3>{'<HeaderFullscreen />'}</h3>
+        <p>
+          The button to fullscreen the modal. Accepts the{' '}
+          <Code>toggleFullscreen</Code> function.
+        </p>
+
+        <h3>{'<Navigation />'}</h3>
+        <p>
+          Wrapper for the <Code>{'<NavigationNext />'}</Code> and{' '}
+          <Code>{'<NavigationPrev />'}</Code> buttons.
+        </p>
+
+        <h3>{'<NavigationPrev />'}</h3>
+        <p>
+          Button allowing the user to navigate to the previous view. Accepts an{' '}
+          <Code>onClick</Code> function.
+        </p>
+
+        <h3>{'<NavigationNext />'}</h3>
+        <p>
+          Button allowing the user to navigate to the next view. Accepts an{' '}
+          <Code>onClick</Code> function.
+        </p>
+
+        <h3>{'<View />'}</h3>
+        <p>
+          The view component renders your media to the user. Receives the
+          current view object as the <Code>data</Code> property.
+        </p>
+
+        <h2>Examples</h2>
         <AlternativeMedia />
       </div>
     );

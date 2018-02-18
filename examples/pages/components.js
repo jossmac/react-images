@@ -13,6 +13,23 @@ import { colors } from '../theme';
 
 registerLanguage('jsx', jsx);
 
+const smallDevice = '@media (max-width: 769px)';
+
+// ==============================
+// Title
+// ==============================
+
+export const Title = (props: any) => (
+  <h1
+    css={{
+      fontSize: '3.2em',
+
+      [smallDevice]: { fontSize: '1.8em' },
+    }}
+    {...props}
+  />
+);
+
 // ==============================
 // Heading
 // ==============================

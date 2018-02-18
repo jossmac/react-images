@@ -2,7 +2,7 @@
 // @jsx glam
 
 import glam from 'glam';
-import React, { Component } from 'react';
+import React, { Component, type Node } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { colors } from '../theme';
 
@@ -36,7 +36,7 @@ export const PageContent = (props: any) => (
       paddingTop: contentGutter,
 
       [smallDevice]: {
-        paddingTop: 50,
+        paddingTop: 70,
       },
     }}
     {...props}
@@ -56,7 +56,7 @@ export const AppContent = (props: any) => (
     {...props}
   />
 );
-export const Nav = (props: any) => (
+export const Nav = ({ children }: { children: Node }) => (
   <div
     css={{
       [smallDevice]: {
@@ -64,7 +64,6 @@ export const Nav = (props: any) => (
         boxShadow: 'inset 0 -1px 0 rgba(0, 0, 0, 0.1)',
         display: 'flex ',
         fontSize: 13,
-        fontWeight: 'bold',
         marginLeft: -appGutter,
         marginRight: -appGutter,
         overflowX: 'auto',
@@ -83,17 +82,26 @@ export const Nav = (props: any) => (
         zIndex: 1,
       },
     }}
-    {...props}
-  />
+  >
+    {children}
+    <GithubButton />
+  </div>
 );
-export const NavItem = ({ selected, ...props }: { selected: boolean }) => (
+
+type ItemProps = {
+  children: Node,
+  icon: string,
+  isSelected: boolean,
+  to: string,
+};
+export const NavItem = ({ children, icon, isSelected, to }: ItemProps) => (
   <Link
+    to={to}
     css={{
       border: 0,
-      color: selected ? colors.N100 : colors.N60,
+      color: isSelected ? colors.N100 : colors.N60,
       display: 'inline-block',
-      fontWeight: selected ? 500 : null,
-      padding: appGutter,
+      fontWeight: isSelected ? 500 : null,
       position: 'relative',
       textDecoration: 'none',
       whiteSpace: 'nowrap',
@@ -104,28 +112,49 @@ export const NavItem = ({ selected, ...props }: { selected: boolean }) => (
       },
 
       [smallDevice]: {
-        boxShadow: selected ? 'inset 0 -1px 0 black' : null,
-        padding: `10px ${appGutter}px`,
+        boxShadow: isSelected ? 'inset 0 -2px 0 black' : null,
+        padding: `8px ${appGutter}px`,
       },
 
       [largeDevice]: {
-        backgroundColor: selected ? 'white' : 'transparent',
-        // borderColor: selected ? borderColor : 'transparent',
-        // borderStyle: 'solid',
-        // borderWidth: '1px 0',
+        backgroundColor: isSelected ? 'white' : 'transparent',
         display: 'block',
-        padding: '10px 20px 10px 0',
-        // right: -1,
-
-        ':before': {
-          content: ' ',
-          // background: 'linear-gradient(90deg, fade(#e9e9e9, 0%) 94%, #e9e9e9)',
-        },
+        padding: '8px 20px 8px 0',
       },
     }}
-    {...props}
-  />
+  >
+    <span css={{ fontSize: '1.33em', marginRight: '0.5em' }}>{icon}</span>
+    {children}
+  </Link>
 );
+
+const GithubButton = () => {
+  const size = window.innerWidth > 769 ? 'large' : null;
+
+  return (
+    <div
+      css={{
+        [smallDevice]: {
+          padding: appGutter,
+        },
+        [largeDevice]: {
+          position: 'fixed',
+          bottom: 30,
+        },
+      }}
+    >
+      <a
+        className="github-button"
+        href="https://github.com/jossmac/react-images"
+        data-size={size}
+        data-show-count="true"
+        aria-label="Star jossmac/react-images on GitHub"
+      >
+        Star
+      </a>
+    </div>
+  );
+};
 
 // Return scroll to top on route change
 class ScrollToTop extends Component<*> {

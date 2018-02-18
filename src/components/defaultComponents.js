@@ -1,34 +1,36 @@
 // @flow
 
 import Container from './Container';
-import Footer, { FooterCaption, FooterContainer, FooterCount } from './Footer';
-import Header, { HeaderButton } from './Header';
-import { Navigation, NavigationItem } from './Navigation';
+import Footer, { FooterCaption, FooterCount } from './Footer';
+import Header, { HeaderClose, HeaderFullscreen } from './Header';
+import { Navigation, NavigationPrev, NavigationNext } from './Navigation';
 import View from './View';
 
 export type CarouselComponents = {
   Container: typeof Container,
   Footer: typeof Footer,
-  FooterContainer: typeof FooterContainer,
   FooterCaption: typeof FooterCaption,
   FooterCount: typeof FooterCount,
   Header: typeof Header,
-  HeaderButton: typeof HeaderButton,
+  HeaderClose: typeof HeaderClose,
+  HeaderFullscreen: typeof HeaderFullscreen,
   Navigation: typeof Navigation,
-  NavigationItem: typeof NavigationItem,
+  NavigationPrev: typeof NavigationPrev,
+  NavigationNext: typeof NavigationNext,
   View: typeof View,
 };
 
 export const components: CarouselComponents = {
   Container: Container,
   Footer: Footer,
-  FooterContainer: FooterContainer,
   FooterCaption: FooterCaption,
   FooterCount: FooterCount,
   Header: Header,
-  HeaderButton: HeaderButton,
+  HeaderClose: HeaderClose,
+  HeaderFullscreen: HeaderFullscreen,
   Navigation: Navigation,
-  NavigationItem: NavigationItem,
+  NavigationPrev: NavigationPrev,
+  NavigationNext: NavigationNext,
   View: View,
 };
 

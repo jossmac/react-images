@@ -60,28 +60,8 @@ export const Image = (props: any) => (
 );
 
 export const Title = () => (
-  <h1
-    css={{
-      alignItems: 'center',
-      display: 'flex',
-    }}
-  >
-    <img
-      alt="react-images logo"
-      src="logo.svg"
-      height="22"
-      width="39"
-      css={{
-        marginRight: 10,
-        marginTop: 2,
-        [smallDevice]: {
-          display: 'none',
-        },
-      }}
-    />
-    <span>
-      React Images v1
-      <small css={{ color: '#999', fontWeight: 500 }}> (alpha)</small>
-    </span>
+  <h1>
+    🌄 React Images v1
+    <small css={{ color: '#999', fontWeight: 500 }}> (alpha)</small>
   </h1>
 );

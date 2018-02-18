@@ -24,10 +24,10 @@ import {
 } from './components';
 
 const links = [
-  { label: '🏠 Home', value: '/' },
-  { label: '🏗 Components', value: '/components' },
-  { label: '🎨 Styles', value: '/styles' },
-  { label: '🎓 Patterns', value: '/patterns' },
+  { icon: '🏠', label: 'Home', path: '/' },
+  { icon: '🏗', label: 'Components', path: '/components' },
+  { icon: '🎨', label: 'Styles', path: '/styles' },
+  { icon: '🎓', label: 'Patterns', path: '/patterns' },
 ];
 
 class App extends Component<*> {
@@ -42,12 +42,18 @@ class App extends Component<*> {
               render={({ location }) => (
                 <Nav>
                   {links.map(l => {
-                    const selected =
-                      l.value.length > 1
-                        ? location.pathname.includes(l.value)
-                        : location.pathname === l.value;
+                    console.log('path', l.path);
+                    const isSelected =
+                      l.path.length > 1
+                        ? location.pathname.includes(l.path)
+                        : location.pathname === l.path;
                     return (
-                      <NavItem key={l.value} selected={selected} to={l.value}>
+                      <NavItem
+                        icon={l.icon}
+                        key={l.path}
+                        isSelected={isSelected}
+                        to={l.path}
+                      >
                         {l.label}
                       </NavItem>
                     );

@@ -6,8 +6,9 @@ import React, { Component } from 'react';
 import Carousel, { Modal, ModalGateway } from '../../../src/components';
 import { type ProviderProps } from '../../ImageProvider';
 
-import { List, Gallery, Image, Title } from './components';
+import { List, Gallery, Image } from './components';
 import { features } from './data';
+import { Code, CodeBlock, Title } from '../components';
 
 type State = {
   currentView?: number,
@@ -31,17 +32,75 @@ export default class Home extends Component<ProviderProps, State> {
 
     return (
       <div>
-        <Title />
+        <Title>🌄 React Images</Title>
         <p>
           A simple, responsive Lightbox component for ReactJS to display an
-          array of images.
-        </p>
-        <p>
-          Images courtesy of{' '}
+          array of images. Images courtesy of{' '}
           <a href="https://unsplash.com" target="_blank">
             Unsplash
-          </a>
+          </a>.
         </p>
+
+        <h4>Features and updates in v1:</h4>
+        <List items={features} />
+        <h2>Getting Started</h2>
+        <p>
+          Start by installing <Code>react-images</Code>
+        </p>
+        <CodeBlock>yarn add react-images</CodeBlock>
+
+        <h2>Using the Carousel</h2>
+        <p>
+          Import the carousel from <Code>react-images</Code> at the top of a
+          component and then use it in the render function.
+        </p>
+        <CodeBlock>{`import React from 'react';
+import Carousel from 'react-images';
+
+const images = [{ src: 'path/to/image-1.jpg', src: 'path/to/image-2.jpg' }];
+
+class Component extends React.Component {
+  render() {
+    return <Carousel views={images} />;
+  }
+}`}</CodeBlock>
+
+        <h2>Using the Modal</h2>
+        <p>
+          Import the modal and optionally the modal gateway from{' '}
+          <Code>react-images</Code> at the top of a component and then use it in
+          the render function.
+        </p>
+        <p>
+          The <Code>ModalGateway</Code> will insert the modal just before the
+          end of your <Code>{'<body />'}</Code> tag.
+        </p>
+        <CodeBlock>{`import React from 'react';
+import Carousel, { Modal, ModalGateway } from 'react-images';
+
+const images = [{ src: 'path/to/image-1.jpg', src: 'path/to/image-2.jpg' }];
+
+class Component extends React.Component {
+  state = { modalIsOpen: false }
+  toggleModal = () => {
+    this.setState(state => ({ modalIsOpen: !state.modalIsOpen }));
+  }
+  render() {
+    const { modalIsOpen } = this.state;
+
+    return (
+      <ModalGateway>
+        {modalIsOpen ? (
+          <Modal onClose={this.toggleModal}>
+            <Carousel views={images} />
+          </Modal>
+        ) : null}
+      </ModalGateway>
+    );
+  }
+}`}</CodeBlock>
+
+        <h2>Example</h2>
         {!isLoading ? (
           <Gallery>
             {images.map((data, j) => {
@@ -50,7 +109,7 @@ export default class Home extends Component<ProviderProps, State> {
                   <img
                     onClick={() => this.toggleLightbox(j)}
                     src={data.urls.thumb}
-                    alt={data.description}
+                    alt={data.caption}
                     css={{
                       cursor: 'pointer',
                       position: 'absolute',
@@ -62,9 +121,6 @@ export default class Home extends Component<ProviderProps, State> {
             })}
           </Gallery>
         ) : null}
-
-        <h4>Features and updates:</h4>
-        <List items={features} />
 
         <ModalGateway>
           {lightboxIsOpen && !isLoading ? (

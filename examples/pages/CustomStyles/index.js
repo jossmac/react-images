@@ -5,27 +5,31 @@ import React, { Component } from 'react';
 
 import type { ProviderProps } from '../../ImageProvider';
 import type { RouterProps } from '../../../src/types';
-import { Code, CodeBlock } from '../components';
+import { Code, CodeBlock, Title } from '../components';
 import CarouselExample from './CarouselExample';
 import ModalExample from './ModalExample';
 
 type Props = ProviderProps & RouterProps;
 
-const keyFn = (k, i) => (
-  <span key={k}>
-    {i ? ' ' : null}
-    <Code>{k}</Code>
-  </span>
-);
+const keyFn = k => {
+  const style = { display: 'inline-block', marginBottom: 4, marginRight: 4 };
+  return (
+    <span key={k} style={style}>
+      <Code>{k}</Code>
+    </span>
+  );
+};
 const carouselKeys = [
   'container',
   'footer',
   'footerCaption',
   'footerCount',
   'header',
-  'headerButton',
+  'headerClose',
+  'headerFullscreen',
   'navigation',
-  'navigationItem',
+  'navigationPrev',
+  'navigationNext',
   'view',
 ];
 const modalKeys = ['blanket', 'dialog', 'positioner'];
@@ -34,7 +38,7 @@ export default class CustomStyles extends Component<Props> {
   render() {
     return (
       <div>
-        <h1>Styles</h1>
+        <Title>🎨 Styles</Title>
         <p>
           React-Images offers a flexible, light-weight styling framework which
           is a thin abstraction over simple javascript objects using{' '}

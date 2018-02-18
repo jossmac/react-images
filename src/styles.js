@@ -2,9 +2,17 @@
 
 // Carousel
 import { containerCSS } from './components/Container';
-import { navigationCSS, navigationItemCSS } from './components/Navigation';
+import {
+  navigationCSS,
+  navigationPrevCSS,
+  navigationNextCSS,
+} from './components/Navigation';
 import { viewCSS } from './components/View';
-import { headerCSS, headerButtonCSS } from './components/Header';
+import {
+  headerCSS,
+  headerCloseCSS,
+  headerFullscreenCSS,
+} from './components/Header';
 import {
   footerCSS,
   footerCaptionCSS,
@@ -27,9 +35,11 @@ export type Styles = {
   footerCaption: StyleDef,
   footerCount: StyleDef,
   header: StyleDef,
-  headerButton: StyleDef,
+  headerClose: StyleDef,
+  headerFullscreen: StyleDef,
   navigation: StyleDef,
-  navigationItem: StyleDef,
+  navigationPrev: StyleDef,
+  navigationNext: StyleDef,
   view: StyleDef,
 
   blanket: StyleDef,
@@ -45,9 +55,11 @@ export const defaultStyles: Styles = {
   footerCaption: footerCaptionCSS,
   footerCount: footerCountCSS,
   header: headerCSS,
-  headerButton: headerButtonCSS,
+  headerClose: headerCloseCSS,
+  headerFullscreen: headerFullscreenCSS,
   navigation: navigationCSS,
-  navigationItem: navigationItemCSS,
+  navigationPrev: navigationPrevCSS,
+  navigationNext: navigationNextCSS,
   view: viewCSS,
 
   blanket: blanketCSS,

@@ -66,8 +66,6 @@ export type CarouselProps = {
 
 export type CarouselState = {
   activeIndices: IndicesType,
-  footerHeight: number,
-  headerHeight: number,
   mouseIsIdle: boolean,
 };
 const defaultProps = {
@@ -102,8 +100,6 @@ class Carousel extends Component<CarouselProps, CarouselState> {
 
     this.state = {
       activeIndices: [trackProps.currentView],
-      footerHeight: 0,
-      headerHeight: 0,
       mouseIsIdle: isTouch(),
     };
   }
@@ -113,8 +109,6 @@ class Carousel extends Component<CarouselProps, CarouselState> {
     const isModal = Boolean(modalProps);
 
     this.mounted = true;
-
-    this.getDimensions();
 
     if (hideControlsWhenIdle && this.container) {
       this.container.addEventListener('mousedown', this.handleMouseActivity);
@@ -187,15 +181,16 @@ class Carousel extends Component<CarouselProps, CarouselState> {
     const custom = this.props.styles[key];
     return custom ? custom(base, props) : base;
   };
-  getDimensions = () => {
-    const headerHeight = this.header ? this.header.clientHeight : 0;
-    const footerHeight = this.footer ? this.footer.clientHeight : 0;
-
-    this.setState({ footerHeight, headerHeight });
-  };
   getTrackProps = (props: CarouselProps) => {
     // combine defaultProps with consumer props to maintain expected behaviour
     return { ...defaultProps.trackProps, ...props.trackProps };
+  };
+  getViewData = () => {
+    const { views } = this.props;
+    const { activeIndices } = this.state;
+    const index = activeIndices[0];
+
+    return views[index];
   };
   focusViewFrame = () => {
     if (this.frame && document.activeElement !== this.frame) {
@@ -245,7 +240,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
   // ==============================
 
   renderNavigation = () => {
-    const { Navigation, NavigationItem } = this.components;
+    const { Navigation, NavigationPrev, NavigationNext } = this.components;
     const { commonProps } = this;
 
     const showPrev = this.hasPreviousView();
@@ -255,7 +250,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
     return showNav ? (
       <Navigation {...commonProps}>
         {showPrev && (
-          <NavigationItem
+          <NavigationPrev
             {...commonProps}
             align="left"
             innerProps={{
@@ -265,7 +260,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
           />
         )}
         {showNext && (
-          <NavigationItem
+          <NavigationNext
             {...commonProps}
             align="right"
             innerProps={{
@@ -278,27 +273,34 @@ class Carousel extends Component<CarouselProps, CarouselState> {
     ) : null;
   };
   renderFooter = () => {
-    const {
-      Footer,
-      FooterContainer,
-      FooterCaption,
-      FooterCount,
-    } = this.components;
-    const { views } = this.props;
-    const { activeIndices } = this.state;
+    const { Footer, FooterCaption, FooterCount } = this.components;
     const { commonProps } = this;
-    const index = activeIndices[0];
 
     return Footer ? (
       <Footer
         {...commonProps}
         components={{
-          Container: FooterContainer,
           Caption: FooterCaption,
           Count: FooterCount,
         }}
-        data={views[index]}
+        data={this.getViewData()}
         innerProps={{ innerRef: this.getFooter }}
+      />
+    ) : null;
+  };
+  renderHeader = () => {
+    const { Header, HeaderClose, HeaderFullscreen } = this.components;
+    const { commonProps } = this;
+
+    return Header ? (
+      <Header
+        {...commonProps}
+        components={{
+          CloseButton: HeaderClose,
+          FullscreenButton: HeaderFullscreen,
+        }}
+        data={this.getViewData()}
+        innerProps={{ innerRef: this.getHeader }}
       />
     ) : null;
   };
@@ -307,19 +309,12 @@ class Carousel extends Component<CarouselProps, CarouselState> {
     const { frameProps, trackProps, modalProps, views } = this.props;
     const isModal = Boolean(modalProps);
     const isFullscreen = Boolean(modalProps && modalProps.isFullscreen);
-    const {
-      activeIndices,
-      footerHeight,
-      headerHeight,
-      mouseIsIdle,
-    } = this.state;
+    const { activeIndices, mouseIsIdle } = this.state;
 
     return {
       activeIndices,
-      footerHeight,
       frameProps,
       getStyles: this.getStyles,
-      headerHeight,
       isFullscreen,
       isModal,
       modalProps,
@@ -330,19 +325,13 @@ class Carousel extends Component<CarouselProps, CarouselState> {
     };
   }
   render() {
-    const { Container, Header, HeaderButton, View } = this.components;
+    const { Container, View } = this.components;
     const { frameProps, trackProps, views } = this.props;
     const commonProps = (this.commonProps = this.getCommonProps());
 
     return (
       <Container {...commonProps} innerProps={{ innerRef: this.getContainer }}>
-        {Header ? (
-          <Header
-            {...commonProps}
-            components={{ Button: HeaderButton }}
-            innerProps={{ innerRef: this.getHeader }}
-          />
-        ) : null}
+        {this.renderHeader()}
         <ViewPager
           tag="main"
           style={viewPagerStyles}
