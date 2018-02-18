@@ -55,9 +55,9 @@ export default class AlternativeMedia extends Component<Props, State> {
               onClose={this.toggleModal}
             >
               <Carousel
+                currentIndex={currentModal}
                 components={{ Footer: null, View }}
                 frameProps={{ autoSize: 'height' }}
-                trackProps={{ currentView: currentModal }}
                 views={videos}
               />
             </Modal>
