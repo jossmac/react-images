@@ -51,52 +51,56 @@ export default class Accessibility extends Component<ProviderProps, State> {
         <h2>Keyboard Support</h2>
         <h3>Carousel</h3>
         <Table>
-          <tr>
-            <Cell width={60}>
-              <Code>Left</Code>
-            </Cell>
-            <Cell>move to the previous view</Cell>
-          </tr>
-          <tr>
-            <Cell width={60}>
-              <Code>Right</Code>
-            </Cell>
-            <Cell>move to the next view</Cell>
-          </tr>
-          <tr>
-            <Cell width={60}>
-              <Code>Home</Code>
-            </Cell>
-            <Cell>move to the first view</Cell>
-          </tr>
-          <tr>
-            <Cell width={60}>
-              <Code>End</Code>
-            </Cell>
-            <Cell>move to the last view</Cell>
-          </tr>
-          <tr>
-            <Cell width={60}>
-              <Code>1-9</Code>
-            </Cell>
-            <Cell>number keys navigate to their respective view</Cell>
-          </tr>
+          <tbody>
+            <tr>
+              <Cell width={60}>
+                <Code>Left</Code>
+              </Cell>
+              <Cell>move to the previous view</Cell>
+            </tr>
+            <tr>
+              <Cell width={60}>
+                <Code>Right</Code>
+              </Cell>
+              <Cell>move to the next view</Cell>
+            </tr>
+            <tr>
+              <Cell width={60}>
+                <Code>Home</Code>
+              </Cell>
+              <Cell>move to the first view</Cell>
+            </tr>
+            <tr>
+              <Cell width={60}>
+                <Code>End</Code>
+              </Cell>
+              <Cell>move to the last view</Cell>
+            </tr>
+            <tr>
+              <Cell width={60}>
+                <Code>1-9</Code>
+              </Cell>
+              <Cell>number keys navigate to their respective view</Cell>
+            </tr>
+          </tbody>
         </Table>
 
         <h3>Modal</h3>
         <Table>
-          <tr>
-            <Cell width={60}>
-              <Code>Esc</Code>
-            </Cell>
-            <Cell>closes the modal</Cell>
-          </tr>
-          <tr>
-            <Cell width={60}>
-              <Code>F</Code>
-            </Cell>
-            <Cell>toggles full screen</Cell>
-          </tr>
+          <tbody>
+            <tr>
+              <Cell width={60}>
+                <Code>Esc</Code>
+              </Cell>
+              <Cell>closes the modal</Cell>
+            </tr>
+            <tr>
+              <Cell width={60}>
+                <Code>F</Code>
+              </Cell>
+              <Cell>toggles full screen</Cell>
+            </tr>
+          </tbody>
         </Table>
         {/* <p>
           // move to the previous view case 'ArrowUp': // move to the next view
