@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
+import { Helmet } from 'react-helmet';
 
 import AlternativeMedia from './AlternativeMedia';
 import { Code, CodeBlock, Title } from '../components';
@@ -31,8 +32,15 @@ export default class CustomComponents extends Component<*> {
   render() {
     return (
       <div>
+        <Helmet>
+          <title>Components - React Images</title>
+          <meta
+            name="description"
+            content="React Images allows you to augment layout and functionality by
+            replacing the default components with your own."
+          />
+        </Helmet>
         <Title>Components</Title>
-        <h2>Introduction</h2>
         <p>
           The main feature of this library is providing consumers with the
           building blocks necessary to create <em>their</em> component.

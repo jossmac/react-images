@@ -2,6 +2,7 @@
 // @jsx glam
 import glam from 'glam';
 import React, { Component } from 'react';
+import { Helmet } from 'react-helmet';
 
 import type { ProviderProps } from '../../ImageProvider';
 import type { RouterProps } from '../../../src/types';
@@ -38,6 +39,14 @@ export default class CustomStyles extends Component<Props> {
   render() {
     return (
       <div>
+        <Helmet>
+          <title>Styles - React Images</title>
+          <meta
+            name="description"
+            content="React Images offers a flexible, light-weight styling framework which
+            is a thin abstraction over simple javascript objects."
+          />
+        </Helmet>
         <Title>Styles</Title>
         <p>
           React-Images offers a flexible, light-weight styling framework which

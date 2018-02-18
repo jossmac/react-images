@@ -2,6 +2,7 @@
 // @jsx glam
 import glam from 'glam';
 import React, { Component } from 'react';
+import { Helmet } from 'react-helmet';
 
 import Carousel, { Modal, ModalGateway } from '../../src/components';
 import { type ProviderProps } from '../ImageProvider';
@@ -42,6 +43,14 @@ export default class Accessibility extends Component<ProviderProps, State> {
 
     return (
       <div>
+        <Helmet>
+          <title>Accessibility - React Images</title>
+          <meta
+            name="description"
+            content="React-Images comes with accessible features out-of-the box. Keyboard
+            support, roles, and aria-attribution on the applicable elements."
+          />
+        </Helmet>
         <Title>Accessibility</Title>
         <p>
           React-Images comes with accessible features out-of-the box. Keyboard

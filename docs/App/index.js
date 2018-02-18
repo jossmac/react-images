@@ -4,6 +4,7 @@
 import glam from 'glam';
 import React, { Component } from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 import {
   Accessibility,
@@ -63,6 +64,13 @@ class App extends Component<*> {
               )}
             />
             <AppContent>
+              <Helmet>
+                <title>React Images</title>
+                <meta
+                  name="description"
+                  content="A mobile-friendly, highly customizable, carousel component for displaying media in ReactJS"
+                />
+              </Helmet>
               <PageContent>
                 <Switch>
                   <ImageRoute exact path="/" component={Home} {...routeProps} />

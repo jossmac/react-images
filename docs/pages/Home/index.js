@@ -34,8 +34,8 @@ export default class Home extends Component<ProviderProps, State> {
       <div>
         <Title>React Images</Title>
         <p>
-          A simple, responsive Lightbox component for ReactJS to display an
-          array of images. Images courtesy of{' '}
+          A mobile-friendly, highly customizable, carousel component for
+          displaying media in ReactJS. Images courtesy of{' '}
           <a href="https://unsplash.com" target="_blank">
             Unsplash
           </a>.
