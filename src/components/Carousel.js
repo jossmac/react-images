@@ -93,7 +93,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
   header: HTMLElement;
   mounted: boolean = false;
   track: ElementRef<Track>;
-  timer: TimeoutID;
+  timer: number;
 
   static defaultProps = defaultProps;
 

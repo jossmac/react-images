@@ -56,3 +56,8 @@ h6 {
   margin-bottom: 0.25em;
   text-transform: uppercase;
 }
+
+code {
+  font-family: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
+}

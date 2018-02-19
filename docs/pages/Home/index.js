@@ -3,33 +3,14 @@
 import glam from 'glam';
 import React, { Component } from 'react';
 
-import Carousel, { Modal, ModalGateway } from '../../../src/components';
 import { type ProviderProps } from '../../ImageProvider';
+import { Code, CodeBlock, Heading, Title } from '../components';
+import PrettyProps from '../../PrettyProps';
+import GalleryExample from './GalleryExample';
+import { carouselProps } from './props';
 
-import { List, Gallery, Image } from './components';
-import { features } from './data';
-import { Code, CodeBlock, Title } from '../components';
-
-type State = {
-  selectedIndex?: number,
-  lightboxIsOpen: boolean,
-};
-
-export default class Home extends Component<ProviderProps, State> {
-  state = {
-    selectedIndex: 0,
-    lightboxIsOpen: false,
-  };
-  toggleLightbox = (selectedIndex: number) => {
-    this.setState(state => ({
-      lightboxIsOpen: !state.lightboxIsOpen,
-      selectedIndex,
-    }));
-  };
+export default class Home extends Component<ProviderProps> {
   render() {
-    const { images, isLoading } = this.props;
-    const { selectedIndex, lightboxIsOpen } = this.state;
-
     return (
       <div>
         <Title>React Images</Title>
@@ -41,15 +22,13 @@ export default class Home extends Component<ProviderProps, State> {
           </a>.
         </p>
 
-        <h4>Features and updates in v1:</h4>
-        <List items={features} />
-        <h2>Getting Started</h2>
+        <h3>Getting Started</h3>
         <p>
           Start by installing <Code>react-images</Code>
         </p>
         <CodeBlock>yarn add react-images</CodeBlock>
 
-        <h2>Using the Carousel</h2>
+        <h3>Using the Carousel</h3>
         <p>
           Import the carousel from <Code>react-images</Code> at the top of a
           component and then use it in the render function.
@@ -65,7 +44,7 @@ class Component extends React.Component {
   }
 }`}</CodeBlock>
 
-        <h2>Using the Modal</h2>
+        <h3>Using the Modal</h3>
         <p>
           Import the modal and optionally the modal gateway from{' '}
           <Code>react-images</Code> at the top of a component and then use it in
@@ -100,47 +79,19 @@ class Component extends React.Component {
   }
 }`}</CodeBlock>
 
-        <h2>Example Gallery</h2>
+        <Heading source="/Home/GalleryExample.js">Example Gallery</Heading>
         <p>
           Below is a pretty typical implementation; the index of the selected
           thumbnail is passed to the <Code>currentIndex</Code> property of the
           carousel. All of the components, styles, getters, animations and
           functionality are the defaults provided by the library.
         </p>
-        {!isLoading ? (
-          <Gallery>
-            {images.map((data, j) => {
-              return (
-                <Image
-                  onClick={() => this.toggleLightbox(j)}
-                  key={data.username}
-                >
-                  <img
-                    src={data.urls.thumb}
-                    alt={data.caption}
-                    css={{
-                      cursor: 'pointer',
-                      position: 'absolute',
-                      maxWidth: '100%',
-                    }}
-                  />
-                </Image>
-              );
-            })}
-          </Gallery>
-        ) : null}
+        <GalleryExample {...this.props} />
 
-        <ModalGateway>
-          {lightboxIsOpen && !isLoading ? (
-            <Modal onClose={this.toggleLightbox}>
-              <Carousel
-                currentIndex={selectedIndex}
-                frameProps={{ autoSize: 'height' }}
-                views={images}
-              />
-            </Modal>
-          ) : null}
-        </ModalGateway>
+        <h2>Props</h2>
+
+        <h3>Carousel</h3>
+        {carouselProps.map(p => <PrettyProps key={p.name} {...p} />)}
       </div>
     );
   }
