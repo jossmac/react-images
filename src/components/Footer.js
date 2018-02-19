@@ -9,6 +9,7 @@ function Footer ({
 	countCurrent,
 	countSeparator,
 	countTotal,
+	customFooter,
 	showCount,
 	...props,
 }, {
@@ -26,7 +27,7 @@ function Footer ({
 		</div>)
 		: <span />;
 
-	return (
+	const defaultFooter = (
 		<div className={css(classes.footer)} {...props}>
 			{caption ? (
 				<figcaption className={css(classes.footerCaption)}>
@@ -36,6 +37,8 @@ function Footer ({
 			{imageCount}
 		</div>
 	);
+
+	return (customFooter ? customFooter : defaultFooter);
 }
 
 Footer.propTypes = {
@@ -43,6 +46,7 @@ Footer.propTypes = {
 	countCurrent: PropTypes.number,
 	countSeparator: PropTypes.string,
 	countTotal: PropTypes.number,
+	customFooter: PropTypes.node,
 	showCount: PropTypes.bool,
 };
 Footer.contextTypes = {
