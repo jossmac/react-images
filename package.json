@@ -55,7 +55,7 @@
   },
   "scripts": {
     "build": "nps build",
-    "publish:examples": "NODE_ENV=production nps publish",
+    "publish:examples": "SET NODE_ENV=production nps publish",
     "start": "webpack-dev-server --progress",
     "lint": "eslint src/** examples/src/app.js examples/src/components/Gallery.js"
   },
