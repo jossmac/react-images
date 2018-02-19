@@ -9,11 +9,11 @@ import SyntaxHighlighter, {
 } from 'react-syntax-highlighter/prism-light';
 import jsx from 'react-syntax-highlighter/languages/prism/jsx';
 import { tomorrow } from 'react-syntax-highlighter/styles/prism';
+
 import { colors } from '../theme';
+import { smallDevice } from '../utils';
 
 registerLanguage('jsx', jsx);
-
-const smallDevice = '@media (max-width: 769px)';
 
 // ==============================
 // Title
@@ -100,6 +100,8 @@ export const CodeBlock = ({ children }: { children: Node }) => {
         borderRadius: 4,
         fontSize: 12,
         marginTop: '2em',
+        overflowX: 'auto',
+        WebkitOverflowScrolling: 'touch',
       }}
     >
       {children}

@@ -17,14 +17,14 @@ export const carouselProps = [
     isRequired: false,
     name: 'components',
     type: 'Object',
-    typeDefinition: `// FrameProps, ModalProps, TrackProps, and ViewType declared below
+    typeDefinition: `// FrameProps, ModalProps, StyleFn, TrackProps, and ViewType declared below
 
 type CommonProps = {
   carouselProps: Object,
   currentIndex: number,
   currentView: ViewType,
   frameProps FrameProps,
-  getStyles: (Object, Object) => Object,
+  getStyles: StyleFn,
   innerProps: Object,
   isFullscreen: boolean,
   isModal: boolean,

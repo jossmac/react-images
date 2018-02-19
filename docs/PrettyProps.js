@@ -9,13 +9,12 @@ import SyntaxHighlighter, {
 } from 'react-syntax-highlighter/prism-light';
 import typescript from 'react-syntax-highlighter/languages/prism/typescript';
 import { coy } from 'react-syntax-highlighter/styles/prism';
-import { colors } from '../theme';
+
+import { colors } from './theme';
 
 registerLanguage('typescript', typescript);
 
-// function convert(val: any): string {
-//   return JSON.stringify(val, null, 2);
-// }
+const largeDevice = '@media (min-width: 770px)';
 
 type Props = {
   defaultValue: any,
@@ -45,7 +44,11 @@ const TypeDefinition = ({ children }: { children: Node }) => {
         marginTop: '2em',
         maxWidth: '100%',
         overflowX: 'auto',
-        paddingLeft: '2em',
+        WebkitOverflowScrolling: 'touch',
+
+        [largeDevice]: {
+          paddingLeft: '2em',
+        },
       }}
     >
       {children}

@@ -5,14 +5,13 @@ import glam from 'glam';
 import React, { Component, type Node } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { colors } from '../theme';
+import { smallDevice, largeDevice } from '../utils';
 
 const navWidth = 180;
 const appWidth = 840;
 const appGutter = 15;
 const contentGutter = 20;
 const pagePadding = 120;
-const smallDevice = '@media (max-width: 769px)';
-const largeDevice = '@media (min-width: 770px)';
 
 export const AppContainer = (props: any) => (
   <div
@@ -59,6 +58,9 @@ export const AppContent = (props: any) => (
 export const Nav = ({ children }: { children: Node }) => (
   <nav
     css={{
+      position: 'fixed',
+      zIndex: 1,
+
       [smallDevice]: {
         alignItems: 'center',
         backgroundColor: 'rgba(255, 255, 255, 0.96)',
@@ -68,7 +70,6 @@ export const Nav = ({ children }: { children: Node }) => (
         marginLeft: -appGutter,
         marginRight: -appGutter,
         overflowX: 'auto',
-        position: 'fixed',
         top: 0,
         width: '100%',
         WebkitOverflowScrolling: 'touch',
@@ -78,9 +79,7 @@ export const Nav = ({ children }: { children: Node }) => (
         display: 'block',
         float: 'left',
         paddingTop: contentGutter,
-        position: 'fixed',
         width: navWidth,
-        zIndex: 1,
       },
     }}
   >
