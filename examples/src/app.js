@@ -156,8 +156,22 @@ render(
 			spinner={CustomSpinner}
 			spinnerColor={'#D40000'}
 			spinnerSize={150}
-			showThumbnails
-	/>
+			showThumbnails />
+
+		<h3>Default Options With Custom Footer</h3>
+		<Gallery images={DEFAULT_IMAGES.map(({ caption, id, orientation, useForDemo }) => ({
+			src: makeUnsplashSrc(id),
+			thumbnail: makeUnsplashThumbnail(id, orientation),
+			srcSet: [
+				makeUnsplashSrcSet(id, 1024),
+				makeUnsplashSrcSet(id, 800),
+				makeUnsplashSrcSet(id, 500),
+				makeUnsplashSrcSet(id, 320),
+			],
+			caption,
+			orientation,
+			useForDemo,
+		}))} customFooter={<div><p style={{ color: 'white', border: '1px solid #b5a759' }}>Hi! I'm custom footer! :)</p></div>}/>
 	</div>,
 	document.getElementById('example')
 );

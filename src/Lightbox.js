@@ -320,6 +320,7 @@ class Lightbox extends Component {
 	renderFooter () {
 		const {
 			currentImage,
+			customFooter,
 			images,
 			imageCountSeparator,
 			showImageCount,
@@ -333,6 +334,7 @@ class Lightbox extends Component {
 				countCurrent={currentImage + 1}
 				countSeparator={imageCountSeparator}
 				countTotal={images.length}
+				customFooter={customFooter}
 				showCount={showImageCount}
 			/>
 		);
@@ -370,6 +372,7 @@ Lightbox.propTypes = {
 	closeButtonTitle: PropTypes.string,
 	currentImage: PropTypes.number,
 	customControls: PropTypes.arrayOf(PropTypes.node),
+	customFooter: PropTypes.node,
 	enableKeyboardInput: PropTypes.bool,
 	imageCountSeparator: PropTypes.string,
 	images: PropTypes.arrayOf(

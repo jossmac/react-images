@@ -1,14 +1,14 @@
 {
-  "name": "react-images",
-  "version": "0.5.17",
+  "name": "react-images-custom-footer",
+  "version": "0.0.0",
   "description": "A simple, responsive lightbox component for displaying an array of images with React.js",
   "main": "lib/Lightbox.js",
   "jsnext:main": "dist/react-images.es.js",
-  "author": "Joss Mackison",
+  "author": "Joss Mackison, Selim Ata",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jossmac/react-images.git"
+    "url": "https://github.com/selimata/react-images-custom-footer.git"
   },
   "dependencies": {
     "aphrodite": "^0.5.0",
@@ -55,22 +55,24 @@
   },
   "scripts": {
     "build": "nps build",
-    "publish:examples": "NODE_ENV=production nps publish",
+    "publish:examples": "SET NODE_ENV=production nps publish",
     "start": "webpack-dev-server --progress",
     "lint": "eslint src/** examples/src/app.js examples/src/components/Gallery.js"
   },
   "bugs": {
-    "url": "https://github.com/jossmac/react-images/issues"
+    "url": "https://github.com/selimata/react-images-custom-footer/issues"
   },
-  "homepage": "http://jossmac.github.io/react-images",
+  "homepage": "http://selimata.github.io/react-images-custom-footer",
   "keywords": [
     "react",
     "react-component",
     "react-images",
+    "react-images-custom-footer",
     "react-lightbox",
     "react-carousel",
     "react-gallery",
     "react images",
+    "react images custom footer",
     "react lightbox",
     "react carousel",
     "react gallery",
