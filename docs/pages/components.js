@@ -91,7 +91,7 @@ export const Code = (props: any) => (
   />
 );
 
-export const CodeBlock = ({ children }: { children: Node }) => {
+export const CodeBlock = ({ children, ...props }: { children: Node }) => {
   return (
     <SyntaxHighlighter
       language="jsx"
@@ -103,6 +103,7 @@ export const CodeBlock = ({ children }: { children: Node }) => {
         overflowX: 'auto',
         WebkitOverflowScrolling: 'touch',
       }}
+      {...props}
     >
       {children}
     </SyntaxHighlighter>

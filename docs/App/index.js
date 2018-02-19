@@ -13,6 +13,7 @@ import {
   Home,
   NoMatch,
   Patterns,
+  Thanks,
 } from '../pages';
 import ImageRoute from '../ImageRoute';
 import withImages, { type ProviderProps } from '../ImageProvider';
@@ -31,6 +32,7 @@ const links = [
   { icon: '🎨', label: 'Styles', path: '/styles' },
   { icon: '💖', label: 'Accessibility', path: '/accessibility' },
   { icon: '🤖', label: 'Patterns', path: '/patterns' },
+  { icon: '🎉', label: 'Thanks', path: '/thanks' },
 ];
 
 class App extends Component<*> {
@@ -96,6 +98,7 @@ class App extends Component<*> {
                     component={Patterns}
                     {...routeProps}
                   />
+                  <Route component={Thanks} />
                   <Route component={NoMatch} />
                 </Switch>
               </PageContent>

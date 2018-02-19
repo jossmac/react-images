@@ -3,7 +3,7 @@ import React from 'react';
 export const features = [
   {
     icon: '🛠',
-    text: 'Comprehensively typed',
+    text: 'Static type checking',
     link: (
       <a href="https://flow.org" target="_blank">
         flow
@@ -21,17 +21,13 @@ export const features = [
   },
   {
     icon: '📺',
-    text: 'HTML5 fullscreen support',
+    text: 'Vendor agnostic fullscreen support',
     link: (
       <a href="https://github.com/snakesilk/react-fullscreen" target="_blank">
         react-full-screen
       </a>
     ),
   },
-  { icon: '🖼', text: 'Carousel without modal dialog' },
-  { icon: '🎨', text: 'Lightweight styling framework' },
-  { icon: '🏖', text: 'No restrictions on data shape' },
-  { icon: '🚀', text: 'Replaceable component architecture' },
 ];
 
 export type FeaturesType = typeof features;

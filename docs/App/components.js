@@ -84,7 +84,7 @@ export const Nav = ({ children }: { children: Node }) => (
     }}
   >
     {children}
-    <GithubButton />
+    <Footer />
   </nav>
 );
 
@@ -139,7 +139,7 @@ export const NavItem = ({ children, icon, isSelected, to }: ItemProps) => {
   );
 };
 
-const GithubButton = () => {
+const Footer = () => {
   const size = window.innerWidth > 769 ? 'large' : null;
 
   return (
@@ -164,6 +164,19 @@ const GithubButton = () => {
       >
         Star
       </a>
+      <p
+        css={{
+          color: colors.N40,
+          fontSize: '0.85em',
+          marginBottom: 0,
+          [smallDevice]: { display: 'none' },
+        }}
+      >
+        with ❤️ by{' '}
+        <a href="https://twitter.com/jossmackison" target="_blank">
+          jossmac
+        </a>
+      </p>
     </div>
   );
 };
