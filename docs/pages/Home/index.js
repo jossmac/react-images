@@ -7,7 +7,7 @@ import { type ProviderProps } from '../../ImageProvider';
 import { Code, CodeBlock, Heading, Title } from '../components';
 import PrettyProps from '../../PrettyProps';
 import GalleryExample from './GalleryExample';
-import { carouselProps } from './props';
+import { carouselProps, modalProps } from './props';
 
 export default class Home extends Component<ProviderProps> {
   render() {
@@ -88,10 +88,11 @@ class Component extends React.Component {
         </p>
         <GalleryExample {...this.props} />
 
-        <h2>Props</h2>
-
-        <h3>Carousel</h3>
+        <h2>Carousel Props</h2>
         {carouselProps.map(p => <PrettyProps key={p.name} {...p} />)}
+
+        <h2>Modal Props</h2>
+        {modalProps.map(p => <PrettyProps key={p.name} {...p} />)}
       </div>
     );
   }

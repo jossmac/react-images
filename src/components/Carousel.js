@@ -13,7 +13,7 @@ import {
   defaultComponents,
   type CarouselComponents,
 } from './defaultComponents';
-import { defaultStyles, type StylesConfig } from '../styles';
+import { defaultCarouselStyles, type StylesConfig } from '../styles';
 import { type ModalProps } from './Modal/Modal';
 import { className, isTouch } from '../utils';
 import formatters from '../formatters';
@@ -36,8 +36,8 @@ export type CarouselProps = {
   },
   /* Formatters get called when language is used, defaults use english. */
   formatters: typeof formatters,
-  /* Hide controls when the user is idle (listens to mouse move) */
-  hideControlsWhenIdle?: boolean,
+  /* Duration, in milliseconds, to wait before hiding controls when the user is idle */
+  hideControlsWhenIdle?: number | false,
   /* When envoked within a modal, props are cloned from the modal */
   modalProps?: ModalProps,
   /* Style modifier methods */
@@ -76,7 +76,7 @@ export type CarouselState = {
 const defaultProps = {
   currentIndex: 0,
   formatters,
-  hideControlsWhenIdle: true,
+  hideControlsWhenIdle: 3000,
   styles: {},
   trackProps: {
     instant: !isTouch(),
@@ -184,7 +184,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
   };
 
   getStyles = (key: string, props: {}): {} => {
-    const base = defaultStyles[key](props);
+    const base = defaultCarouselStyles[key](props);
     base.boxSizing = 'border-box';
     const custom = this.props.styles[key];
     return custom ? custom(base, props) : base;
@@ -229,7 +229,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
       if (this.mounted) {
         this.setState({ interactionIsIdle: true });
       }
-    }, 3000);
+    }, this.props.hideControlsWhenIdle);
   });
   handleViewChange = (indicies: IndicesType) => {
     const { trackProps } = this.props;

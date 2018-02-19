@@ -2,13 +2,20 @@
 // @jsx glam
 
 import glam from 'glam';
-import React from 'react';
+import React, { type Node } from 'react';
 
+import SyntaxHighlighter, {
+  registerLanguage,
+} from 'react-syntax-highlighter/prism-light';
+import typescript from 'react-syntax-highlighter/languages/prism/typescript';
+import { coy } from 'react-syntax-highlighter/styles/prism';
 import { colors } from '../theme';
 
-function convert(val: any): string {
-  return JSON.stringify(val, null, 2);
-}
+registerLanguage('typescript', typescript);
+
+// function convert(val: any): string {
+//   return JSON.stringify(val, null, 2);
+// }
 
 type Props = {
   defaultValue: any,
@@ -23,10 +30,28 @@ type Props = {
     | 'object'
     | 'string'
     | 'union',
-  typeDefinition: any,
+  typeDefinition: string,
 };
 
-const borderRadius = 3;
+const TypeDefinition = ({ children }: { children: Node }) => {
+  return (
+    <SyntaxHighlighter
+      language="typescript"
+      style={coy}
+      customStyle={{
+        backgroundColor: 'transparent',
+        borderRadius: 4,
+        fontSize: 12,
+        marginTop: '2em',
+        maxWidth: '100%',
+        overflowX: 'auto',
+        paddingLeft: '2em',
+      }}
+    >
+      {children}
+    </SyntaxHighlighter>
+  );
+};
 
 const Heading = props => (
   <h4
@@ -94,6 +119,12 @@ const PrettyProps = (props: Props) => {
   }
 
   const defaultValue = props.defaultValue ? props.defaultValue : null;
+  const description =
+    typeof props.description === 'string' ? (
+      <p>{props.description}</p>
+    ) : (
+      props.description
+    );
 
   return (
     <div>
@@ -107,7 +138,10 @@ const PrettyProps = (props: Props) => {
           ) : null}
         </code>
       </Heading>
-      <p>{props.description}</p>
+      {description}
+      {props.typeDefinition ? (
+        <TypeDefinition>{props.typeDefinition}</TypeDefinition>
+      ) : null}
     </div>
   );
 };

@@ -1,142 +1,261 @@
-import React from 'react';
+// @flow
+import React, { Fragment } from 'react';
+import { Link } from 'react-router-dom';
+
+const viewPagerUrl = 'https://github.com/souporserious/react-view-pager';
 
 export const carouselProps = [
   {
     defaultValue: null,
-    description: 'Replace any of the carousel components with your own.',
+    description: (
+      <p>
+        Replace any or all of the carousel components with your own to create
+        the layout and functionality you desire. Detailed documentation on the{' '}
+        <Link to="/components">Components page</Link>.
+      </p>
+    ),
     isRequired: false,
     name: 'components',
-    type: 'object',
-    // typeDefinition: any,
+    type: 'Object',
+    typeDefinition: `// FrameProps, ModalProps, TrackProps, and ViewType declared below
+
+type CommonProps = {
+  carouselProps: Object,
+  currentIndex: number,
+  currentView: ViewType,
+  frameProps FrameProps,
+  getStyles: (Object, Object) => Object,
+  innerProps: Object,
+  isFullscreen: boolean,
+  isModal: boolean,
+  modalProps: ModalProps,
+  interactionIsIdle: boolean,
+  trackProps: TrackProps,
+  views: Array<ViewType>,
+}
+
+type components = {
+  Container: ComponentType<CommonProps>,
+  Footer: ComponentType<CommonProps>,
+  FooterCaption: ComponentType<CommonProps>,
+  FooterCount: ComponentType<CommonProps>,
+  Header: ComponentType<CommonProps>,
+  HeaderClose: ComponentType<CommonProps>,
+  HeaderFullscreen: ComponentType<CommonProps>,
+  Navigation: ComponentType<CommonProps>,
+  NavigationPrev: ComponentType<CommonProps>,
+  NavigationNext: ComponentType<CommonProps>,
+  View: ComponentType<CommonProps>,
+}`,
   },
   {
     defaultValue: '0',
-    description: "Take control of the carousel's view index state.",
+    description:
+      'React-Images manages the index state internally. This property is exposed so you can take control of it, or initiate the carousel from a certain point.',
     isRequired: false,
     name: 'currentIndex',
-    type: 'number',
-    // typeDefinition: any,
+    type: 'Number',
   },
   {
     defaultValue: null,
-    description:
-      'See https://github.com/souporserious/react-view-pager#frame-props',
+    description: (
+      <p>
+        Passed on to react-view-pager's Frame component. Check out{' '}
+        <a href={`${viewPagerUrl}#frame-props`} target="_blank">
+          #frame-props
+        </a>{' '}
+        for more information.
+      </p>
+    ),
     isRequired: false,
     name: 'frameProps',
-    type: 'object',
-    typeDefinition: {
-      accessibility: Boolean,
-      autoSize: true | false | 'width' | 'height',
-      springConfig: Object, // TODO
-      tag: String,
-    },
+    type: 'Object',
+    typeDefinition: `{
+  accessibility: boolean,
+  autoSize: true | false | 'width' | 'height',
+  springConfig: { [key: string]: number },
+  tag: string,
+}`,
   },
   {
     description:
-      'Formatters get called when language is used, defaults use english.',
+      'Formatters get called with common props to render labels and titles for certain components. Replace the default formatters if you want to tweak the text or change the language.',
     isRequired: false,
     name: 'formatters',
-    type: 'object',
-    typeDefinition: {
-      getNextLabel: Function,
-      getPrevLabel: Function,
-      getNextTitle: Function,
-      getPrevTitle: Function,
-      getCloseLabel: Function,
-      getFullscreenLabel: Function,
-    },
+    type: 'Object',
+    typeDefinition: `// CommonProps declared above in the \`component\` prop type
+
+{
+  getNextLabel: (CommonProps) => string, // Show slide {nextIndex} of {totalCount}
+  getPrevLabel: (CommonProps) => string, // Show slide {prevIndex} of {totalCount}
+  getNextTitle: (CommonProps) => string, // Next (right arrow)
+  getPrevTitle: (CommonProps) => string, // Previous (left arrow)
+  getCloseLabel: (CommonProps) => string, // Close (esc)
+  getFullscreenLabel: (CommonProps) => string, // [Enter | Exit] fullscreen (f)
+}`,
   },
   {
-    defaultValue: 'true',
+    defaultValue: '3000',
     description:
-      'Hide controls when the user is idle (listens to mouse/touch move).',
+      'The duration, in milliseconds, to wait before hiding controls when the user is idle.',
     isRequired: false,
     name: 'hideControlsWhenIdle',
-    type: 'boolean',
+    type: 'Number | false',
   },
   {
     defaultValue: null,
     description:
-      'When envoked within a modal, props are cloned from the modal.',
+      'Available when the Carousel is within a Modal. The applicable props are cloned and passed on for use inside Carousel components.',
     isRequired: false,
     name: 'modalProps',
-    type: 'object',
-    typeDefinition: {
-      allowFullscreen: Boolean,
-      isFullscreen: Boolean,
-      onClose: Function,
-      toggleFullscreen: Function,
-    },
+    type: 'Object',
+    typeDefinition: `{
+  allowFullscreen: boolean,
+  isFullscreen: boolean,
+  onClose: (Event) => void,
+  toggleFullscreen: () => void,
+}`,
   },
   {
     defaultValue: null,
-    description: 'Modify the style of any component.',
+    description:
+      'React-Images ships each Carousel component with default styles. You can extend or replace these using the styles property.',
     isRequired: false,
     name: 'styles',
-    type: 'object',
-    typeDefinition: {
-      container: Function,
-      footer: Function,
-      footerCaption: Function,
-      footerCount: Function,
-      header: Function,
-      headerClose: Function,
-      headerFullscreen: Function,
-      navigation: Function,
-      navigationPrev: Function,
-      navigationNext: Function,
-      view: Function,
+    type: 'Object',
+    typeDefinition: `type StyleObj = { [key: string]: any }
+type State = {
+  isFullscreen: boolean,
+  isModal: boolean,
+  interactionIsIdle: boolean,
+}
 
-      blanket: Function,
-      dialog: Function,
-      positioner: Function,
-    },
+type StyleFn = (StyleObj, State) => StyleObj
+
+{
+  container: StyleFn,
+  footer: StyleFn,
+  footerCaption: StyleFn,
+  footerCount: StyleFn,
+  header: StyleFn,
+  headerClose: StyleFn,
+  headerFullscreen: StyleFn,
+  navigation: StyleFn,
+  navigationPrev: StyleFn,
+  navigationNext: StyleFn,
+  view: StyleFn,
+}`,
   },
   {
     defaultValue: "{ swipe: 'touch' }",
     description: (
       <p>
-        See{' '}
-        <a
-          href="https://github.com/souporserious/react-view-pager#track-props"
-          target="_blank"
-        >
-          react-view-pager#track-props
-        </a>
+        Passed on to react-view-pager's Track component. Check out{' '}
+        <a href={`${viewPagerUrl}#track-props`} target="_blank">
+          #track-props
+        </a>{' '}
+        for more information.
       </p>
     ),
     isRequired: false,
     name: 'trackProps',
-    type: 'object',
-    typeDefinition: {
-      align: Number,
-      animations: [{ props: String, stops: Array[(Number, Number)] }],
-      axis: 'x, y',
-      contain: Boolean,
-      currentView: Number,
-      flickTimeout: Number,
-      infinite: Boolean,
-      instant: Boolean,
-      onRest: Function,
-      onScroll: Function,
-      onSwipeEnd: Function,
-      onSwipeMove: Function,
-      onSwipeStart: Function,
-      onViewChange: Function,
-      springConfig: Object,
-      swipe: true | false | 'mouse' | 'touch',
-      swipeThreshold: Number,
-      tag: String,
-      viewsToMove: Number,
-      viewsToShow: Number | 'auto',
-    },
+    type: 'Object',
+    typeDefinition: `{
+  align: number,
+  animations: Array<{ props: string, stops: Array<[number, number]> }>,
+  axis: 'x' | 'y',
+  contain: boolean,
+  currentView: any,
+  flickTimeout: number,
+  infinite: boolean,
+  instant: boolean,
+  onRest: () => void,
+  onScroll: () => void,
+  onSwipeEnd: () => void,
+  onSwipeMove: () => void,
+  onSwipeStart: () => void,
+  onViewChange: number => void,
+  springConfig: { [key: string]: number },
+  swipe: true | false | 'mouse' | 'touch',
+  swipeThreshold: number,
+  tag: any,
+  viewsToMove: number,
+  viewsToShow: number | 'auto',
+}`,
   },
   {
     defaultValue: null,
-    description: 'The items to render in the carousel.',
+    description: (
+      <Fragment>
+        <p>
+          The data shape for each view in your carousel. This must be an array
+          of objects, though the key/value pairs in the objects can be whatever
+          you want.
+        </p>
+        <p>
+          When using "non-standard" view data you must provide a View component
+          that can interpret and render it.
+        </p>
+      </Fragment>
+    ),
     isRequired: true,
     name: 'views',
-    type: 'array',
-    // typeDefinition: [{ [key: string]: any }], // TODO
+    type: 'Array<Object>',
+    typeDefinition: `// the default View component expects
+Array<{
+  caption: string,
+  src: string,
+}>`,
+  },
+];
+
+export const modalProps = [
+  {
+    defaultValue: 'true',
+    description:
+      'Whether the user should be allowed to fullscreen the dialog, either by clicking the Fullscreen button or from an `F` keypress.',
+    name: 'allowFullscreen',
+    type: 'boolean',
+  },
+  {
+    description:
+      'Modal expects a single Carousel child. It will not behave as expected otherwise.',
+    name: 'children',
+    type: 'CarouselType',
+  },
+  {
+    defaultValue: 'true',
+    description:
+      'Whether the `onClose` function should be called when the backdrop is clicked.',
+    name: 'closeOnBackdropClick',
+    type: 'boolean',
+  },
+  {
+    defaultValue: 'true',
+    description:
+      'Whether the `onClose` function should be called when the `esc` key is pressed',
+    name: 'closeOnEsc',
+    type: 'boolean',
+  },
+  {
+    description: 'Function called to request close of the modal',
+    name: 'onClose',
+    type: '(Event) => void',
+  },
+  {
+    description:
+      'React-Images ships each Modal component with default styles. You can extend or replace these using the styles property.',
+    name: 'styles',
+    type: 'Object',
+    typeDefinition: `type StyleObj = { [key: string]: any }
+type State = { isFullscreen: boolean }
+
+type StyleFn = (StyleObj, State) => StyleObj
+
+{
+  blanket: StyleFn,
+  dialog: StyleFn,
+  positioner: StyleFn,
+}`,
   },
 ];

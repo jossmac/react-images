@@ -9,7 +9,7 @@ import focusStore from 'a11y-focus-store';
 import { Fade, SlideUp } from './Animation';
 import { type CarouselType } from '../Carousel';
 import { Blanket, Positioner, Dialog } from './styled';
-import { defaultStyles, type StylesConfig } from '../../styles';
+import { defaultModalStyles, type StylesConfig } from '../../styles';
 import { isTouch } from '../../utils';
 
 type MouseOrKeyboardEvent = MouseEvent | KeyboardEvent;
@@ -106,7 +106,7 @@ class Modal extends Component<Props, State> {
   };
 
   getStyles = (key: string, props: {}): {} => {
-    const base = defaultStyles[key](props);
+    const base = defaultModalStyles[key](props);
     base.boxSizing = 'border-box';
     const custom = this.props.styles[key];
     return custom ? custom(base, props) : base;
