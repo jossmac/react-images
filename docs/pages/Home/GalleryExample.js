@@ -67,13 +67,14 @@ export default class Home extends Component<ProviderProps, State> {
   }
 }
 
+const gutter = 2;
+
 const Gallery = (props: any) => (
   <div
     css={{
-      display: 'flex ',
-      flexWrap: 'wrap',
-      marginLeft: -2,
-      marginRight: -2,
+      overflow: 'hidden',
+      marginLeft: -gutter,
+      marginRight: -gutter,
     }}
     {...props}
   />
@@ -84,11 +85,12 @@ const Image = (props: any) => (
     css={{
       backgroundColor: '#eee',
       boxSizing: 'border-box',
-      flex: '0 1 calc(25% - 4px)',
-      margin: 2,
+      float: 'left',
+      margin: gutter,
       overflow: 'hidden',
       paddingBottom: '16%',
       position: 'relative',
+      width: `calc(25% - ${gutter * 2}px)`,
 
       ':hover': {
         opacity: 0.9,

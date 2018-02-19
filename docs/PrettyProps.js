@@ -14,8 +14,6 @@ import { colors } from './theme';
 
 registerLanguage('typescript', typescript);
 
-const largeDevice = '@media (min-width: 770px)';
-
 type Props = {
   defaultValue: any,
   description: any,
@@ -45,10 +43,6 @@ const TypeDefinition = ({ children }: { children: Node }) => {
         maxWidth: '100%',
         overflowX: 'auto',
         WebkitOverflowScrolling: 'touch',
-
-        [largeDevice]: {
-          paddingLeft: '2em',
-        },
       }}
     >
       {children}

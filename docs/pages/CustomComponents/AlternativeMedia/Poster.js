@@ -14,9 +14,9 @@ const gutter = 2;
 export const Posters = (props: any) => (
   <div
     css={{
-      display: 'flex ',
       marginLeft: -gutter,
       marginRight: -gutter,
+      overflow: 'hidden',
     }}
     {...props}
   />
@@ -28,14 +28,16 @@ export const Poster = ({ data, onClick }: Props) => (
     css={{
       backgroundColor: '#eee',
       backgroundImage: `url(${data.poster})`,
-      backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',
-      flex: 1,
+      backgroundSize: 'cover',
+      boxSizing: 'border-box',
+      float: 'left',
       lineHeight: 0,
       margin: gutter,
-      paddingBottom: ratio,
       overflow: 'hidden',
+      paddingBottom: ratio,
       position: 'relative',
+      width: `calc(50% - ${gutter * 2}px)`,
     }}
   >
     <button
