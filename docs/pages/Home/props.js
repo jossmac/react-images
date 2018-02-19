@@ -222,6 +222,7 @@ export const modalProps = [
       'Modal expects a single Carousel child. It will not behave as expected otherwise.',
     name: 'children',
     type: 'CarouselType',
+    isRequired: true,
   },
   {
     defaultValue: 'true',
@@ -241,6 +242,7 @@ export const modalProps = [
     description: 'Function called to request close of the modal',
     name: 'onClose',
     type: '(Event) => void',
+    isRequired: true,
   },
   {
     description:
