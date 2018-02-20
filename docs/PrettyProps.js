@@ -19,14 +19,7 @@ type Props = {
   description: any,
   isRequired: boolean,
   name: string,
-  type:
-    | 'any'
-    | 'boolean'
-    | 'function'
-    | 'number'
-    | 'object'
-    | 'string'
-    | 'union',
+  type: string,
   typeDefinition: string,
 };
 
@@ -86,6 +79,7 @@ const code = {
   fontFamily: 'Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace',
   margin: 0,
   padding: '0.2em 0.4em',
+  whiteSpace: 'nowrap',
 };
 
 const HeadingType = props => (

@@ -4,6 +4,7 @@ import Container from './Container';
 import Footer, { FooterCaption, FooterCount } from './Footer';
 import Header, { HeaderClose, HeaderFullscreen } from './Header';
 import { Navigation, NavigationPrev, NavigationNext } from './Navigation';
+import { Blanket, Dialog, Positioner } from './Modal/styled';
 import View from './View';
 
 export type CarouselComponents = {
@@ -20,7 +21,7 @@ export type CarouselComponents = {
   View: typeof View,
 };
 
-export const components: CarouselComponents = {
+export const carouselComponents: CarouselComponents = {
   Container: Container,
   Footer: Footer,
   FooterCaption: FooterCaption,
@@ -34,7 +35,32 @@ export const components: CarouselComponents = {
   View: View,
 };
 
-export const defaultComponents = (providedComponents?: CarouselComponents) => ({
-  ...components,
+export const defaultCarouselComponents = (
+  providedComponents?: CarouselComponents
+) => ({
+  ...carouselComponents,
+  ...providedComponents,
+});
+
+// ==============================
+// Modal
+// ==============================
+
+export type ModalComponents = {
+  Blanket: typeof Blanket,
+  Positioner: typeof Positioner,
+  Dialog: typeof Dialog,
+};
+
+export const modalComponents: ModalComponents = {
+  Blanket: Blanket,
+  Positioner: Positioner,
+  Dialog: Dialog,
+};
+
+export const defaultModalComponents = (
+  providedComponents?: ModalComponents
+) => ({
+  ...modalComponents,
   ...providedComponents,
 });

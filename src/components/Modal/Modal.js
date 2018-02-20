@@ -6,10 +6,13 @@ import Fullscreen from 'react-full-screen';
 import ScrollLock from 'react-scrolllock';
 import focusStore from 'a11y-focus-store';
 
+import {
+  defaultModalComponents,
+  type ModalComponents,
+} from '../defaultComponents';
 import { Fade, SlideUp } from './Animation';
 import { type CarouselType } from '../Carousel';
-import { Blanket, Positioner, Dialog } from './styled';
-import { defaultModalStyles, type StylesConfig } from '../../styles';
+import { defaultModalStyles, type ModalStylesConfig } from '../../styles';
 import { isTouch } from '../../utils';
 
 type MouseOrKeyboardEvent = MouseEvent | KeyboardEvent;
@@ -30,6 +33,8 @@ export type Props = {
   closeOnBackdropClick: boolean,
   /* Enable/disable calling `onClose` when the `esc` key is pressed */
   closeOnEsc: boolean,
+  /* Replace any of the modal components */
+  components?: ModalComponents,
   /*
     Show the component; triggers the enter or exit states
     NOTE: provided by TransitionGroup, NOT supplied by the user
@@ -38,7 +43,7 @@ export type Props = {
   /* Function called to request close of the modal */
   onClose: CloseType,
   /* Style modifier methods */
-  styles: StylesConfig,
+  styles: ModalStylesConfig,
 };
 type State = { isFullscreen: boolean };
 const defaultProps = {
@@ -50,10 +55,26 @@ const defaultProps = {
 class Modal extends Component<Props, State> {
   positioner: HTMLElement;
   commonProps: any; // TODO
-  state: State = { isFullscreen: false };
+  components: ModalComponents;
 
   static defaultProps = defaultProps;
 
+  constructor(props: Props) {
+    super(props);
+
+    this.cacheComponents(props.components);
+
+    this.state = { isFullscreen: false };
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    if (nextProps.components !== this.props.components) {
+      this.cacheComponents(nextProps.components);
+    }
+  }
+
+  // emulate `componentDidMount` & `componentWillUnmount`
+  // called on complete of enter & exit transitions respectively
   modalDidMount = () => {
     document.addEventListener('keyup', this.handleKeyUp);
     focusStore.storeFocus();
@@ -63,6 +84,9 @@ class Modal extends Component<Props, State> {
     focusStore.restoreFocus();
   };
 
+  cacheComponents = (comps?: ModalComponents) => {
+    this.components = defaultModalComponents(comps);
+  };
   handleFullscreenChange = (isFullscreen: boolean) => {
     this.setState({ isFullscreen });
   };
@@ -121,6 +145,7 @@ class Modal extends Component<Props, State> {
     };
   }
   render() {
+    const { Blanket, Positioner, Dialog } = this.components;
     const { allowFullscreen, children } = this.props;
     const { isFullscreen } = this.state;
     const commonProps = (this.commonProps = this.getCommonProps());

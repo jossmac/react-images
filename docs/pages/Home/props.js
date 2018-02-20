@@ -112,7 +112,7 @@ type components = {
     typeDefinition: `{
   allowFullscreen: boolean,
   isFullscreen: boolean,
-  onClose: (Event) => void,
+  onClose: (SyntheticEvent) => void,
   toggleFullscreen: () => void,
 }`,
   },
@@ -215,7 +215,7 @@ export const modalProps = [
     description:
       'Whether the user should be allowed to fullscreen the dialog, either by clicking the Fullscreen button or from an `F` keypress.',
     name: 'allowFullscreen',
-    type: 'boolean',
+    type: 'Boolean',
   },
   {
     description:
@@ -229,19 +229,19 @@ export const modalProps = [
     description:
       'Whether the `onClose` function should be called when the backdrop is clicked.',
     name: 'closeOnBackdropClick',
-    type: 'boolean',
+    type: 'Boolean',
   },
   {
     defaultValue: 'true',
     description:
       'Whether the `onClose` function should be called when the `esc` key is pressed',
     name: 'closeOnEsc',
-    type: 'boolean',
+    type: 'Boolean',
   },
   {
     description: 'Function called to request close of the modal',
     name: 'onClose',
-    type: '(Event) => void',
+    type: '(SyntheticEvent) => void',
     isRequired: true,
   },
   {

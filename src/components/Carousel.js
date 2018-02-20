@@ -10,10 +10,10 @@ const viewPagerStyles = { flex: '1 1 auto', position: 'relative' };
 const frameStyles = { outline: 0 };
 
 import {
-  defaultComponents,
+  defaultCarouselComponents,
   type CarouselComponents,
 } from './defaultComponents';
-import { defaultCarouselStyles, type StylesConfig } from '../styles';
+import { defaultCarouselStyles, type CarouselStylesConfig } from '../styles';
 import { type ModalProps } from './Modal/Modal';
 import { className, isTouch } from '../utils';
 import formatters from '../formatters';
@@ -41,7 +41,7 @@ export type CarouselProps = {
   /* When envoked within a modal, props are cloned from the modal */
   modalProps?: ModalProps,
   /* Style modifier methods */
-  styles: StylesConfig,
+  styles: CarouselStylesConfig,
   // See https://github.com/souporserious/react-view-pager#track-props
   trackProps: {
     align: number,
@@ -143,7 +143,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
     }
   }
   cacheComponents = (comps?: CarouselComponents) => {
-    this.components = defaultComponents(comps);
+    this.components = defaultCarouselComponents(comps);
   };
 
   // ==============================
