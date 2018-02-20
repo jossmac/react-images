@@ -5,7 +5,8 @@ import React, { Component } from 'react';
 
 import Carousel, { Modal, ModalGateway } from '../../../src/components';
 import type { ProviderProps } from '../../ImageProvider';
-import { Code, Heading } from '../components';
+import { Code, FooterCaption, Heading } from '../components';
+import { getAltText } from '../formatters';
 
 type State = { lightboxIsOpen: boolean };
 
@@ -53,7 +54,9 @@ export default class ModalExample extends Component<ProviderProps, State> {
               }}
             >
               <Carousel
+                components={{ FooterCaption }}
                 frameProps={{ autoSize: 'height' }}
+                formatters={{ getAltText }}
                 views={images}
                 styles={{
                   footer: base => ({

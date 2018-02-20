@@ -149,8 +149,8 @@ export default class View extends Component<ViewProps, ViewState> {
           ref={this.getVideo}
           style={{ width: '100%', height: 'auto' }}
         >
-          {data.urls.map((vid, idx) => (
-            <source key={idx} src={vid.src} type={vid.type} />
+          {data.sources.map((vid, idx) => (
+            <source key={idx} src={vid.url} type={vid.type} />
           ))}
           Your browser does not support HTML5 video.
         </video>

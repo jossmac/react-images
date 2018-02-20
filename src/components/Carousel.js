@@ -9,6 +9,7 @@ import { ViewPager, Frame, Track, View as PageView } from 'react-view-pager';
 const viewPagerStyles = { flex: '1 1 auto', position: 'relative' };
 const frameStyles = { outline: 0 };
 
+import { getSource } from './component-helpers';
 import {
   defaultCarouselComponents,
   type CarouselComponents,
@@ -193,6 +194,10 @@ class Carousel extends Component<CarouselProps, CarouselState> {
   getTrackProps = (props: CarouselProps) => {
     return { ...defaultProps.trackProps, ...props.trackProps };
   };
+  // combine defaultProps with consumer props to maintain expected behaviour
+  getFormatters = () => {
+    return { ...defaultProps.formatters, ...this.props.formatters };
+  };
   getViewData = () => {
     const { views } = this.props;
     const { currentIndex } = this.state;
@@ -250,8 +255,12 @@ class Carousel extends Component<CarouselProps, CarouselState> {
   // ==============================
 
   renderNavigation = () => {
-    const { formatters: getters } = this.props;
-    const { getNextLabel, getPrevLabel, getNextTitle, getPrevTitle } = getters;
+    const {
+      getNextLabel,
+      getPrevLabel,
+      getNextTitle,
+      getPrevTitle,
+    } = this.getFormatters();
     const { Navigation, NavigationPrev, NavigationNext } = this.components;
     const { commonProps } = this;
 
@@ -303,8 +312,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
   };
   renderHeader = () => {
     const { Header, HeaderClose, HeaderFullscreen } = this.components;
-    const { formatters: getters } = this.props;
-    const { getCloseLabel, getFullscreenLabel } = getters;
+    const { getCloseLabel, getFullscreenLabel } = this.getFormatters();
     const { commonProps } = this;
 
     return Header ? (
@@ -346,7 +354,8 @@ class Carousel extends Component<CarouselProps, CarouselState> {
   render() {
     const { Container, View } = this.components;
     const { currentIndex } = this.state;
-    const { frameProps, views } = this.props;
+    const { formatters: getters, frameProps, views } = this.props;
+    const { getAltText } = this.getFormatters();
     const commonProps = (this.commonProps = this.getCommonProps());
 
     return (
@@ -371,11 +380,26 @@ class Carousel extends Component<CarouselProps, CarouselState> {
               ref={this.getTrack}
             >
               {views &&
-                views.map((view, idx) => (
-                  <PageView className={className('view-wrapper')} key={idx}>
-                    <View {...commonProps} data={view} />
-                  </PageView>
-                ))}
+                views.map((data, index) => {
+                  const innerProps = {
+                    alt: getAltText({ data, index }),
+                    src: getSource({
+                      data,
+                      isFullscreen: commonProps.isFullscreen,
+                    }),
+                  };
+
+                  return (
+                    <PageView className={className('view-wrapper')} key={index}>
+                      <View
+                        {...commonProps}
+                        innerProps={innerProps}
+                        data={data}
+                        index={index}
+                      />
+                    </PageView>
+                  );
+                })}
             </Track>
           </Frame>
           {this.renderNavigation()}

@@ -5,7 +5,8 @@ import React, { Component } from 'react';
 
 import Carousel from '../../../src/components';
 import type { ProviderProps } from '../../ImageProvider';
-import { Code, Heading } from '../components';
+import { Code, FooterCaption, Heading } from '../components';
+import { getAltText } from '../formatters';
 
 export default class CarouselExample extends Component<ProviderProps> {
   render() {
@@ -23,6 +24,8 @@ export default class CarouselExample extends Component<ProviderProps> {
         </p>
         {!isLoading ? (
           <Carousel
+            components={{ FooterCaption }}
+            formatters={{ getAltText }}
             views={images}
             styles={{
               container: base => ({

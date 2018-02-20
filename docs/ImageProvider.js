@@ -1,31 +1,58 @@
 // @flow
 
-import React, { Component, type ComponentType } from 'react';
+import React, { Component, type ComponentType, type Node } from 'react';
 
+type Source =
+  | string
+  | {
+      download?: string,
+      fullscreen?: string,
+      regular: string,
+      thumbnail?: string,
+    };
+type Author =
+  | string
+  | {
+      avatar: string,
+      name: string,
+      url: string,
+    };
 type Images = Array<{
-  caption: string,
-  photographer: string,
-  username: string,
-  urls: {
-    full: string,
-    regular: string,
-    thumb: string,
-  },
+  caption?: string | Node,
+  author?: Author,
+  source: Source,
 }>;
 export type ProviderProps = {
   images: Images,
   isLoading: boolean,
 };
 
-function formatImages(arr) {
+function transformPaths({ links, urls }) {
+  return {
+    download: links.download_location,
+    fullscreen: urls.full,
+    regular: urls.regular,
+    thumbnail: urls.thumb,
+  };
+}
+function getReferrerLink(username) {
+  const id = 'react-images';
+  return `https://unsplash.com/${username}?utm_source=${id}&utm_medium=referral`;
+}
+function transformImageData(arr) {
   return arr.map(img => ({
+    author: {
+      avatar: img.user.profile_image.medium,
+      name: img.user.name,
+      url: getReferrerLink(img.user.username),
+    },
     caption: img.description,
-    photographer: `${img.user.first_name} ${img.user.last_name}`,
-    username: img.user.username,
-    urls: img.urls,
+    publishedAt: img.published_at,
+    source: transformPaths(img),
+    title: img.title,
   }));
 }
-function unsplashUrl() {
+function getApiUrl() {
   const query = 'wildlife,animal';
   const url =
     'https://api.unsplash.com/search/photos/?page=1&per_page=12&query=';
@@ -34,13 +61,13 @@ function unsplashUrl() {
   return `${url}${query}&client_id=${process.env.UNSPLASH_API_KEY}`;
 }
 
-const dataKey = 'example_images_data';
+const dataKey = 'react_images_docs';
 
 function getData() {
-  return JSON.parse(window.localStorage.getItem(dataKey));
+  return JSON.parse(window.sessionStorage.getItem(dataKey));
 }
 function setData(data) {
-  window.localStorage.setItem(dataKey, JSON.stringify(data));
+  window.sessionStorage.setItem(dataKey, JSON.stringify(data));
 
   return data;
 }
@@ -60,10 +87,11 @@ export default function withImages(WrappedComponent: ComponentType<*>) {
       }
 
       // set state to force re-render on the route
-      fetch(unsplashUrl())
+      fetch(getApiUrl())
         .then(res => res.json())
         .then(data => {
-          const images = setData(formatImages(data.results));
+          console.log('data.results', data.results);
+          const images = setData(transformImageData(data.results));
           this.setState({ images, isLoading: false });
         })
         .catch(err => {

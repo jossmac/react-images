@@ -3,8 +3,8 @@
 import glam from 'glam';
 import React from 'react';
 
-import { smallDevice } from './helpers';
-import { A, Div, Span } from '../primitives';
+import { smallDevice } from './css-helpers';
+import { Div, Span } from '../primitives';
 import type { PropsWithStyles, ViewType } from '../types';
 import { className } from '../utils';
 
@@ -81,28 +81,11 @@ const Footer = (props: Props) => {
 // Inner Elements
 // ==============================
 
-const Anchor = ({ isModal, ...props }) => (
-  <A
-    css={{
-      color: isModal ? 'white' : 'inherit',
-      textDecoration: 'none',
-
-      ':hover': { textDecoration: 'underline' },
-    }}
-    {...props}
-  />
-);
-
-function photoUrl(username) {
-  const id = 'react-images';
-  return `https://unsplash.com/${username}?utm_source=${id}&utm_medium=referral`;
-}
-
 export const footerCaptionCSS = () => ({});
 
 export const FooterCaption = (props: ViewType) => {
   const { currentView, getStyles, isFullscreen, isModal } = props;
-  const { caption, photographer, username } = currentView;
+  const { caption } = currentView;
   const state = { isFullscreen, isModal };
 
   return (
@@ -110,13 +93,6 @@ export const FooterCaption = (props: ViewType) => {
       css={getStyles('footerCaption', props)}
       className={className('footer__caption', state)}
     >
-      {photographer && username ? (
-        <strong>
-          <Anchor href={photoUrl(username)} target="_blank" isModal={isModal}>
-            {photographer}{' '}
-          </Anchor>
-        </strong>
-      ) : null}
       {caption}
     </Span>
   );

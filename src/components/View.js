@@ -19,16 +19,8 @@ export const viewCSS = () => ({
   textAlign: 'center',
 });
 
-const imageCSS = {
-  height: 'auto',
-  maxHeight: '100vh',
-  maxWidth: '100%',
-  userSelect: 'none',
-};
-
 const View = (props: Props) => {
-  const { data, isFullscreen, isModal, getStyles } = props;
-  const src = isFullscreen ? data.urls.full : data.urls.regular;
+  const { getStyles, innerProps, isFullscreen, isModal } = props;
 
   return (
     <Div
@@ -36,10 +28,14 @@ const View = (props: Props) => {
       className={className('view', { isFullscreen, isModal })}
     >
       <Img
-        css={imageCSS}
+        {...innerProps}
         className={className('view-image', { isFullscreen, isModal })}
-        src={src}
-        alt={data.caption || `Photo by ${data.photographer}`}
+        css={{
+          height: 'auto',
+          maxHeight: '100vh',
+          maxWidth: '100%',
+          userSelect: 'none',
+        }}
       />
     </Div>
   );

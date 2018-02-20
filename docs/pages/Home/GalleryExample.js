@@ -5,6 +5,8 @@ import React, { Component, Fragment } from 'react';
 
 import { type ProviderProps } from '../../ImageProvider';
 import Carousel, { Modal, ModalGateway } from '../../../src/components';
+import { FooterCaption } from '../components';
+import { getAltText } from '../formatters';
 
 type State = {
   selectedIndex?: number,
@@ -30,24 +32,19 @@ export default class Home extends Component<ProviderProps, State> {
       <Fragment>
         {!isLoading ? (
           <Gallery>
-            {images.map((data, j) => {
-              return (
-                <Image
-                  onClick={() => this.toggleLightbox(j)}
-                  key={data.username}
-                >
-                  <img
-                    src={data.urls.thumb}
-                    alt={data.caption}
-                    css={{
-                      cursor: 'pointer',
-                      position: 'absolute',
-                      maxWidth: '100%',
-                    }}
-                  />
-                </Image>
-              );
-            })}
+            {images.map(({ author, caption, source }, j) => (
+              <Image onClick={() => this.toggleLightbox(j)} key={author.name}>
+                <img
+                  alt={caption}
+                  src={source.thumbnail}
+                  css={{
+                    cursor: 'pointer',
+                    position: 'absolute',
+                    maxWidth: '100%',
+                  }}
+                />
+              </Image>
+            ))}
           </Gallery>
         ) : null}
 
@@ -55,7 +52,9 @@ export default class Home extends Component<ProviderProps, State> {
           {lightboxIsOpen && !isLoading ? (
             <Modal onClose={this.toggleLightbox}>
               <Carousel
+                components={{ FooterCaption }}
                 currentIndex={selectedIndex}
+                formatters={{ getAltText }}
                 frameProps={{ autoSize: 'height' }}
                 views={images}
               />

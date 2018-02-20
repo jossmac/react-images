@@ -16,7 +16,7 @@ export const carouselProps = [
     ),
     isRequired: false,
     name: 'components',
-    type: 'Object',
+    type: 'Object<ComponentType>',
     typeDefinition: `// FrameProps, ModalProps, StyleFn, TrackProps, and ViewType declared below
 
 type CommonProps = {
@@ -82,10 +82,11 @@ type components = {
       'Formatters get called with common props to render labels and titles for certain components. Replace the default formatters if you want to tweak the text or change the language.',
     isRequired: false,
     name: 'formatters',
-    type: 'Object',
+    type: 'Object<Function>',
     typeDefinition: `// CommonProps declared above in the \`component\` prop type
 
 {
+  getAltText: (CommonProps) => string, // {caption} | Image {currentIndex}
   getNextLabel: (CommonProps) => string, // Show slide {nextIndex} of {totalCount}
   getPrevLabel: (CommonProps) => string, // Show slide {prevIndex} of {totalCount}
   getNextTitle: (CommonProps) => string, // Next (right arrow)
@@ -122,7 +123,7 @@ type components = {
       'React-Images ships each Carousel component with default styles. You can extend or replace these using the styles property.',
     isRequired: false,
     name: 'styles',
-    type: 'Object',
+    type: 'Object<Function>',
     typeDefinition: `type StyleObj = { [key: string]: any }
 type State = {
   isFullscreen: boolean,
@@ -202,9 +203,15 @@ type StyleFn = (StyleObj, State) => StyleObj
     name: 'views',
     type: 'Array<Object>',
     typeDefinition: `// the default View component expects
+
 Array<{
-  caption: string,
-  src: string,
+  caption?: string | Node,
+  source: string | {
+    download?: string,
+    fullscreen?: string,
+    regular: string,
+    thumbnail?: string,
+  },
 }>`,
   },
 ];
@@ -240,15 +247,16 @@ export const modalProps = [
   },
   {
     description: 'Function called to request close of the modal',
-    name: 'onClose',
-    type: '(SyntheticEvent) => void',
     isRequired: true,
+    name: 'onClose',
+    type: 'Function',
+    typeDefinition: '(Event) => void',
   },
   {
     description:
       'React-Images ships each Modal component with default styles. You can extend or replace these using the styles property.',
     name: 'styles',
-    type: 'Object',
+    type: 'Object<Function>',
     typeDefinition: `type StyleObj = { [key: string]: any }
 type State = { isFullscreen: boolean }
 

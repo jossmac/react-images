@@ -48,7 +48,23 @@ function getFullscreenLabel({ isFullscreen }: FullscreenProps): string {
   return isFullscreen ? 'Exit fullscreen (f)' : 'Enter fullscreen (f)';
 }
 
+// ==============================
+// View
+// ==============================
+
+/* alt text for each image in the carousel */
+function getAltText({ data, index }): string {
+  if (data.caption) return data.caption;
+
+  return `Image ${index + 1}`;
+}
+
+// ==============================
+// Exports
+// ==============================
+
 export default {
+  getAltText,
   getNextLabel,
   getPrevLabel,
   getNextTitle,
