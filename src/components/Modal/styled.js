@@ -51,7 +51,6 @@ type PositionerProps = PositionerState &
 export const positionerCSS = () => ({
   alignItems: 'center',
   bottom: 0,
-  color: 'white',
   display: 'flex ',
   justifyContent: 'center',
   left: 0,

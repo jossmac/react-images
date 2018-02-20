@@ -82,10 +82,11 @@ class App extends Component<*> {
                     component={CustomStyles}
                     {...routeProps}
                   />
-                  <Route
+                  <ImageRoute
                     exact
                     path="/components"
                     component={CustomComponents}
+                    {...routeProps}
                   />
                   <ImageRoute
                     exact

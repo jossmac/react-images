@@ -9,7 +9,6 @@ import { ViewPager, Frame, Track, View as PageView } from 'react-view-pager';
 const viewPagerStyles = { flex: '1 1 auto', position: 'relative' };
 const frameStyles = { outline: 0 };
 
-import { getSource } from './component-helpers';
 import {
   defaultCarouselComponents,
   type CarouselComponents,
@@ -341,6 +340,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
       carouselProps: this.props,
       currentIndex,
       currentView,
+      formatters: this.props.formatters,
       frameProps,
       getStyles: this.getStyles,
       isFullscreen,
@@ -354,8 +354,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
   render() {
     const { Container, View } = this.components;
     const { currentIndex } = this.state;
-    const { formatters: getters, frameProps, views } = this.props;
-    const { getAltText } = this.getFormatters();
+    const { frameProps, views } = this.props;
     const commonProps = (this.commonProps = this.getCommonProps());
 
     return (
@@ -381,22 +380,9 @@ class Carousel extends Component<CarouselProps, CarouselState> {
             >
               {views &&
                 views.map((data, index) => {
-                  const innerProps = {
-                    alt: getAltText({ data, index }),
-                    src: getSource({
-                      data,
-                      isFullscreen: commonProps.isFullscreen,
-                    }),
-                  };
-
                   return (
                     <PageView className={className('view-wrapper')} key={index}>
-                      <View
-                        {...commonProps}
-                        innerProps={innerProps}
-                        data={data}
-                        index={index}
-                      />
+                      <View {...commonProps} data={data} index={index} />
                     </PageView>
                   );
                 })}

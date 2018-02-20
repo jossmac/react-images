@@ -6,6 +6,7 @@ import glam from 'glam';
 import { Div, Img } from '../primitives';
 import { type PropsWithStyles } from '../types';
 import { className } from '../utils';
+import { getSource } from './component-helpers';
 
 type Props = PropsWithStyles & {
   data: Object,
@@ -20,7 +21,11 @@ export const viewCSS = () => ({
 });
 
 const View = (props: Props) => {
-  const { getStyles, innerProps, isFullscreen, isModal } = props;
+  const { data, formatters, getStyles, index, isFullscreen, isModal } = props;
+  const innerProps = {
+    alt: formatters.getAltText({ data, index }),
+    src: getSource({ data, isFullscreen }),
+  };
 
   return (
     <Div
