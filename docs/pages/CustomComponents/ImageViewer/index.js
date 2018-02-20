@@ -38,7 +38,7 @@ export default class ImageViewer extends Component<Props, State> {
 
     return (
       <div>
-        <Heading source="/CustomComponents/Slack/index.js">
+        <Heading source="/CustomComponents/ImageViewer/index.js">
           Image Viewer à la Slack
         </Heading>
         <p>
