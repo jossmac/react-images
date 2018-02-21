@@ -7,19 +7,23 @@ import Carousel, { Modal, ModalGateway } from '../../../../src/components';
 
 import { Heading } from '../../components';
 import { colors } from '../../../theme';
+import { largeDevice } from '../../../utils';
 import { Header } from './components';
 
 const navButtonStyles = base => ({
   ...base,
   backgroundColor: 'white',
-  boxShadow: '0 1px 5px rgba(0, 0, 0, 0.14)',
-  boxShadow: '0 1px 5px rgba(0, 0, 0, 0.14)',
+  boxShadow: '0 1px 6px rgba(0, 0, 0, 0.18)',
   color: colors.N60,
 
   '&:hover, &:active': {
     backgroundColor: 'white',
-    color: colors.primary,
+    color: colors.N100,
     opacity: 1,
+  },
+  '&:active': {
+    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.14)',
+    transform: 'scale(0.96)',
   },
 });
 
@@ -95,7 +99,10 @@ export default class ImageViewer extends Component<Props, State> {
                     display: 'flex ',
                     height: 'calc(100vh - 54px)',
                     justifyContent: 'center',
-                    padding: 20,
+
+                    [largeDevice]: {
+                      padding: 20,
+                    },
 
                     '& > img': {
                       maxHeight: 'calc(100vh - 94px)',

@@ -46,8 +46,10 @@ function transformImageData(arr) {
       name: img.user.name,
       url: getReferrerLink(img.user.username),
     },
+    color: img.color,
     caption: img.description,
-    publishedAt: img.published_at,
+    createdAt: img.created_at,
+    likes: img.likes,
     source: transformPaths(img),
     title: img.title,
   }));
