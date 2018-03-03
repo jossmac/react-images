@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import Parser from 'html-react-parser';
 import { css, StyleSheet } from 'aphrodite/no-important';
 import defaults from '../theme';
 import deepMerge from '../utils/deepMerge';
@@ -30,7 +31,7 @@ function Footer ({
 		<div className={css(classes.footer)} {...props}>
 			{caption ? (
 				<figcaption className={css(classes.footerCaption)}>
-					{caption}
+					{Parser(caption)}
 				</figcaption>
 			) : <span />}
 			{imageCount}
