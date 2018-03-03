@@ -118,5 +118,5 @@ Property	|	Type		|	Default		|	Description
 :-----------------------|:--------------|:--------------|:--------------------------------
 src  | string | undefined | Required
 srcSet  | array of strings | undefined | Optional
-caption  | string | undefined | Optional
+caption  | string | undefined | Optional, accepts HTML strings
 alt  | string | undefined | Optional
