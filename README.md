@@ -102,6 +102,7 @@ onClickNext | func | undefined | Fired on request of the next image
 onClose | func | undefined | Required. Handle closing of the lightbox
 onClickImage | func | undefined | Handle click on image
 onClickThumbnail | func | undefined | Handle click on thumbnail
+openImageOnClick | bool | undefined | Open image in a new tab if the current image is clicked
 preloadNextImage | bool | true | Based on the direction the user is navigating, preload the next available image
 rightArrowTitle | string | ' Next (Right arrow key) ' | Customize right arrow title
 showCloseButton | bool  | true | Optionally display a close "X" button in top right corner

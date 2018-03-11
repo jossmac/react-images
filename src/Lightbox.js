@@ -249,6 +249,7 @@ class Lightbox extends Component {
 			currentImage,
 			images,
 			onClickImage,
+			openImageOnClick,
 			showThumbnails,
 		} = this.props;
 
@@ -264,6 +265,21 @@ class Lightbox extends Component {
 		const heightOffset = `${this.theme.header.height + this.theme.footer.height + thumbnailsSize
 			+ (this.theme.container.gutter.vertical)}px`;
 
+		const imgTag = (
+			<img
+				className={css(this.classes.image, imageLoaded && this.classes.imageLoaded)}
+				onClick={onClickImage}
+				sizes={sizes}
+				alt={image.alt}
+				src={image.src}
+				srcSet={sourceSet}
+				style={{
+					cursor: onClickImage || openImageOnClick ? 'pointer' : 'auto',
+					maxHeight: `calc(100vh - ${heightOffset})`,
+				}}
+			/>
+		);
+
 		return (
 			<figure className={css(this.classes.figure)}>
 				{/*
@@ -271,18 +287,7 @@ class Lightbox extends Component {
 					https://fb.me/react-unknown-prop is resolved
 					<Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
 				*/}
-				<img
-					className={css(this.classes.image, imageLoaded && this.classes.imageLoaded)}
-					onClick={onClickImage}
-					sizes={sizes}
-					alt={image.alt}
-					src={image.src}
-					srcSet={sourceSet}
-					style={{
-						cursor: onClickImage ? 'pointer' : 'auto',
-						maxHeight: `calc(100vh - ${heightOffset})`,
-					}}
-				/>
+				{openImageOnClick ? <a href={image.src} target="_blank">{imgTag}</a> : imgTag}
 			</figure>
 		);
 	}
@@ -386,6 +391,7 @@ Lightbox.propTypes = {
 	onClickNext: PropTypes.func,
 	onClickPrev: PropTypes.func,
 	onClose: PropTypes.func.isRequired,
+	openImageOnClick: PropTypes.bool,
 	preloadNextImage: PropTypes.bool,
 	preventScroll: PropTypes.bool,
 	rightArrowTitle: PropTypes.string,
