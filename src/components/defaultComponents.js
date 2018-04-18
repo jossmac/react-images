@@ -4,6 +4,7 @@ import Container from './Container';
 import Footer, { FooterCaption, FooterCount } from './Footer';
 import Header, { HeaderClose, HeaderFullscreen } from './Header';
 import { Navigation, NavigationPrev, NavigationNext } from './Navigation';
+import { PageNav, PageNavPrev, PageNavNext } from './Pagination';
 import { Blanket, Dialog, Positioner } from './Modal/styled';
 import View from './View';
 
@@ -15,6 +16,9 @@ export type CarouselComponents = {
   Header: typeof Header,
   HeaderClose: typeof HeaderClose,
   HeaderFullscreen: typeof HeaderFullscreen,
+  PageNav: typeof PageNav,
+  PageNavPrev: typeof PageNavPrev,
+  PageNavNext: typeof PageNavNext,
   Navigation: typeof Navigation,
   NavigationPrev: typeof NavigationPrev,
   NavigationNext: typeof NavigationNext,
@@ -29,6 +33,9 @@ export const carouselComponents: CarouselComponents = {
   Header: Header,
   HeaderClose: HeaderClose,
   HeaderFullscreen: HeaderFullscreen,
+  PageNav: PageNav,
+  PageNavPrev: PageNavPrev,
+  PageNavNext: PageNavNext,
   Navigation: Navigation,
   NavigationPrev: NavigationPrev,
   NavigationNext: NavigationNext,

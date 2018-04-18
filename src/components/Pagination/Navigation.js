@@ -3,13 +3,13 @@
 import React, { type Node } from 'react';
 import glam from 'glam';
 
-import { Button, Nav } from '../primitives';
-import { type PropsWithStyles } from '../types';
-import { className, isTouch } from '../utils';
-import { ChevronLeft, ChevronRight } from './svg';
+import { Button, Nav } from '../../primitives';
+import { type PropsWithStyles } from '../../types';
+import { className, isTouch } from '../../utils';
+import { ChevronLeft, ChevronRight } from '../svg';
 
 // ==============================
-// Navigation
+// PageNav
 // ==============================
 
 type NavState = { interactionIsIdle: boolean };
@@ -20,7 +20,7 @@ type NavProps = NavState &
     isModal: boolean,
   };
 
-export const navigationCSS = ({ interactionIsIdle }: NavState) => ({
+export const pageNavCSS = ({ interactionIsIdle }: NavState) => ({
   display: 'flex ',
   alignItems: 'center',
   justifyContent: 'space-between',
@@ -28,23 +28,23 @@ export const navigationCSS = ({ interactionIsIdle }: NavState) => ({
   transition: 'opacity 300ms',
 });
 
-export const Navigation = (props: NavProps) => {
+export const PageNav = (props: NavProps) => {
   const { children, getStyles, isFullscreen, isModal } = props;
-  return !isTouch() ? (
+  return (
     <Nav
-      css={getStyles('navigation', props)}
-      className={className('navigation', { isFullscreen, isModal })}
+      css={getStyles('pageNav', props)}
+      className={className('page-nav', { isFullscreen, isModal })}
     >
       {children}
     </Nav>
-  ) : null;
+  );
 };
 
 // ==============================
 // Nav Item
 // ==============================
 
-const BUTTON_SIZE = 50;
+const BUTTON_SIZE = 30;
 
 type ItemState = { align: 'left' | 'right' };
 type ItemProps = ItemState &
@@ -56,7 +56,7 @@ type ItemProps = ItemState &
     },
   };
 
-export const navigationItemCSS = ({ align }: ItemState) => ({
+export const pageNavItemCSS = ({ align }: ItemState) => ({
   alignItems: 'center',
   background: 'rgba(255, 255, 255, 0.2)',
   border: 0,
@@ -83,14 +83,17 @@ export const navigationItemCSS = ({ align }: ItemState) => ({
   },
 });
 
-export const navigationPrevCSS = navigationItemCSS;
-export const NavigationPrev = (props: ItemProps) => {
-  const { children = <ChevronLeft size={48} />, getStyles, innerProps } = props;
+export const pageNavPrevCSS = pageNavItemCSS;
+export const PageNavPrev = (props: ItemProps) => {
+  const { children = <ChevronLeft size={32} />, getStyles, innerProps } = props;
 
   return (
     <Button
-      css={getStyles('navigationPrev', props)}
-      className={className(['navigation__button', 'navigation__button--prev'])}
+      css={getStyles('pageNavPrev', props)}
+      className={className('page-nav__button page-nav__button--prev', {
+        isFullscreen,
+        isModal,
+      })}
       {...innerProps}
     >
       {children}
@@ -98,18 +101,21 @@ export const NavigationPrev = (props: ItemProps) => {
   );
 };
 
-export const navigationNextCSS = navigationItemCSS;
-export const NavigationNext = (props: ItemProps) => {
+export const pageNavNextCSS = pageNavItemCSS;
+export const PageNavNext = (props: ItemProps) => {
   const {
-    children = <ChevronRight size={48} />,
+    children = <ChevronRight size={32} />,
     getStyles,
     innerProps,
   } = props;
 
   return (
     <Button
-      css={getStyles('navigationNext', props)}
-      className={className(['navigation__button', 'navigation__button--next'])}
+      css={getStyles('pageNavNext', props)}
+      className={className('page-nav__button page-nav__button--next', {
+        isFullscreen,
+        isModal,
+      })}
       {...innerProps}
     >
       {children}

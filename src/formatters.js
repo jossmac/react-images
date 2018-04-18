@@ -15,12 +15,12 @@ type LabelProps = { currentIndex: number, views: ViewsType };
 
 /* ARIA label for the next button */
 function getNextLabel({ currentIndex, views }: LabelProps): string {
-  return `Show slide ${currentIndex + 2} of ${views.length}`;
+  return `Show image ${currentIndex + 2} of ${views.length}`;
 }
 
 /* ARIA label for the previous button */
 function getPrevLabel({ currentIndex, views }: LabelProps): string {
-  return `Show slide ${currentIndex} of ${views.length}`;
+  return `Show image ${currentIndex} of ${views.length}`;
 }
 
 /* HTML title for the next button */
@@ -32,6 +32,36 @@ function getNextTitle(props: Object): string {
 function getPrevTitle(props: Object): string {
   return 'Previous (left arrow)';
 }
+
+// ==============================
+// Pagination
+// ==============================
+
+/* ARIA label for the page next button */
+function getPageNextLabel({
+  currentIndex,
+  pageCount,
+  views,
+}: LabelProps): string {
+  const viewOffset = views.length - (currentIndex + 1);
+  return `Next ${Math.min(pageCount, viewOffset)} images`;
+}
+
+/* ARIA label for the page previous button */
+function getPagePrevLabel({
+  currentIndex,
+  pageCount,
+  views,
+}: LabelProps): string {
+  const viewOffset = views.length - (currentIndex + 1);
+  return `Previous ${Math.min(pageCount, viewOffset)} images`;
+}
+
+/* HTML title for the page next button */
+const getPageNextTitle = getPageNextLabel;
+
+/* HTML title for the page previous button */
+const getPagePrevTitle = getPagePrevLabel;
 
 // ==============================
 // Header
@@ -65,10 +95,14 @@ function getAltText({ data, index }): string {
 
 export default {
   getAltText,
-  getNextLabel,
-  getPrevLabel,
-  getNextTitle,
-  getPrevTitle,
   getCloseLabel,
   getFullscreenLabel,
+  getNextLabel,
+  getNextTitle,
+  getPageNextLabel,
+  getPageNextTitle,
+  getPagePrevLabel,
+  getPagePrevTitle,
+  getPrevLabel,
+  getPrevTitle,
 };

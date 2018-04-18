@@ -38,8 +38,12 @@ export type CarouselProps = {
   formatters: typeof formatters,
   /* Duration, in milliseconds, to wait before hiding controls when the user is idle */
   hideControlsWhenIdle?: number | false,
-  /* When envoked within a modal, props are cloned from the modal */
+  /* Display pagination thumbnails below the views */
+  isPaginated?: boolean,
+  /* NOTE: cloned from Modal, not provided by the consumer */
   modalProps?: ModalProps,
+  /* How many thumbnails to show at a time in pagination -- `pageCount = (pageOffset * 2) + 1` to maintain an odd count, with the current image centered. */
+  pageOffset?: number,
   /* Style modifier methods */
   styles: CarouselStylesConfig,
   // See https://github.com/souporserious/react-view-pager#track-props
@@ -77,6 +81,8 @@ const defaultProps = {
   currentIndex: 0,
   formatters,
   hideControlsWhenIdle: 3000,
+  isPaginated: true,
+  pageOffset: 3,
   styles: {},
   trackProps: {
     instant: !isTouch(),
@@ -253,6 +259,31 @@ class Carousel extends Component<CarouselProps, CarouselState> {
   // Renderers
   // ==============================
 
+  renderPagination = () => {
+    const {
+      getPageNextLabel,
+      getPagePrevLabel,
+      getPageNextTitle,
+      getPagePrevTitle,
+    } = this.getFormatters();
+    const { PageNav, PageNavPrev, PageNavNext } = this.components;
+    const { isPaginated, pageOffset } = this.props;
+    const { commonProps } = this;
+
+    return isPaginated ? (
+      <PageNav
+        components={{ PageNavPrev, PageNavNext }}
+        pageOffset={pageOffset}
+        formatters={{
+          getPageNextLabel,
+          getPagePrevLabel,
+          getPageNextTitle,
+          getPagePrevTitle,
+        }}
+        {...commonProps}
+      />
+    ) : null;
+  };
   renderNavigation = () => {
     const {
       getNextLabel,
@@ -390,6 +421,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
           </Frame>
           {this.renderNavigation()}
         </ViewPager>
+        {this.renderPagination()}
         {this.renderFooter()}
       </Container>
     );
