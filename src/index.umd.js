@@ -4,12 +4,15 @@
 // This file does away with named imports in favor of a single export default.
 
 import Carousel from './components/Carousel';
-import { default as ModalGateway } from './components/Modal/Gateway';
-import { default as Modal } from './components/Modal/Modal';
-import { components } from './components/defaultComponents';
+import ModalGateway from './components/Modal/Gateway';
+import Modal from './components/Modal/Modal';
+import {
+  carouselComponents,
+  modalComponents,
+} from './components/defaultComponents';
 
-Carousel.components = components;
-Carousel.Modal = Modal;
 Carousel.ModalGateway = ModalGateway;
-
+Carousel.Modal = Modal;
+Carousel.carouselComponents = carouselComponents;
+Carousel.modalComponents = modalComponents;
 export default Carousel;
