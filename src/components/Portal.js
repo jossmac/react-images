@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { CSSTransitionGroup } from 'react-transition-group';
+import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import { render, unmountComponentAtNode } from 'react-dom';
 import PassContext from './PassContext';
 
