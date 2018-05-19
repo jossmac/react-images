@@ -1,6 +1,6 @@
 {
   "name": "@crehana/react-images-crehana",
-  "version": "0.5.18",
+  "version": "0.5.19",
   "description": "A simple, responsive lightbox component for displaying an array of images with React.js",
   "main": "lib/Lightbox.js",
   "jsnext:main": "dist/react-images.es.js",
