@@ -1,6 +1,6 @@
 {
-  "name": "react-images",
-  "version": "0.5.17",
+  "name": "@crehana/react-images-crehana",
+  "version": "0.5.19",
   "description": "A simple, responsive lightbox component for displaying an array of images with React.js",
   "main": "lib/Lightbox.js",
   "jsnext:main": "dist/react-images.es.js",
@@ -8,7 +8,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jossmac/react-images.git"
+    "url": "https://github.com/crehana/react-images.git"
   },
   "dependencies": {
     "aphrodite": "^0.5.0",
