@@ -49,6 +49,14 @@ const THUMBNAIL_IMAGES = [
 	// https://unsplash.com/photos/NUMlxTPsznM coyote?
 ];
 
+const FOOTER_IMAGES = [
+	{ id: '1470688090067-6d429c0b2600', caption: 'Photo by Ján Jakub Naništa', orientation: 'landscape' }, // https://unsplash.com/photos/xqjO-lx39B4 (Scottish Highland Cow)
+	{ id: '1470742292565-de43c4b02b57', caption: 'Photo by Eric Knoll', orientation: 'landscape' }, // https://unsplash.com/photos/DmOCkOnx-MQ (Cheetah)
+	{ id: '1455717974081-0436a066bb96', caption: 'Photo by Teddy Kelley', orientation: 'landscape', useForDemo: true }, // https://unsplash.com/photos/cmKPOUgdmWc (Deer)
+	{ id: '1460899960812-f6ee1ecaf117', caption: 'Photo by Jay Ruzesky', orientation: 'landscape', useForDemo: true }, // https://unsplash.com/photos/h13Y8vyIXNU (Walrus)
+	{ id: '1456926631375-92c8ce872def', caption: 'Photo by Gwen Weustink', orientation: 'landscape', useForDemo: true }, // https://unsplash.com/photos/I3C1sSXj1i8 (Leopard)
+];
+
 const theme = {
 	// container
 	container: {
@@ -156,8 +164,27 @@ render(
 			spinner={CustomSpinner}
 			spinnerColor={'#D40000'}
 			spinnerSize={150}
-			showThumbnails
-	/>
+			showThumbnails />
+
+		<h3 id="withFooter">With Footer</h3>
+		<Gallery images={FOOTER_IMAGES.map(({ caption, id, orientation, useForDemo }) => ({
+			src: makeUnsplashSrc(id),
+			thumbnail: makeUnsplashThumbnail(id, orientation),
+			srcSet: [
+				makeUnsplashSrcSet(id, 1024),
+				makeUnsplashSrcSet(id, 800),
+				makeUnsplashSrcSet(id, 500),
+				makeUnsplashSrcSet(id, 320),
+			],
+			caption,
+			orientation,
+			useForDemo,
+		}))}
+			theme={theme}
+			spinner={CustomSpinner}
+			spinnerColor={'#D40000'}
+			spinnerSize={150}
+			renderFooter={() => (<div>This is Footer</div>)} />
 	</div>,
 	document.getElementById('example')
 );
