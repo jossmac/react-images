@@ -1214,6 +1214,8 @@ var Lightbox = function (_Component) {
 		key: 'renderDialog',
 		value: function renderDialog() {
 			var _props2 = this.props,
+			    renderFooter = _props2.renderFooter,
+			    preventScroll = _props2.preventScroll,
 			    backdropClosesModal = _props2.backdropClosesModal,
 			    isOpen = _props2.isOpen,
 			    showThumbnails = _props2.showThumbnails,
@@ -1249,7 +1251,7 @@ var Lightbox = function (_Component) {
 					imageLoaded && this.renderThumbnails(),
 					imageLoaded && this.renderArrowPrev(),
 					imageLoaded && this.renderArrowNext(),
-					this.props.preventScroll && React.createElement(ScrollLock, null)
+					(!renderFooter || preventScroll) && React.createElement(ScrollLock, null)
 				)
 			);
 		}
@@ -1331,12 +1333,20 @@ var Lightbox = function (_Component) {
 		key: 'renderFooter',
 		value: function renderFooter() {
 			var _props6 = this.props,
+			    renderFooter = _props6.renderFooter,
 			    currentImage = _props6.currentImage,
 			    images = _props6.images,
 			    imageCountSeparator = _props6.imageCountSeparator,
 			    showImageCount = _props6.showImageCount;
 
 
+			if (renderFooter) {
+				if (typeof renderFooter === 'function') {
+					return renderFooter();
+				} else {
+					return renderFooter;
+				}
+			}
 			if (!images || !images.length) return null;
 
 			return React.createElement(Footer, {
@@ -1401,6 +1411,7 @@ Lightbox.propTypes = {
 	onClose: PropTypes.func.isRequired,
 	preloadNextImage: PropTypes.bool,
 	preventScroll: PropTypes.bool,
+	renderFooter: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
 	rightArrowTitle: PropTypes.string,
 	showCloseButton: PropTypes.bool,
 	showImageCount: PropTypes.bool,
