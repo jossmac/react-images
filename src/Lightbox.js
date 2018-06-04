@@ -329,7 +329,11 @@ class Lightbox extends Component {
 		} = this.props;
 
 		if (renderFooter) {
-			return renderFooter();
+			if(typeof(renderFooter) === 'function'){
+				return renderFooter();
+			}else{
+				return renderFooter;
+			}
 		}
 		if (!images || !images.length) return null;
 
