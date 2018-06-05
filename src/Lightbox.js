@@ -212,6 +212,7 @@ class Lightbox extends Component {
 			isOpen,
 			showThumbnails,
 			width,
+			isImage
 		} = this.props;
 
 		const { imageLoaded } = this.state;
@@ -232,7 +233,8 @@ class Lightbox extends Component {
 				<div>
 					<div className={css(this.classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
 						{imageLoaded && this.renderHeader()}
-						{this.renderImages()}
+						{isImage && this.renderImages()}
+						{!isImage && this.renderTexts()}
 						{this.renderSpinner()}
 						{imageLoaded && this.renderFooter()}
 					</div>
@@ -244,6 +246,35 @@ class Lightbox extends Component {
 			</Container>
 		);
 	}
+
+	renderTexts() {
+		const {
+			currentImage,
+			images,
+			onClickImage,
+			showThumbnails
+		} = this.props;
+
+		const { imageLoaded } = this.state;
+
+		if (!images || !images.length) return null;
+		
+		const image = images[currentImage];
+		const sourceSet = normalizeSourceSet(image);
+		const sizes = sourceSet ? '100vw' : null;
+
+		const thumbnailsSize = showThumbnails ? this.theme.thumbnail.size : 0;
+		const heightOffset = `${this.theme.header.height + this.theme.footer.height + thumbnailsSize
+			+ (this.theme.container.gutter.vertical)}px`;
+
+		return (
+			<figure className={css(this.classes.figure)}>
+				<div>{image.caption}</div>
+			</figure>
+		)
+
+	}
+
 	renderImages () {
 		const {
 			currentImage,
