@@ -54,9 +54,7 @@ const defaultStyles = {
 		boxSizing: 'border-box',
 		color: defaults.footer.color,
 		cursor: 'auto',
-		display: 'flex',
-		justifyContent: 'space-between',
-		left: 0,
+		
 		lineHeight: 1.3,
 		paddingBottom: defaults.footer.gutter.vertical,
 		paddingLeft: defaults.footer.gutter.horizontal,
@@ -64,12 +62,25 @@ const defaultStyles = {
 		paddingTop: defaults.footer.gutter.vertical,
 	},
 	footerCount: {
+		float: 'right',
 		color: defaults.footer.count.color,
 		fontSize: defaults.footer.count.fontSize,
 		paddingLeft: '1em', // add a small gutter for the caption
 	},
 	footerCaption: {
 		flex: '1 1 0',
+		position: 'absolute',
+		left: '0',
+		bottom: '40px',
+		width: '100%',
+		padding: '10px',
+		backgroundColor: 'rgba(0,0,0,0.7)',
+		boxSizing: 'border-box',
+		fontWeight: '300',
+		fontSize: '13px',
+		lineHeight: '18px',
+		color: '#fff',
+		fontFamily: "-apple-system, BlinkMacSystemFont, sans-serif",
 	},
 };
 
