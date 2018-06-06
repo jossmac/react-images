@@ -493,9 +493,7 @@ var defaultStyles$3 = {
 		boxSizing: 'border-box',
 		color: theme.footer.color,
 		cursor: 'auto',
-		display: 'flex',
-		justifyContent: 'space-between',
-		left: 0,
+
 		lineHeight: 1.3,
 		paddingBottom: theme.footer.gutter.vertical,
 		paddingLeft: theme.footer.gutter.horizontal,
@@ -503,12 +501,25 @@ var defaultStyles$3 = {
 		paddingTop: theme.footer.gutter.vertical
 	},
 	footerCount: {
+		float: 'right',
 		color: theme.footer.count.color,
 		fontSize: theme.footer.count.fontSize,
 		paddingLeft: '1em' // add a small gutter for the caption
 	},
 	footerCaption: {
-		flex: '1 1 0'
+		flex: '1 1 0',
+		position: 'absolute',
+		left: '0',
+		bottom: '40px',
+		width: '100%',
+		padding: '10px',
+		backgroundColor: 'rgba(0,0,0,0.7)',
+		boxSizing: 'border-box',
+		fontWeight: '300',
+		fontSize: '13px',
+		lineHeight: '18px',
+		color: '#fff',
+		fontFamily: "-apple-system, BlinkMacSystemFont, sans-serif"
 	}
 };
 
@@ -573,6 +584,7 @@ var defaultStyles$4 = {
 function Thumbnail(_ref, _ref2) {
 	var index = _ref.index,
 	    src = _ref.src,
+	    caption = _ref.caption,
 	    thumbnail = _ref.thumbnail,
 	    active = _ref.active,
 	    _onClick = _ref.onClick;
@@ -580,7 +592,7 @@ function Thumbnail(_ref, _ref2) {
 
 	var url = thumbnail ? thumbnail : src;
 	var classes = StyleSheet$1.create(deepMerge(defaultStyles$5, theme$$1));
-
+	console.log(caption);
 	return React.createElement('div', {
 		className: css$1(classes.thumbnail, active && classes.thumbnail__active),
 		onClick: function onClick(e) {
@@ -1217,7 +1229,8 @@ var Lightbox = function (_Component) {
 			    backdropClosesModal = _props2.backdropClosesModal,
 			    isOpen = _props2.isOpen,
 			    showThumbnails = _props2.showThumbnails,
-			    width = _props2.width;
+			    width = _props2.width,
+			    isImage = _props2.isImage;
 			var imageLoaded = this.state.imageLoaded;
 
 
@@ -1242,7 +1255,8 @@ var Lightbox = function (_Component) {
 						'div',
 						{ className: css(this.classes.content), style: { marginBottom: offsetThumbnails, maxWidth: width } },
 						imageLoaded && this.renderHeader(),
-						this.renderImages(),
+						isImage && this.renderImages(),
+						!isImage && this.renderTexts(),
 						this.renderSpinner(),
 						imageLoaded && this.renderFooter()
 					),
@@ -1254,13 +1268,65 @@ var Lightbox = function (_Component) {
 			);
 		}
 	}, {
-		key: 'renderImages',
-		value: function renderImages() {
+		key: 'renderTexts',
+		value: function renderTexts() {
 			var _props3 = this.props,
 			    currentImage = _props3.currentImage,
-			    images = _props3.images,
-			    onClickImage = _props3.onClickImage,
-			    showThumbnails = _props3.showThumbnails;
+			    images = _props3.images;
+			if (!images || !images.length) return null;
+
+			var image = images[currentImage];
+			var sourceSet = normalizeSourceSet(image);
+			return React.createElement(
+				'div',
+				{ className: css(this.classes.figure) },
+				React.createElement(
+					'div',
+					{ className: css(this.classes.lightboxReview) },
+					React.createElement(
+						'p',
+						{ className: css(this.classes.lightboxReviewText) },
+						'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in'
+					),
+					React.createElement(
+						'div',
+						{ className: css(this.classes.lightboxReviewUser) },
+						React.createElement(
+							'div',
+							{ className: css(this.classes.lightboxReviewUserAvatar) },
+							React.createElement('img', { src: '' })
+						),
+						React.createElement(
+							'div',
+							{ className: css(this.classes.lightboxReviewUserInfo) },
+							React.createElement(
+								'div',
+								{ className: css(this.classes.lightboxReviewUserInfoTop) },
+								React.createElement(
+									'strong',
+									{ className: css(this.classes.lightboxReviewUserInfoName) },
+									'Rene L.'
+								),
+								React.createElement('div', { className: css(this.classes.lightboxReviewUserInfoRating) })
+							),
+							React.createElement(
+								'div',
+								{ className: css(this.classes.lightboxReviewUserInfoTime) },
+								'2 months ago'
+							)
+						)
+					)
+				)
+			);
+		}
+	}, {
+		key: 'renderImages',
+		value: function renderImages() {
+			var _props4 = this.props,
+			    currentImage = _props4.currentImage,
+			    images = _props4.images,
+			    onClickImage = _props4.onClickImage,
+			    showThumbnails = _props4.showThumbnails;
 			var imageLoaded = this.state.imageLoaded;
 
 
@@ -1293,12 +1359,12 @@ var Lightbox = function (_Component) {
 	}, {
 		key: 'renderThumbnails',
 		value: function renderThumbnails() {
-			var _props4 = this.props,
-			    images = _props4.images,
-			    currentImage = _props4.currentImage,
-			    onClickThumbnail = _props4.onClickThumbnail,
-			    showThumbnails = _props4.showThumbnails,
-			    thumbnailOffset = _props4.thumbnailOffset;
+			var _props5 = this.props,
+			    images = _props5.images,
+			    currentImage = _props5.currentImage,
+			    onClickThumbnail = _props5.onClickThumbnail,
+			    showThumbnails = _props5.showThumbnails,
+			    thumbnailOffset = _props5.thumbnailOffset;
 
 
 			if (!showThumbnails) return;
@@ -1313,11 +1379,11 @@ var Lightbox = function (_Component) {
 	}, {
 		key: 'renderHeader',
 		value: function renderHeader() {
-			var _props5 = this.props,
-			    closeButtonTitle = _props5.closeButtonTitle,
-			    customControls = _props5.customControls,
-			    onClose = _props5.onClose,
-			    showCloseButton = _props5.showCloseButton;
+			var _props6 = this.props,
+			    closeButtonTitle = _props6.closeButtonTitle,
+			    customControls = _props6.customControls,
+			    onClose = _props6.onClose,
+			    showCloseButton = _props6.showCloseButton;
 
 
 			return React.createElement(Header, {
@@ -1330,11 +1396,11 @@ var Lightbox = function (_Component) {
 	}, {
 		key: 'renderFooter',
 		value: function renderFooter() {
-			var _props6 = this.props,
-			    currentImage = _props6.currentImage,
-			    images = _props6.images,
-			    imageCountSeparator = _props6.imageCountSeparator,
-			    showImageCount = _props6.showImageCount;
+			var _props7 = this.props,
+			    currentImage = _props7.currentImage,
+			    images = _props7.images,
+			    imageCountSeparator = _props7.imageCountSeparator,
+			    showImageCount = _props7.showImageCount;
 
 
 			if (!images || !images.length) return null;
@@ -1350,10 +1416,10 @@ var Lightbox = function (_Component) {
 	}, {
 		key: 'renderSpinner',
 		value: function renderSpinner() {
-			var _props7 = this.props,
-			    spinner = _props7.spinner,
-			    spinnerColor = _props7.spinnerColor,
-			    spinnerSize = _props7.spinnerSize;
+			var _props8 = this.props,
+			    spinner = _props8.spinner,
+			    spinnerColor = _props8.spinnerColor,
+			    spinnerSize = _props8.spinnerSize;
 			var imageLoaded = this.state.imageLoaded;
 
 			var Spinner$$1 = spinner;
@@ -1471,6 +1537,47 @@ var defaultStyles = {
 	},
 	spinnerActive: {
 		opacity: 1
+	},
+	lightboxReview: {
+		backgroundColor: "#fff",
+		maxWidth: "600px",
+		padding: "20px",
+		fontFamily: "-apple-system, BlinkMacSystemFont, sans-serif"
+	},
+	lightboxReviewText: {
+		margin: '0',
+		color: '#1C1B1B',
+		lineHeight: '30px',
+		fontSize: '18px',
+		fontFamily: "Georgia, Times, 'Times New Roman', serif"
+	},
+	lightboxReviewUser: {
+		marginTop: '15px'
+	},
+	lightboxReviewUserInfoName: {
+		fontSize: '15px'
+	},
+	lightboxReviewUserInfoRating: {
+		display: 'inline-block',
+		marginLeft: '5px'
+	},
+	lightboxReviewUserInfo: {
+		display: 'inline-block',
+		verticalAlign: 'middle'
+	},
+	lightboxReviewUserAvatar: {
+		display: 'inline-block',
+		width: '50px',
+		height: '50px',
+		marginRight: '10px',
+		borderRadius: '50%',
+		backgroundColor: '#F8F6F6',
+		verticalAlign: 'middle'
+	},
+	lightboxReviewUserInfoTime: {
+		color: '#ADADAD',
+		fontSize: '13px',
+		fontWeight: '300'
 	}
 };
 
