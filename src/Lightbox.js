@@ -276,13 +276,13 @@ class Lightbox extends Component {
 					<div className={css(this.classes.lightboxReviewUser)}>
 						<div className={css(this.classes.lightboxReviewUserAvatar)}>
 							{ image.user.photo ? (
-                <img src={image.user.photo}/>
-              ) : (
-                <span className="_no-photo">
-                  {image.user.first_name ? image.user.first_name.charAt(0) : ""}
-                  {image.user.last_name ? image.user.last_name.charAt(0) : ""}
-                </span>
-              )}
+				                <img src={image.user.photo}/>
+				              ) : (
+				                <span className={css(this.classes.lightboxReviewUserAvatarName)}>
+				                  {image.user.first_name ? image.user.first_name.charAt(0) : ""}
+				                  {image.user.last_name ? image.user.last_name.charAt(0) : ""}
+				                </span>
+				              )}
 						</div>
 						<div className={css(this.classes.lightboxReviewUserInfo)}>
 							<div className={css(this.classes.lightboxReviewUserInfoTop)}>
@@ -547,6 +547,7 @@ const defaultStyles = {
 		verticalAlign: 'middle',
 	},
 	lightboxReviewUserAvatar: {
+		position: 'relative',
 		display: 'inline-block',
 		width: '50px',
 		height: '50px',
@@ -554,6 +555,18 @@ const defaultStyles = {
 		borderRadius: '50%',
 		backgroundColor: '#F8F6F6',
 		verticalAlign: 'middle',
+		textAlign: 'center'
+	},
+	lightboxReviewUserAvatarName: {
+		position: 'absolute',
+		left: '0',
+		top: '0',
+		width: '100%',
+		textAlign: 'center',
+		lineHeight: '52px',
+		textTransform: 'uppercase',
+		color: '#ADADAD',
+		fontSize: '18px'
 	},
 	lightboxReviewUserInfoTime: {
 		color: '#ADADAD',
