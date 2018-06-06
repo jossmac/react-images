@@ -1288,7 +1288,7 @@ var Lightbox = function (_Component) {
 					React__default.createElement(
 						'p',
 						{ className: aphrodite.css(this.classes.lightboxReviewText) },
-						'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in'
+						image.caption
 					),
 					React__default.createElement(
 						'div',
@@ -1296,7 +1296,12 @@ var Lightbox = function (_Component) {
 						React__default.createElement(
 							'div',
 							{ className: aphrodite.css(this.classes.lightboxReviewUserAvatar) },
-							React__default.createElement('img', { src: '' })
+							image.user.photo ? React__default.createElement('img', { src: image.user.photo }) : React__default.createElement(
+								'span',
+								{ className: '_no-photo' },
+								image.user.first_name ? image.user.first_name.charAt(0) : "",
+								image.user.last_name ? image.user.last_name.charAt(0) : ""
+							)
 						),
 						React__default.createElement(
 							'div',
@@ -1307,14 +1312,14 @@ var Lightbox = function (_Component) {
 								React__default.createElement(
 									'strong',
 									{ className: aphrodite.css(this.classes.lightboxReviewUserInfoName) },
-									'Rene L.'
+									image.user.display_name
 								),
 								React__default.createElement('div', { className: aphrodite.css(this.classes.lightboxReviewUserInfoRating) })
 							),
 							React__default.createElement(
 								'div',
 								{ className: aphrodite.css(this.classes.lightboxReviewUserInfoTime) },
-								'2 months ago'
+								image.created
 							)
 						)
 					)

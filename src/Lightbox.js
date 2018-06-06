@@ -271,23 +271,30 @@ class Lightbox extends Component {
 			<div className={css(this.classes.figure)}>
 				<div className={css(this.classes.lightboxReview)}>
 					<p className={css(this.classes.lightboxReviewText)}>
-						Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in 
+						{image.caption}
 					</p>
 					<div className={css(this.classes.lightboxReviewUser)}>
 						<div className={css(this.classes.lightboxReviewUserAvatar)}>
-							<img src="" />
+							{ image.user.photo ? (
+                <img src={image.user.photo}/>
+              ) : (
+                <span className="_no-photo">
+                  {image.user.first_name ? image.user.first_name.charAt(0) : ""}
+                  {image.user.last_name ? image.user.last_name.charAt(0) : ""}
+                </span>
+              )}
 						</div>
 						<div className={css(this.classes.lightboxReviewUserInfo)}>
 							<div className={css(this.classes.lightboxReviewUserInfoTop)}>
 								<strong className={css(this.classes.lightboxReviewUserInfoName)}>
-									Rene L.
+									{image.user.display_name}
 								</strong>
 								<div className={css(this.classes.lightboxReviewUserInfoRating)}>
 
 								</div>
 							</div>
 							<div className={css(this.classes.lightboxReviewUserInfoTime)}>
-								2 months ago
+								{image.created}
 							</div>
 						</div>
 					</div>
