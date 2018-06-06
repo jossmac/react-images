@@ -1288,7 +1288,7 @@ var Lightbox = function (_Component) {
 					React__default.createElement(
 						'p',
 						{ className: aphrodite.css(this.classes.lightboxReviewText) },
-						image.caption
+						image.content
 					),
 					React__default.createElement(
 						'div',

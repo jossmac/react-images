@@ -271,7 +271,7 @@ class Lightbox extends Component {
 			<div className={css(this.classes.figure)}>
 				<div className={css(this.classes.lightboxReview)}>
 					<p className={css(this.classes.lightboxReviewText)}>
-						{image.caption}
+						{image.content}
 					</p>
 					<div className={css(this.classes.lightboxReviewUser)}>
 						<div className={css(this.classes.lightboxReviewUserAvatar)}>

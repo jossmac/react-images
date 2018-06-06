@@ -1286,7 +1286,7 @@ var Lightbox = function (_Component) {
 					React.createElement(
 						'p',
 						{ className: css(this.classes.lightboxReviewText) },
-						image.caption
+						image.content
 					),
 					React.createElement(
 						'div',
