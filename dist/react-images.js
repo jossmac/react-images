@@ -1298,7 +1298,7 @@ var Lightbox = function (_Component) {
 							{ className: aphrodite.css(this.classes.lightboxReviewUserAvatar) },
 							image.user.photo ? React__default.createElement('img', { src: image.user.photo }) : React__default.createElement(
 								'span',
-								{ className: '_no-photo' },
+								{ className: aphrodite.css(this.classes.lightboxReviewUserAvatarName) },
 								image.user.first_name ? image.user.first_name.charAt(0) : "",
 								image.user.last_name ? image.user.last_name.charAt(0) : ""
 							)
@@ -1573,13 +1573,26 @@ var defaultStyles = {
 		verticalAlign: 'middle'
 	},
 	lightboxReviewUserAvatar: {
+		position: 'relative',
 		display: 'inline-block',
 		width: '50px',
 		height: '50px',
 		marginRight: '10px',
 		borderRadius: '50%',
 		backgroundColor: '#F8F6F6',
-		verticalAlign: 'middle'
+		verticalAlign: 'middle',
+		textAlign: 'center'
+	},
+	lightboxReviewUserAvatarName: {
+		position: 'absolute',
+		left: '0',
+		top: '0',
+		width: '100%',
+		textAlign: 'center',
+		lineHeight: '52px',
+		textTransform: 'uppercase',
+		color: '#ADADAD',
+		fontSize: '18px'
 	},
 	lightboxReviewUserInfoTime: {
 		color: '#ADADAD',
