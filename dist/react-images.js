@@ -594,7 +594,6 @@ function Thumbnail(_ref, _ref2) {
 
 	var url = thumbnail ? thumbnail : src;
 	var classes = noImportant.StyleSheet.create(deepMerge(defaultStyles$5, theme$$1));
-	console.log(caption);
 	return React__default.createElement('div', {
 		className: noImportant.css(classes.thumbnail, active && classes.thumbnail__active),
 		onClick: function onClick(e) {
