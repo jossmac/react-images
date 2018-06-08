@@ -8,7 +8,6 @@ import deepMerge from '../utils/deepMerge';
 function Thumbnail ({ index, src, caption, thumbnail, active, onClick }, { theme }) {
 	const url = thumbnail ? thumbnail : src;
 	const classes = StyleSheet.create(deepMerge(defaultStyles, theme));
-	console.log(caption);
 	return (
 		<div
 			className={css(classes.thumbnail, active && classes.thumbnail__active)}
