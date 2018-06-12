@@ -555,7 +555,8 @@ const defaultStyles = {
 		borderRadius: '50%',
 		backgroundColor: '#F8F6F6',
 		verticalAlign: 'middle',
-		textAlign: 'center'
+		textAlign: 'center',
+		overflow: 'hidden'
 	},
 	lightboxReviewUserAvatarName: {
 		position: 'absolute',

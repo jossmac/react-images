@@ -53,8 +53,9 @@ const defaultStyles = {
 		border: 'none',
 		cursor: 'pointer',
 		outline: 'none',
-		position: 'relative',
+		position: 'fixed',
 		top: 0,
+		right: '15px',
 		verticalAlign: 'bottom',
 
 		// increase hit area
