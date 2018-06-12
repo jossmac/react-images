@@ -571,8 +571,9 @@ var defaultStyles$4 = {
 		border: 'none',
 		cursor: 'pointer',
 		outline: 'none',
-		position: 'relative',
+		position: 'fixed',
 		top: 0,
+		right: '15px',
 		verticalAlign: 'bottom',
 
 		// increase hit area
@@ -631,7 +632,7 @@ var defaultStyles$5 = {
 		width: theme.thumbnail.size
 	},
 	thumbnail__active: {
-		boxShadow: 'inset 0 0 0 2px ' + theme.thumbnail.activeBorderColor
+		boxShadow: 'inset 0 0 0 2px #ed455e'
 	}
 };
 
@@ -1580,7 +1581,8 @@ var defaultStyles = {
 		borderRadius: '50%',
 		backgroundColor: '#F8F6F6',
 		verticalAlign: 'middle',
-		textAlign: 'center'
+		textAlign: 'center',
+		overflow: 'hidden'
 	},
 	lightboxReviewUserAvatarName: {
 		position: 'absolute',
