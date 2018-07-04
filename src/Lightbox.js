@@ -455,6 +455,7 @@ const defaultStyles = {
 		// opacity animation to make spinner appear with delay
 		opacity: 0,
 		transition: 'opacity 0.3s',
+		pointerEvents: 'none',
 	},
 	spinnerActive: {
 		opacity: 1,
