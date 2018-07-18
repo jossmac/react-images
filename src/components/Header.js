@@ -56,6 +56,7 @@ const defaultStyles = {
 		position: 'relative',
 		top: 0,
 		verticalAlign: 'bottom',
+		zIndex: 1,
 
 		// increase hit area
 		height: 40,

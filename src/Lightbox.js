@@ -86,8 +86,8 @@ class Lightbox extends Component {
 
 		// preload current image
 		if (this.props.currentImage !== nextProps.currentImage || !this.props.isOpen && nextProps.isOpen) {
-			const img = this.preloadImage(nextProps.currentImage, this.handleImageLoaded);
-			this.setState({ imageLoaded: img.complete });
+			const img = this.preloadImageData(nextProps.images[nextProps.currentImage], this.handleImageLoaded);
+			if (img) this.setState({ imageLoaded: img.complete });
 		}
 
 		// add/remove event listeners
@@ -109,10 +109,10 @@ class Lightbox extends Component {
 	// ==============================
 
 	preloadImage (idx, onload) {
-		const data = this.props.images[idx];
-
+		return this.preloadImageData(this.props.images[idx], onload);
+	}
+	preloadImageData (data, onload) {
 		if (!data) return;
-
 		const img = new Image();
 		const sourceSet = normalizeSourceSet(data);
 
@@ -455,6 +455,7 @@ const defaultStyles = {
 		// opacity animation to make spinner appear with delay
 		opacity: 0,
 		transition: 'opacity 0.3s',
+		pointerEvents: 'none',
 	},
 	spinnerActive: {
 		opacity: 1,
