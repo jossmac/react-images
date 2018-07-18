@@ -208,6 +208,8 @@ class Lightbox extends Component {
 	}
 	renderDialog () {
 		const {
+			renderFooter,
+			preventScroll,
 			backdropClosesModal,
 			isOpen,
 			showThumbnails,
@@ -239,7 +241,7 @@ class Lightbox extends Component {
 					{imageLoaded && this.renderThumbnails()}
 					{imageLoaded && this.renderArrowPrev()}
 					{imageLoaded && this.renderArrowNext()}
-					{this.props.preventScroll && <ScrollLock />}
+					{(!renderFooter || preventScroll) && <ScrollLock />}
 				</div>
 			</Container>
 		);
@@ -319,12 +321,20 @@ class Lightbox extends Component {
 	}
 	renderFooter () {
 		const {
+			renderFooter,
 			currentImage,
 			images,
 			imageCountSeparator,
 			showImageCount,
 		} = this.props;
 
+		if (renderFooter) {
+			if(typeof(renderFooter) === 'function'){
+				return renderFooter();
+			}else{
+				return renderFooter;
+			}
+		}
 		if (!images || !images.length) return null;
 
 		return (
@@ -388,6 +398,7 @@ Lightbox.propTypes = {
 	onClose: PropTypes.func.isRequired,
 	preloadNextImage: PropTypes.bool,
 	preventScroll: PropTypes.bool,
+	renderFooter: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
 	rightArrowTitle: PropTypes.string,
 	showCloseButton: PropTypes.bool,
 	showImageCount: PropTypes.bool,

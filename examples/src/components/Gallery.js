@@ -97,6 +97,7 @@ class Gallery extends Component {
 					spinnerColor={this.props.spinnerColor}
 					spinnerSize={this.props.spinnerSize}
 					theme={this.props.theme}
+					renderFooter={this.props.renderFooter}
 				/>
 			</div>
 		);
@@ -107,6 +108,7 @@ Gallery.displayName = 'Gallery';
 Gallery.propTypes = {
 	heading: PropTypes.string,
 	images: PropTypes.array,
+	renderFooter: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
 	showThumbnails: PropTypes.bool,
 	subheading: PropTypes.string,
 };
