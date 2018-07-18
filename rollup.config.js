@@ -20,7 +20,7 @@ const babelOptions = (production) => {
 	let result = {
 		babelrc: false,
 		presets: [['env', { modules: false }], 'react'],
-		plugins: [["transform-object-rest-spread", { "useBuiltIns": true  }], 'transform-object-rest-spread', 'external-helpers'],
+		plugins: [["transform-object-rest-spread", { "useBuiltIns": true  }], 'external-helpers'],
 	};
 	if (production) {
 		result.plugins.push('transform-react-remove-prop-types');
