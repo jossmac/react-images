@@ -37,3 +37,6 @@ node_modules
 
 # temp files
 *.swp
+*.swo
+*.swn
+*.swm
