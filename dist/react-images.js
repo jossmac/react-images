@@ -280,7 +280,7 @@ var possibleConstructorReturn = function (self, call) {
 function deepMerge(target) {
 	var source = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-	var extended = _extends({}, target);
+	var extended = Object.assign({}, target);
 
 	Object.keys(source).forEach(function (key) {
 		if (_typeof(source[key]) !== 'object' || !source[key]) {

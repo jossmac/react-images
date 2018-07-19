@@ -1,5 +1,8 @@
 # React-Images
 
+### v0.5.19 / 2018-07-19
+- Fix babel lib output not transpiling
+
 ### v0.5.18 / 2018-07-19
 - LightBox srcSet support for string and array #236 thanks to [lordoffreaks](https://github.com/lordoffreaks)
 - Upgrade react-transition-group to v2 #238 thanks to [filipecosta01](https://github.com/filipecosta01)
