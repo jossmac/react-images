@@ -14,6 +14,12 @@ const globals = {
   'prop-types': 'PropTypes',
   'react-dom': 'ReactDOM',
   'react-input-autosize': 'AutosizeInput',
+  'raf-schd': 'rafScheduler',
+  'react-view-pager': 'PageView',
+  'react-full-screen': 'Fullscreen',
+  'react-scrolllock': 'ScrollLock',
+  'a11y-focus-store': 'focusStore',
+  'react-transition-group': 'Transition',
   react: 'React',
 };
 import createEnv from 'dotenv';
