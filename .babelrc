@@ -1,4 +1,5 @@
 {
   "ignore": ["node-modules/**"],
-  "presets": [ "es2015", "stage-0", "react"],
+  "presets": [ ['env', { modules: false  }], "react"],
+  "plugins": [ ["transform-object-rest-spread", { "useBuiltIns": true  }], "transform-object-assign"]
 }
