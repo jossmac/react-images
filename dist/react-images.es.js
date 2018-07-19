@@ -3,7 +3,7 @@ import React, { Children, Component } from 'react';
 import { StyleSheet, css } from 'aphrodite';
 import ScrollLock from 'react-scrolllock';
 import { StyleSheet as StyleSheet$1, css as css$1 } from 'aphrodite/no-important';
-import { CSSTransitionGroup } from 'react-transition-group';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { render, unmountComponentAtNode } from 'react-dom';
 
 // ==============================
@@ -278,7 +278,7 @@ var possibleConstructorReturn = function (self, call) {
 function deepMerge(target) {
 	var source = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-	var extended = Object.assign({}, target);
+	var extended = _extends({}, target);
 
 	Object.keys(source).forEach(function (key) {
 		if (_typeof(source[key]) !== 'object' || !source[key]) {
@@ -561,6 +561,7 @@ var defaultStyles$4 = {
 		position: 'relative',
 		top: 0,
 		verticalAlign: 'bottom',
+		zIndex: 1,
 
 		// increase hit area
 		height: 40,
@@ -887,12 +888,15 @@ var Portal = function (_Component) {
 						null,
 						styles
 					),
-					React.createElement(CSSTransitionGroup, _extends({
-						component: 'div',
-						transitionName: 'fade',
-						transitionEnterTimeout: duration,
-						transitionLeaveTimeout: duration
-					}, this.props))
+					React.createElement(
+						TransitionGroup,
+						this.props,
+						React.createElement(
+							CSSTransition,
+							{ timeout: { enter: duration, exit: duration }, classNames: 'fade' },
+							this.props.children
+						)
+					)
 				)
 			), this.portalElement);
 		}
@@ -1070,8 +1074,8 @@ var Lightbox = function (_Component) {
 
 			// preload current image
 			if (this.props.currentImage !== nextProps.currentImage || !this.props.isOpen && nextProps.isOpen) {
-				var img = this.preloadImage(nextProps.currentImage, this.handleImageLoaded);
-				this.setState({ imageLoaded: img.complete });
+				var img = this.preloadImageData(nextProps.images[nextProps.currentImage], this.handleImageLoaded);
+				if (img) this.setState({ imageLoaded: img.complete });
 			}
 
 			// add/remove event listeners
@@ -1097,10 +1101,12 @@ var Lightbox = function (_Component) {
 	}, {
 		key: 'preloadImage',
 		value: function preloadImage(idx, onload) {
-			var data = this.props.images[idx];
-
+			return this.preloadImageData(this.props.images[idx], onload);
+		}
+	}, {
+		key: 'preloadImageData',
+		value: function preloadImageData(data, onload) {
 			if (!data) return;
-
 			var img = new Image();
 			var sourceSet = normalizeSourceSet(data);
 
@@ -1389,7 +1395,7 @@ Lightbox.propTypes = {
 	imageCountSeparator: PropTypes.string,
 	images: PropTypes.arrayOf(PropTypes.shape({
 		src: PropTypes.string.isRequired,
-		srcSet: PropTypes.array,
+		srcSet: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
 		caption: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 		thumbnail: PropTypes.string
 	})).isRequired,
@@ -1467,7 +1473,8 @@ var defaultStyles = {
 
 		// opacity animation to make spinner appear with delay
 		opacity: 0,
-		transition: 'opacity 0.3s'
+		transition: 'opacity 0.3s',
+		pointerEvents: 'none'
 	},
 	spinnerActive: {
 		opacity: 1

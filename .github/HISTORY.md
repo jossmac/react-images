@@ -1,5 +1,13 @@
 # React-Images
 
+### v0.5.18 / 2018-07-19
+- LightBox srcSet support for string and array #236 thanks to [lordoffreaks](https://github.com/lordoffreaks)
+- Upgrade react-transition-group to v2 #238 thanks to [filipecosta01](https://github.com/filipecosta01)
+- Add zindex to close button to bring it in front of spinner #225 thanks to [seanpascoe](https://github.com/seanpascoe)
+- Fix #240: Spinner consumes pointer events #241 thanks to [thepatrik](https://github.com/thepatrik)
+- Fix #216 Cannot read property 'complete' of undefined #217 thanks to [lkazberova](https://github.com/lkazberova)
+- Fix Lightbox srcSet prop type validation #209 thanks to [kripod](https://github.com/kripod)
+
 ### v0.5.17 / 2018-02-07
 - fix for "srcSet" inconsistency #204 thanks to [kripod](https://github.com/kripod) and [wmertens](https://github.com/wmertens)
 - fix for preload bug when mounted with `isOpen` set to true thanks to [mkalygin](https://github.com/mkalygin)
