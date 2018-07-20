@@ -17,6 +17,8 @@ logs
 # Editor and other tmp files
 *.swp
 *.swo
+*.swm
+*.swn
 
 # Runtime data
 pids
