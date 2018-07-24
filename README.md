@@ -63,7 +63,7 @@ Example using srcSet:
 const LIGHTBOX_IMAGE_SET = [
   {
     src: 'http://example.com/example/img1.jpg',
-    caption: 'A forest'
+    caption: 'A forest',
     // As an array
     srcSet: [
       'http://example.com/example/img1_1024.jpg 1024w',
