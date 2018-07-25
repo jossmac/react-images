@@ -397,7 +397,14 @@ Lightbox.propTypes = {
 	spinnerSize: PropTypes.number,
 	theme: PropTypes.object,
 	thumbnailOffset: PropTypes.number,
-	width: PropTypes.number,
+	width: function (props, propName, componentName) {
+		if (!/^\d+(px|%|vw|$)|initial|inherit|none/.test(props[propName])) {
+			return new Error(
+                                'Invalid prop `' + propName + '` supplied to `' + componentName + '`. '
+                                + 'Valid values are `initial`, `inherit`, `none` or a number as `px`, `vw` or `%`.'
+			);
+		}
+	},
 };
 Lightbox.defaultProps = {
 	closeButtonTitle: 'Close (Esc)',

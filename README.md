@@ -103,7 +103,7 @@ preloadNextImage | bool | true | Based on the direction the user is navigating, 
 rightArrowTitle | string | ' Next (Right arrow key) ' | Customize right arrow title
 showCloseButton | bool  | true | Optionally display a close "X" button in top right corner
 showImageCount | bool  | true | Optionally display image index, e.g., "3 of 20"
-width | number  | 1024 | Maximum width of the carousel; defaults to 1024px
+width | number\|string | 1024 | Maximum width of the carousel; defaults to 1024px. Accepts values as `px`, `vw`, `%`, `none`, `initial` or `inherit`. A plain number defaults to usage in `px`.
 spinner | func | DefaultSpinner | Spinner component class
 spinnerColor | string | 'white' | Color of spinner
 spinnerSize | number | 100 | Size of spinner
