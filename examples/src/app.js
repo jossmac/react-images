@@ -121,7 +121,7 @@ render(
 			caption,
 			orientation,
 			useForDemo,
-		}))} loop={true} />
+		}))} loop />
 
 		<h3>With Thumbnails</h3>
 		<Gallery images={THUMBNAIL_IMAGES.map(({ caption, id, orientation, useForDemo }) => ({
