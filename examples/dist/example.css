@@ -58,7 +58,7 @@ h6,
   color: black;
   font-weight: 500;
   line-height: 1;
-  margin-bottom: .66em;
+  margin-bottom: 0.66em;
   margin-top: 0;
 }
 h1,
@@ -85,11 +85,11 @@ h4,
 }
 h5,
 .h5 {
-  font-size: .85em;
+  font-size: 0.85em;
 }
 h6,
 .h6 {
-  font-size: .75em;
+  font-size: 0.75em;
 }
 .page-header {
   padding: 20px 0;
@@ -167,7 +167,7 @@ h6,
   margin-bottom: 40px;
 }
 .hint {
-  font-size: .85em;
+  font-size: 0.85em;
   margin: 15px 0;
   color: #666;
 }
@@ -181,7 +181,7 @@ kbd {
   color: #666;
   display: inline-block;
   font-family: Consolas, "Liberation Mono", Courier, monospace;
-  font-size: .85em;
+  font-size: 0.85em;
   font-weight: 500;
   line-height: inherit;
   padding: 1px 4px;
