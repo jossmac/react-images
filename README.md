@@ -94,6 +94,7 @@ images  | array | undefined | Required. Array of image objects See image options
 imageCountSeparator  | String  | ' of ' | Customize separator in the image count
 isOpen  | bool  | false | Whether or not the lightbox is displayed
 leftArrowTitle | string | ' Previous (Left arrow key) ' | Customize of left arrow title
+loop | bool | false | Allows looping the gallery
 onClickPrev | func | undefined | Fired on request of the previous image
 onClickNext | func | undefined | Fired on request of the next image
 onClose | func | undefined | Required. Handle closing of the lightbox
