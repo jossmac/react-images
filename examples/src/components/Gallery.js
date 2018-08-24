@@ -33,14 +33,18 @@ class Gallery extends Component {
 		});
 	}
 	gotoPrevious () {
-		this.setState({
-			currentImage: this.state.currentImage - 1,
-		});
+		let prevImage = this.state.currentImage - 1;
+
+		if (this.props.loop && this.state.currentImage === 0) prevImage = this.props.images.length - 1;
+
+		this.gotoImage(prevImage);
 	}
 	gotoNext () {
-		this.setState({
-			currentImage: this.state.currentImage + 1,
-		});
+		let nextImage = this.state.currentImage + 1;
+
+		if (this.props.loop && this.state.currentImage === this.props.images.length - 1) nextImage = 0;
+
+		this.gotoImage(nextImage);
 	}
 	gotoImage (index) {
 		this.setState({
@@ -48,7 +52,7 @@ class Gallery extends Component {
 		});
 	}
 	handleClickImage () {
-		if (this.state.currentImage === this.props.images.length - 1) return;
+		if (!this.props.loop && this.state.currentImage === this.props.images.length - 1) return;
 
 		this.gotoNext();
 	}
@@ -86,6 +90,7 @@ class Gallery extends Component {
 					currentImage={this.state.currentImage}
 					images={this.props.images}
 					isOpen={this.state.lightboxIsOpen}
+					loop={this.props.loop}
 					onClickImage={this.handleClickImage}
 					onClickNext={this.gotoNext}
 					onClickPrev={this.gotoPrevious}

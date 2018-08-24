@@ -1124,11 +1124,12 @@ var Lightbox = function (_Component) {
 		value: function gotoNext(event) {
 			var _props = this.props,
 			    currentImage = _props.currentImage,
-			    images = _props.images;
+			    images = _props.images,
+			    loop = _props.loop;
 			var imageLoaded = this.state.imageLoaded;
 
 
-			if (!imageLoaded || currentImage === images.length - 1) return;
+			if (!imageLoaded || !loop && currentImage === images.length - 1) return;
 
 			if (event) {
 				event.preventDefault();
@@ -1140,11 +1141,13 @@ var Lightbox = function (_Component) {
 	}, {
 		key: 'gotoPrev',
 		value: function gotoPrev(event) {
-			var currentImage = this.props.currentImage;
+			var _props2 = this.props,
+			    currentImage = _props2.currentImage,
+			    loop = _props2.loop;
 			var imageLoaded = this.state.imageLoaded;
 
 
-			if (!imageLoaded || currentImage === 0) return;
+			if (!imageLoaded || !loop && currentImage === 0) return;
 
 			if (event) {
 				event.preventDefault();
@@ -1193,7 +1196,7 @@ var Lightbox = function (_Component) {
 	}, {
 		key: 'renderArrowPrev',
 		value: function renderArrowPrev() {
-			if (this.props.currentImage === 0) return null;
+			if (!this.props.loop && this.props.currentImage === 0) return null;
 
 			return React.createElement(Arrow, {
 				direction: 'left',
@@ -1206,7 +1209,7 @@ var Lightbox = function (_Component) {
 	}, {
 		key: 'renderArrowNext',
 		value: function renderArrowNext() {
-			if (this.props.currentImage === this.props.images.length - 1) return null;
+			if (!this.props.loop && this.props.currentImage === this.props.images.length - 1) return null;
 
 			return React.createElement(Arrow, {
 				direction: 'right',
@@ -1219,11 +1222,11 @@ var Lightbox = function (_Component) {
 	}, {
 		key: 'renderDialog',
 		value: function renderDialog() {
-			var _props2 = this.props,
-			    backdropClosesModal = _props2.backdropClosesModal,
-			    isOpen = _props2.isOpen,
-			    showThumbnails = _props2.showThumbnails,
-			    width = _props2.width;
+			var _props3 = this.props,
+			    backdropClosesModal = _props3.backdropClosesModal,
+			    isOpen = _props3.isOpen,
+			    showThumbnails = _props3.showThumbnails,
+			    width = _props3.width;
 			var imageLoaded = this.state.imageLoaded;
 
 
@@ -1262,11 +1265,11 @@ var Lightbox = function (_Component) {
 	}, {
 		key: 'renderImages',
 		value: function renderImages() {
-			var _props3 = this.props,
-			    currentImage = _props3.currentImage,
-			    images = _props3.images,
-			    onClickImage = _props3.onClickImage,
-			    showThumbnails = _props3.showThumbnails;
+			var _props4 = this.props,
+			    currentImage = _props4.currentImage,
+			    images = _props4.images,
+			    onClickImage = _props4.onClickImage,
+			    showThumbnails = _props4.showThumbnails;
 			var imageLoaded = this.state.imageLoaded;
 
 
@@ -1299,12 +1302,12 @@ var Lightbox = function (_Component) {
 	}, {
 		key: 'renderThumbnails',
 		value: function renderThumbnails() {
-			var _props4 = this.props,
-			    images = _props4.images,
-			    currentImage = _props4.currentImage,
-			    onClickThumbnail = _props4.onClickThumbnail,
-			    showThumbnails = _props4.showThumbnails,
-			    thumbnailOffset = _props4.thumbnailOffset;
+			var _props5 = this.props,
+			    images = _props5.images,
+			    currentImage = _props5.currentImage,
+			    onClickThumbnail = _props5.onClickThumbnail,
+			    showThumbnails = _props5.showThumbnails,
+			    thumbnailOffset = _props5.thumbnailOffset;
 
 
 			if (!showThumbnails) return;
@@ -1319,11 +1322,11 @@ var Lightbox = function (_Component) {
 	}, {
 		key: 'renderHeader',
 		value: function renderHeader() {
-			var _props5 = this.props,
-			    closeButtonTitle = _props5.closeButtonTitle,
-			    customControls = _props5.customControls,
-			    onClose = _props5.onClose,
-			    showCloseButton = _props5.showCloseButton;
+			var _props6 = this.props,
+			    closeButtonTitle = _props6.closeButtonTitle,
+			    customControls = _props6.customControls,
+			    onClose = _props6.onClose,
+			    showCloseButton = _props6.showCloseButton;
 
 
 			return React.createElement(Header, {
@@ -1336,11 +1339,11 @@ var Lightbox = function (_Component) {
 	}, {
 		key: 'renderFooter',
 		value: function renderFooter() {
-			var _props6 = this.props,
-			    currentImage = _props6.currentImage,
-			    images = _props6.images,
-			    imageCountSeparator = _props6.imageCountSeparator,
-			    showImageCount = _props6.showImageCount;
+			var _props7 = this.props,
+			    currentImage = _props7.currentImage,
+			    images = _props7.images,
+			    imageCountSeparator = _props7.imageCountSeparator,
+			    showImageCount = _props7.showImageCount;
 
 
 			if (!images || !images.length) return null;
@@ -1356,10 +1359,10 @@ var Lightbox = function (_Component) {
 	}, {
 		key: 'renderSpinner',
 		value: function renderSpinner() {
-			var _props7 = this.props,
-			    spinner = _props7.spinner,
-			    spinnerColor = _props7.spinnerColor,
-			    spinnerSize = _props7.spinnerSize;
+			var _props8 = this.props,
+			    spinner = _props8.spinner,
+			    spinnerColor = _props8.spinnerColor,
+			    spinnerSize = _props8.spinnerSize;
 			var imageLoaded = this.state.imageLoaded;
 
 			var Spinner$$1 = spinner;
@@ -1424,6 +1427,7 @@ Lightbox.defaultProps = {
 	enableKeyboardInput: true,
 	imageCountSeparator: ' of ',
 	leftArrowTitle: 'Previous (Left arrow key)',
+	loop: false,
 	onClickShowNextImage: true,
 	preloadNextImage: true,
 	preventScroll: true,
