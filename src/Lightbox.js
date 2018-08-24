@@ -136,14 +136,10 @@ class Lightbox extends Component {
 			event.stopPropagation();
 		}
 
-		if (loop && currentImage === (images.length - 1)) {
-			this.props.onClickThumbnail(0);
-		}
-
 		this.props.onClickNext();
 	}
 	gotoPrev (event) {
-		const { currentImage, images, loop } = this.props;
+		const { currentImage, loop } = this.props;
 		const { imageLoaded } = this.state;
 
 		if (!imageLoaded || (!loop && currentImage === 0)) return;
@@ -151,10 +147,6 @@ class Lightbox extends Component {
 		if (event) {
 			event.preventDefault();
 			event.stopPropagation();
-		}
-
-		if (loop && currentImage === 0) {
-			this.props.onClickThumbnail(images.length - 1);
 		}
 
 		this.props.onClickPrev();
