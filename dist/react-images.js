@@ -1138,10 +1138,6 @@ var Lightbox = function (_Component) {
 				event.stopPropagation();
 			}
 
-			if (loop && currentImage === images.length - 1) {
-				this.props.onClickThumbnail(0);
-			}
-
 			this.props.onClickNext();
 		}
 	}, {
@@ -1149,7 +1145,6 @@ var Lightbox = function (_Component) {
 		value: function gotoPrev(event) {
 			var _props2 = this.props,
 			    currentImage = _props2.currentImage,
-			    images = _props2.images,
 			    loop = _props2.loop;
 			var imageLoaded = this.state.imageLoaded;
 
@@ -1159,10 +1154,6 @@ var Lightbox = function (_Component) {
 			if (event) {
 				event.preventDefault();
 				event.stopPropagation();
-			}
-
-			if (loop && currentImage === 0) {
-				this.props.onClickThumbnail(images.length - 1);
 			}
 
 			this.props.onClickPrev();
