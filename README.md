@@ -22,16 +22,38 @@ import React from 'react';
 import Lightbox from 'react-images';
 
 export default class Sample extends React.Component {
-  ...
+  state = {
+    currentImage: 0,
+    lightboxIsOpen: false,
+    images: [{ src: 'https://images.pexels.com/photos/427676/pexels-photo-427676.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260' },
+     { src: 'https://images.pexels.com/photos/1386424/pexels-photo-1386424.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260' }]
+  }
+  onOpen = () => {
+    this.setState({ lightboxIsOpen: true });
+  }
+  onClose = () => {
+    this.setState({ lightboxIsOpen: false });
+  }
+  gotoPrevious = () => {
+    this.setState({ currentImage: this.state.currentImage - 1 });
+  }
+  gotoNext = () => {
+    this.setState({ currentImage: this.state.currentImage + 1 });
+  }
   render() {
+    const { currentImage, images, lightboxIsOpen } = this.state
     return (
-      <Lightbox
-        images={[{ src: 'http://example.com/img1.jpg' }, { src: 'http://example.com/img2.jpg' }]}
-        isOpen={this.state.lightboxIsOpen}
-        onClickPrev={this.gotoPrevious}
-        onClickNext={this.gotoNext}
-        onClose={this.closeLightbox}
-      />
+      <div>
+        <button onClick={this.onOpen}>Open</button>
+        <Lightbox
+          currentImage={currentImage}
+          images={images}
+          isOpen={lightboxIsOpen}
+          onClickPrev={this.gotoPrevious}
+          onClickNext={this.gotoNext}
+          onClose={this.onClose}
+        />
+      </div>
     );
   }
 }
