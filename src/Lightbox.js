@@ -152,10 +152,10 @@ class Lightbox extends Component {
 		this.props.onClickPrev();
 	}
 	closeBackdrop (event) {
-    if (event) {
+		if (event) {
 			event.preventDefault();
 			event.stopPropagation();
-    }
+		}
 
 		// make sure event only happens if they click the backdrop
 		// and if the caption is widening the figure element let that respond too
