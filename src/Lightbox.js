@@ -40,7 +40,7 @@ class Lightbox extends Component {
 			'gotoPrev',
 			'closeBackdrop',
 			'handleKeyboardInput',
-			'handleImageLoaded',
+			'handleImageLoaded'
 		]);
 	}
 	getChildContext () {
@@ -57,7 +57,11 @@ class Lightbox extends Component {
 				this.preloadImage(this.props.currentImage, this.handleImageLoaded);
 			}
 		}
+		this.images = this.props.images
+
+		this.fetchImages();
 	}
+
 	componentWillReceiveProps (nextProps) {
 		if (!canUseDom) return;
 
@@ -97,6 +101,8 @@ class Lightbox extends Component {
 		if (!nextProps.isOpen && nextProps.enableKeyboardInput) {
 			window.removeEventListener('keydown', this.handleKeyboardInput);
 		}
+
+		this.fetchImages();
 	}
 	componentWillUnmount () {
 		if (this.props.enableKeyboardInput) {
@@ -176,6 +182,20 @@ class Lightbox extends Component {
 		this.setState({ imageLoaded: true });
 	}
 
+	fetchImages () {
+		this.images.forEach(image => {
+			if(image.srcfetcher) {
+				image.srcfetcher(image.src)
+				 .then((response) => response.blob())
+				 .then((blob) => {
+					 const imageUrl = URL.createObjectURL(blob);					 
+					 image.imageurl = imageUrl;
+				 });	
+			}
+			
+		});		
+	}	
+
 	// ==============================
 	// RENDERERS
 	// ==============================
@@ -254,9 +274,9 @@ class Lightbox extends Component {
 
 		const { imageLoaded } = this.state;
 
-		if (!images || !images.length) return null;
+		if (!this.images || !this.images.length) return null;
 
-		const image = images[currentImage];
+		const image = this.images[currentImage];
 		const sourceSet = normalizeSourceSet(image);
 		const sizes = sourceSet ? '100vw' : null;
 
@@ -276,7 +296,7 @@ class Lightbox extends Component {
 					onClick={onClickImage}
 					sizes={sizes}
 					alt={image.alt}
-					src={image.src}
+					src={image.imageurl ? image.imageurl : image.src}
 					srcSet={sourceSet}
 					style={{
 						cursor: onClickImage ? 'pointer' : 'auto',
@@ -374,7 +394,8 @@ Lightbox.propTypes = {
 	imageCountSeparator: PropTypes.string,
 	images: PropTypes.arrayOf(
 		PropTypes.shape({
-			src: PropTypes.string.isRequired,
+			src: PropTypes.string,
+			srcfetcher: PropTypes.func,
 			srcSet: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
 			caption: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 			thumbnail: PropTypes.string,
