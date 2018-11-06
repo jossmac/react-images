@@ -81,6 +81,41 @@ const LIGHTBOX_IMAGE_SET = [
 
 ```
 
+### Using srcfetcher
+
+srcfetcher is used if you need to fetch images using a function, for example fetch through an REST Api which requires an authorization header.
+Lightbox will call the given srcfetcher function with the src as parameter.
+
+In the example below i have used a simple fetch where i concat 'https://cors-anywhere.herokuapp.com/' before the src to avoid cors issues.
+
+Example using srcfetcher
+```jsx
+
+const photos = [
+    {src: 'https://images.unsplash.com/photo-1470619549108-b85c56fe5be8?w=1024&h=1024', width:1, height:1, srcfetcher: (e) => fetch('https://cors-anywhere.herokuapp.com/' + e)},
+    {src: 'https://images.unsplash.com/photo-1471079502516-250c19af6928?w=1024&h=1024', width:1, height:1, srcfetcher: (e) => fetch('https://cors-anywhere.herokuapp.com/' + e)},
+    {src: 'https://images.unsplash.com/photo-1454023492550-5696f8ff10e1?w=1024&h=1024', width:1, height:1, srcfetcher: (e) => fetch('https://cors-anywhere.herokuapp.com/' + e)},
+    {src: 'https://images.unsplash.com/photo-1470854989922-5be2f7456d78?w=1024&h=1024', width:1, height:1, srcfetcher: (e) => fetch('https://cors-anywhere.herokuapp.com/' + e)}
+];
+
+render(){
+      return(
+        <div>
+          <Gallery photos={photos} onClick={this.openLightbox}/>   
+          <Lightbox images={photos} 
+            onClose={this.closeLightbox}
+            onClickPrev={this.gotoPrevious}
+            onClickNext={this.gotoNext}
+            currentImage={this.state.currentImage}
+            isOpen={this.state.lightboxIsOpen}
+          />
+        </div>
+      )
+}
+
+```
+
+
 ## Options
 
 Property	|	Type		|	Default		|	Description
@@ -117,3 +152,4 @@ src  | string | undefined | Required
 srcSet  | array of strings or string | undefined | Optional
 caption  | string | undefined | Optional
 alt  | string | undefined | Optional
+srcfetcher | function | undefined | Optional

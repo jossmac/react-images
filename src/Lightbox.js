@@ -33,14 +33,14 @@ class Lightbox extends Component {
 
 		this.theme = deepMerge(defaultTheme, props.theme);
 		this.classes = StyleSheet.create(deepMerge(defaultStyles, this.theme));
-		this.state = { imageLoaded: false };
+		this.state = { imageLoaded: false, imagesLoading: 0 };
 
 		bindFunctions.call(this, [
 			'gotoNext',
 			'gotoPrev',
 			'closeBackdrop',
 			'handleKeyboardInput',
-			'handleImageLoaded',
+			'handleImageLoaded'
 		]);
 	}
 	getChildContext () {
@@ -57,7 +57,9 @@ class Lightbox extends Component {
 				this.preloadImage(this.props.currentImage, this.handleImageLoaded);
 			}
 		}
+		this.images = this.props.images
 	}
+
 	componentWillReceiveProps (nextProps) {
 		if (!canUseDom) return;
 
@@ -127,9 +129,9 @@ class Lightbox extends Component {
 	}
 	gotoNext (event) {
 		const { currentImage, images } = this.props;
-		const { imageLoaded } = this.state;
+		const { imageLoaded, imagesLoading } = this.state;
 
-		if (!imageLoaded || currentImage === (images.length - 1)) return;
+		if (!imageLoaded || imagesLoading || currentImage === (images.length - 1)) return;
 
 		if (event) {
 			event.preventDefault();
@@ -140,9 +142,9 @@ class Lightbox extends Component {
 	}
 	gotoPrev (event) {
 		const { currentImage } = this.props;
-		const { imageLoaded } = this.state;
+		const { imageLoaded, imagesLoading } = this.state;
 
-		if (!imageLoaded || currentImage === 0) return;
+		if (!imageLoaded || imagesLoading || currentImage === 0) return;
 
 		if (event) {
 			event.preventDefault();
@@ -175,6 +177,30 @@ class Lightbox extends Component {
 	handleImageLoaded () {
 		this.setState({ imageLoaded: true });
 	}
+
+	fetchImages () {
+		// use imagecount to show/hide the spinner
+		let imagesCount = 0
+		
+		this.images.forEach(image => {
+			if(image.srcfetcher) {
+				imagesCount++;
+				// increase the imagesCount, the spinner will be shown as long as there is any image loading
+				this.setState({ imagesLoading: imagesCount })
+				image.srcfetcher(image.src)
+				 .then((response) => response.blob())
+				 .then((blob) => {
+					 const imageUrl = URL.createObjectURL(blob);					 
+					 image.imageurl = imageUrl;
+					 // decrease the number of images. Since we might have threating and timing issues, assure that the number cannot be less than 0
+					 this.setState({ imagesLoading: Math.max(0, this.state.imagesLoading - 1) })
+				 }).catch(err => {
+					 // if there is a problem fetching the image, decrease the imagecounter so that we do not freeze the web with the spinner.
+					this.setState({ imagesLoading: Math.max(0, this.state.imagesLoading - 1) })
+				 });	
+			}
+		});		
+	}	
 
 	// ==============================
 	// RENDERERS
@@ -214,7 +240,8 @@ class Lightbox extends Component {
 			width,
 		} = this.props;
 
-		const { imageLoaded } = this.state;
+		const { imageLoaded, imagesLoading } = this.state;
+
 
 		if (!isOpen) return <span key="closed" />;
 
@@ -231,14 +258,14 @@ class Lightbox extends Component {
 			>
 				<div>
 					<div className={css(this.classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
-						{imageLoaded && this.renderHeader()}
+						{imageLoaded && !imagesLoading && this.renderHeader()}
 						{this.renderImages()}
 						{this.renderSpinner()}
-						{imageLoaded && this.renderFooter()}
+						{imageLoaded && !imagesLoading && this.renderFooter()}
 					</div>
-					{imageLoaded && this.renderThumbnails()}
-					{imageLoaded && this.renderArrowPrev()}
-					{imageLoaded && this.renderArrowNext()}
+					{imageLoaded && !imagesLoading && this.renderThumbnails()}
+					{imageLoaded && !imagesLoading && this.renderArrowPrev()}
+					{imageLoaded && !imagesLoading && this.renderArrowNext()}
 					{this.props.preventScroll && <ScrollLock />}
 				</div>
 			</Container>
@@ -252,11 +279,11 @@ class Lightbox extends Component {
 			showThumbnails,
 		} = this.props;
 
-		const { imageLoaded } = this.state;
+		const { imageLoaded, imagesLoading } = this.state;
 
-		if (!images || !images.length) return null;
+		if (!this.images || !this.images.length) return null;
 
-		const image = images[currentImage];
+		const image = this.images[currentImage];
 		const sourceSet = normalizeSourceSet(image);
 		const sizes = sourceSet ? '100vw' : null;
 
@@ -272,16 +299,17 @@ class Lightbox extends Component {
 					<Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
 				*/}
 				<img
-					className={css(this.classes.image, imageLoaded && this.classes.imageLoaded)}
+					className={css(this.classes.image, imageLoaded && !imagesLoading && this.classes.imageLoaded)}
 					onClick={onClickImage}
 					sizes={sizes}
 					alt={image.alt}
-					src={image.src}
+					src={image.imageurl ? image.imageurl : image.src}
 					srcSet={sourceSet}
 					style={{
 						cursor: onClickImage ? 'pointer' : 'auto',
 						maxHeight: `calc(100vh - ${heightOffset})`,
 					}}
+					onError={(e)=>{e.target.onerror = null; /* Call the srcFetcher function to collect the images  */ this.fetchImages()}}
 				/>
 			</figure>
 		);
@@ -344,11 +372,11 @@ class Lightbox extends Component {
 			spinnerSize,
 		} = this.props;
 
-		const { imageLoaded } = this.state;
+		const { imageLoaded, imagesLoading } = this.state;
 		const Spinner = spinner;
 
 		return (
-			<div className={css(this.classes.spinner, !imageLoaded && this.classes.spinnerActive)}>
+			<div className={css(this.classes.spinner, (!imageLoaded || imagesLoading) && this.classes.spinnerActive)}>
 				<Spinner
 					color={spinnerColor}
 					size={spinnerSize}
@@ -374,7 +402,8 @@ Lightbox.propTypes = {
 	imageCountSeparator: PropTypes.string,
 	images: PropTypes.arrayOf(
 		PropTypes.shape({
-			src: PropTypes.string.isRequired,
+			src: PropTypes.string,
+			srcfetcher: PropTypes.func,
 			srcSet: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
 			caption: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 			thumbnail: PropTypes.string,
