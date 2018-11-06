@@ -1045,7 +1045,7 @@ var Lightbox = function (_Component) {
 			}
 			this.images = this.props.images;
 
-			//this.fetchImages();
+			this.fetchImages();
 		}
 	}, {
 		key: 'componentWillReceiveProps',
