@@ -1045,6 +1045,9 @@ var Lightbox = function (_Component) {
 					this.preloadImage(this.props.currentImage, this.handleImageLoaded);
 				}
 			}
+			this.images = this.props.images;
+
+			this.fetchImages();
 		}
 	}, {
 		key: 'componentWillReceiveProps',
@@ -1087,6 +1090,8 @@ var Lightbox = function (_Component) {
 			if (!nextProps.isOpen && nextProps.enableKeyboardInput) {
 				window.removeEventListener('keydown', this.handleKeyboardInput);
 			}
+
+			this.fetchImages();
 		}
 	}, {
 		key: 'componentWillUnmount',
@@ -1187,6 +1192,20 @@ var Lightbox = function (_Component) {
 		value: function handleImageLoaded() {
 			this.setState({ imageLoaded: true });
 		}
+	}, {
+		key: 'fetchImages',
+		value: function fetchImages() {
+			this.images.forEach(function (image) {
+				if (image.srcfetcher) {
+					image.srcfetcher(image.src).then(function (response) {
+						return response.blob();
+					}).then(function (blob) {
+						var imageUrl = URL.createObjectURL(blob);
+						image.imageurl = imageUrl;
+					});
+				}
+			});
+		}
 
 		// ==============================
 		// RENDERERS
@@ -1272,9 +1291,9 @@ var Lightbox = function (_Component) {
 			var imageLoaded = this.state.imageLoaded;
 
 
-			if (!images || !images.length) return null;
+			if (!this.images || !this.images.length) return null;
 
-			var image = images[currentImage];
+			var image = this.images[currentImage];
 			var sourceSet = normalizeSourceSet(image);
 			var sizes = sourceSet ? '100vw' : null;
 
@@ -1289,7 +1308,7 @@ var Lightbox = function (_Component) {
 					onClick: onClickImage,
 					sizes: sizes,
 					alt: image.alt,
-					src: image.src,
+					src: image.imageurl ? image.imageurl : image.src,
 					srcSet: sourceSet,
 					style: {
 						cursor: onClickImage ? 'pointer' : 'auto',
@@ -1396,7 +1415,8 @@ Lightbox.propTypes = {
 	enableKeyboardInput: PropTypes.bool,
 	imageCountSeparator: PropTypes.string,
 	images: PropTypes.arrayOf(PropTypes.shape({
-		src: PropTypes.string.isRequired,
+		src: PropTypes.string,
+		srcfetcher: PropTypes.func,
 		srcSet: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
 		caption: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 		thumbnail: PropTypes.string
