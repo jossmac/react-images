@@ -83,7 +83,10 @@ const LIGHTBOX_IMAGE_SET = [
 
 ### Using srcfetcher
 
-srcfetcher is used if you need to fetch images using a function, for example fetch through an REST Api which requires an authorization header
+srcfetcher is used if you need to fetch images using a function, for example fetch through an REST Api which requires an authorization header.
+Lightbox will call the given srcfetcher function with the src as parameter.
+
+In the example below i have used a simple fetch where i concat 'https://cors-anywhere.herokuapp.com/' before the src to avoid cors issues.
 
 Example using srcfetcher
 ```jsx
