@@ -1021,7 +1021,7 @@ var Lightbox = function (_Component) {
 
 		_this.theme = deepMerge(theme, props.theme);
 		_this.classes = aphrodite.StyleSheet.create(deepMerge(defaultStyles, _this.theme));
-		_this.state = { imageLoaded: false };
+		_this.state = { imageLoaded: false, imagesLoading: 0 };
 
 		bindFunctions.call(_this, ['gotoNext', 'gotoPrev', 'closeBackdrop', 'handleKeyboardInput', 'handleImageLoaded']);
 		return _this;
@@ -1046,8 +1046,6 @@ var Lightbox = function (_Component) {
 				}
 			}
 			this.images = this.props.images;
-
-			this.fetchImages();
 		}
 	}, {
 		key: 'componentWillReceiveProps',
@@ -1090,8 +1088,6 @@ var Lightbox = function (_Component) {
 			if (!nextProps.isOpen && nextProps.enableKeyboardInput) {
 				window.removeEventListener('keydown', this.handleKeyboardInput);
 			}
-
-			this.fetchImages();
 		}
 	}, {
 		key: 'componentWillUnmount',
@@ -1132,10 +1128,12 @@ var Lightbox = function (_Component) {
 			var _props = this.props,
 			    currentImage = _props.currentImage,
 			    images = _props.images;
-			var imageLoaded = this.state.imageLoaded;
+			var _state = this.state,
+			    imageLoaded = _state.imageLoaded,
+			    imagesLoading = _state.imagesLoading;
 
 
-			if (!imageLoaded || currentImage === images.length - 1) return;
+			if (!imageLoaded || imagesLoading || currentImage === images.length - 1) return;
 
 			if (event) {
 				event.preventDefault();
@@ -1148,10 +1146,12 @@ var Lightbox = function (_Component) {
 		key: 'gotoPrev',
 		value: function gotoPrev(event) {
 			var currentImage = this.props.currentImage;
-			var imageLoaded = this.state.imageLoaded;
+			var _state2 = this.state,
+			    imageLoaded = _state2.imageLoaded,
+			    imagesLoading = _state2.imagesLoading;
 
 
-			if (!imageLoaded || currentImage === 0) return;
+			if (!imageLoaded || imagesLoading || currentImage === 0) return;
 
 			if (event) {
 				event.preventDefault();
@@ -1191,6 +1191,7 @@ var Lightbox = function (_Component) {
 		key: 'handleImageLoaded',
 		value: function handleImageLoaded() {
 			this.setState({ imageLoaded: true });
+			this.fetchImages();
 		}
 	}, {
 		key: 'fetchImages',
@@ -1199,12 +1200,13 @@ var Lightbox = function (_Component) {
 
 			this.images.forEach(function (image) {
 				if (image.srcfetcher) {
+					_this2.setState({ imagesLoading: _this2.state.imageLoading + 1 });
 					image.srcfetcher(image.src).then(function (response) {
 						return response.blob();
 					}).then(function (blob) {
 						var imageUrl = URL.createObjectURL(blob);
 						image.imageurl = imageUrl;
-						_this2.setState({ nop: true });
+						_this2.setState({ imagesLoading: _this2.state.imageLoading - 1 });
 					});
 				}
 			});
@@ -1248,7 +1250,9 @@ var Lightbox = function (_Component) {
 			    isOpen = _props2.isOpen,
 			    showThumbnails = _props2.showThumbnails,
 			    width = _props2.width;
-			var imageLoaded = this.state.imageLoaded;
+			var _state3 = this.state,
+			    imageLoaded = _state3.imageLoaded,
+			    imagesLoading = _state3.imagesLoading;
 
 
 			if (!isOpen) return React__default.createElement('span', { key: 'closed' });
@@ -1271,14 +1275,14 @@ var Lightbox = function (_Component) {
 					React__default.createElement(
 						'div',
 						{ className: aphrodite.css(this.classes.content), style: { marginBottom: offsetThumbnails, maxWidth: width } },
-						imageLoaded && this.renderHeader(),
+						imageLoaded && !imagesLoading && this.renderHeader(),
 						this.renderImages(),
 						this.renderSpinner(),
-						imageLoaded && this.renderFooter()
+						imageLoaded && !imagesLoading && this.renderFooter()
 					),
-					imageLoaded && this.renderThumbnails(),
-					imageLoaded && this.renderArrowPrev(),
-					imageLoaded && this.renderArrowNext(),
+					imageLoaded && !imagesLoading && this.renderThumbnails(),
+					imageLoaded && !imagesLoading && this.renderArrowPrev(),
+					imageLoaded && !imagesLoading && this.renderArrowNext(),
 					this.props.preventScroll && React__default.createElement(ScrollLock, null)
 				)
 			);
@@ -1291,7 +1295,9 @@ var Lightbox = function (_Component) {
 			    images = _props3.images,
 			    onClickImage = _props3.onClickImage,
 			    showThumbnails = _props3.showThumbnails;
-			var imageLoaded = this.state.imageLoaded;
+			var _state4 = this.state,
+			    imageLoaded = _state4.imageLoaded,
+			    imagesLoading = _state4.imagesLoading;
 
 
 			if (!this.images || !this.images.length) return null;
@@ -1307,7 +1313,7 @@ var Lightbox = function (_Component) {
 				'figure',
 				{ className: aphrodite.css(this.classes.figure) },
 				React__default.createElement('img', {
-					className: aphrodite.css(this.classes.image, imageLoaded && this.classes.imageLoaded),
+					className: aphrodite.css(this.classes.image, imageLoaded && !imagesLoading && this.classes.imageLoaded),
 					onClick: onClickImage,
 					sizes: sizes,
 					alt: image.alt,
@@ -1384,13 +1390,15 @@ var Lightbox = function (_Component) {
 			    spinner = _props7.spinner,
 			    spinnerColor = _props7.spinnerColor,
 			    spinnerSize = _props7.spinnerSize;
-			var imageLoaded = this.state.imageLoaded;
+			var _state5 = this.state,
+			    imageLoaded = _state5.imageLoaded,
+			    imagesLoading = _state5.imagesLoading;
 
 			var Spinner$$1 = spinner;
 
 			return React__default.createElement(
 				'div',
-				{ className: aphrodite.css(this.classes.spinner, !imageLoaded && this.classes.spinnerActive) },
+				{ className: aphrodite.css(this.classes.spinner, (!imageLoaded || imagesLoading) && this.classes.spinnerActive) },
 				React__default.createElement(Spinner$$1, {
 					color: spinnerColor,
 					size: spinnerSize

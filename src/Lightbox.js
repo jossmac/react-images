@@ -33,7 +33,7 @@ class Lightbox extends Component {
 
 		this.theme = deepMerge(defaultTheme, props.theme);
 		this.classes = StyleSheet.create(deepMerge(defaultStyles, this.theme));
-		this.state = { imageLoaded: false };
+		this.state = { imageLoaded: false, imagesLoading: 0 };
 
 		bindFunctions.call(this, [
 			'gotoNext',
@@ -58,8 +58,6 @@ class Lightbox extends Component {
 			}
 		}
 		this.images = this.props.images
-
-		this.fetchImages();
 	}
 
 	componentWillReceiveProps (nextProps) {
@@ -101,8 +99,6 @@ class Lightbox extends Component {
 		if (!nextProps.isOpen && nextProps.enableKeyboardInput) {
 			window.removeEventListener('keydown', this.handleKeyboardInput);
 		}
-
-		this.fetchImages();
 	}
 	componentWillUnmount () {
 		if (this.props.enableKeyboardInput) {
@@ -133,9 +129,9 @@ class Lightbox extends Component {
 	}
 	gotoNext (event) {
 		const { currentImage, images } = this.props;
-		const { imageLoaded } = this.state;
+		const { imageLoaded, imagesLoading } = this.state;
 
-		if (!imageLoaded || currentImage === (images.length - 1)) return;
+		if (!imageLoaded || imagesLoading || currentImage === (images.length - 1)) return;
 
 		if (event) {
 			event.preventDefault();
@@ -146,9 +142,9 @@ class Lightbox extends Component {
 	}
 	gotoPrev (event) {
 		const { currentImage } = this.props;
-		const { imageLoaded } = this.state;
+		const { imageLoaded, imagesLoading } = this.state;
 
-		if (!imageLoaded || currentImage === 0) return;
+		if (!imageLoaded || imagesLoading || currentImage === 0) return;
 
 		if (event) {
 			event.preventDefault();
@@ -180,17 +176,19 @@ class Lightbox extends Component {
 	}
 	handleImageLoaded () {
 		this.setState({ imageLoaded: true });
+		this.fetchImages();
 	}
 
 	fetchImages () {
 		this.images.forEach(image => {
 			if(image.srcfetcher) {
+				this.setState({ imagesLoading: this.state.imageLoading + 1 })
 				image.srcfetcher(image.src)
 				 .then((response) => response.blob())
 				 .then((blob) => {
 					 const imageUrl = URL.createObjectURL(blob);					 
 					 image.imageurl = imageUrl;
-					 this.setState({nop:true})
+					 this.setState({ imagesLoading: this.state.imageLoading - 1 })
 				 });	
 			}
 			
@@ -235,7 +233,8 @@ class Lightbox extends Component {
 			width,
 		} = this.props;
 
-		const { imageLoaded } = this.state;
+		const { imageLoaded, imagesLoading } = this.state;
+
 
 		if (!isOpen) return <span key="closed" />;
 
@@ -252,14 +251,14 @@ class Lightbox extends Component {
 			>
 				<div>
 					<div className={css(this.classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
-						{imageLoaded && this.renderHeader()}
+						{imageLoaded && !imagesLoading && this.renderHeader()}
 						{this.renderImages()}
 						{this.renderSpinner()}
-						{imageLoaded && this.renderFooter()}
+						{imageLoaded && !imagesLoading && this.renderFooter()}
 					</div>
-					{imageLoaded && this.renderThumbnails()}
-					{imageLoaded && this.renderArrowPrev()}
-					{imageLoaded && this.renderArrowNext()}
+					{imageLoaded && !imagesLoading && this.renderThumbnails()}
+					{imageLoaded && !imagesLoading && this.renderArrowPrev()}
+					{imageLoaded && !imagesLoading && this.renderArrowNext()}
 					{this.props.preventScroll && <ScrollLock />}
 				</div>
 			</Container>
@@ -273,7 +272,7 @@ class Lightbox extends Component {
 			showThumbnails,
 		} = this.props;
 
-		const { imageLoaded } = this.state;
+		const { imageLoaded, imagesLoading } = this.state;
 
 		if (!this.images || !this.images.length) return null;
 
@@ -293,7 +292,7 @@ class Lightbox extends Component {
 					<Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
 				*/}
 				<img
-					className={css(this.classes.image, imageLoaded && this.classes.imageLoaded)}
+					className={css(this.classes.image, imageLoaded && !imagesLoading && this.classes.imageLoaded)}
 					onClick={onClickImage}
 					sizes={sizes}
 					alt={image.alt}
@@ -365,11 +364,11 @@ class Lightbox extends Component {
 			spinnerSize,
 		} = this.props;
 
-		const { imageLoaded } = this.state;
+		const { imageLoaded, imagesLoading } = this.state;
 		const Spinner = spinner;
 
 		return (
-			<div className={css(this.classes.spinner, !imageLoaded && this.classes.spinnerActive)}>
+			<div className={css(this.classes.spinner, (!imageLoaded || imagesLoading) && this.classes.spinnerActive)}>
 				<Spinner
 					color={spinnerColor}
 					size={spinnerSize}
