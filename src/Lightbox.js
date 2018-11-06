@@ -179,18 +179,22 @@ class Lightbox extends Component {
 	}
 
 	fetchImages () {
+		let imagesCount = 0
+		
 		this.images.forEach(image => {
 			if(image.srcfetcher) {
-				this.setState({ imagesLoading: this.state.imagesLoading + 1 })
+				imagesCount++;
+				this.setState({ imagesLoading: imagesCount })
 				image.srcfetcher(image.src)
 				 .then((response) => response.blob())
 				 .then((blob) => {
 					 const imageUrl = URL.createObjectURL(blob);					 
 					 image.imageurl = imageUrl;
-					 this.setState({ imagesLoading: this.state.imagesLoading - 1 })
+					 this.setState({ imagesLoading: Math.max(0, this.state.imagesLoading - 1) })
+				 }).catch(err => {
+					this.setState({ imagesLoading: Math.max(0, this.state.imagesLoading - 1) })
 				 });	
 			}
-			
 		});		
 	}	
 
