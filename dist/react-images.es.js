@@ -1195,15 +1195,20 @@ var Lightbox = function (_Component) {
 		value: function fetchImages() {
 			var _this2 = this;
 
+			var imagesCount = 0;
+
 			this.images.forEach(function (image) {
 				if (image.srcfetcher) {
-					_this2.setState({ imagesLoading: _this2.state.imagesLoading + 1 });
+					imagesCount++;
+					_this2.setState({ imagesLoading: imagesCount });
 					image.srcfetcher(image.src).then(function (response) {
 						return response.blob();
 					}).then(function (blob) {
 						var imageUrl = URL.createObjectURL(blob);
 						image.imageurl = imageUrl;
-						_this2.setState({ imagesLoading: _this2.state.imagesLoading - 1 });
+						_this2.setState({ imagesLoading: Math.max(0, _this2.state.imagesLoading - 1) });
+					}).catch(function (err) {
+						_this2.setState({ imagesLoading: Math.max(0, _this2.state.imagesLoading - 1) });
 					});
 				}
 			});
