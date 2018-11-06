@@ -1189,7 +1189,6 @@ var Lightbox = function (_Component) {
 		key: 'handleImageLoaded',
 		value: function handleImageLoaded() {
 			this.setState({ imageLoaded: true });
-			this.fetchImages();
 		}
 	}, {
 		key: 'fetchImages',
@@ -1320,6 +1319,9 @@ var Lightbox = function (_Component) {
 					style: {
 						cursor: onClickImage ? 'pointer' : 'auto',
 						maxHeight: 'calc(100vh - ' + heightOffset + ')'
+					},
+					onError: function onError(e) {
+						e.target.onerror = null;fetchImages();
 					}
 				})
 			);

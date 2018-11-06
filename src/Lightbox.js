@@ -176,7 +176,6 @@ class Lightbox extends Component {
 	}
 	handleImageLoaded () {
 		this.setState({ imageLoaded: true });
-		this.fetchImages();
 	}
 
 	fetchImages () {
@@ -302,6 +301,7 @@ class Lightbox extends Component {
 						cursor: onClickImage ? 'pointer' : 'auto',
 						maxHeight: `calc(100vh - ${heightOffset})`,
 					}}
+					onError={(e)=>{e.target.onerror = null; fetchImages()}}
 				/>
 			</figure>
 		);
