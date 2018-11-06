@@ -190,6 +190,7 @@ class Lightbox extends Component {
 				 .then((blob) => {
 					 const imageUrl = URL.createObjectURL(blob);					 
 					 image.imageurl = imageUrl;
+					 this.setState({nop:true})
 				 });	
 			}
 			

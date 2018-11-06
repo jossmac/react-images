@@ -1195,6 +1195,8 @@ var Lightbox = function (_Component) {
 	}, {
 		key: 'fetchImages',
 		value: function fetchImages() {
+			var _this2 = this;
+
 			this.images.forEach(function (image) {
 				if (image.srcfetcher) {
 					image.srcfetcher(image.src).then(function (response) {
@@ -1202,6 +1204,7 @@ var Lightbox = function (_Component) {
 					}).then(function (blob) {
 						var imageUrl = URL.createObjectURL(blob);
 						image.imageurl = imageUrl;
+						_this2.setState({ nop: true });
 					});
 				}
 			});
