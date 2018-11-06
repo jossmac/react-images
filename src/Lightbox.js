@@ -301,7 +301,7 @@ class Lightbox extends Component {
 						cursor: onClickImage ? 'pointer' : 'auto',
 						maxHeight: `calc(100vh - ${heightOffset})`,
 					}}
-					onError={(e)=>{e.target.onerror = null; fetchImages()}}
+					onError={(e)=>{e.target.onerror = null; this.fetchImages()}}
 				/>
 			</figure>
 		);
