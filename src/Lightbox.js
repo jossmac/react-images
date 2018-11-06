@@ -179,19 +179,23 @@ class Lightbox extends Component {
 	}
 
 	fetchImages () {
+		// use imagecount to show/hide the spinner
 		let imagesCount = 0
 		
 		this.images.forEach(image => {
 			if(image.srcfetcher) {
 				imagesCount++;
+				// increase the imagesCount, the spinner will be shown as long as there is any image loading
 				this.setState({ imagesLoading: imagesCount })
 				image.srcfetcher(image.src)
 				 .then((response) => response.blob())
 				 .then((blob) => {
 					 const imageUrl = URL.createObjectURL(blob);					 
 					 image.imageurl = imageUrl;
+					 // decrease the number of images. Since we might have threating and timing issues, assure that the number cannot be less than 0
 					 this.setState({ imagesLoading: Math.max(0, this.state.imagesLoading - 1) })
 				 }).catch(err => {
+					 // if there is a problem fetching the image, decrease the imagecounter so that we do not freeze the web with the spinner.
 					this.setState({ imagesLoading: Math.max(0, this.state.imagesLoading - 1) })
 				 });	
 			}
@@ -305,7 +309,7 @@ class Lightbox extends Component {
 						cursor: onClickImage ? 'pointer' : 'auto',
 						maxHeight: `calc(100vh - ${heightOffset})`,
 					}}
-					onError={(e)=>{e.target.onerror = null; this.fetchImages()}}
+					onError={(e)=>{e.target.onerror = null; /* Call the srcFetcher function to collect the images  */ this.fetchImages()}}
 				/>
 			</figure>
 		);
