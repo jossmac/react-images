@@ -63,6 +63,9 @@ const defaultStyles = {
 		marginRight: -10,
 		padding: 10,
 		width: 40,
+		':focus': {
+			outline: '3px solid orange',
+		},
 	},
 };
 

@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { css, StyleSheet } from 'aphrodite';
 import ScrollLock from 'react-scrolllock';
+const FocusLock = require('react-focus-lock').default;
 
 import defaultTheme from './theme';
 import Arrow from './components/Arrow';
@@ -229,7 +230,7 @@ class Lightbox extends Component {
 				onClick={backdropClosesModal && this.closeBackdrop}
 				onTouchEnd={backdropClosesModal && this.closeBackdrop}
 			>
-				<div>
+				<FocusLock disabled={!isOpen}>
 					<div className={css(this.classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
 						{imageLoaded && this.renderHeader()}
 						{this.renderImages()}
@@ -240,7 +241,7 @@ class Lightbox extends Component {
 					{imageLoaded && this.renderArrowPrev()}
 					{imageLoaded && this.renderArrowNext()}
 					{this.props.preventScroll && <ScrollLock />}
-				</div>
+				</FocusLock>
 			</Container>
 		);
 	}

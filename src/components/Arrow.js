@@ -58,6 +58,9 @@ const defaultStyles = {
 		// disable user select
 		WebkitTouchCallout: 'none',
 		userSelect: 'none',
+		':focus': {
+			outline: '3px solid orange',
+		},
 	},
 
 	// sizes
