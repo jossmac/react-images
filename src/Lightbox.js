@@ -34,6 +34,7 @@ class Lightbox extends Component {
 		this.theme = deepMerge(defaultTheme, props.theme);
 		this.classes = StyleSheet.create(deepMerge(defaultStyles, this.theme));
 		this.state = { imageLoaded: false };
+		this.images = this.props.images;
 
 		bindFunctions.call(this, [
 			'gotoNext',
@@ -84,9 +85,9 @@ class Lightbox extends Component {
 			}
 		}
 
-		// preload current image
+        // preload current image
 		if (this.props.currentImage !== nextProps.currentImage || !this.props.isOpen && nextProps.isOpen) {
-			const img = this.preloadImageData(nextProps.images[nextProps.currentImage], this.handleImageLoaded);
+			const img = this.preloadImageData(nextProps.images[nextProps.currentImage], this.handleImageLoaded, nextProps.currentImage);
 			if (img) this.setState({ imageLoaded: img.complete });
 		}
 
@@ -109,15 +110,21 @@ class Lightbox extends Component {
 	// ==============================
 
 	preloadImage (idx, onload) {
-		return this.preloadImageData(this.props.images[idx], onload);
+		return this.preloadImageData(this.props.images[idx], onload, idx);
 	}
-	preloadImageData (data, onload) {
+
+	loadError (e, id) {
+		// {src: this.props.errorImage,thumbnail:'',srcSet:[]} is can merge to this.props.errorImage
+		const _image = Object.assign({}, this.images[id], { src: this.props.errorImage, thumbnail: '', srcSet: [] });
+		this.images.splice(id, 1, _image);
+	}
+
+	preloadImageData (data, onload, idx) {
 		if (!data) return;
 		const img = new Image();
 		const sourceSet = normalizeSourceSet(data);
 
-		// TODO: add error handling for missing images
-		img.onerror = onload;
+		img.onerror = e => this.loadError(e, idx);
 		img.onload = onload;
 		img.src = data.src;
 
@@ -255,7 +262,6 @@ class Lightbox extends Component {
 		const { imageLoaded } = this.state;
 
 		if (!images || !images.length) return null;
-
 		const image = images[currentImage];
 		const sourceSet = normalizeSourceSet(image);
 		const sizes = sourceSet ? '100vw' : null;
