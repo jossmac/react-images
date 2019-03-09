@@ -31,10 +31,10 @@ class Lightbox extends Component {
 	constructor (props) {
 		super(props);
 
-        this.theme = deepMerge(defaultTheme, props.theme);
-        this.classes = StyleSheet.create(deepMerge(defaultStyles, this.theme));
-        this.state = {imageLoaded: false};
-        this.images = this.props.images
+		this.theme = deepMerge(defaultTheme, props.theme);
+		this.classes = StyleSheet.create(deepMerge(defaultStyles, this.theme));
+		this.state = { imageLoaded: false };
+		this.images = this.props.images;
 
 		bindFunctions.call(this, [
 			'gotoNext',
@@ -86,10 +86,10 @@ class Lightbox extends Component {
 		}
 
         // preload current image
-        if (this.props.currentImage !== nextProps.currentImage || !this.props.isOpen && nextProps.isOpen) {
-            const img = this.preloadImageData(nextProps.images[nextProps.currentImage], this.handleImageLoaded, nextProps.currentImage);
-            if (img) this.setState({imageLoaded: img.complete});
-        }
+		if (this.props.currentImage !== nextProps.currentImage || !this.props.isOpen && nextProps.isOpen) {
+			const img = this.preloadImageData(nextProps.images[nextProps.currentImage], this.handleImageLoaded, nextProps.currentImage);
+			if (img) this.setState({ imageLoaded: img.complete });
+		}
 
 		// add/remove event listeners
 		if (!this.props.isOpen && nextProps.isOpen && nextProps.enableKeyboardInput) {
@@ -109,24 +109,24 @@ class Lightbox extends Component {
 	// METHODS
 	// ==============================
 
-    preloadImage(idx, onload) {
-        return this.preloadImageData(this.props.images[idx], onload, idx);
-    }
+	preloadImage (idx, onload) {
+		return this.preloadImageData(this.props.images[idx], onload, idx);
+	}
 
-    loadError(e, id) {
-        // {src: this.props.errorImage,thumbnail:'',srcSet:[]} is can merge to this.props.errorImage
-        const _image = Object.assign({},this.images[id],{src: this.props.errorImage,thumbnail:'',srcSet:[]})
-        this.images.splice(id, 1, _image)
-    }
+	loadError (e, id) {
+		// {src: this.props.errorImage,thumbnail:'',srcSet:[]} is can merge to this.props.errorImage
+		const _image = Object.assign({}, this.images[id], { src: this.props.errorImage, thumbnail: '', srcSet: [] });
+		this.images.splice(id, 1, _image);
+	}
 
-    preloadImageData(data, onload, idx) {
-        if (!data) return;
-        const img = new Image();
-        const sourceSet = normalizeSourceSet(data);
+	preloadImageData (data, onload, idx) {
+		if (!data) return;
+		const img = new Image();
+		const sourceSet = normalizeSourceSet(data);
 
-        img.onerror = e => this.loadError(e, idx);
-        img.onload = onload;
-        img.src = data.src;
+		img.onerror = e => this.loadError(e, idx);
+		img.onload = onload;
+		img.src = data.src;
 
 		if (sourceSet) img.srcset = sourceSet;
 
@@ -262,7 +262,6 @@ class Lightbox extends Component {
 		const { imageLoaded } = this.state;
 
 		if (!images || !images.length) return null;
-
 		const image = images[currentImage];
 		const sourceSet = normalizeSourceSet(image);
 		const sizes = sourceSet ? '100vw' : null;
