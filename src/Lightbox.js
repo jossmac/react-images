@@ -6,6 +6,7 @@ import ScrollLock from 'react-scrolllock';
 import defaultTheme from './theme';
 import Arrow from './components/Arrow';
 import Container from './components/Container';
+import BigContainer from './components/BigContainer';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import PaginatedThumbnails from './components/PaginatedThumbnails';
@@ -225,25 +226,31 @@ class Lightbox extends Component {
 		}
 
 		return (
-			<Container
-				key="open"
-				onClick={backdropClosesModal && this.closeBackdrop}
-				onTouchEnd={backdropClosesModal && this.closeBackdrop}
-			>
-				<div>
-					<div className={css(this.classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
-						{imageLoaded && this.renderHeader()}
-						{isImage && this.renderImages()}
-						{!isImage && this.renderTexts()}
-						{this.renderSpinner()}
-						{imageLoaded && this.renderFooter()}
+			<BigContainer>
+				<div style={{
+					flex: 1,
+					backgroundColor: 'black',
+				}} />
+				<Container
+					key="open"
+					onClick={backdropClosesModal && this.closeBackdrop}
+					onTouchEnd={backdropClosesModal && this.closeBackdrop}
+				>
+					<div>
+						<div className={css(this.classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
+							{imageLoaded && this.renderHeader()}
+							{isImage && this.renderImages()}
+							{!isImage && this.renderTexts()}
+							{this.renderSpinner()}
+							{imageLoaded && this.renderFooter()}
+						</div>
+						{imageLoaded && this.renderThumbnails()}
+						{imageLoaded && this.renderArrowPrev()}
+						{imageLoaded && this.renderArrowNext()}
+						{this.props.preventScroll && <ScrollLock />}
 					</div>
-					{imageLoaded && this.renderThumbnails()}
-					{imageLoaded && this.renderArrowPrev()}
-					{imageLoaded && this.renderArrowNext()}
-					{this.props.preventScroll && <ScrollLock />}
-				</div>
-			</Container>
+				</Container>
+			</BigContainer>
 		);
 	}
 

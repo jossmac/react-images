@@ -22,21 +22,17 @@ Container.contextTypes = {
 
 const defaultStyles = {
 	container: {
+		flex: 3,
 		alignItems: 'center',
 		backgroundColor: defaults.container.background,
 		boxSizing: 'border-box',
 		display: 'flex',
-		height: '100%',
 		justifyContent: 'center',
-		left: 0,
 		paddingBottom: defaults.container.gutter.vertical,
 		paddingLeft: defaults.container.gutter.horizontal,
 		paddingRight: defaults.container.gutter.horizontal,
 		paddingTop: defaults.container.gutter.vertical,
-		position: 'fixed',
-		top: 0,
-		width: '100%',
-		zIndex: defaults.container.zIndex,
+		position: 'relative',
 	},
 };
 
