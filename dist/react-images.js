@@ -415,7 +415,7 @@ function Container(_ref, _ref2) {
 	var theme$$1 = _ref2.theme;
 	var props = objectWithoutProperties(_ref, []);
 
-	var classes = noImportant.StyleSheet.create(deepMerge(defaultStyles$2, theme$$1));
+	var classes = noImportant.StyleSheet.create(deepMerge(defaultStyles$2(props.isMobile), theme$$1));
 
 	return React__default.createElement('div', _extends({ id: 'lightboxBackdrop',
 		className: noImportant.css(classes.container)
@@ -426,24 +426,84 @@ Container.contextTypes = {
 	theme: PropTypes.object.isRequired
 };
 
-var defaultStyles$2 = {
-	container: {
-		alignItems: 'center',
-		backgroundColor: theme.container.background,
-		boxSizing: 'border-box',
-		display: 'flex',
-		height: '100%',
-		justifyContent: 'center',
-		left: 0,
-		paddingBottom: theme.container.gutter.vertical,
-		paddingLeft: theme.container.gutter.horizontal,
-		paddingRight: theme.container.gutter.horizontal,
-		paddingTop: theme.container.gutter.vertical,
-		position: 'fixed',
-		top: 0,
-		width: '100%',
-		zIndex: theme.container.zIndex
-	}
+var defaultStyles$2 = function defaultStyles(isMobile) {
+	return {
+		container: {
+			flex: isMobile ? '0 0 45%' : '0 0 75%',
+			alignItems: 'center',
+			backgroundColor: theme.container.background,
+			boxSizing: 'border-box',
+			display: 'flex',
+			justifyContent: 'center',
+			paddingBottom: theme.container.gutter.vertical,
+			paddingLeft: theme.container.gutter.horizontal,
+			paddingRight: theme.container.gutter.horizontal,
+			paddingTop: theme.container.gutter.vertical,
+			position: 'relative'
+		}
+	};
+};
+
+function Caption(_ref) {
+	var render$$1 = _ref.render,
+	    currentImage = _ref.currentImage,
+	    isMobile = _ref.isMobile;
+
+	var classes = noImportant.StyleSheet.create(defaultStyles$3(isMobile));
+
+	return React__default.createElement(
+		'div',
+		{ id: 'lightboxCaption',
+			className: noImportant.css(classes.container)
+		},
+		render$$1({ currentImage: currentImage })
+	);
+}
+
+var defaultStyles$3 = function defaultStyles(isMobile) {
+	return {
+		container: {
+			flex: isMobile ? '0 0 55%' : '0 0 25%',
+			backgroundColor: '#2d2d2d',
+			overflow: 'auto'
+		}
+	};
+};
+
+Caption.propTypes = {
+	/**
+  * Current image object
+  */
+	currentImage: PropTypes.object.isRequired,
+	/**
+  * Render props to render caption
+  */
+	render: PropTypes.func.isRequired
+};
+
+function BigContainer(_ref) {
+	var props = objectWithoutProperties(_ref, []);
+
+	var classes = aphrodite.StyleSheet.create(defaultStyles$4(props.isMobile));
+
+	return React__default.createElement('div', _extends({
+		className: aphrodite.css(classes.container)
+	}, props));
+}
+
+var defaultStyles$4 = function defaultStyles(isMobile) {
+	return {
+		container: {
+			display: 'flex',
+			flexDirection: isMobile ? 'column-reverse' : 'row',
+			height: '100%',
+			width: '100%',
+			top: '0px',
+			left: '0px',
+			position: 'fixed',
+			zIndex: theme.container.zIndex
+		}
+	};
 };
 
 function Footer(_ref, _ref2) {
@@ -457,7 +517,7 @@ function Footer(_ref, _ref2) {
 
 	if (!caption && !showCount) return null;
 
-	var classes = noImportant.StyleSheet.create(deepMerge(defaultStyles$3, theme$$1));
+	var classes = noImportant.StyleSheet.create(deepMerge(defaultStyles$5, theme$$1));
 
 	var imageCount = showCount ? React__default.createElement(
 		'div',
@@ -490,12 +550,11 @@ Footer.contextTypes = {
 	theme: PropTypes.object.isRequired
 };
 
-var defaultStyles$3 = {
+var defaultStyles$5 = {
 	footer: {
 		boxSizing: 'border-box',
 		color: theme.footer.color,
 		cursor: 'auto',
-
 		lineHeight: 1.3,
 		paddingBottom: theme.footer.gutter.vertical,
 		paddingLeft: theme.footer.gutter.horizontal,
@@ -521,7 +580,7 @@ var defaultStyles$3 = {
 		fontSize: '13px',
 		lineHeight: '18px',
 		color: '#fff',
-		fontFamily: "-apple-system, BlinkMacSystemFont, sans-serif"
+		fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif'
 	}
 };
 
@@ -533,7 +592,7 @@ function Header(_ref, _ref2) {
 	    closeButtonTitle = _ref.closeButtonTitle,
 	    props = objectWithoutProperties(_ref, ['customControls', 'onClose', 'showCloseButton', 'closeButtonTitle']);
 
-	var classes = noImportant.StyleSheet.create(deepMerge(defaultStyles$4, theme$$1));
+	var classes = noImportant.StyleSheet.create(deepMerge(defaultStyles$6, theme$$1));
 
 	return React__default.createElement(
 		'div',
@@ -560,7 +619,7 @@ Header.contextTypes = {
 	theme: PropTypes.object.isRequired
 };
 
-var defaultStyles$4 = {
+var defaultStyles$6 = {
 	header: {
 		display: 'flex',
 		justifyContent: 'space-between',
@@ -594,7 +653,7 @@ function Thumbnail(_ref, _ref2) {
 	var theme$$1 = _ref2.theme;
 
 	var url = thumbnail ? thumbnail : src;
-	var classes = noImportant.StyleSheet.create(deepMerge(defaultStyles$5, theme$$1));
+	var classes = noImportant.StyleSheet.create(deepMerge(defaultStyles$7, theme$$1));
 	return React__default.createElement('div', {
 		className: noImportant.css(classes.thumbnail, active && classes.thumbnail__active),
 		onClick: function onClick(e) {
@@ -618,7 +677,7 @@ Thumbnail.contextTypes = {
 	theme: PropTypes.object.isRequired
 };
 
-var defaultStyles$5 = {
+var defaultStyles$7 = {
 	thumbnail: {
 		backgroundPosition: 'center',
 		backgroundSize: 'cover',
@@ -1232,7 +1291,11 @@ var Lightbox = function (_Component) {
 			    isOpen = _props2.isOpen,
 			    showThumbnails = _props2.showThumbnails,
 			    width = _props2.width,
-			    isImage = _props2.isImage;
+			    isImage = _props2.isImage,
+			    images = _props2.images,
+			    currentImage = _props2.currentImage,
+			    renderCaption = _props2.renderCaption,
+			    isMobile = _props2.isMobile;
 			var imageLoaded = this.state.imageLoaded;
 
 
@@ -1244,28 +1307,38 @@ var Lightbox = function (_Component) {
 			}
 
 			return React__default.createElement(
-				Container,
-				{
-					key: 'open',
-					onClick: backdropClosesModal && this.closeBackdrop,
-					onTouchEnd: backdropClosesModal && this.closeBackdrop
-				},
+				BigContainer,
+				{ isMobile: isMobile },
+				renderCaption && React__default.createElement(Caption, {
+					currentImage: images[currentImage],
+					render: renderCaption,
+					isMobile: isMobile
+				}),
 				React__default.createElement(
-					'div',
-					null,
+					Container,
+					{
+						key: 'open',
+						onClick: backdropClosesModal && this.closeBackdrop,
+						onTouchEnd: backdropClosesModal && this.closeBackdrop,
+						isMobile: isMobile
+					},
 					React__default.createElement(
 						'div',
-						{ className: aphrodite.css(this.classes.content), style: { marginBottom: offsetThumbnails, maxWidth: width } },
-						imageLoaded && this.renderHeader(),
-						isImage && this.renderImages(),
-						!isImage && this.renderTexts(),
-						this.renderSpinner(),
-						imageLoaded && this.renderFooter()
-					),
-					imageLoaded && this.renderThumbnails(),
-					imageLoaded && this.renderArrowPrev(),
-					imageLoaded && this.renderArrowNext(),
-					this.props.preventScroll && React__default.createElement(ScrollLock, null)
+						null,
+						React__default.createElement(
+							'div',
+							{ className: aphrodite.css(this.classes.content), style: { marginBottom: offsetThumbnails, maxWidth: width } },
+							imageLoaded && this.renderHeader(),
+							isImage && this.renderImages(),
+							!isImage && this.renderTexts(),
+							this.renderSpinner(),
+							imageLoaded && this.renderFooter()
+						),
+						imageLoaded && this.renderThumbnails(),
+						imageLoaded && this.renderArrowPrev(),
+						imageLoaded && this.renderArrowNext(),
+						this.props.preventScroll && React__default.createElement(ScrollLock, null)
+					)
 				)
 			);
 		}
@@ -1275,10 +1348,20 @@ var Lightbox = function (_Component) {
 			var _props3 = this.props,
 			    currentImage = _props3.currentImage,
 			    images = _props3.images;
+
+
 			if (!images || !images.length) return null;
 
 			var image = images[currentImage];
-			var sourceSet = normalizeSourceSet(image);
+
+			var _image$user = image.user,
+			    user = _image$user === undefined ? {} : _image$user;
+			var photo = user.photo,
+			    first_name = user.first_name,
+			    last_name = user.last_name,
+			    display_name = user.display_name;
+
+
 			return React__default.createElement(
 				'div',
 				{ className: aphrodite.css(this.classes.figure) },
@@ -1296,11 +1379,11 @@ var Lightbox = function (_Component) {
 						React__default.createElement(
 							'div',
 							{ className: aphrodite.css(this.classes.lightboxReviewUserAvatar) },
-							image.user.photo ? React__default.createElement('img', { src: image.user.photo }) : React__default.createElement(
+							photo ? React__default.createElement('img', { src: photo }) : React__default.createElement(
 								'span',
 								{ className: aphrodite.css(this.classes.lightboxReviewUserAvatarName) },
-								image.user.first_name ? image.user.first_name.charAt(0) : "",
-								image.user.last_name ? image.user.last_name.charAt(0) : ""
+								first_name ? first_name.charAt(0) : '',
+								last_name ? last_name.charAt(0) : ''
 							)
 						),
 						React__default.createElement(
@@ -1312,7 +1395,7 @@ var Lightbox = function (_Component) {
 								React__default.createElement(
 									'strong',
 									{ className: aphrodite.css(this.classes.lightboxReviewUserInfoName) },
-									image.user.display_name
+									display_name
 								),
 								React__default.createElement('div', { className: aphrodite.css(this.classes.lightboxReviewUserInfoRating) })
 							),
@@ -1466,6 +1549,7 @@ Lightbox.propTypes = {
 		caption: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 		thumbnail: PropTypes.string
 	})).isRequired,
+	isMobile: PropTypes.bool,
 	isOpen: PropTypes.bool,
 	leftArrowTitle: PropTypes.string,
 	onClickImage: PropTypes.func,
@@ -1474,6 +1558,7 @@ Lightbox.propTypes = {
 	onClose: PropTypes.func.isRequired,
 	preloadNextImage: PropTypes.bool,
 	preventScroll: PropTypes.bool,
+	renderCaption: PropTypes.func,
 	rightArrowTitle: PropTypes.string,
 	showCloseButton: PropTypes.bool,
 	showImageCount: PropTypes.bool,
@@ -1546,10 +1631,10 @@ var defaultStyles = {
 		opacity: 1
 	},
 	lightboxReview: {
-		backgroundColor: "#fff",
-		maxWidth: "600px",
-		padding: "20px",
-		fontFamily: "-apple-system, BlinkMacSystemFont, sans-serif"
+		backgroundColor: '#fff',
+		maxWidth: '600px',
+		padding: '20px',
+		fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif'
 	},
 	lightboxReviewText: {
 		margin: '0',
