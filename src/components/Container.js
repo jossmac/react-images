@@ -33,6 +33,7 @@ const defaultStyles = isMobile => ({
 		paddingRight: defaults.container.gutter.horizontal,
 		paddingTop: defaults.container.gutter.vertical,
 		position: 'relative',
+		zIndex: defaults.container.zIndex,
 	},
 });
 

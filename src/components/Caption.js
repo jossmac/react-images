@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { css, StyleSheet } from 'aphrodite/no-important';
 
+import defaults from '../theme';
+
 function Caption ({ render, currentImage, isMobile }) {
 	const classes = StyleSheet.create(defaultStyles(isMobile));
 
@@ -19,6 +21,7 @@ const defaultStyles = isMobile => ({
 		flex: isMobile ? '1 0 55%' : '1 0 25%',
 		backgroundColor: '#2d2d2d',
 		overflow: 'auto',
+		zIndex: defaults.container.zIndex,
 	},
 });
 
