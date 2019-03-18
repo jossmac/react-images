@@ -136,7 +136,17 @@ render(
 			caption,
 			orientation,
 			useForDemo,
-		}))} showThumbnails />
+		}))} showThumbnails renderCaption={({ currentImage }) => (<div style={{ color: 'white' }}>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu dapibus ipsum. Fusce luctus vulputate nisl, at volutpat metus facilisis vel. Donec non ligula tincidunt, ullamcorper eros nec, lobortis felis. Maecenas ullamcorper lectus ut scelerisque pulvinar. Sed nibh sapien, tristique quis elementum id, sagittis sed ligula. Praesent at dictum est. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed id rutrum turpis.
+
+Quisque iaculis lacus ac erat euismod auctor. Etiam mattis bibendum facilisis. Mauris placerat gravida hendrerit. Integer congue at est quis ultricies. Quisque tempus nunc sed lacinia eleifend. Integer gravida molestie velit, at scelerisque arcu mollis nec. Sed neque velit, mollis et condimentum scelerisque, sagittis sit amet ante. Proin felis quam, tempus ut blandit sit amet, commodo vitae urna. Integer venenatis ligula et justo lobortis malesuada. Vivamus sed lacinia velit, sit amet gravida enim.
+
+Fusce laoreet orci at risus posuere, eget scelerisque sapien maximus. In imperdiet elementum urna, id aliquam urna sollicitudin eu. Mauris nulla tellus, lobortis id fermentum a, placerat posuere ipsum. Fusce et dolor at lorem commodo euismod. Nunc ante libero, semper et quam nec, vulputate bibendum lectus. Nunc ullamcorper convallis neque vel sollicitudin. Donec id lectus nunc. Nam sollicitudin purus ac eros efficitur viverra.
+
+Donec venenatis ex velit, quis efficitur tellus sagittis ac. Aliquam fringilla velit risus, quis hendrerit ex mollis at. Praesent rhoncus facilisis orci in pulvinar. Quisque bibendum bibendum lectus eget pellentesque. Etiam consequat nisi non finibus viverra. Cras feugiat quis neque at fermentum. Etiam convallis dictum nisi sit amet viverra. Maecenas luctus in massa placerat tristique. Aenean sit amet ante finibus, faucibus lacus eu, ultrices purus. Vivamus facilisis ligula sit amet libero feugiat auctor.
+
+Suspendisse sodales orci eu mi ultrices molestie. Curabitur varius varius feugiat. Suspendisse ornare quam at mi aliquam, id scelerisque nibh ultrices. Curabitur egestas non eros id faucibus. Suspendisse in massa euismod, sodales lacus non, consequat tellus. Aenean convallis massa eu aliquet accumsan. Aliquam ac metus in nisl volutpat dignissim eu at nisi. Nulla odio velit, rhoncus eget erat dignissim, mattis bibendum justo. Pellentesque venenatis magna sed gravida efficitur. Quisque sodales felis a dui molestie aliquet. Nullam ut turpis lacus. Nulla eu malesuada metus. Praesent a nisi quis lacus tempus sodales. Duis ac dolor sem.
+		</div>)}/>
 
 		<h3>Themed Lightbox</h3>
 		<Gallery images={THEMED_IMAGES.map(({ caption, id, orientation, useForDemo }) => ({

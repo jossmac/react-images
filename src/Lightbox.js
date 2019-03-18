@@ -6,6 +6,7 @@ import ScrollLock from 'react-scrolllock';
 import defaultTheme from './theme';
 import Arrow from './components/Arrow';
 import Container from './components/Container';
+import Caption from './components/Caption';
 import BigContainer from './components/BigContainer';
 import Footer from './components/Footer';
 import Header from './components/Header';
@@ -214,6 +215,9 @@ class Lightbox extends Component {
 			showThumbnails,
 			width,
 			isImage,
+			images,
+			currentImage,
+			renderCaption,
 		} = this.props;
 
 		const { imageLoaded } = this.state;
@@ -227,10 +231,10 @@ class Lightbox extends Component {
 
 		return (
 			<BigContainer>
-				<div style={{
-					flex: 1,
-					backgroundColor: 'black',
-				}} />
+				<Caption
+					currentImage={images[currentImage]}
+					render={renderCaption}
+				/>
 				<Container
 					key="open"
 					onClick={backdropClosesModal && this.closeBackdrop}
@@ -447,6 +451,7 @@ Lightbox.propTypes = {
 	onClose: PropTypes.func.isRequired,
 	preloadNextImage: PropTypes.bool,
 	preventScroll: PropTypes.bool,
+	renderCaption: PropTypes.func,
 	rightArrowTitle: PropTypes.string,
 	showCloseButton: PropTypes.bool,
 	showImageCount: PropTypes.bool,
@@ -476,6 +481,7 @@ Lightbox.defaultProps = {
 	theme: {},
 	thumbnailOffset: 2,
 	width: 1024,
+	renderCaption: () => null,
 };
 Lightbox.childContextTypes = {
 	theme: PropTypes.object.isRequired,
