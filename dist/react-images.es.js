@@ -427,7 +427,7 @@ Container.contextTypes = {
 var defaultStyles$2 = function defaultStyles(isMobile) {
 	return {
 		container: {
-			flex: isMobile ? '0 0 45%' : '0 0 75%',
+			flex: isMobile ? '1 0 45%' : '3 0 75%',
 			alignItems: 'center',
 			backgroundColor: theme.container.background,
 			boxSizing: 'border-box',
@@ -461,7 +461,7 @@ function Caption(_ref) {
 var defaultStyles$3 = function defaultStyles(isMobile) {
 	return {
 		container: {
-			flex: isMobile ? '0 0 55%' : '0 0 25%',
+			flex: isMobile ? '1 0 55%' : '1 0 25%',
 			backgroundColor: '#2d2d2d',
 			overflow: 'auto'
 		}
