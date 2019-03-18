@@ -231,10 +231,10 @@ class Lightbox extends Component {
 
 		return (
 			<BigContainer>
-				<Caption
+				{renderCaption && <Caption
 					currentImage={images[currentImage]}
 					render={renderCaption}
-				/>
+				/>}
 				<Container
 					key="open"
 					onClick={backdropClosesModal && this.closeBackdrop}
@@ -481,7 +481,6 @@ Lightbox.defaultProps = {
 	theme: {},
 	thumbnailOffset: 2,
 	width: 1024,
-	renderCaption: () => null,
 };
 Lightbox.childContextTypes = {
 	theme: PropTypes.object.isRequired,
