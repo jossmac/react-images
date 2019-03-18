@@ -58,13 +58,14 @@ const defaultStyles = {
 		paddingBottom: defaults.footer.gutter.vertical,
 		paddingLeft: defaults.footer.gutter.horizontal,
 		paddingRight: defaults.footer.gutter.horizontal,
-		paddingTop: defaults.footer.gutter.vertical,
+		paddingTop: '16px',
 	},
 	footerCount: {
-		float: 'right',
 		color: defaults.footer.count.color,
 		fontSize: defaults.footer.count.fontSize,
-		paddingLeft: '1em', // add a small gutter for the caption
+		margin: 'auto',
+		width: '50%',
+		textAlign: 'center',
 	},
 	footerCaption: {
 		flex: '1 1 0',
