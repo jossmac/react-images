@@ -267,12 +267,12 @@ class Lightbox extends Component {
 			images,
 		} = this.props;
 
-		const { user = {} } = images;
-		const { photo, first_name, last_name, display_name } = user;
-
 		if (!images || !images.length) return null;
 
 		const image = images[currentImage];
+
+		const { user = {} } = image;
+		const { photo, first_name, last_name, display_name } = user;
 
 		return (
 			<div className={css(this.classes.figure)}>
@@ -283,7 +283,7 @@ class Lightbox extends Component {
 					<div className={css(this.classes.lightboxReviewUser)}>
 						<div className={css(this.classes.lightboxReviewUserAvatar)}>
 							{photo ? (
-								<img src={image.user.photo}/>
+								<img src={photo}/>
 							) : (
 								<span className={css(this.classes.lightboxReviewUserAvatarName)}>
 									{first_name ? first_name.charAt(0) : ''}
