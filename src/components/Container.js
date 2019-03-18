@@ -6,7 +6,7 @@ import defaults from '../theme';
 import deepMerge from '../utils/deepMerge';
 
 function Container ({ ...props }, { theme }) {
-	const classes = StyleSheet.create(deepMerge(defaultStyles, theme));
+	const classes = StyleSheet.create(deepMerge(defaultStyles(props.isMobile), theme));
 
 	return (
 		<div id="lightboxBackdrop"
@@ -20,9 +20,9 @@ Container.contextTypes = {
 	theme: PropTypes.object.isRequired,
 };
 
-const defaultStyles = {
+const defaultStyles = isMobile => ({
 	container: {
-		flex: 3,
+		flexBasis: isMobile ? '45%' : '75%',
 		alignItems: 'center',
 		backgroundColor: defaults.container.background,
 		boxSizing: 'border-box',
@@ -34,6 +34,6 @@ const defaultStyles = {
 		paddingTop: defaults.container.gutter.vertical,
 		position: 'relative',
 	},
-};
+});
 
 export default Container;

@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { css, StyleSheet } from 'aphrodite/no-important';
 
-function Caption ({ render, currentImage }) {
-	const classes = StyleSheet.create(defaultStyles);
+function Caption ({ render, currentImage, isMobile }) {
+	const classes = StyleSheet.create(defaultStyles(isMobile));
 
 	return (
 		<div id="lightboxCaption"
@@ -14,13 +14,13 @@ function Caption ({ render, currentImage }) {
 	);
 }
 
-const defaultStyles = {
+const defaultStyles = isMobile => ({
 	container: {
-		flex: 1,
+		flex: isMobile ? '55%' : '25%',
 		backgroundColor: '#2d2d2d',
 		overflow: 'auto',
 	},
-};
+});
 
 Caption.propTypes = {
 	/**

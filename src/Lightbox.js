@@ -218,6 +218,7 @@ class Lightbox extends Component {
 			images,
 			currentImage,
 			renderCaption,
+			isMobile,
 		} = this.props;
 
 		const { imageLoaded } = this.state;
@@ -230,15 +231,17 @@ class Lightbox extends Component {
 		}
 
 		return (
-			<BigContainer>
+			<BigContainer isMobile={isMobile}>
 				{renderCaption && <Caption
 					currentImage={images[currentImage]}
 					render={renderCaption}
+					isMobile={isMobile}
 				/>}
 				<Container
 					key="open"
 					onClick={backdropClosesModal && this.closeBackdrop}
 					onTouchEnd={backdropClosesModal && this.closeBackdrop}
+					isMobile={isMobile}
 				>
 					<div>
 						<div className={css(this.classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
@@ -443,6 +446,7 @@ Lightbox.propTypes = {
 			thumbnail: PropTypes.string,
 		})
 	).isRequired,
+	isMobile: PropTypes.bool,
 	isOpen: PropTypes.bool,
 	leftArrowTitle: PropTypes.string,
 	onClickImage: PropTypes.func,
