@@ -439,7 +439,8 @@ var defaultStyles$2 = function defaultStyles(isMobile) {
 			paddingLeft: theme.container.gutter.horizontal,
 			paddingRight: theme.container.gutter.horizontal,
 			paddingTop: theme.container.gutter.vertical,
-			position: 'relative'
+			position: 'relative',
+			zIndex: theme.container.zIndex
 		}
 	};
 };
@@ -465,7 +466,8 @@ var defaultStyles$3 = function defaultStyles(isMobile) {
 		container: {
 			flex: isMobile ? '1 0 55%' : '1 0 25%',
 			backgroundColor: '#2d2d2d',
-			overflow: 'auto'
+			overflow: 'auto',
+			zIndex: theme.container.zIndex
 		}
 	};
 };
