@@ -22,7 +22,7 @@ Container.contextTypes = {
 
 const defaultStyles = isMobile => ({
 	container: {
-		flexBasis: isMobile ? '45%' : '75%',
+		flex: isMobile ? '0 0 45%' : '0 0 75%',
 		alignItems: 'center',
 		backgroundColor: defaults.container.background,
 		boxSizing: 'border-box',
