@@ -557,13 +557,14 @@ var defaultStyles$5 = {
 		paddingBottom: theme.footer.gutter.vertical,
 		paddingLeft: theme.footer.gutter.horizontal,
 		paddingRight: theme.footer.gutter.horizontal,
-		paddingTop: theme.footer.gutter.vertical
+		paddingTop: '16px'
 	},
 	footerCount: {
-		float: 'right',
 		color: theme.footer.count.color,
 		fontSize: theme.footer.count.fontSize,
-		paddingLeft: '1em' // add a small gutter for the caption
+		margin: 'auto',
+		width: '50%',
+		textAlign: 'center'
 	},
 	footerCaption: {
 		flex: '1 1 0',
