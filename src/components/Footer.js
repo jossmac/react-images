@@ -54,7 +54,6 @@ const defaultStyles = {
 		boxSizing: 'border-box',
 		color: defaults.footer.color,
 		cursor: 'auto',
-		
 		lineHeight: 1.3,
 		paddingBottom: defaults.footer.gutter.vertical,
 		paddingLeft: defaults.footer.gutter.horizontal,
@@ -80,7 +79,7 @@ const defaultStyles = {
 		fontSize: '13px',
 		lineHeight: '18px',
 		color: '#fff',
-		fontFamily: "-apple-system, BlinkMacSystemFont, sans-serif",
+		fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
 	},
 };
 

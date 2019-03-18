@@ -6,6 +6,8 @@ import ScrollLock from 'react-scrolllock';
 import defaultTheme from './theme';
 import Arrow from './components/Arrow';
 import Container from './components/Container';
+import Caption from './components/Caption';
+import BigContainer from './components/BigContainer';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import PaginatedThumbnails from './components/PaginatedThumbnails';
@@ -212,7 +214,11 @@ class Lightbox extends Component {
 			isOpen,
 			showThumbnails,
 			width,
-			isImage
+			isImage,
+			images,
+			currentImage,
+			renderCaption,
+			isMobile,
 		} = this.props;
 
 		const { imageLoaded } = this.state;
@@ -225,47 +231,48 @@ class Lightbox extends Component {
 		}
 
 		return (
-			<Container
-				key="open"
-				onClick={backdropClosesModal && this.closeBackdrop}
-				onTouchEnd={backdropClosesModal && this.closeBackdrop}
-			>
-				<div>
-					<div className={css(this.classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
-						{imageLoaded && this.renderHeader()}
-						{isImage && this.renderImages()}
-						{!isImage && this.renderTexts()}
-						{this.renderSpinner()}
-						{imageLoaded && this.renderFooter()}
+			<BigContainer isMobile={isMobile}>
+				{renderCaption && <Caption
+					currentImage={images[currentImage]}
+					render={renderCaption}
+					isMobile={isMobile}
+				/>}
+				<Container
+					key="open"
+					onClick={backdropClosesModal && this.closeBackdrop}
+					onTouchEnd={backdropClosesModal && this.closeBackdrop}
+					isMobile={isMobile}
+				>
+					<div>
+						<div className={css(this.classes.content)} style={{ marginBottom: offsetThumbnails, maxWidth: width }}>
+							{imageLoaded && this.renderHeader()}
+							{isImage && this.renderImages()}
+							{!isImage && this.renderTexts()}
+							{this.renderSpinner()}
+							{imageLoaded && this.renderFooter()}
+						</div>
+						{imageLoaded && this.renderThumbnails()}
+						{imageLoaded && this.renderArrowPrev()}
+						{imageLoaded && this.renderArrowNext()}
+						{this.props.preventScroll && <ScrollLock />}
 					</div>
-					{imageLoaded && this.renderThumbnails()}
-					{imageLoaded && this.renderArrowPrev()}
-					{imageLoaded && this.renderArrowNext()}
-					{this.props.preventScroll && <ScrollLock />}
-				</div>
-			</Container>
+				</Container>
+			</BigContainer>
 		);
 	}
 
-	renderTexts() {
+	renderTexts () {
 		const {
 			currentImage,
 			images,
-			onClickImage,
-			showThumbnails
 		} = this.props;
 
-		const { imageLoaded } = this.state;
+		const { user = {} } = images;
+		const { photo, first_name, last_name, display_name } = user;
 
 		if (!images || !images.length) return null;
-		
-		const image = images[currentImage];
-		const sourceSet = normalizeSourceSet(image);
-		const sizes = sourceSet ? '100vw' : null;
 
-		const thumbnailsSize = showThumbnails ? this.theme.thumbnail.size : 0;
-		const heightOffset = `${this.theme.header.height + this.theme.footer.height + thumbnailsSize
-			+ (this.theme.container.gutter.vertical)}px`;
+		const image = images[currentImage];
 
 		return (
 			<div className={css(this.classes.figure)}>
@@ -275,19 +282,19 @@ class Lightbox extends Component {
 					</p>
 					<div className={css(this.classes.lightboxReviewUser)}>
 						<div className={css(this.classes.lightboxReviewUserAvatar)}>
-							{ image.user.photo ? (
-				                <img src={image.user.photo}/>
-				              ) : (
-				                <span className={css(this.classes.lightboxReviewUserAvatarName)}>
-				                  {image.user.first_name ? image.user.first_name.charAt(0) : ""}
-				                  {image.user.last_name ? image.user.last_name.charAt(0) : ""}
-				                </span>
-				              )}
+							{photo ? (
+								<img src={image.user.photo}/>
+							) : (
+								<span className={css(this.classes.lightboxReviewUserAvatarName)}>
+									{first_name ? first_name.charAt(0) : ''}
+									{last_name ? last_name.charAt(0) : ''}
+								</span>
+							)}
 						</div>
 						<div className={css(this.classes.lightboxReviewUserInfo)}>
 							<div className={css(this.classes.lightboxReviewUserInfoTop)}>
 								<strong className={css(this.classes.lightboxReviewUserInfoName)}>
-									{image.user.display_name}
+									{display_name}
 								</strong>
 								<div className={css(this.classes.lightboxReviewUserInfoRating)}>
 
@@ -300,8 +307,7 @@ class Lightbox extends Component {
 					</div>
 				</div>
 			</div>
-		)
-
+		);
 	}
 
 	renderImages () {
@@ -440,6 +446,7 @@ Lightbox.propTypes = {
 			thumbnail: PropTypes.string,
 		})
 	).isRequired,
+	isMobile: PropTypes.bool,
 	isOpen: PropTypes.bool,
 	leftArrowTitle: PropTypes.string,
 	onClickImage: PropTypes.func,
@@ -448,6 +455,7 @@ Lightbox.propTypes = {
 	onClose: PropTypes.func.isRequired,
 	preloadNextImage: PropTypes.bool,
 	preventScroll: PropTypes.bool,
+	renderCaption: PropTypes.func,
 	rightArrowTitle: PropTypes.string,
 	showCloseButton: PropTypes.bool,
 	showImageCount: PropTypes.bool,
@@ -520,10 +528,10 @@ const defaultStyles = {
 		opacity: 1,
 	},
 	lightboxReview: {
-		backgroundColor: "#fff",
-		maxWidth: "600px",
-		padding: "20px",
-		fontFamily: "-apple-system, BlinkMacSystemFont, sans-serif",
+		backgroundColor: '#fff',
+		maxWidth: '600px',
+		padding: '20px',
+		fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
 	},
 	lightboxReviewText: {
 		margin: '0',
@@ -536,7 +544,7 @@ const defaultStyles = {
 		marginTop: '15px',
 	},
 	lightboxReviewUserInfoName: {
-		fontSize: '15px'
+		fontSize: '15px',
 	},
 	lightboxReviewUserInfoRating: {
 		display: 'inline-block',
@@ -556,7 +564,7 @@ const defaultStyles = {
 		backgroundColor: '#F8F6F6',
 		verticalAlign: 'middle',
 		textAlign: 'center',
-		overflow: 'hidden'
+		overflow: 'hidden',
 	},
 	lightboxReviewUserAvatarName: {
 		position: 'absolute',
@@ -567,13 +575,13 @@ const defaultStyles = {
 		lineHeight: '52px',
 		textTransform: 'uppercase',
 		color: '#ADADAD',
-		fontSize: '18px'
+		fontSize: '18px',
 	},
 	lightboxReviewUserInfoTime: {
 		color: '#ADADAD',
 		fontSize: '13px',
 		fontWeight: '300',
-	}
+	},
 };
 
 

@@ -97,7 +97,8 @@ class Gallery extends Component {
 					spinnerColor={this.props.spinnerColor}
 					spinnerSize={this.props.spinnerSize}
 					theme={this.props.theme}
-					isImage={false}
+					isImage
+					renderCaption={this.props.renderCaption}
 				/>
 			</div>
 		);
