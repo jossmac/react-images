@@ -47,7 +47,7 @@ const defaultStyles = {
 		width: defaults.thumbnail.size,
 	},
 	thumbnail__active: {
-		boxShadow: 'inset 0 0 0 2px #ed455e'
+		boxShadow: 'inset 0 0 0 2px #ed455e',
 	},
 };
 
