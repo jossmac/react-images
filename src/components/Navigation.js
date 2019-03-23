@@ -88,7 +88,7 @@ export const NavigationPrev = (props: ItemProps) => {
   const { children = <ChevronLeft size={48} />, getStyles, innerProps } = props;
 
   return (
-    <Button css={getStyles('navigationPrev', props)} {...innerProps}>
+    <Button type="button" css={getStyles('navigationPrev', props)} {...innerProps}>
       {children}
     </Button>
   );
@@ -103,7 +103,7 @@ export const NavigationNext = (props: ItemProps) => {
   } = props;
 
   return (
-    <Button css={getStyles('navigationNext', props)} {...innerProps}>
+    <Button type="button" css={getStyles('navigationNext', props)} {...innerProps}>
       {children}
     </Button>
   );
