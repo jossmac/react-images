@@ -12,11 +12,11 @@ export default class ModalGateway extends Component<{
   target: HTMLElement,
 }> {
   static defaultProps = {
-    target: document.body,
+    target: (typeof(window) !== 'undefined') ? document.body : null,
   };
   render() {
+    if (typeof(window) === 'undefined') return null;
     const { target, children } = this.props;
-
     return createPortal(
       <TransitionGroup component={FirstChild} children={children} />,
       target,
