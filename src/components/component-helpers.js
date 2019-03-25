@@ -2,7 +2,6 @@
 
 export function getSource({ data, isFullscreen }) {
   let { source = data.src } = data;
-  console.log(source)
   if (typeof source === 'string') return source;
 
   return isFullscreen ? source.fullscreen : source.regular;
