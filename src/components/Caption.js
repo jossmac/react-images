@@ -18,7 +18,7 @@ function Caption ({ render, currentImage, isMobile }) {
 
 const defaultStyles = isMobile => ({
 	container: {
-		flex: isMobile ? '1 0 55%' : '1 0 25%',
+		flex: isMobile ? '1 0 40%' : '1 0 25%',
 		backgroundColor: '#2d2d2d',
 		overflow: 'auto',
 		zIndex: defaults.container.zIndex,
