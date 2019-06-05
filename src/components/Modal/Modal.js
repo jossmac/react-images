@@ -5,7 +5,6 @@ import glam from 'glam';
 import Fullscreen from 'react-full-screen';
 import ScrollLock from 'react-scrolllock';
 import focusStore from 'a11y-focus-store';
-
 import {
   defaultModalComponents,
   type ModalComponents,
@@ -13,7 +12,7 @@ import {
 import { Fade, SlideUp } from './Animation';
 import { type CarouselType } from '../Carousel';
 import { defaultModalStyles, type ModalStylesConfig } from '../../styles';
-import { isTouch } from '../../utils';
+import { isTouch, className } from '../../utils';
 
 type MouseOrKeyboardEvent = MouseEvent | KeyboardEvent;
 export type CloseType = (event: MouseOrKeyboardEvent) => void;
@@ -53,7 +52,6 @@ const defaultProps = {
   styles: {},
 };
 class Modal extends Component<Props, State> {
-  positioner: HTMLElement;
   commonProps: any; // TODO
   components: ModalComponents;
 
@@ -105,13 +103,10 @@ class Modal extends Component<Props, State> {
   };
   handleBackdropClick = (event: MouseEvent) => {
     const { closeOnBackdropClick } = this.props;
-
-    if (event.target !== this.positioner || !closeOnBackdropClick) return;
+    
+    if (!event.target.classList.contains(className('view')) || !closeOnBackdropClick) return;
 
     this.handleClose(event);
-  };
-  getPositioner = (ref: HTMLElement) => {
-    this.positioner = ref;
   };
   toggleFullscreen = () => {
     this.setState(state => ({ isFullscreen: !state.isFullscreen }));
@@ -176,7 +171,6 @@ class Modal extends Component<Props, State> {
           component={Positioner}
           in={transitionIn}
           innerProps={{
-            innerRef: this.getPositioner,
             onClick: this.handleBackdropClick,
           }}
           onEntered={this.modalDidMount}
