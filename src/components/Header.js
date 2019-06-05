@@ -1,69 +1,157 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import { css, StyleSheet } from 'aphrodite/no-important';
+// @flow
+// @jsx glam
+import React, { type Node } from 'react';
+import glam from 'glam';
 
-import defaults from '../theme';
-import deepMerge from '../utils/deepMerge';
-import Icon from './Icon';
+import { Button, Div } from '../primitives';
+import { className } from '../utils';
+import type { PropsWithStyles } from '../types';
+import { Close, FullscreenEnter, FullscreenExit } from './svg';
 
-function Header ({
-	customControls,
-	onClose,
-	showCloseButton,
-	closeButtonTitle,
-	...props,
-}, {
-	theme,
-}) {
-	const classes = StyleSheet.create(deepMerge(defaultStyles, theme));
+type State = { interactionIsIdle: boolean };
+type Props = PropsWithStyles &
+  State & {
+    components: Object,
+    getCloseLabel: Function,
+    getFullscreenLabel: Function,
+    innerProps: Object,
+    isModal: boolean,
+    modalProps: Object,
+  };
 
-	return (
-		<div className={css(classes.header)} {...props}>
-			{customControls ? customControls : <span />}
-			{!!showCloseButton && (
-				<button
-					title={closeButtonTitle}
-					className={css(classes.close)}
-					onClick={onClose}
-				>
-					<Icon fill={!!theme.close && theme.close.fill || defaults.close.fill} type="close" />
-				</button>
-			)}
-		</div>
-	);
-}
+export const headerCSS = ({ interactionIsIdle }: State) => ({
+  alignItems: 'center',
+  display: 'flex ',
+  flex: '0 0 auto',
+  justifyContent: 'space-between',
+  opacity: interactionIsIdle ? 0 : 1,
+  padding: 10,
+  paddingBottom: 20,
+  position: 'absolute',
+  transform: `translateY(${interactionIsIdle ? -10 : 0}px)`,
+  transition: 'opacity 300ms, transform 300ms',
+  top: 0,
+  left: 0,
+  right: 0,
+  zIndex: 1,
+});
 
-Header.propTypes = {
-	customControls: PropTypes.array,
-	onClose: PropTypes.func.isRequired,
-	showCloseButton: PropTypes.bool,
+const Header = (props: Props) => {
+  const {
+    components,
+    getStyles,
+    getCloseLabel,
+    getFullscreenLabel,
+    innerProps,
+    isModal,
+    modalProps,
+  } = props;
+
+  if (!isModal) return null;
+
+  const {
+    allowFullscreen,
+    isFullscreen,
+    onClose,
+    toggleFullscreen,
+  } = modalProps;
+  const FsIcon = isFullscreen ? FullscreenExit : FullscreenEnter;
+  const { CloseButton, FullscreenButton } = components;
+  const state = { isFullscreen, isModal };
+
+  return (
+    <Div
+      css={getStyles('header', props)}
+      className={className('header', state)}
+      // TODO glam prefixer fails on gradients
+      // https://github.com/threepointone/glam/issues/35
+      style={{
+        background: 'linear-gradient(rgba(0,0,0,0.33), rgba(0,0,0,0))',
+      }}
+      {...innerProps}
+    >
+      <span />
+      <span>
+        {allowFullscreen ? (
+          <FullscreenButton
+            getStyles={getStyles}
+            innerProps={{
+              onClick: toggleFullscreen,
+              title: getFullscreenLabel(state),
+            }}
+          >
+            <FsIcon size={32} />
+          </FullscreenButton>
+        ) : null}
+        <CloseButton
+          getStyles={getStyles}
+          innerProps={{
+            onClick: onClose,
+            title: getCloseLabel(state),
+          }}
+        >
+          <Close size={32} />
+        </CloseButton>
+      </span>
+    </Div>
+  );
 };
-Header.contextTypes = {
-	theme: PropTypes.object.isRequired,
+
+// ==============================
+// Header Buttons
+// ==============================
+
+type ButtonProps = Props & { children: Node };
+
+export const headerButtonCSS = () => ({
+  alignItems: 'center',
+  background: 0,
+  border: 0,
+  color: 'rgba(255, 255, 255, 0.75)',
+  cursor: 'pointer',
+  display: 'inline-flex ',
+  height: 44,
+  justifyContent: 'center',
+  outline: 0,
+  padding: 0,
+  position: 'relative',
+  width: 44,
+
+  '&:hover': {
+    color: 'white',
+  },
+});
+
+export const headerFullscreenCSS = headerButtonCSS;
+export const HeaderFullscreen = (props: ButtonProps) => {
+  const { children, getStyles, innerProps } = props;
+
+  return (
+    <Button
+      css={getStyles('headerFullscreen', props)}
+      className={className(['header_button', 'header_button--fullscreen'])}
+      type="button"
+      {...innerProps}
+    >
+      {children}
+    </Button>
+  );
 };
 
-const defaultStyles = {
-	header: {
-		display: 'flex',
-		justifyContent: 'space-between',
-		height: defaults.header.height,
-	},
-	close: {
-		background: 'none',
-		border: 'none',
-		cursor: 'pointer',
-		outline: 'none',
-		position: 'relative',
-		top: 0,
-		verticalAlign: 'bottom',
-		zIndex: 1,
+export const headerCloseCSS = headerButtonCSS;
+export const HeaderClose = (props: ButtonProps) => {
+  const { children, getStyles, innerProps } = props;
 
-		// increase hit area
-		height: 40,
-		marginRight: -10,
-		padding: 10,
-		width: 40,
-	},
+  return (
+    <Button
+      css={getStyles('headerClose', props)}
+      className={className(['header_button', 'header_button--close'])}
+      type="button"
+      {...innerProps}
+    >
+      {children}
+    </Button>
+  );
 };
 
 export default Header;

@@ -1,64 +1,57 @@
-const webpack = require('webpack');
+// @flow
+
 const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const webpack = require('webpack');
+require('dotenv').config();
 
 module.exports = {
-  context: path.resolve(__dirname, 'examples/src'),
+  context: path.resolve(__dirname, 'docs'),
   entry: {
-    app: './app.js',
+    index: './index.js',
   },
   output: {
-    path: path.resolve(__dirname, 'examples/dist'),
+    path: path.resolve(__dirname, 'docs/dist'),
     filename: '[name].js',
     publicPath: '/',
   },
   devServer: {
-    contentBase: path.resolve(__dirname, 'examples/src'),
-    host: '0.0.0.0',
     port: 8000,
+    historyApiFallback: true,
   },
   module: {
     rules: [
       {
         test: /\.js$/,
         exclude: [/node_modules/],
-        use: [{
-          loader: 'babel-loader',
-          options: { presets: ['react', 'env'] },
-        }],
+        use: [
+          {
+            loader: 'babel-loader',
+          },
+        ],
       },
-      { 
-        test: /\.less$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: ['css-loader', 'less-loader'],
-        })
+      {
+        test: /\.css$/,
+        use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
       },
-      {   
-        test: /\.html$/,
-        use: [{
-          loader: 'html-loader',
-        }]   
-      }, 
     ],
   },
   resolve: {
     alias: {
-      'react-images': path.resolve(__dirname, 'src/Lightbox'),
-    }
+      'react-images': path.resolve(__dirname, 'src/index'),
+    },
   },
   plugins: [
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'common',
-      filename: 'common.js',
-      minChunk: 2,
+    new webpack.DefinePlugin({
+      // $FlowFixMe: This definitely exists here.
+      'process.env.UNSPLASH_API_KEY': `'${process.env.UNSPLASH_API_KEY}'`,
     }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       inject: false,
-      template: path.resolve(__dirname, 'examples/src/index.html')
+      template: path.resolve(__dirname, 'docs/index.html'),
     }),
-    new ExtractTextPlugin('example.css'),
-  ]
+    new CopyWebpackPlugin(['_redirects', 'favicon.ico', 'index.css']),
+  ],
 };

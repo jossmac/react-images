@@ -1,43 +1,36 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import { css, StyleSheet } from 'aphrodite/no-important';
+// @flow
+// @jsx glam
+import React, { type ElementRef, type Node } from 'react';
+import glam from 'glam';
+import { Div } from '../primitives';
+import { type PropsWithStyles } from '../types';
+import { className } from '../utils';
 
-import defaults from '../theme';
-import deepMerge from '../utils/deepMerge';
+type State = { isFullscreen: boolean, isModal: boolean };
+type Props = State &
+  PropsWithStyles & {
+    children: Node,
+    innerProps: { innerRef: ElementRef<*> },
+  };
 
-function Container ({ ...props }, { theme }) {
-	const classes = StyleSheet.create(deepMerge(defaultStyles, theme));
+export const containerCSS = ({ isFullscreen }: State) => ({
+  backgroundColor: isFullscreen ? 'black' : null,
+  display: 'flex ',
+  flexDirection: 'column',
+  height: '100%',
+});
 
-	return (
-		<div id="lightboxBackdrop"
-			className={css(classes.container)}
-			{...props}
-		/>
-	);
-}
-
-Container.contextTypes = {
-	theme: PropTypes.object.isRequired,
-};
-
-const defaultStyles = {
-	container: {
-		alignItems: 'center',
-		backgroundColor: defaults.container.background,
-		boxSizing: 'border-box',
-		display: 'flex',
-		height: '100%',
-		justifyContent: 'center',
-		left: 0,
-		paddingBottom: defaults.container.gutter.vertical,
-		paddingLeft: defaults.container.gutter.horizontal,
-		paddingRight: defaults.container.gutter.horizontal,
-		paddingTop: defaults.container.gutter.vertical,
-		position: 'fixed',
-		top: 0,
-		width: '100%',
-		zIndex: defaults.container.zIndex,
-	},
+const Container = (props: Props) => {
+  const { children, getStyles, isFullscreen, isModal, innerProps } = props;
+  return (
+    <Div
+      css={getStyles('container', props)}
+      className={className('container', { isFullscreen, isModal })}
+      {...innerProps}
+    >
+      {children}
+    </Div>
+  );
 };
 
 export default Container;

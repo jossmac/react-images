@@ -1,189 +1,12 @@
-import PropTypes from 'prop-types';
-import React, { Children, Component } from 'react';
-import { StyleSheet, css } from 'aphrodite';
+import React, { Children, Component, cloneElement } from 'react';
+import { createPortal, findDOMNode } from 'react-dom';
+import glam from 'glam';
+import rafScheduler from 'raf-schd';
+import { Frame, Track, View, ViewPager } from 'react-view-pager';
+import Fullscreen from 'react-full-screen';
 import ScrollLock from 'react-scrolllock';
-import { StyleSheet as StyleSheet$1, css as css$1 } from 'aphrodite/no-important';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { render, unmountComponentAtNode } from 'react-dom';
-
-// ==============================
-// THEME
-// ==============================
-
-var theme = {};
-
-// container
-theme.container = {
-	background: 'rgba(0, 0, 0, 0.8)',
-	gutter: {
-		horizontal: 10,
-		vertical: 10
-	},
-	zIndex: 2001
-};
-
-// header
-theme.header = {
-	height: 40
-};
-theme.close = {
-	fill: 'white'
-};
-
-// footer
-theme.footer = {
-	color: 'white',
-	count: {
-		color: 'rgba(255, 255, 255, 0.75)',
-		fontSize: '0.85em'
-	},
-	height: 40,
-	gutter: {
-		horizontal: 0,
-		vertical: 5
-	}
-};
-
-// thumbnails
-theme.thumbnail = {
-	activeBorderColor: 'white',
-	size: 50,
-	gutter: 2
-};
-
-// arrow
-theme.arrow = {
-	background: 'none',
-	fill: 'white',
-	height: 120
-};
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
-  return typeof obj;
-} : function (obj) {
-  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-};
-
-
-
-
-
-var asyncGenerator = function () {
-  function AwaitValue(value) {
-    this.value = value;
-  }
-
-  function AsyncGenerator(gen) {
-    var front, back;
-
-    function send(key, arg) {
-      return new Promise(function (resolve, reject) {
-        var request = {
-          key: key,
-          arg: arg,
-          resolve: resolve,
-          reject: reject,
-          next: null
-        };
-
-        if (back) {
-          back = back.next = request;
-        } else {
-          front = back = request;
-          resume(key, arg);
-        }
-      });
-    }
-
-    function resume(key, arg) {
-      try {
-        var result = gen[key](arg);
-        var value = result.value;
-
-        if (value instanceof AwaitValue) {
-          Promise.resolve(value.value).then(function (arg) {
-            resume("next", arg);
-          }, function (arg) {
-            resume("throw", arg);
-          });
-        } else {
-          settle(result.done ? "return" : "normal", result.value);
-        }
-      } catch (err) {
-        settle("throw", err);
-      }
-    }
-
-    function settle(type, value) {
-      switch (type) {
-        case "return":
-          front.resolve({
-            value: value,
-            done: true
-          });
-          break;
-
-        case "throw":
-          front.reject(value);
-          break;
-
-        default:
-          front.resolve({
-            value: value,
-            done: false
-          });
-          break;
-      }
-
-      front = front.next;
-
-      if (front) {
-        resume(front.key, front.arg);
-      } else {
-        back = null;
-      }
-    }
-
-    this._invoke = send;
-
-    if (typeof gen.return !== "function") {
-      this.return = undefined;
-    }
-  }
-
-  if (typeof Symbol === "function" && Symbol.asyncIterator) {
-    AsyncGenerator.prototype[Symbol.asyncIterator] = function () {
-      return this;
-    };
-  }
-
-  AsyncGenerator.prototype.next = function (arg) {
-    return this._invoke("next", arg);
-  };
-
-  AsyncGenerator.prototype.throw = function (arg) {
-    return this._invoke("throw", arg);
-  };
-
-  AsyncGenerator.prototype.return = function (arg) {
-    return this._invoke("return", arg);
-  };
-
-  return {
-    wrap: function (fn) {
-      return function () {
-        return new AsyncGenerator(fn.apply(this, arguments));
-      };
-    },
-    await: function (value) {
-      return new AwaitValue(value);
-    }
-  };
-}();
-
-
-
-
+import focusStore from 'a11y-focus-store';
+import { Transition, TransitionGroup } from 'react-transition-group';
 
 var classCallCheck = function (instance, Constructor) {
   if (!(instance instanceof Constructor)) {
@@ -213,7 +36,20 @@ var createClass = function () {
 
 
 
+var defineProperty = function (obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
 
+  return obj;
+};
 
 var _extends = Object.assign || function (target) {
   for (var i = 1; i < arguments.length; i++) {
@@ -275,1210 +111,1539 @@ var possibleConstructorReturn = function (self, call) {
   return call && (typeof call === "object" || typeof call === "function") ? call : self;
 };
 
-function deepMerge(target) {
-	var source = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-	var extended = Object.assign({}, target);
-
-	Object.keys(source).forEach(function (key) {
-		if (_typeof(source[key]) !== 'object' || !source[key]) {
-			extended[key] = source[key];
-		} else {
-			if (!target[key]) {
-				extended[key] = source[key];
-			} else {
-				extended[key] = deepMerge(target[key], source[key]);
-			}
-		}
-	});
-
-	return extended;
-}
-
-var arrowLeft = (function (fill) {
-	return "<svg fill=\"" + fill + "\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" width=\"100%\" height=\"100%\" viewBox=\"0 0 512 512\" xml:space=\"preserve\">\n\t\t<path d=\"M213.7,256L213.7,256L213.7,256L380.9,81.9c4.2-4.3,4.1-11.4-0.2-15.8l-29.9-30.6c-4.3-4.4-11.3-4.5-15.5-0.2L131.1,247.9 c-2.2,2.2-3.2,5.2-3,8.1c-0.1,3,0.9,5.9,3,8.1l204.2,212.7c4.2,4.3,11.2,4.2,15.5-0.2l29.9-30.6c4.3-4.4,4.4-11.5,0.2-15.8 L213.7,256z\"/>\n\t</svg>";
-});
-
-var arrowRight = (function (fill) {
-	return "<svg fill=\"" + fill + "\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" width=\"100%\" height=\"100%\" viewBox=\"0 0 512 512\" xml:space=\"preserve\">\n\t\t<path d=\"M298.3,256L298.3,256L298.3,256L131.1,81.9c-4.2-4.3-4.1-11.4,0.2-15.8l29.9-30.6c4.3-4.4,11.3-4.5,15.5-0.2l204.2,212.7 c2.2,2.2,3.2,5.2,3,8.1c0.1,3-0.9,5.9-3,8.1L176.7,476.8c-4.2,4.3-11.2,4.2-15.5-0.2L131.3,446c-4.3-4.4-4.4-11.5-0.2-15.8 L298.3,256z\"/>\n\t</svg>";
-});
-
-var close = (function (fill) {
-	return "<svg fill=\"" + fill + "\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" width=\"100%\" height=\"100%\" viewBox=\"0 0 512 512\" style=\"enable-background:new 0 0 512 512;\" xml:space=\"preserve\">\n\t\t<path d=\"M443.6,387.1L312.4,255.4l131.5-130c5.4-5.4,5.4-14.2,0-19.6l-37.4-37.6c-2.6-2.6-6.1-4-9.8-4c-3.7,0-7.2,1.5-9.8,4 L256,197.8L124.9,68.3c-2.6-2.6-6.1-4-9.8-4c-3.7,0-7.2,1.5-9.8,4L68,105.9c-5.4,5.4-5.4,14.2,0,19.6l131.5,130L68.4,387.1 c-2.6,2.6-4.1,6.1-4.1,9.8c0,3.7,1.4,7.2,4.1,9.8l37.4,37.6c2.7,2.7,6.2,4.1,9.8,4.1c3.5,0,7.1-1.3,9.8-4.1L256,313.1l130.7,131.1 c2.7,2.7,6.2,4.1,9.8,4.1c3.5,0,7.1-1.3,9.8-4.1l37.4-37.6c2.6-2.6,4.1-6.1,4.1-9.8C447.7,393.2,446.2,389.7,443.6,387.1z\"/>\n\t</svg>";
-});
-
-var icons = { arrowLeft: arrowLeft, arrowRight: arrowRight, close: close };
-
-var Icon = function Icon(_ref) {
-	var fill = _ref.fill,
-	    type = _ref.type,
-	    props = objectWithoutProperties(_ref, ['fill', 'type']);
-
-	var icon = icons[type];
-
-	return React.createElement('span', _extends({
-		dangerouslySetInnerHTML: { __html: icon(fill) }
-	}, props));
+// @jsx glam
+var Base = function Base(_ref) {
+  var css = _ref.css,
+      innerRef = _ref.innerRef,
+      Tag = _ref.tag,
+      props = objectWithoutProperties(_ref, ['css', 'innerRef', 'tag']);
+  return glam(Tag, _extends({
+    ref: innerRef,
+    css: _extends({
+      boxSizing: 'border-box'
+    }, css)
+  }, props));
 };
 
-Icon.propTypes = {
-	fill: PropTypes.string,
-	type: PropTypes.oneOf(Object.keys(icons))
-};
-Icon.defaultProps = {
-	fill: 'white'
-};
 
-function Arrow(_ref, _ref2) {
-	var theme$$1 = _ref2.theme;
-	var direction = _ref.direction,
-	    icon = _ref.icon,
-	    onClick = _ref.onClick,
-	    size = _ref.size,
-	    props = objectWithoutProperties(_ref, ['direction', 'icon', 'onClick', 'size']);
-
-	var classes = StyleSheet$1.create(deepMerge(defaultStyles$1, theme$$1));
-
-	return React.createElement(
-		'button',
-		_extends({
-			type: 'button',
-			className: css$1(classes.arrow, classes['arrow__direction__' + direction], size && classes['arrow__size__' + size]),
-			onClick: onClick,
-			onTouchEnd: onClick
-		}, props),
-		React.createElement(Icon, { fill: !!theme$$1.arrow && theme$$1.arrow.fill || theme.arrow.fill, type: icon })
-	);
-}
-
-Arrow.propTypes = {
-	direction: PropTypes.oneOf(['left', 'right']),
-	icon: PropTypes.string,
-	onClick: PropTypes.func.isRequired,
-	size: PropTypes.oneOf(['medium', 'small']).isRequired
+var Button = function Button(props) {
+  return glam(Base, _extends({ tag: 'button' }, props));
 };
-Arrow.defaultProps = {
-	size: 'medium'
+var Div = function Div(props) {
+  return glam(Base, _extends({ tag: 'div' }, props));
 };
-Arrow.contextTypes = {
-	theme: PropTypes.object.isRequired
+var Img = function Img(props) {
+  return glam(Base, _extends({ tag: 'img' }, props));
+};
+var Nav = function Nav(props) {
+  return glam(Base, _extends({ tag: 'nav' }, props));
+};
+var Span = function Span(props) {
+  return glam(Base, _extends({ tag: 'span' }, props));
 };
 
-var defaultStyles$1 = {
-	arrow: {
-		background: 'none',
-		border: 'none',
-		borderRadius: 4,
-		cursor: 'pointer',
-		outline: 'none',
-		padding: 10, // increase hit area
-		position: 'absolute',
-		top: '50%',
+// ==============================
+// NO OP
+// ==============================
 
-		// disable user select
-		WebkitTouchCallout: 'none',
-		userSelect: 'none'
-	},
 
-	// sizes
-	arrow__size__medium: {
-		height: theme.arrow.height,
-		marginTop: theme.arrow.height / -2,
-		width: 40,
 
-		'@media (min-width: 768px)': {
-			width: 70
-		}
-	},
-	arrow__size__small: {
-		height: theme.thumbnail.size,
-		marginTop: theme.thumbnail.size / -2,
-		width: 30,
+// ==============================
+// Class Name Prefixer
+// ==============================
 
-		'@media (min-width: 500px)': {
-			width: 40
-		}
-	},
-
-	// direction
-	arrow__direction__right: {
-		right: theme.container.gutter.horizontal
-	},
-	arrow__direction__left: {
-		left: theme.container.gutter.horizontal
-	}
-};
-
-function Container(_ref, _ref2) {
-	var theme$$1 = _ref2.theme;
-	var props = objectWithoutProperties(_ref, []);
-
-	var classes = StyleSheet$1.create(deepMerge(defaultStyles$2, theme$$1));
-
-	return React.createElement('div', _extends({ id: 'lightboxBackdrop',
-		className: css$1(classes.container)
-	}, props));
-}
-
-Container.contextTypes = {
-	theme: PropTypes.object.isRequired
-};
-
-var defaultStyles$2 = {
-	container: {
-		alignItems: 'center',
-		backgroundColor: theme.container.background,
-		boxSizing: 'border-box',
-		display: 'flex',
-		height: '100%',
-		justifyContent: 'center',
-		left: 0,
-		paddingBottom: theme.container.gutter.vertical,
-		paddingLeft: theme.container.gutter.horizontal,
-		paddingRight: theme.container.gutter.horizontal,
-		paddingTop: theme.container.gutter.vertical,
-		position: 'fixed',
-		top: 0,
-		width: '100%',
-		zIndex: theme.container.zIndex
-	}
-};
-
-function Footer(_ref, _ref2) {
-	var theme$$1 = _ref2.theme;
-	var caption = _ref.caption,
-	    countCurrent = _ref.countCurrent,
-	    countSeparator = _ref.countSeparator,
-	    countTotal = _ref.countTotal,
-	    showCount = _ref.showCount,
-	    props = objectWithoutProperties(_ref, ['caption', 'countCurrent', 'countSeparator', 'countTotal', 'showCount']);
-
-	if (!caption && !showCount) return null;
-
-	var classes = StyleSheet$1.create(deepMerge(defaultStyles$3, theme$$1));
-
-	var imageCount = showCount ? React.createElement(
-		'div',
-		{ className: css$1(classes.footerCount) },
-		countCurrent,
-		countSeparator,
-		countTotal
-	) : React.createElement('span', null);
-
-	return React.createElement(
-		'div',
-		_extends({ className: css$1(classes.footer) }, props),
-		caption ? React.createElement(
-			'figcaption',
-			{ className: css$1(classes.footerCaption) },
-			caption
-		) : React.createElement('span', null),
-		imageCount
-	);
-}
-
-Footer.propTypes = {
-	caption: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-	countCurrent: PropTypes.number,
-	countSeparator: PropTypes.string,
-	countTotal: PropTypes.number,
-	showCount: PropTypes.bool
-};
-Footer.contextTypes = {
-	theme: PropTypes.object.isRequired
-};
-
-var defaultStyles$3 = {
-	footer: {
-		boxSizing: 'border-box',
-		color: theme.footer.color,
-		cursor: 'auto',
-		display: 'flex',
-		justifyContent: 'space-between',
-		left: 0,
-		lineHeight: 1.3,
-		paddingBottom: theme.footer.gutter.vertical,
-		paddingLeft: theme.footer.gutter.horizontal,
-		paddingRight: theme.footer.gutter.horizontal,
-		paddingTop: theme.footer.gutter.vertical
-	},
-	footerCount: {
-		color: theme.footer.count.color,
-		fontSize: theme.footer.count.fontSize,
-		paddingLeft: '1em' // add a small gutter for the caption
-	},
-	footerCaption: {
-		flex: '1 1 0'
-	}
-};
-
-function Header(_ref, _ref2) {
-	var theme$$1 = _ref2.theme;
-	var customControls = _ref.customControls,
-	    onClose = _ref.onClose,
-	    showCloseButton = _ref.showCloseButton,
-	    closeButtonTitle = _ref.closeButtonTitle,
-	    props = objectWithoutProperties(_ref, ['customControls', 'onClose', 'showCloseButton', 'closeButtonTitle']);
-
-	var classes = StyleSheet$1.create(deepMerge(defaultStyles$4, theme$$1));
-
-	return React.createElement(
-		'div',
-		_extends({ className: css$1(classes.header) }, props),
-		customControls ? customControls : React.createElement('span', null),
-		!!showCloseButton && React.createElement(
-			'button',
-			{
-				title: closeButtonTitle,
-				className: css$1(classes.close),
-				onClick: onClose
-			},
-			React.createElement(Icon, { fill: !!theme$$1.close && theme$$1.close.fill || theme.close.fill, type: 'close' })
-		)
-	);
-}
-
-Header.propTypes = {
-	customControls: PropTypes.array,
-	onClose: PropTypes.func.isRequired,
-	showCloseButton: PropTypes.bool
-};
-Header.contextTypes = {
-	theme: PropTypes.object.isRequired
-};
-
-var defaultStyles$4 = {
-	header: {
-		display: 'flex',
-		justifyContent: 'space-between',
-		height: theme.header.height
-	},
-	close: {
-		background: 'none',
-		border: 'none',
-		cursor: 'pointer',
-		outline: 'none',
-		position: 'relative',
-		top: 0,
-		verticalAlign: 'bottom',
-		zIndex: 1,
-
-		// increase hit area
-		height: 40,
-		marginRight: -10,
-		padding: 10,
-		width: 40
-	}
-};
-
-function Thumbnail(_ref, _ref2) {
-	var index = _ref.index,
-	    src = _ref.src,
-	    thumbnail = _ref.thumbnail,
-	    active = _ref.active,
-	    _onClick = _ref.onClick;
-	var theme$$1 = _ref2.theme;
-
-	var url = thumbnail ? thumbnail : src;
-	var classes = StyleSheet$1.create(deepMerge(defaultStyles$5, theme$$1));
-
-	return React.createElement('div', {
-		className: css$1(classes.thumbnail, active && classes.thumbnail__active),
-		onClick: function onClick(e) {
-			e.preventDefault();
-			e.stopPropagation();
-			_onClick(index);
-		},
-		style: { backgroundImage: 'url("' + url + '")' }
-	});
-}
-
-Thumbnail.propTypes = {
-	active: PropTypes.bool,
-	index: PropTypes.number,
-	onClick: PropTypes.func.isRequired,
-	src: PropTypes.string,
-	thumbnail: PropTypes.string
-};
-
-Thumbnail.contextTypes = {
-	theme: PropTypes.object.isRequired
-};
-
-var defaultStyles$5 = {
-	thumbnail: {
-		backgroundPosition: 'center',
-		backgroundSize: 'cover',
-		borderRadius: 2,
-		boxShadow: 'inset 0 0 0 1px hsla(0,0%,100%,.2)',
-		cursor: 'pointer',
-		display: 'inline-block',
-		height: theme.thumbnail.size,
-		margin: theme.thumbnail.gutter,
-		overflow: 'hidden',
-		width: theme.thumbnail.size
-	},
-	thumbnail__active: {
-		boxShadow: 'inset 0 0 0 2px ' + theme.thumbnail.activeBorderColor
-	}
-};
-
-var classes = StyleSheet$1.create({
-	paginatedThumbnails: {
-		bottom: theme.container.gutter.vertical,
-		height: theme.thumbnail.size,
-		padding: '0 50px',
-		position: 'absolute',
-		textAlign: 'center',
-		whiteSpace: 'nowrap',
-		left: '50%',
-		transform: 'translateX(-50%)'
-	}
-});
-
-var arrowStyles = {
-	height: theme.thumbnail.size + theme.thumbnail.gutter * 2,
-	width: 40
-};
-
-var PaginatedThumbnails = function (_Component) {
-	inherits(PaginatedThumbnails, _Component);
-
-	function PaginatedThumbnails(props) {
-		classCallCheck(this, PaginatedThumbnails);
-
-		var _this = possibleConstructorReturn(this, (PaginatedThumbnails.__proto__ || Object.getPrototypeOf(PaginatedThumbnails)).call(this, props));
-
-		_this.state = {
-			hasCustomPage: false
-		};
-
-		_this.gotoPrev = _this.gotoPrev.bind(_this);
-		_this.gotoNext = _this.gotoNext.bind(_this);
-		return _this;
-	}
-
-	createClass(PaginatedThumbnails, [{
-		key: 'componentWillReceiveProps',
-		value: function componentWillReceiveProps(nextProps) {
-			// Component should be controlled, flush state when currentImage changes
-			if (nextProps.currentImage !== this.props.currentImage) {
-				this.setState({
-					hasCustomPage: false
-				});
-			}
-		}
-
-		// ==============================
-		// METHODS
-		// ==============================
-
-	}, {
-		key: 'getFirst',
-		value: function getFirst() {
-			var _props = this.props,
-			    currentImage = _props.currentImage,
-			    offset = _props.offset;
-
-			if (this.state.hasCustomPage) {
-				return this.clampFirst(this.state.first);
-			}
-			return this.clampFirst(currentImage - offset);
-		}
-	}, {
-		key: 'setFirst',
-		value: function setFirst(event, newFirst) {
-			var first = this.state.first;
-
-
-			if (event) {
-				event.preventDefault();
-				event.stopPropagation();
-			}
-
-			if (first === newFirst) return;
-
-			this.setState({
-				hasCustomPage: true,
-				first: newFirst
-			});
-		}
-	}, {
-		key: 'gotoPrev',
-		value: function gotoPrev(event) {
-			this.setFirst(event, this.getFirst() - this.props.offset);
-		}
-	}, {
-		key: 'gotoNext',
-		value: function gotoNext(event) {
-			this.setFirst(event, this.getFirst() + this.props.offset);
-		}
-	}, {
-		key: 'clampFirst',
-		value: function clampFirst(value) {
-			var _props2 = this.props,
-			    images = _props2.images,
-			    offset = _props2.offset;
-
-
-			var totalCount = 2 * offset + 1; // show $offset extra thumbnails on each side
-
-			if (value < 0) {
-				return 0;
-			} else if (value + totalCount > images.length) {
-				// Too far
-				return images.length - totalCount;
-			} else {
-				return value;
-			}
-		}
-
-		// ==============================
-		// RENDERERS
-		// ==============================
-
-	}, {
-		key: 'renderArrowPrev',
-		value: function renderArrowPrev() {
-			if (this.getFirst() <= 0) return null;
-
-			return React.createElement(Arrow, {
-				direction: 'left',
-				size: 'small',
-				icon: 'arrowLeft',
-				onClick: this.gotoPrev,
-				style: arrowStyles,
-				title: 'Previous (Left arrow key)',
-				type: 'button'
-			});
-		}
-	}, {
-		key: 'renderArrowNext',
-		value: function renderArrowNext() {
-			var _props3 = this.props,
-			    offset = _props3.offset,
-			    images = _props3.images;
-
-			var totalCount = 2 * offset + 1;
-			if (this.getFirst() + totalCount >= images.length) return null;
-
-			return React.createElement(Arrow, {
-				direction: 'right',
-				size: 'small',
-				icon: 'arrowRight',
-				onClick: this.gotoNext,
-				style: arrowStyles,
-				title: 'Next (Right arrow key)',
-				type: 'button'
-			});
-		}
-	}, {
-		key: 'render',
-		value: function render$$1() {
-			var _props4 = this.props,
-			    images = _props4.images,
-			    currentImage = _props4.currentImage,
-			    onClickThumbnail = _props4.onClickThumbnail,
-			    offset = _props4.offset;
-
-
-			var totalCount = 2 * offset + 1; // show $offset extra thumbnails on each side
-			var thumbnails = [];
-			var baseOffset = 0;
-			if (images.length <= totalCount) {
-				thumbnails = images;
-			} else {
-				// Try to center current image in list
-				baseOffset = this.getFirst();
-				thumbnails = images.slice(baseOffset, baseOffset + totalCount);
-			}
-
-			return React.createElement(
-				'div',
-				{ className: css$1(classes.paginatedThumbnails) },
-				this.renderArrowPrev(),
-				thumbnails.map(function (img, idx) {
-					return React.createElement(Thumbnail, _extends({ key: baseOffset + idx
-					}, img, {
-						index: baseOffset + idx,
-						onClick: onClickThumbnail,
-						active: baseOffset + idx === currentImage }));
-				}),
-				this.renderArrowNext()
-			);
-		}
-	}]);
-	return PaginatedThumbnails;
-}(Component);
-
-PaginatedThumbnails.propTypes = {
-	currentImage: PropTypes.number,
-	images: PropTypes.array,
-	offset: PropTypes.number,
-	onClickThumbnail: PropTypes.func.isRequired
-};
-
-// Pass the Lightbox context through to the Portal's descendents
-// StackOverflow discussion http://goo.gl/oclrJ9
-
-var PassContext = function (_Component) {
-	inherits(PassContext, _Component);
-
-	function PassContext() {
-		classCallCheck(this, PassContext);
-		return possibleConstructorReturn(this, (PassContext.__proto__ || Object.getPrototypeOf(PassContext)).apply(this, arguments));
-	}
-
-	createClass(PassContext, [{
-		key: 'getChildContext',
-		value: function getChildContext() {
-			return this.props.context;
-		}
-	}, {
-		key: 'render',
-		value: function render$$1() {
-			return Children.only(this.props.children);
-		}
-	}]);
-	return PassContext;
-}(Component);
-
-PassContext.propTypes = {
-	context: PropTypes.object.isRequired
-};
-PassContext.childContextTypes = {
-	theme: PropTypes.object
-};
-
-var Portal = function (_Component) {
-	inherits(Portal, _Component);
-
-	function Portal() {
-		classCallCheck(this, Portal);
-
-		var _this = possibleConstructorReturn(this, (Portal.__proto__ || Object.getPrototypeOf(Portal)).call(this));
-
-		_this.portalElement = null;
-		return _this;
-	}
-
-	createClass(Portal, [{
-		key: 'componentDidMount',
-		value: function componentDidMount() {
-			var p = document.createElement('div');
-			document.body.appendChild(p);
-			this.portalElement = p;
-			this.componentDidUpdate();
-		}
-	}, {
-		key: 'componentDidUpdate',
-		value: function componentDidUpdate() {
-			// Animate fade on mount/unmount
-			var duration = 200;
-			var styles = '\n\t\t\t\t.fade-enter { opacity: 0.01; }\n\t\t\t\t.fade-enter.fade-enter-active { opacity: 1; transition: opacity ' + duration + 'ms; }\n\t\t\t\t.fade-leave { opacity: 1; }\n\t\t\t\t.fade-leave.fade-leave-active { opacity: 0.01; transition: opacity ' + duration + 'ms; }\n\t\t';
-
-			render(React.createElement(
-				PassContext,
-				{ context: this.context },
-				React.createElement(
-					'div',
-					null,
-					React.createElement(
-						'style',
-						null,
-						styles
-					),
-					React.createElement(
-						TransitionGroup,
-						this.props,
-						React.createElement(
-							CSSTransition,
-							{ timeout: { enter: duration, exit: duration }, classNames: 'fade' },
-							this.props.children
-						)
-					)
-				)
-			), this.portalElement);
-		}
-	}, {
-		key: 'componentWillUnmount',
-		value: function componentWillUnmount() {
-			unmountComponentAtNode(this.portalElement);
-			document.body.removeChild(this.portalElement);
-		}
-	}, {
-		key: 'render',
-		value: function render$$1() {
-			return null;
-		}
-	}]);
-	return Portal;
-}(Component);
-
-Portal.contextTypes = {
-	theme: PropTypes.object.isRequired
-};
-
-var Spinner = function Spinner(props) {
-	var classes = StyleSheet$1.create(styles(props));
-
-	return React.createElement(
-		'div',
-		{ className: css$1(classes.spinner) },
-		React.createElement('div', { className: css$1(classes.ripple) })
-	);
-};
-
-Spinner.propTypes = {
-	color: PropTypes.string,
-	size: PropTypes.number
-};
-
-var rippleKeyframes = {
-	'0%': {
-		top: '50%',
-		left: '50%',
-		width: 0,
-		height: 0,
-		opacity: 1
-	},
-	'100%': {
-		top: 0,
-		left: 0,
-		width: '100%',
-		height: '100%',
-		opacity: 0
-	}
-};
-
-var styles = function styles(_ref) {
-	var color = _ref.color,
-	    size = _ref.size;
-	return {
-		spinner: {
-			display: 'inline-block',
-			position: 'relative',
-			width: size,
-			height: size
-		},
-		ripple: {
-			position: 'absolute',
-			border: '4px solid ' + color,
-			opacity: 1,
-			borderRadius: '50%',
-			animationName: rippleKeyframes,
-			animationDuration: '1s',
-			animationTimingFunction: 'cubic-bezier(0, 0.2, 0.8, 1)',
-			animationIterationCount: 'infinite'
-		}
-	};
-};
+var CLASS_PREFIX = 'react-images';
 
 /**
-	Bind multiple component methods:
+ String representation of component state for styling with class names.
 
-	* @param {this} context
-	* @param {Array} functions
-
-	constructor() {
-		...
-		bindFunctions.call(this, ['handleClick', 'handleOther']);
-	}
+ Expects an array of strings OR a string/object pair:
+ - className(['comp', 'comp-arg', 'comp-arg-2'])
+   @returns 'react-images__comp react-images__comp-arg react-images__comp-arg-2'
+ - className('comp', { some: true, state: false })
+   @returns 'react-images__comp react-images__comp--some'
 */
+function className(name, state) {
+  var arr = Array.isArray(name) ? name : [name];
 
-function bindFunctions(functions) {
-	var _this = this;
+  // loop through state object, remove falsey values and combine with name
+  if (state && typeof name === 'string') {
+    for (var _key in state) {
+      if (state.hasOwnProperty(_key) && state[_key]) {
+        arr.push(name + '--' + _key);
+      }
+    }
+  }
 
-	functions.forEach(function (f) {
-		return _this[f] = _this[f].bind(_this);
-	});
+  // prefix everything and return a string
+  return arr.map(function (cn) {
+    return CLASS_PREFIX + '__' + cn;
+  }).join(' ');
 }
 
-// Return true if window + document
+// ==============================
+// Touch Capability Detector
+// ==============================
 
-var canUseDom = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
-
-// consumers sometimes provide incorrect type or casing
-function normalizeSourceSet(data) {
-	var sourceSet = data.srcSet || data.srcset;
-
-	if (Array.isArray(sourceSet)) {
-		return sourceSet.join();
-	}
-
-	return sourceSet;
+function isTouch() {
+  try {
+    document.createEvent('TouchEvent');
+    return true;
+  } catch (e) {
+    return false;
+  }
 }
 
-var Lightbox = function (_Component) {
-	inherits(Lightbox, _Component);
+// @jsx glam
+var containerCSS = function containerCSS(_ref) {
+  var isFullscreen = _ref.isFullscreen;
+  return {
+    backgroundColor: isFullscreen ? 'black' : null,
+    display: 'flex ',
+    flexDirection: 'column',
+    height: '100%'
+  };
+};
 
-	function Lightbox(props) {
-		classCallCheck(this, Lightbox);
+var Container = function Container(props) {
+  var children = props.children,
+      getStyles = props.getStyles,
+      isFullscreen = props.isFullscreen,
+      isModal = props.isModal,
+      innerProps = props.innerProps;
 
-		var _this = possibleConstructorReturn(this, (Lightbox.__proto__ || Object.getPrototypeOf(Lightbox)).call(this, props));
+  return glam(
+    Div,
+    _extends({
+      css: getStyles('container', props),
+      className: className('container', { isFullscreen: isFullscreen, isModal: isModal })
+    }, innerProps),
+    children
+  );
+};
 
-		_this.theme = deepMerge(theme, props.theme);
-		_this.classes = StyleSheet.create(deepMerge(defaultStyles, _this.theme));
-		_this.state = { imageLoaded: false };
+var smallDevice = '@media (max-width: 769px)';
 
-		bindFunctions.call(_this, ['gotoNext', 'gotoPrev', 'closeBackdrop', 'handleKeyboardInput', 'handleImageLoaded']);
-		return _this;
-	}
+// @jsx glam
+var footerCSS = function footerCSS(_ref) {
+  var isModal = _ref.isModal,
+      interactionIsIdle = _ref.interactionIsIdle;
+  return defineProperty({
+    alignItems: 'top',
+    bottom: isModal ? 0 : null,
+    color: isModal ? 'rgba(255, 255, 255, 0.9)' : '#666',
+    display: 'flex ',
+    flex: '0 0 auto',
+    fontSize: 13,
+    justifyContent: 'space-between',
+    left: isModal ? 0 : null,
+    opacity: interactionIsIdle && isModal ? 0 : 1,
+    padding: isModal ? '30px 20px 20px' : '10px 0',
+    position: isModal ? 'absolute' : null,
+    right: isModal ? 0 : null,
+    transform: isModal ? 'translateY(' + (interactionIsIdle ? 10 : 0) + 'px)' : null,
+    transition: 'opacity 300ms, transform 300ms',
+    zIndex: isModal ? 1 : null
 
-	createClass(Lightbox, [{
-		key: 'getChildContext',
-		value: function getChildContext() {
-			return {
-				theme: this.theme
-			};
-		}
-	}, {
-		key: 'componentDidMount',
-		value: function componentDidMount() {
-			if (this.props.isOpen) {
-				if (this.props.enableKeyboardInput) {
-					window.addEventListener('keydown', this.handleKeyboardInput);
-				}
-				if (typeof this.props.currentImage === 'number') {
-					this.preloadImage(this.props.currentImage, this.handleImageLoaded);
-				}
-			}
-		}
-	}, {
-		key: 'componentWillReceiveProps',
-		value: function componentWillReceiveProps(nextProps) {
-			if (!canUseDom) return;
+  }, smallDevice, {
+    padding: isModal ? '20px 15px 15px' : '5px 0'
+  });
+};
 
-			// preload images
-			if (nextProps.preloadNextImage) {
-				var currentIndex = this.props.currentImage;
-				var nextIndex = nextProps.currentImage + 1;
-				var prevIndex = nextProps.currentImage - 1;
-				var preloadIndex = void 0;
-
-				if (currentIndex && nextProps.currentImage > currentIndex) {
-					preloadIndex = nextIndex;
-				} else if (currentIndex && nextProps.currentImage < currentIndex) {
-					preloadIndex = prevIndex;
-				}
-
-				// if we know the user's direction just get one image
-				// otherwise, to be safe, we need to grab one in each direction
-				if (preloadIndex) {
-					this.preloadImage(preloadIndex);
-				} else {
-					this.preloadImage(prevIndex);
-					this.preloadImage(nextIndex);
-				}
-			}
-
-			// preload current image
-			if (this.props.currentImage !== nextProps.currentImage || !this.props.isOpen && nextProps.isOpen) {
-				var img = this.preloadImageData(nextProps.images[nextProps.currentImage], this.handleImageLoaded);
-				if (img) this.setState({ imageLoaded: img.complete });
-			}
-
-			// add/remove event listeners
-			if (!this.props.isOpen && nextProps.isOpen && nextProps.enableKeyboardInput) {
-				window.addEventListener('keydown', this.handleKeyboardInput);
-			}
-			if (!nextProps.isOpen && nextProps.enableKeyboardInput) {
-				window.removeEventListener('keydown', this.handleKeyboardInput);
-			}
-		}
-	}, {
-		key: 'componentWillUnmount',
-		value: function componentWillUnmount() {
-			if (this.props.enableKeyboardInput) {
-				window.removeEventListener('keydown', this.handleKeyboardInput);
-			}
-		}
-
-		// ==============================
-		// METHODS
-		// ==============================
-
-	}, {
-		key: 'preloadImage',
-		value: function preloadImage(idx, onload) {
-			return this.preloadImageData(this.props.images[idx], onload);
-		}
-	}, {
-		key: 'preloadImageData',
-		value: function preloadImageData(data, onload) {
-			if (!data) return;
-			var img = new Image();
-			var sourceSet = normalizeSourceSet(data);
-
-			// TODO: add error handling for missing images
-			img.onerror = onload;
-			img.onload = onload;
-			img.src = data.src;
-
-			if (sourceSet) img.srcset = sourceSet;
-
-			return img;
-		}
-	}, {
-		key: 'gotoNext',
-		value: function gotoNext(event) {
-			var _props = this.props,
-			    currentImage = _props.currentImage,
-			    images = _props.images;
-			var imageLoaded = this.state.imageLoaded;
+var Footer = function Footer(props) {
+  var components = props.components,
+      getStyles = props.getStyles,
+      innerProps = props.innerProps,
+      isFullscreen = props.isFullscreen,
+      isModal = props.isModal;
 
 
-			if (!imageLoaded || currentImage === images.length - 1) return;
+  var style = isModal ? { background: 'linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.33))' } : null;
 
-			if (event) {
-				event.preventDefault();
-				event.stopPropagation();
-			}
-
-			this.props.onClickNext();
-		}
-	}, {
-		key: 'gotoPrev',
-		value: function gotoPrev(event) {
-			var currentImage = this.props.currentImage;
-			var imageLoaded = this.state.imageLoaded;
-
-
-			if (!imageLoaded || currentImage === 0) return;
-
-			if (event) {
-				event.preventDefault();
-				event.stopPropagation();
-			}
-
-			this.props.onClickPrev();
-		}
-	}, {
-		key: 'closeBackdrop',
-		value: function closeBackdrop(event) {
-			// make sure event only happens if they click the backdrop
-			// and if the caption is widening the figure element let that respond too
-			if (event.target.id === 'lightboxBackdrop' || event.target.tagName === 'FIGURE') {
-				this.props.onClose();
-			}
-		}
-	}, {
-		key: 'handleKeyboardInput',
-		value: function handleKeyboardInput(event) {
-			if (event.keyCode === 37) {
-				// left
-				this.gotoPrev(event);
-				return true;
-			} else if (event.keyCode === 39) {
-				// right
-				this.gotoNext(event);
-				return true;
-			} else if (event.keyCode === 27) {
-				// esc
-				this.props.onClose();
-				return true;
-			}
-			return false;
-		}
-	}, {
-		key: 'handleImageLoaded',
-		value: function handleImageLoaded() {
-			this.setState({ imageLoaded: true });
-		}
-
-		// ==============================
-		// RENDERERS
-		// ==============================
-
-	}, {
-		key: 'renderArrowPrev',
-		value: function renderArrowPrev() {
-			if (this.props.currentImage === 0) return null;
-
-			return React.createElement(Arrow, {
-				direction: 'left',
-				icon: 'arrowLeft',
-				onClick: this.gotoPrev,
-				title: this.props.leftArrowTitle,
-				type: 'button'
-			});
-		}
-	}, {
-		key: 'renderArrowNext',
-		value: function renderArrowNext() {
-			if (this.props.currentImage === this.props.images.length - 1) return null;
-
-			return React.createElement(Arrow, {
-				direction: 'right',
-				icon: 'arrowRight',
-				onClick: this.gotoNext,
-				title: this.props.rightArrowTitle,
-				type: 'button'
-			});
-		}
-	}, {
-		key: 'renderDialog',
-		value: function renderDialog() {
-			var _props2 = this.props,
-			    backdropClosesModal = _props2.backdropClosesModal,
-			    isOpen = _props2.isOpen,
-			    showThumbnails = _props2.showThumbnails,
-			    width = _props2.width;
-			var imageLoaded = this.state.imageLoaded;
+  var state = { isFullscreen: isFullscreen, isModal: isModal };
+  var cn = {
+    container: className('footer', state),
+    caption: className('footer__caption', state),
+    count: className('footer__count', state)
+  };
+  var css = {
+    container: getStyles('footer', props),
+    caption: getStyles('footerCaption', props),
+    count: getStyles('footerCount', props)
+  };
+  var Caption = components.Caption,
+      Count = components.Count;
 
 
-			if (!isOpen) return React.createElement('span', { key: 'closed' });
+  return glam(
+    Div,
+    _extends({
+      css: css.container,
+      className: cn.container
+      // TODO glam prefixer fails on gradients
+      // https://github.com/threepointone/glam/issues/35
+      , style: style
+    }, innerProps),
+    glam(Caption, props),
+    glam(Count, props)
+  );
+};
 
-			var offsetThumbnails = 0;
-			if (showThumbnails) {
-				offsetThumbnails = this.theme.thumbnail.size + this.theme.container.gutter.vertical;
-			}
+// ==============================
+// Inner Elements
+// ==============================
 
-			return React.createElement(
-				Container,
-				{
-					key: 'open',
-					onClick: backdropClosesModal && this.closeBackdrop,
-					onTouchEnd: backdropClosesModal && this.closeBackdrop
-				},
-				React.createElement(
-					'div',
-					null,
-					React.createElement(
-						'div',
-						{ className: css(this.classes.content), style: { marginBottom: offsetThumbnails, maxWidth: width } },
-						imageLoaded && this.renderHeader(),
-						this.renderImages(),
-						this.renderSpinner(),
-						imageLoaded && this.renderFooter()
-					),
-					imageLoaded && this.renderThumbnails(),
-					imageLoaded && this.renderArrowPrev(),
-					imageLoaded && this.renderArrowNext(),
-					this.props.preventScroll && React.createElement(ScrollLock, null)
-				)
-			);
-		}
-	}, {
-		key: 'renderImages',
-		value: function renderImages() {
-			var _props3 = this.props,
-			    currentImage = _props3.currentImage,
-			    images = _props3.images,
-			    onClickImage = _props3.onClickImage,
-			    showThumbnails = _props3.showThumbnails;
-			var imageLoaded = this.state.imageLoaded;
+var footerCaptionCSS = function footerCaptionCSS() {
+  return {};
+};
+
+var FooterCaption = function FooterCaption(props) {
+  var currentView = props.currentView,
+      getStyles = props.getStyles,
+      isFullscreen = props.isFullscreen,
+      isModal = props.isModal;
+  var caption = currentView.caption;
+
+  var state = { isFullscreen: isFullscreen, isModal: isModal };
+
+  return glam(
+    Span,
+    {
+      css: getStyles('footerCaption', props),
+      className: className('footer__caption', state)
+    },
+    caption
+  );
+};
+
+var footerCountCSS = function footerCountCSS() {
+  return { flexShrink: 0, marginLeft: '1em' };
+};
+
+var FooterCount = function FooterCount(props) {
+  var currentIndex = props.currentIndex,
+      getStyles = props.getStyles,
+      isFullscreen = props.isFullscreen,
+      isModal = props.isModal,
+      views = props.views;
+
+  var state = { isFullscreen: isFullscreen, isModal: isModal };
+  var activeView = currentIndex + 1;
+  var totalViews = views.length;
+
+  if (!activeView || !totalViews) return null;
+
+  return glam(
+    Span,
+    {
+      css: getStyles('footerCount', props),
+      className: className('footer__count', state)
+    },
+    activeView,
+    ' of ',
+    totalViews
+  );
+};
+
+// @jsx glam
+var Svg = function Svg(_ref) {
+  var size = _ref.size,
+      props = objectWithoutProperties(_ref, ['size']);
+  return glam('svg', _extends({
+    role: 'presentation',
+    viewBox: '0 0 24 24',
+    css: {
+      display: 'inline-block',
+      fill: 'currentColor',
+      height: size,
+      stroke: 'currentColor',
+      strokeWidth: 0,
+      width: size
+    }
+  }, props));
+};
+
+var ChevronLeft = function ChevronLeft(_ref2) {
+  var _ref2$size = _ref2.size,
+      size = _ref2$size === undefined ? 32 : _ref2$size,
+      props = objectWithoutProperties(_ref2, ['size']);
+  return glam(
+    Svg,
+    _extends({ size: size }, props),
+    glam('path', { d: 'M15.422 16.078l-1.406 1.406-6-6 6-6 1.406 1.406-4.594 4.594z' })
+  );
+};
+var ChevronRight = function ChevronRight(_ref3) {
+  var _ref3$size = _ref3.size,
+      size = _ref3$size === undefined ? 32 : _ref3$size,
+      props = objectWithoutProperties(_ref3, ['size']);
+  return glam(
+    Svg,
+    _extends({ size: size }, props),
+    glam('path', { d: 'M9.984 6l6 6-6 6-1.406-1.406 4.594-4.594-4.594-4.594z' })
+  );
+};
+var Close = function Close(_ref4) {
+  var _ref4$size = _ref4.size,
+      size = _ref4$size === undefined ? 32 : _ref4$size,
+      props = objectWithoutProperties(_ref4, ['size']);
+  return glam(
+    Svg,
+    _extends({ size: size }, props),
+    glam('path', { d: 'M18.984 6.422l-5.578 5.578 5.578 5.578-1.406 1.406-5.578-5.578-5.578 5.578-1.406-1.406 5.578-5.578-5.578-5.578 1.406-1.406 5.578 5.578 5.578-5.578z' })
+  );
+};
+var FullscreenEnter = function FullscreenEnter(_ref5) {
+  var _ref5$size = _ref5.size,
+      size = _ref5$size === undefined ? 32 : _ref5$size,
+      props = objectWithoutProperties(_ref5, ['size']);
+  return glam(
+    Svg,
+    _extends({ size: size }, props),
+    glam('path', { d: 'M14.016 5.016h4.969v4.969h-1.969v-3h-3v-1.969zM17.016 17.016v-3h1.969v4.969h-4.969v-1.969h3zM5.016 9.984v-4.969h4.969v1.969h-3v3h-1.969zM6.984 14.016v3h3v1.969h-4.969v-4.969h1.969z' })
+  );
+};
+var FullscreenExit = function FullscreenExit(_ref6) {
+  var _ref6$size = _ref6.size,
+      size = _ref6$size === undefined ? 32 : _ref6$size,
+      props = objectWithoutProperties(_ref6, ['size']);
+  return glam(
+    Svg,
+    _extends({ size: size }, props),
+    glam('path', { d: 'M15.984 8.016h3v1.969h-4.969v-4.969h1.969v3zM14.016 18.984v-4.969h4.969v1.969h-3v3h-1.969zM8.016 8.016v-3h1.969v4.969h-4.969v-1.969h3zM5.016 15.984v-1.969h4.969v4.969h-1.969v-3h-3z' })
+  );
+};
+
+// @jsx glam
+var headerCSS = function headerCSS(_ref) {
+  var interactionIsIdle = _ref.interactionIsIdle;
+  return {
+    alignItems: 'center',
+    display: 'flex ',
+    flex: '0 0 auto',
+    justifyContent: 'space-between',
+    opacity: interactionIsIdle ? 0 : 1,
+    padding: 10,
+    paddingBottom: 20,
+    position: 'absolute',
+    transform: 'translateY(' + (interactionIsIdle ? -10 : 0) + 'px)',
+    transition: 'opacity 300ms, transform 300ms',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1
+  };
+};
+
+var Header = function Header(props) {
+  var components = props.components,
+      getStyles = props.getStyles,
+      getCloseLabel = props.getCloseLabel,
+      getFullscreenLabel = props.getFullscreenLabel,
+      innerProps = props.innerProps,
+      isModal = props.isModal,
+      modalProps = props.modalProps;
 
 
-			if (!images || !images.length) return null;
+  if (!isModal) return null;
 
-			var image = images[currentImage];
-			var sourceSet = normalizeSourceSet(image);
-			var sizes = sourceSet ? '100vw' : null;
+  var allowFullscreen = modalProps.allowFullscreen,
+      isFullscreen = modalProps.isFullscreen,
+      onClose = modalProps.onClose,
+      toggleFullscreen = modalProps.toggleFullscreen;
 
-			var thumbnailsSize = showThumbnails ? this.theme.thumbnail.size : 0;
-			var heightOffset = this.theme.header.height + this.theme.footer.height + thumbnailsSize + this.theme.container.gutter.vertical + 'px';
+  var FsIcon = isFullscreen ? FullscreenExit : FullscreenEnter;
+  var CloseButton = components.CloseButton,
+      FullscreenButton = components.FullscreenButton;
 
-			return React.createElement(
-				'figure',
-				{ className: css(this.classes.figure) },
-				React.createElement('img', {
-					className: css(this.classes.image, imageLoaded && this.classes.imageLoaded),
-					onClick: onClickImage,
-					sizes: sizes,
-					alt: image.alt,
-					src: image.src,
-					srcSet: sourceSet,
-					style: {
-						cursor: onClickImage ? 'pointer' : 'auto',
-						maxHeight: 'calc(100vh - ' + heightOffset + ')'
-					}
-				})
-			);
-		}
-	}, {
-		key: 'renderThumbnails',
-		value: function renderThumbnails() {
-			var _props4 = this.props,
-			    images = _props4.images,
-			    currentImage = _props4.currentImage,
-			    onClickThumbnail = _props4.onClickThumbnail,
-			    showThumbnails = _props4.showThumbnails,
-			    thumbnailOffset = _props4.thumbnailOffset;
+  var state = { isFullscreen: isFullscreen, isModal: isModal };
+
+  return glam(
+    Div,
+    _extends({
+      css: getStyles('header', props),
+      className: className('header', state)
+      // TODO glam prefixer fails on gradients
+      // https://github.com/threepointone/glam/issues/35
+      , style: {
+        background: 'linear-gradient(rgba(0,0,0,0.33), rgba(0,0,0,0))'
+      }
+    }, innerProps),
+    glam('span', null),
+    glam(
+      'span',
+      null,
+      allowFullscreen ? glam(
+        FullscreenButton,
+        {
+          getStyles: getStyles,
+          innerProps: {
+            onClick: toggleFullscreen,
+            title: getFullscreenLabel(state)
+          }
+        },
+        glam(FsIcon, { size: 32 })
+      ) : null,
+      glam(
+        CloseButton,
+        {
+          getStyles: getStyles,
+          innerProps: {
+            onClick: onClose,
+            title: getCloseLabel(state)
+          }
+        },
+        glam(Close, { size: 32 })
+      )
+    )
+  );
+};
+
+// ==============================
+// Header Buttons
+// ==============================
+
+var headerButtonCSS = function headerButtonCSS() {
+  return {
+    alignItems: 'center',
+    background: 0,
+    border: 0,
+    color: 'rgba(255, 255, 255, 0.75)',
+    cursor: 'pointer',
+    display: 'inline-flex ',
+    height: 44,
+    justifyContent: 'center',
+    outline: 0,
+    padding: 0,
+    position: 'relative',
+    width: 44,
+
+    '&:hover': {
+      color: 'white'
+    }
+  };
+};
+
+var headerFullscreenCSS = headerButtonCSS;
+var HeaderFullscreen = function HeaderFullscreen(props) {
+  var children = props.children,
+      getStyles = props.getStyles,
+      innerProps = props.innerProps;
 
 
-			if (!showThumbnails) return;
+  return glam(
+    Button,
+    _extends({
+      css: getStyles('headerFullscreen', props),
+      className: className(['header_button', 'header_button--fullscreen']),
+      type: 'button'
+    }, innerProps),
+    children
+  );
+};
 
-			return React.createElement(PaginatedThumbnails, {
-				currentImage: currentImage,
-				images: images,
-				offset: thumbnailOffset,
-				onClickThumbnail: onClickThumbnail
-			});
-		}
-	}, {
-		key: 'renderHeader',
-		value: function renderHeader() {
-			var _props5 = this.props,
-			    closeButtonTitle = _props5.closeButtonTitle,
-			    customControls = _props5.customControls,
-			    onClose = _props5.onClose,
-			    showCloseButton = _props5.showCloseButton;
-
-
-			return React.createElement(Header, {
-				customControls: customControls,
-				onClose: onClose,
-				showCloseButton: showCloseButton,
-				closeButtonTitle: closeButtonTitle
-			});
-		}
-	}, {
-		key: 'renderFooter',
-		value: function renderFooter() {
-			var _props6 = this.props,
-			    currentImage = _props6.currentImage,
-			    images = _props6.images,
-			    imageCountSeparator = _props6.imageCountSeparator,
-			    showImageCount = _props6.showImageCount;
+var headerCloseCSS = headerButtonCSS;
+var HeaderClose = function HeaderClose(props) {
+  var children = props.children,
+      getStyles = props.getStyles,
+      innerProps = props.innerProps;
 
 
-			if (!images || !images.length) return null;
+  return glam(
+    Button,
+    _extends({
+      css: getStyles('headerClose', props),
+      className: className(['header_button', 'header_button--close']),
+      type: 'button'
+    }, innerProps),
+    children
+  );
+};
 
-			return React.createElement(Footer, {
-				caption: images[currentImage].caption,
-				countCurrent: currentImage + 1,
-				countSeparator: imageCountSeparator,
-				countTotal: images.length,
-				showCount: showImageCount
-			});
-		}
-	}, {
-		key: 'renderSpinner',
-		value: function renderSpinner() {
-			var _props7 = this.props,
-			    spinner = _props7.spinner,
-			    spinnerColor = _props7.spinnerColor,
-			    spinnerSize = _props7.spinnerSize;
-			var imageLoaded = this.state.imageLoaded;
+// @jsx glam
+// ==============================
+// Navigation
+// ==============================
 
-			var Spinner$$1 = spinner;
+var navigationCSS = function navigationCSS(_ref) {
+  var interactionIsIdle = _ref.interactionIsIdle;
+  return {
+    display: 'flex ',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    opacity: interactionIsIdle ? 0 : 1,
+    transition: 'opacity 300ms'
+  };
+};
 
-			return React.createElement(
-				'div',
-				{ className: css(this.classes.spinner, !imageLoaded && this.classes.spinnerActive) },
-				React.createElement(Spinner$$1, {
-					color: spinnerColor,
-					size: spinnerSize
-				})
-			);
-		}
-	}, {
-		key: 'render',
-		value: function render$$1() {
-			return React.createElement(
-				Portal,
-				null,
-				this.renderDialog()
-			);
-		}
-	}]);
-	return Lightbox;
+var Navigation = function Navigation(props) {
+  var children = props.children,
+      getStyles = props.getStyles,
+      isFullscreen = props.isFullscreen,
+      isModal = props.isModal;
+
+  return !isTouch() ? glam(
+    Nav,
+    {
+      css: getStyles('navigation', props),
+      className: className('navigation', { isFullscreen: isFullscreen, isModal: isModal })
+    },
+    children
+  ) : null;
+};
+
+// ==============================
+// Nav Item
+// ==============================
+
+var BUTTON_SIZE = 50;
+
+var navigationItemCSS = function navigationItemCSS(_ref2) {
+  var _ref3;
+
+  var align = _ref2.align;
+  return _ref3 = {
+    alignItems: 'center',
+    background: 'rgba(255, 255, 255, 0.2)',
+    border: 0,
+    borderRadius: '50%',
+    color: 'white',
+    cursor: 'pointer',
+    display: 'flex ',
+    fontSize: 'inherit',
+    height: BUTTON_SIZE,
+    justifyContent: 'center',
+    marginTop: -(BUTTON_SIZE / 2),
+    outline: 0,
+    position: 'absolute',
+    top: '50%',
+    transition: 'background-color 200ms',
+    width: BUTTON_SIZE
+  }, defineProperty(_ref3, align, 20), defineProperty(_ref3, '&:hover', {
+    background: 'rgba(255, 255, 255, 0.3)'
+  }), defineProperty(_ref3, '&:active', {
+    background: 'rgba(255, 255, 255, 0.2)'
+  }), _ref3;
+};
+
+var navigationPrevCSS = navigationItemCSS;
+var NavigationPrev = function NavigationPrev(props) {
+  var _props$children = props.children,
+      children = _props$children === undefined ? glam(ChevronLeft, { size: 48 }) : _props$children,
+      getStyles = props.getStyles,
+      innerProps = props.innerProps;
+
+
+  return glam(
+    Button,
+    _extends({ type: 'button', css: getStyles('navigationPrev', props) }, innerProps),
+    children
+  );
+};
+
+var navigationNextCSS = navigationItemCSS;
+var NavigationNext = function NavigationNext(props) {
+  var _props$children2 = props.children,
+      children = _props$children2 === undefined ? glam(ChevronRight, { size: 48 }) : _props$children2,
+      getStyles = props.getStyles,
+      innerProps = props.innerProps;
+
+
+  return glam(
+    Button,
+    _extends({ type: 'button', css: getStyles('navigationNext', props) }, innerProps),
+    children
+  );
+};
+
+// @jsx glam
+// ==============================
+// Blanket
+// ==============================
+
+var blanketCSS = function blanketCSS(_ref) {
+  var isFullscreen = _ref.isFullscreen;
+  return {
+    backgroundColor: isFullscreen ? 'black' : 'rgba(0, 0, 0, 0.8)',
+    bottom: 0,
+    left: 0,
+    position: 'fixed',
+    right: 0,
+    top: 0,
+    zIndex: 1
+  };
+};
+
+var Blanket = function Blanket(props) {
+  var getStyles = props.getStyles,
+      innerProps = props.innerProps,
+      isFullscreen = props.isFullscreen;
+
+  return glam(Div, _extends({
+    css: getStyles('blanket', props),
+    className: className('blanket', { isFullscreen: isFullscreen })
+  }, innerProps));
+};
+
+// ==============================
+// Positioner
+// ==============================
+
+var positionerCSS = function positionerCSS() {
+  return {
+    alignItems: 'center',
+    bottom: 0,
+    display: 'flex ',
+    justifyContent: 'center',
+    left: 0,
+    position: 'fixed',
+    right: 0,
+    top: 0,
+    zIndex: 1
+  };
+};
+
+var Positioner = function Positioner(props) {
+  var children = props.children,
+      getStyles = props.getStyles,
+      innerProps = props.innerProps,
+      isFullscreen = props.isFullscreen;
+
+  return glam(
+    Div,
+    _extends({
+      css: getStyles('positioner', props),
+      className: className('positioner', { isFullscreen: isFullscreen })
+    }, innerProps),
+    children
+  );
+};
+
+// ==============================
+// Dialog
+// ==============================
+
+var dialogCSS = function dialogCSS() {
+  return {};
+};
+
+var Dialog = function Dialog(props) {
+  var children = props.children,
+      getStyles = props.getStyles,
+      innerProps = props.innerProps,
+      isFullscreen = props.isFullscreen;
+
+  return glam(
+    Div,
+    _extends({
+      css: getStyles('dialog', props),
+      className: className('dialog', { isFullscreen: isFullscreen })
+    }, innerProps),
+    children
+  );
+};
+
+function getSource(_ref) {
+  var data = _ref.data,
+      isFullscreen = _ref.isFullscreen;
+  var _data$source = data.source,
+      source = _data$source === undefined ? data.src : _data$source;
+
+  if (typeof source === 'string') return source;
+
+  return isFullscreen ? source.fullscreen : source.regular;
+}
+
+// @jsx glam
+var viewCSS = function viewCSS() {
+  return {
+    lineHeight: 0,
+    position: 'relative',
+    textAlign: 'center'
+  };
+};
+
+var View$1 = function View$$1(props) {
+  var data = props.data,
+      formatters = props.formatters,
+      getStyles = props.getStyles,
+      index = props.index,
+      isFullscreen = props.isFullscreen,
+      isModal = props.isModal;
+
+  var innerProps = {
+    alt: formatters.getAltText({ data: data, index: index }),
+    src: getSource({ data: data, isFullscreen: isFullscreen })
+  };
+
+  return glam(
+    Div,
+    {
+      css: getStyles('view', props),
+      className: className('view', { isFullscreen: isFullscreen, isModal: isModal })
+    },
+    glam(Img, _extends({}, innerProps, {
+      className: className('view-image', { isFullscreen: isFullscreen, isModal: isModal }),
+      css: {
+        height: 'auto',
+        maxHeight: '100vh',
+        maxWidth: '100%',
+        userSelect: 'none'
+      }
+    }))
+  );
+};
+
+var carouselComponents = {
+  Container: Container,
+  Footer: Footer,
+  FooterCaption: FooterCaption,
+  FooterCount: FooterCount,
+  Header: Header,
+  HeaderClose: HeaderClose,
+  HeaderFullscreen: HeaderFullscreen,
+  Navigation: Navigation,
+  NavigationPrev: NavigationPrev,
+  NavigationNext: NavigationNext,
+  View: View$1
+};
+
+var defaultCarouselComponents = function defaultCarouselComponents(providedComponents) {
+  return _extends({}, carouselComponents, providedComponents);
+};
+
+// ==============================
+// Modal
+// ==============================
+
+var modalComponents = {
+  Blanket: Blanket,
+  Positioner: Positioner,
+  Dialog: Dialog
+};
+
+var defaultModalComponents = function defaultModalComponents(providedComponents) {
+  return _extends({}, modalComponents, providedComponents);
+};
+
+// Carousel
+// Modal
+var defaultCarouselStyles = {
+  container: containerCSS,
+  footer: footerCSS,
+  footerCaption: footerCaptionCSS,
+  footerCount: footerCountCSS,
+  header: headerCSS,
+  headerClose: headerCloseCSS,
+  headerFullscreen: headerFullscreenCSS,
+  navigation: navigationCSS,
+  navigationPrev: navigationPrevCSS,
+  navigationNext: navigationNextCSS,
+  view: viewCSS
+};
+var defaultModalStyles = {
+  blanket: blanketCSS,
+  dialog: dialogCSS,
+  positioner: positionerCSS
+};
+
+// Merge Utility
+// Allows consumers to extend a base Carousel or Modal with additional styles
+
+var easing = 'cubic-bezier(0.23, 1, 0.32, 1)'; // easeOutQuint
+var verticalOffset = 40;
+
+// ==============================
+// Fade
+// ==============================
+
+var Fade = function Fade(_ref) {
+  var Tag = _ref.component,
+      onEntered = _ref.onEntered,
+      onExited = _ref.onExited,
+      inProp = _ref.in,
+      originalProps = _ref.innerProps,
+      props = objectWithoutProperties(_ref, ['component', 'onEntered', 'onExited', 'in', 'innerProps']);
+
+  var enter = 300;
+  var exit = 500;
+  var fadeStyle = {
+    transition: 'opacity 200ms',
+    opacity: 0
+  };
+  var fadeTransition = {
+    entering: { opacity: 0 },
+    entered: { opacity: 1 },
+    exiting: { opacity: 0, transitionDuration: exit + 'ms' }
+  };
+
+  return React.createElement(
+    Transition,
+    {
+      appear: true,
+      mountOnEnter: true,
+      unmountOnExit: true,
+      onEntered: onEntered,
+      onExited: onExited,
+      key: 'fade',
+      'in': inProp,
+      timeout: { enter: enter, exit: exit }
+    },
+    function (status) {
+      var innerProps = _extends({}, originalProps, {
+        style: _extends({}, fadeStyle, fadeTransition[status])
+      });
+
+      if (status === 'exited') return null;
+
+      return React.createElement(Tag, _extends({ innerProps: innerProps }, props));
+    }
+  );
+};
+
+var SlideUp = function SlideUp(_ref2) {
+  var Tag = _ref2.component,
+      onEntered = _ref2.onEntered,
+      onExited = _ref2.onExited,
+      inProp = _ref2.in,
+      originalProps = _ref2.innerProps,
+      props = objectWithoutProperties(_ref2, ['component', 'onEntered', 'onExited', 'in', 'innerProps']);
+
+  var enter = 300;
+  var exit = 500;
+  var restingTransform = 'translate3d(0, 0, 0)';
+  var slideStyle = {
+    transition: 'transform ' + enter + 'ms ' + easing + ', opacity ' + enter + 'ms ' + easing,
+    transform: restingTransform
+  };
+  var slideTransition = {
+    entering: {
+      opacity: 0,
+      transform: 'translate3d(0, ' + verticalOffset + 'px, 0) scale(0.9)'
+    },
+    entered: {
+      opacity: 1,
+      transform: restingTransform
+    },
+    exiting: {
+      opacity: 0,
+      transform: 'translate3d(0, ' + verticalOffset + 'px, 0) scale(0.9)',
+      transition: 'transform ' + exit + 'ms ' + easing + ', opacity ' + exit + 'ms ' + easing
+    }
+  };
+
+  return React.createElement(
+    Transition,
+    {
+      appear: true,
+      'in': inProp,
+      mountOnEnter: true,
+      onEntered: onEntered,
+      onExited: onExited,
+      timeout: { enter: enter, exit: exit },
+      unmountOnExit: true
+    },
+    function (status) {
+      if (status === 'exited') return null;
+
+      var innerProps = _extends({}, originalProps, {
+        style: _extends({}, slideStyle, slideTransition[status])
+      });
+
+      return React.createElement(Tag, _extends({ innerProps: innerProps }, props));
+    }
+  );
+};
+
+// @jsx glam
+var defaultProps$1 = {
+  allowFullscreen: !isTouch(),
+  closeOnBackdropClick: true,
+  closeOnEsc: true,
+  styles: {}
+};
+
+var Modal = function (_Component) {
+  inherits(Modal, _Component);
+
+  // TODO
+  function Modal(props) {
+    classCallCheck(this, Modal);
+
+    var _this = possibleConstructorReturn(this, (Modal.__proto__ || Object.getPrototypeOf(Modal)).call(this, props));
+
+    _initialiseProps$1.call(_this);
+
+    _this.cacheComponents(props.components);
+
+    _this.state = { isFullscreen: false };
+    return _this;
+  }
+
+  createClass(Modal, [{
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      if (nextProps.components !== this.props.components) {
+        this.cacheComponents(nextProps.components);
+      }
+    }
+
+    // emulate `componentDidMount` & `componentWillUnmount`
+    // called on complete of enter & exit transitions respectively
+
+  }, {
+    key: 'getCommonProps',
+    value: function getCommonProps() {
+      var isFullscreen = this.state.isFullscreen;
+
+
+      return {
+        getStyles: this.getStyles,
+        isFullscreen: isFullscreen,
+        modalProps: this.props
+      };
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _components = this.components,
+          Blanket = _components.Blanket,
+          Positioner = _components.Positioner,
+          Dialog = _components.Dialog;
+      var _props = this.props,
+          allowFullscreen = _props.allowFullscreen,
+          children = _props.children;
+      var isFullscreen = this.state.isFullscreen;
+
+      var commonProps = this.commonProps = this.getCommonProps();
+
+      // $FlowFixMe
+      var transitionIn = this.props.in;
+
+      // forward props to modal for use in internal components
+      var modalProps = {
+        allowFullscreen: allowFullscreen,
+        isFullscreen: isFullscreen,
+        onClose: this.handleClose,
+        toggleFullscreen: this.toggleFullscreen
+      };
+
+      // augment user carousel with modal props
+      // $FlowFixMe
+      var carouselComponent = cloneElement(children, {
+        isModal: true,
+        modalProps: modalProps
+      });
+
+      return glam(
+        Fullscreen,
+        { enabled: isFullscreen, onChange: this.handleFullscreenChange },
+        glam(Fade, _extends({}, commonProps, { component: Blanket, 'in': transitionIn })),
+        glam(
+          SlideUp,
+          _extends({}, commonProps, {
+            component: Positioner,
+            'in': transitionIn,
+            innerProps: {
+              innerRef: this.getPositioner,
+              onClick: this.handleBackdropClick
+            },
+            onEntered: this.modalDidMount,
+            onExited: this.modalWillUnmount
+          }),
+          glam(
+            Dialog,
+            commonProps,
+            carouselComponent
+          ),
+          glam(ScrollLock, null)
+        )
+      );
+    }
+  }]);
+  return Modal;
 }(Component);
 
-Lightbox.propTypes = {
-	backdropClosesModal: PropTypes.bool,
-	closeButtonTitle: PropTypes.string,
-	currentImage: PropTypes.number,
-	customControls: PropTypes.arrayOf(PropTypes.node),
-	enableKeyboardInput: PropTypes.bool,
-	imageCountSeparator: PropTypes.string,
-	images: PropTypes.arrayOf(PropTypes.shape({
-		src: PropTypes.string.isRequired,
-		srcSet: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
-		caption: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-		thumbnail: PropTypes.string
-	})).isRequired,
-	isOpen: PropTypes.bool,
-	leftArrowTitle: PropTypes.string,
-	onClickImage: PropTypes.func,
-	onClickNext: PropTypes.func,
-	onClickPrev: PropTypes.func,
-	onClose: PropTypes.func.isRequired,
-	preloadNextImage: PropTypes.bool,
-	preventScroll: PropTypes.bool,
-	rightArrowTitle: PropTypes.string,
-	showCloseButton: PropTypes.bool,
-	showImageCount: PropTypes.bool,
-	showThumbnails: PropTypes.bool,
-	spinner: PropTypes.func,
-	spinnerColor: PropTypes.string,
-	spinnerSize: PropTypes.number,
-	theme: PropTypes.object,
-	thumbnailOffset: PropTypes.number,
-	width: PropTypes.number
-};
-Lightbox.defaultProps = {
-	closeButtonTitle: 'Close (Esc)',
-	currentImage: 0,
-	enableKeyboardInput: true,
-	imageCountSeparator: ' of ',
-	leftArrowTitle: 'Previous (Left arrow key)',
-	onClickShowNextImage: true,
-	preloadNextImage: true,
-	preventScroll: true,
-	rightArrowTitle: 'Next (Right arrow key)',
-	showCloseButton: true,
-	showImageCount: true,
-	spinner: Spinner,
-	spinnerColor: 'white',
-	spinnerSize: 100,
-	theme: {},
-	thumbnailOffset: 2,
-	width: 1024
-};
-Lightbox.childContextTypes = {
-	theme: PropTypes.object.isRequired
-};
+Modal.defaultProps = defaultProps$1;
 
-var defaultStyles = {
-	content: {
-		position: 'relative'
-	},
-	figure: {
-		margin: 0 // remove browser default
-	},
-	image: {
-		display: 'block', // removes browser default gutter
-		height: 'auto',
-		margin: '0 auto', // maintain center on very short screens OR very narrow image
-		maxWidth: '100%',
+var _initialiseProps$1 = function _initialiseProps() {
+  var _this2 = this;
 
-		// disable user select
-		WebkitTouchCallout: 'none',
-		userSelect: 'none',
+  this.modalDidMount = function () {
+    document.addEventListener('keyup', _this2.handleKeyUp);
+    focusStore.storeFocus();
+  };
 
-		// opacity animation on image load
-		opacity: 0,
-		transition: 'opacity 0.3s'
-	},
-	imageLoaded: {
-		opacity: 1
-	},
-	spinner: {
-		position: 'absolute',
-		top: '50%',
-		left: '50%',
-		transform: 'translate(-50%, -50%)',
+  this.modalWillUnmount = function () {
+    document.removeEventListener('keyup', _this2.handleKeyUp);
+    focusStore.restoreFocus();
+  };
 
-		// opacity animation to make spinner appear with delay
-		opacity: 0,
-		transition: 'opacity 0.3s',
-		pointerEvents: 'none'
-	},
-	spinnerActive: {
-		opacity: 1
-	}
+  this.cacheComponents = function (comps) {
+    _this2.components = defaultModalComponents(comps);
+  };
+
+  this.handleFullscreenChange = function (isFullscreen) {
+    _this2.setState({ isFullscreen: isFullscreen });
+  };
+
+  this.handleKeyUp = function (event) {
+    var _props2 = _this2.props,
+        allowFullscreen = _props2.allowFullscreen,
+        closeOnEsc = _props2.closeOnEsc;
+    var isFullscreen = _this2.state.isFullscreen;
+
+    var allowClose = event.key === 'Escape' && closeOnEsc && !isFullscreen;
+
+    // toggle fullscreen
+    if (allowFullscreen && event.key === 'f') {
+      _this2.toggleFullscreen();
+    }
+
+    // close on escape when not fullscreen
+    if (allowClose) _this2.handleClose(event);
+  };
+
+  this.handleBackdropClick = function (event) {
+    var closeOnBackdropClick = _this2.props.closeOnBackdropClick;
+
+
+    if (event.target !== _this2.positioner || !closeOnBackdropClick) return;
+
+    _this2.handleClose(event);
+  };
+
+  this.getPositioner = function (ref) {
+    _this2.positioner = ref;
+  };
+
+  this.toggleFullscreen = function () {
+    _this2.setState(function (state) {
+      return { isFullscreen: !state.isFullscreen };
+    });
+  };
+
+  this.handleClose = function (event) {
+    var onClose = _this2.props.onClose;
+    var isFullscreen = _this2.state.isFullscreen;
+
+    // force exit fullscreen mode on close
+
+    if (isFullscreen) {
+      _this2.toggleFullscreen();
+    }
+
+    // call the consumer's onClose func
+    onClose(event);
+  };
+
+  this.getStyles = function (key, props) {
+    var base = defaultModalStyles[key](props);
+    base.boxSizing = 'border-box';
+    var custom = _this2.props.styles[key];
+    return custom ? custom(base, props) : base;
+  };
 };
 
-export default Lightbox;
+// ==============================
+// Navigation
+// ==============================
+
+/* ARIA label for the next button */
+
+
+// NOTE: props aren't used by default for some getters but consumers may need
+// them, this needs to be reflected in the flow type.
+
+/* eslint-disable no-unused-vars */
+
+function getNextLabel(_ref) {
+  var currentIndex = _ref.currentIndex,
+      views = _ref.views;
+
+  return 'Show slide ' + (currentIndex + 2) + ' of ' + views.length;
+}
+
+/* ARIA label for the previous button */
+function getPrevLabel(_ref2) {
+  var currentIndex = _ref2.currentIndex,
+      views = _ref2.views;
+
+  return 'Show slide ' + currentIndex + ' of ' + views.length;
+}
+
+/* HTML title for the next button */
+function getNextTitle(props) {
+  return 'Next (right arrow)';
+}
+
+/* HTML title for the previous button */
+function getPrevTitle(props) {
+  return 'Previous (left arrow)';
+}
+
+// ==============================
+// Header
+// ==============================
+
+/* ARIA label for the close button */
+function getCloseLabel(props) {
+  return 'Close (esc)';
+}
+/* ARIA label for the fullscreen button */
+function getFullscreenLabel(_ref3) {
+  var isFullscreen = _ref3.isFullscreen;
+
+  return isFullscreen ? 'Exit fullscreen (f)' : 'Enter fullscreen (f)';
+}
+
+// ==============================
+// View
+// ==============================
+
+/* alt text for each image in the carousel */
+function getAltText(_ref4) {
+  var data = _ref4.data,
+      index = _ref4.index;
+
+  if (data.caption) return data.caption;
+
+  return 'Image ' + (index + 1);
+}
+
+// ==============================
+// Exports
+// ==============================
+
+var formatters = {
+  getAltText: getAltText,
+  getNextLabel: getNextLabel,
+  getPrevLabel: getPrevLabel,
+  getNextTitle: getNextTitle,
+  getPrevTitle: getPrevTitle,
+  getCloseLabel: getCloseLabel,
+  getFullscreenLabel: getFullscreenLabel
+};
+
+// @jsx glam
+var viewPagerStyles = { flex: '1 1 auto', position: 'relative' };
+var frameStyles = { outline: 0 };
+
+var defaultProps = {
+  currentIndex: 0,
+  formatters: formatters,
+  hideControlsWhenIdle: 3000,
+  styles: {},
+  trackProps: {
+    instant: !isTouch(),
+    swipe: 'touch'
+  }
+};
+
+var Carousel$1 = function (_Component) {
+  inherits(Carousel, _Component);
+
+  function Carousel(props) {
+    classCallCheck(this, Carousel);
+
+    var _this = possibleConstructorReturn(this, (Carousel.__proto__ || Object.getPrototypeOf(Carousel)).call(this, props));
+
+    _initialiseProps.call(_this);
+
+    _this.cacheComponents(props.components);
+
+    _this.state = {
+      currentIndex: props.currentIndex,
+      interactionIsIdle: isTouch()
+    };
+    return _this;
+  } // TODO
+
+
+  createClass(Carousel, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var _props = this.props,
+          hideControlsWhenIdle = _props.hideControlsWhenIdle,
+          modalProps = _props.modalProps;
+
+      var isModal = Boolean(modalProps);
+
+      this.mounted = true;
+
+      if (hideControlsWhenIdle && this.container) {
+        this.container.addEventListener('mousedown', this.handleMouseActivity);
+        this.container.addEventListener('mousemove', this.handleMouseActivity);
+        this.container.addEventListener('touchmove', this.handleMouseActivity);
+      }
+      if (isModal) {
+        this.focusViewFrame();
+      }
+    }
+  }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      if (nextProps.components !== this.props.components) {
+        this.cacheComponents(nextProps.components);
+      }
+
+      if (this.props.currentIndex !== nextProps.currentIndex) {
+        this.setState({ currentIndex: nextProps.currentIndex });
+      }
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      this.mounted = false;
+
+      if (this.props.hideControlsWhenIdle && this.container) {
+        this.container.removeEventListener('mousedown', this.handleMouseActivity);
+        this.container.removeEventListener('mousemove', this.handleMouseActivity);
+        this.container.removeEventListener('touchmove', this.handleMouseActivity);
+        this.handleMouseActivity.cancel();
+      }
+    }
+
+    // ==============================
+    // Refs
+    // ==============================
+
+    // ==============================
+    // Utilities
+    // ==============================
+
+    // combine defaultProps with consumer props to maintain expected behaviour
+
+    // combine defaultProps with consumer props to maintain expected behaviour
+
+
+    // ==============================
+    // Handlers
+    // ==============================
+
+    // ==============================
+    // Renderers
+    // ==============================
+
+  }, {
+    key: 'getCommonProps',
+    value: function getCommonProps() {
+      var _props2 = this.props,
+          frameProps = _props2.frameProps,
+          trackProps = _props2.trackProps,
+          modalProps = _props2.modalProps,
+          views = _props2.views;
+
+      var isModal = Boolean(modalProps);
+      var isFullscreen = Boolean(modalProps && modalProps.isFullscreen);
+      var _state = this.state,
+          currentIndex = _state.currentIndex,
+          interactionIsIdle = _state.interactionIsIdle;
+
+      var currentView = this.getViewData();
+
+      return {
+        carouselProps: this.props,
+        currentIndex: currentIndex,
+        currentView: currentView,
+        formatters: this.props.formatters,
+        frameProps: frameProps,
+        getStyles: this.getStyles,
+        isFullscreen: isFullscreen,
+        isModal: isModal,
+        modalProps: modalProps,
+        interactionIsIdle: interactionIsIdle,
+        trackProps: trackProps,
+        views: views
+      };
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _components = this.components,
+          Container = _components.Container,
+          View$$1 = _components.View;
+      var currentIndex = this.state.currentIndex;
+      var _props3 = this.props,
+          frameProps = _props3.frameProps,
+          views = _props3.views;
+
+      var commonProps = this.commonProps = this.getCommonProps();
+
+      return glam(
+        Container,
+        _extends({}, commonProps, { innerProps: { innerRef: this.getContainer } }),
+        this.renderHeader(),
+        glam(
+          ViewPager,
+          {
+            tag: 'main',
+            style: viewPagerStyles,
+            className: className('pager')
+          },
+          glam(
+            Frame,
+            _extends({}, frameProps, {
+              ref: this.getFrame,
+              className: className('frame'),
+              style: frameStyles
+            }),
+            glam(
+              Track,
+              _extends({}, this.getTrackProps(this.props), {
+                currentView: currentIndex,
+                className: className('track'),
+                onViewChange: this.handleViewChange,
+                ref: this.getTrack
+              }),
+              views && views.map(function (data, index) {
+                return glam(
+                  View,
+                  { className: className('view-wrapper'), key: index },
+                  glam(View$$1, _extends({}, commonProps, { data: data, index: index }))
+                );
+              })
+            )
+          ),
+          this.renderNavigation()
+        ),
+        this.renderFooter()
+      );
+    }
+  }]);
+  return Carousel;
+}(Component);
+
+Carousel$1.defaultProps = defaultProps;
+
+var _initialiseProps = function _initialiseProps() {
+  var _this2 = this;
+
+  this.mounted = false;
+
+  this.cacheComponents = function (comps) {
+    _this2.components = defaultCarouselComponents(comps);
+  };
+
+  this.getContainer = function (ref) {
+    _this2.container = ref;
+  };
+
+  this.getFooter = function (ref) {
+    _this2.footer = ref;
+  };
+
+  this.getFrame = function (ref) {
+    _this2.frame = findDOMNode(ref);
+  };
+
+  this.getHeader = function (ref) {
+    _this2.header = ref;
+  };
+
+  this.getTrack = function (ref) {
+    _this2.track = ref;
+  };
+
+  this.hasPreviousView = function () {
+    var trackProps = _this2.props.trackProps;
+    var currentIndex = _this2.state.currentIndex;
+
+
+    return trackProps.infinite || currentIndex !== 0;
+  };
+
+  this.hasNextView = function () {
+    var _props4 = _this2.props,
+        trackProps = _props4.trackProps,
+        views = _props4.views;
+    var currentIndex = _this2.state.currentIndex;
+
+
+    return trackProps.infinite || currentIndex !== views.length - 1;
+  };
+
+  this.getStyles = function (key, props) {
+    var base = defaultCarouselStyles[key](props);
+    base.boxSizing = 'border-box';
+    var custom = _this2.props.styles[key];
+    return custom ? custom(base, props) : base;
+  };
+
+  this.getTrackProps = function (props) {
+    return _extends({}, defaultProps.trackProps, props.trackProps);
+  };
+
+  this.getFormatters = function () {
+    return _extends({}, defaultProps.formatters, _this2.props.formatters);
+  };
+
+  this.getViewData = function () {
+    var views = _this2.props.views;
+    var currentIndex = _this2.state.currentIndex;
+
+
+    return views[currentIndex];
+  };
+
+  this.focusViewFrame = function () {
+    if (_this2.frame && document.activeElement !== _this2.frame) {
+      _this2.frame.focus();
+    }
+  };
+
+  this.prev = function () {
+    _this2.track.prev();
+    _this2.focusViewFrame();
+  };
+
+  this.next = function () {
+    _this2.track.next();
+    _this2.focusViewFrame();
+  };
+
+  this.handleMouseActivity = rafScheduler(function () {
+    clearTimeout(_this2.timer);
+
+    if (_this2.state.interactionIsIdle) {
+      _this2.setState({ interactionIsIdle: false });
+    }
+
+    _this2.timer = setTimeout(function () {
+      if (_this2.mounted) {
+        _this2.setState({ interactionIsIdle: true });
+      }
+    }, _this2.props.hideControlsWhenIdle);
+  });
+
+  this.handleViewChange = function (indicies) {
+    var trackProps = _this2.props.trackProps;
+
+    // simplify by enforcing number
+
+    var currentIndex = indicies[0];
+
+    _this2.setState({ currentIndex: currentIndex });
+
+    // call the consumer's onViewChange fn
+    if (trackProps && trackProps.onViewChange) {
+      trackProps.onViewChange(currentIndex);
+    }
+  };
+
+  this.renderNavigation = function () {
+    var _getFormatters = _this2.getFormatters(),
+        getNextLabel = _getFormatters.getNextLabel,
+        getPrevLabel = _getFormatters.getPrevLabel,
+        getNextTitle = _getFormatters.getNextTitle,
+        getPrevTitle = _getFormatters.getPrevTitle;
+
+    var _components2 = _this2.components,
+        Navigation = _components2.Navigation,
+        NavigationPrev = _components2.NavigationPrev,
+        NavigationNext = _components2.NavigationNext;
+    var commonProps = _this2.commonProps;
+
+
+    var showPrev = _this2.hasPreviousView();
+    var showNext = _this2.hasNextView();
+    var showNav = (showPrev || showNext) && Navigation;
+
+    return showNav ? glam(
+      Navigation,
+      commonProps,
+      showPrev && glam(NavigationPrev, _extends({}, commonProps, {
+        align: 'left',
+        innerProps: {
+          'aria-label': getPrevLabel(commonProps),
+          onClick: _this2.prev,
+          title: getPrevTitle(commonProps)
+        }
+      })),
+      showNext && glam(NavigationNext, _extends({}, commonProps, {
+        align: 'right',
+        innerProps: {
+          'aria-label': getNextLabel(commonProps),
+          onClick: _this2.next,
+          title: getNextTitle(commonProps)
+        }
+      }))
+    ) : null;
+  };
+
+  this.renderFooter = function () {
+    var _components3 = _this2.components,
+        Footer = _components3.Footer,
+        FooterCaption = _components3.FooterCaption,
+        FooterCount = _components3.FooterCount;
+    var commonProps = _this2.commonProps;
+
+
+    return Footer ? glam(Footer, _extends({}, commonProps, {
+      components: {
+        Caption: FooterCaption,
+        Count: FooterCount
+      },
+      innerProps: { innerRef: _this2.getFooter }
+    })) : null;
+  };
+
+  this.renderHeader = function () {
+    var _components4 = _this2.components,
+        Header = _components4.Header,
+        HeaderClose = _components4.HeaderClose,
+        HeaderFullscreen = _components4.HeaderFullscreen;
+
+    var _getFormatters2 = _this2.getFormatters(),
+        getCloseLabel = _getFormatters2.getCloseLabel,
+        getFullscreenLabel = _getFormatters2.getFullscreenLabel;
+
+    var commonProps = _this2.commonProps;
+
+
+    return Header ? glam(Header, _extends({}, commonProps, {
+      getCloseLabel: getCloseLabel,
+      getFullscreenLabel: getFullscreenLabel,
+      components: {
+        CloseButton: HeaderClose,
+        FullscreenButton: HeaderFullscreen
+      },
+      data: _this2.getViewData(),
+      innerProps: { innerRef: _this2.getHeader }
+    })) : null;
+  };
+};
+
+var FirstChild = function FirstChild(_ref) {
+  var children = _ref.children;
+  return Children.toArray(children)[0] || null;
+};
+
+var ModalGateway = function (_Component) {
+  inherits(ModalGateway, _Component);
+
+  function ModalGateway() {
+    classCallCheck(this, ModalGateway);
+    return possibleConstructorReturn(this, (ModalGateway.__proto__ || Object.getPrototypeOf(ModalGateway)).apply(this, arguments));
+  }
+
+  createClass(ModalGateway, [{
+    key: 'render',
+    value: function render() {
+      if (typeof window === 'undefined') return null;
+      var _props = this.props,
+          target = _props.target,
+          children = _props.children;
+
+      return createPortal(React.createElement(TransitionGroup, { component: FirstChild, children: children }), target);
+    }
+  }]);
+  return ModalGateway;
+}(Component);
+
+ModalGateway.defaultProps = {
+  target: typeof window !== 'undefined' ? document.body : null
+};
+
+export { ModalGateway, Modal, carouselComponents, modalComponents };
+export default Carousel$1;
