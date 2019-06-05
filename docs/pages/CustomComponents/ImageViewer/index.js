@@ -38,8 +38,6 @@ export default class ImageViewer extends Component<Props, State> {
     const { images, isLoading } = this.props;
     const { currentModal } = this.state;
 
-    console.log('ImageViewer', this.props);
-
     return (
       <div>
         <Heading source="/CustomComponents/ImageViewer/index.js">
@@ -52,7 +50,7 @@ export default class ImageViewer extends Component<Props, State> {
         {!isLoading ? (
           <FilmStrip>
             {images.map(({ author, caption, source }, j) => (
-              <Image onClick={() => this.toggleModal(j)} key={author.name}>
+              <Image onClick={() => this.toggleModal(j)} key={source.regular}>
                 <img
                   alt={caption}
                   src={source.thumbnail}
