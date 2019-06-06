@@ -1,5 +1,8 @@
 # React-Images
 
+### v1.0.0 / 2019-06-05
+- v1 release
+
 ### v0.5.19 / 2018-07-19
 - Fix babel lib output not transpiling
 
