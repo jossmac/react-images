@@ -373,7 +373,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
           >
             <Track
               {...this.getTrackProps(this.props)}
-              style={{'display': 'flex', 'alignItems': 'center'}}
+              style={{ display: 'flex', alignItems: 'center' }}
               currentView={currentIndex}
               className={className('track')}
               onViewChange={this.handleViewChange}
