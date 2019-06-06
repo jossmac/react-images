@@ -31,7 +31,7 @@ export default class Home extends Component<ProviderProps, State> {
       <Fragment>
         {!isLoading ? (
           <Gallery>
-            {images.map(({ author, caption, source }, j) => (
+            {images.map(({ caption, source }, j) => (
               <Image
                 onClick={() => this.toggleLightbox(j)}
                 key={source.thumbnail}

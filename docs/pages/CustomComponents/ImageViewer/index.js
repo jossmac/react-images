@@ -49,7 +49,7 @@ export default class ImageViewer extends Component<Props, State> {
         </p>
         {!isLoading ? (
           <FilmStrip>
-            {images.map(({ author, caption, source }, j) => (
+            {images.map(({ caption, source }, j) => (
               <Image onClick={() => this.toggleModal(j)} key={source.regular}>
                 <img
                   alt={caption}
