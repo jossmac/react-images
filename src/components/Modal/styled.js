@@ -23,7 +23,7 @@ export const blanketCSS = ({ isFullscreen }: BlanketState) => ({
   position: 'fixed',
   right: 0,
   top: 0,
-  zIndex: 1,
+  zIndex: 1200,
 });
 
 export const Blanket = (props: BlanketProps) => {
