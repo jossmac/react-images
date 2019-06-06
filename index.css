@@ -1,0 +1,63 @@
+body {
+  -moz-font-feature-settings: 'liga' on;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  color: #253858;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica,
+    sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  margin: 0;
+  padding: 0;
+  text-rendering: optimizeLegibility;
+}
+
+/*  explicit anchor styles: don't interfere with Carousel or Modals styles */
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a,
+ul a,
+ol a,
+p a {
+  border-bottom: 1px solid rgba(0, 215, 255, 0.25);
+  color: #00d7ff;
+  text-decoration: none;
+}
+a:hover {
+  border-bottom-color: rgba(0, 215, 255, 0.66);
+  text-decoration: none;
+}
+
+p,
+ul,
+ol {
+  line-height: 1.5;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  color: #091e42;
+}
+h1 {
+  margin-top: 0;
+}
+h2,
+h3 {
+  margin-top: 1.66em;
+}
+h6 {
+  color: #777;
+  margin-bottom: 0.25em;
+  text-transform: uppercase;
+}
+
+code {
+  font-family: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
+}
