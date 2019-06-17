@@ -119,11 +119,7 @@ export default class Accessibility extends Component<ProviderProps, State> {
         <ModalGateway>
           {lightboxIsOpen && !isLoading ? (
             <Modal onClose={this.toggleLightbox}>
-              <Carousel
-                frameProps={{ autoSize: 'height' }}
-                trackProps={{ currentView }}
-                views={images}
-              />
+              <Carousel trackProps={{ currentView }} views={images} />
             </Modal>
           ) : null}
         </ModalGateway>

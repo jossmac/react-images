@@ -44,7 +44,6 @@ export default class RouterGallery extends Component<Props> {
         {!isLoading ? (
           <Carousel
             currentIndex={this.getCurrentView()}
-            frameProps={{ autoSize: 'height' }}
             trackProps={{
               onViewChange: this.handleViewChange,
             }}

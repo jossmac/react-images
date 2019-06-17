@@ -55,7 +55,6 @@ export default class ModalExample extends Component<ProviderProps, State> {
             >
               <Carousel
                 components={{ FooterCaption }}
-                frameProps={{ autoSize: 'height' }}
                 formatters={{ getAltText }}
                 views={images}
                 styles={{

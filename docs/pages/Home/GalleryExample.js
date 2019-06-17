@@ -57,7 +57,6 @@ export default class Home extends Component<ProviderProps, State> {
                 components={{ FooterCaption }}
                 currentIndex={selectedIndex}
                 formatters={{ getAltText }}
-                frameProps={{ autoSize: 'height' }}
                 views={images}
               />
             </Modal>

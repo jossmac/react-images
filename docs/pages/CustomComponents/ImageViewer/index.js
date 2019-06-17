@@ -84,7 +84,6 @@ export default class ImageViewer extends Component<Props, State> {
               <Carousel
                 currentIndex={currentModal}
                 components={{ Footer: null, Header }}
-                frameProps={{ autoSize: 'height' }}
                 views={images}
                 styles={{
                   container: base => ({
