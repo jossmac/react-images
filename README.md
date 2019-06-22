@@ -14,6 +14,9 @@ or
 yarn add react-images
 ```
 
+**If you were using `0.x` versions:** library was significantly rewritten for `1.x` version and contains several breaking changes.
+The best way to upgrade is to read the docs and follow the examples.
+
 ### Using the Carousel
 
 Import the carousel from `react-images` at the top of a
