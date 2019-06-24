@@ -7,7 +7,7 @@ A mobile-friendly, highly customizable, carousel component for displaying media 
 Start by installing `react-images`
 
 ```bash
-npm add react-images
+npm install react-images
 ```
 or
 ```bash
