@@ -5,6 +5,7 @@
   "main": "lib/index.js",
   "jsnext:main": "dist/react-images.es.js",
   "module": "dist/react-images.es.js",
+  "types": "./index.d.ts",
   "author": "Joss Mackison",
   "license": "MIT",
   "keywords": [
