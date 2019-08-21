@@ -59,7 +59,7 @@
     "a11y-focus-store": "^1.0.0",
     "glam": "^5.0.1",
     "raf-schd": "^2.1.0",
-    "react-full-screen": "^0.2.2",
+    "react-full-screen": "^0.2.4",
     "react-scrolllock": "^1.0.9",
     "react-transition-group": "^2.2.1",
     "react-view-pager": "^0.6.0"
