@@ -1748,7 +1748,7 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-create-react-class@^15.5.2, create-react-class@^15.5.3, create-react-class@^15.6.0:
+create-react-class@^15.5.3, create-react-class@^15.6.0:
   version "15.6.3"
   resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.6.3.tgz#2d73237fb3f970ae6ebe011a9e66f46dbca80036"
   dependencies:
@@ -2512,9 +2512,10 @@ execa@^0.8.0:
     signal-exit "^3.0.0"
     strip-eof "^1.0.0"
 
-exenv@^1.2.1:
+exenv@^1.2.1, exenv@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/exenv/-/exenv-1.2.2.tgz#2ae78e85d9894158670b03d47bec1f03bd91bb9d"
+  integrity sha1-KueOhdmJQVhnCwPUe+wfA72Ru50=
 
 exit-hook@^1.0.0:
   version "1.1.1"
@@ -5531,6 +5532,11 @@ react-motion@^0.5.0:
     prop-types "^15.5.8"
     raf "^3.1.0"
 
+react-node-resolver@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/react-node-resolver/-/react-node-resolver-2.0.1.tgz#1f0cc83938bf590a1cf42006b23f6b8f68e7b886"
+  integrity sha512-+PPy/FtAAo5wsLQYMlHkxJ3AMUGL33gpEIx/HBzS8OrcIfacRhGaNVWUJ8bhEbc64en+/bbCNTVZR+pkhqXEbA==
+
 react-router-dom@^4.2.2:
   version "4.2.2"
   resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-4.2.2.tgz#c8a81df3adc58bba8a76782e946cbd4eae649b8d"
@@ -5554,12 +5560,13 @@ react-router@^4.2.0:
     prop-types "^15.5.4"
     warning "^3.0.0"
 
-react-scrolllock@^1.0.9:
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/react-scrolllock/-/react-scrolllock-1.0.9.tgz#7c9c3c0cce2ed55042af2808b6483b85b121cdcb"
+react-scrolllock@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/react-scrolllock/-/react-scrolllock-4.0.1.tgz#05bb1e1575c97cbd869f2b60623a0e8227695b60"
+  integrity sha512-XWtRucd411402AfwnUyR0cZqN/beJy0NAygX92APzgeAhkHzpfWrsiakqKVIVqMNkgM8s2lIku/hzaFoTgw7Gw==
   dependencies:
-    create-react-class "^15.5.2"
-    prop-types "^15.5.10"
+    exenv "^1.2.2"
+    react-node-resolver "^2.0.1"
 
 react-side-effect@^1.1.0:
   version "1.1.3"
