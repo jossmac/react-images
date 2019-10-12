@@ -65,9 +65,9 @@ class Modal extends Component<Props, State> {
     this.state = { isFullscreen: false };
   }
 
-  componentDidUpdate(nextProps: Props) {
-    if (nextProps.components !== this.props.components) {
-      this.cacheComponents(nextProps.components);
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.components !== this.props.components) {
+      this.cacheComponents(prevProps.components);
     }
   }
 
