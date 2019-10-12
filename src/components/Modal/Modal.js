@@ -65,7 +65,7 @@ class Modal extends Component<Props, State> {
     this.state = { isFullscreen: false };
   }
 
-  componentWillReceiveProps(nextProps: Props) {
+  componentDidUpdate(nextProps: Props) {
     if (nextProps.components !== this.props.components) {
       this.cacheComponents(nextProps.components);
     }
@@ -104,7 +104,11 @@ class Modal extends Component<Props, State> {
   handleBackdropClick = (event: MouseEvent) => {
     const { closeOnBackdropClick } = this.props;
 
-    if (!event.target.classList.contains(className('view')) || !closeOnBackdropClick) return;
+    if (
+      !event.target.classList.contains(className('view')) ||
+      !closeOnBackdropClick
+    )
+      return;
 
     this.handleClose(event);
   };

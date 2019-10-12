@@ -123,7 +123,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
       this.focusViewFrame();
     }
   }
-  componentWillReceiveProps(nextProps: CarouselProps) {
+  componentDidUpdate(nextProps: CarouselProps) {
     if (nextProps.components !== this.props.components) {
       this.cacheComponents(nextProps.components);
     }
