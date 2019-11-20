@@ -157,10 +157,10 @@ const Footer = () => {
     >
       <a
         className="github-button"
-        href="https://github.com/jossmac/react-images"
+        href="https://github.com/davwheat/react-images"
         data-size={size}
         data-show-count="true"
-        aria-label="Star jossmac/react-images on GitHub"
+        aria-label="Star davwheat/react-images on GitHub"
       >
         Star
       </a>
@@ -175,6 +175,10 @@ const Footer = () => {
         with ❤️ by{' '}
         <a href="https://twitter.com/jossmackison" target="_blank">
           jossmac
+        </a>
+        and{' '}
+        <a href="https://github.com/davwheat" target="_blank">
+          davwheat
         </a>
       </p>
     </div>
