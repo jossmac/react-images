@@ -36,7 +36,7 @@ export const Title = (props: any) => (
 // ==============================
 
 function headingLink(src) {
-  const base = 'https://github.com/davwheat/react-images/tree/v1/docs/pages';
+  const base = 'https://github.com/davwheat/react-images-maintained/tree/v1/docs/pages';
   return `${base}${src}`;
 }
 
