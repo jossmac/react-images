@@ -1115,9 +1115,9 @@ var _initialiseProps$1 = function _initialiseProps() {
   };
 
   this.handleBackdropClick = function (event) {
-    if (!_this2.props.closeOnBackdropClick) return;
-
-    if (!event.target.classList.contains(className('view')) || !closeOnBackdropClick) return;
+    if (!event.target.classList.contains(className('view')) || !_this2.props.closeOnBackdropClick) {
+      return;
+    }
 
     _this2.handleClose(event);
   };
