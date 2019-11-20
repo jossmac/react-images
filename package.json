@@ -1,6 +1,6 @@
 {
   "name": "react-images-maintained",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "A mobile-friendly, highly customizable, carousel component for displaying media in ReactJS",
   "main": "lib/index.js",
   "jsnext:main": "dist/react-images.es.js",
