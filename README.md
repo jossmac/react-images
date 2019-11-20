@@ -2,6 +2,8 @@
 
 A mobile-friendly, highly customizable, carousel component for displaying media in ReactJS.
 
+Maintained fork of [jossmac/react-images](https://github.com/jossmac/react-images).
+
 ### Getting Started
 
 Start by installing `react-images`
@@ -9,7 +11,9 @@ Start by installing `react-images`
 ```bash
 npm install react-images
 ```
+
 or
+
 ```bash
 yarn add react-images
 ```
