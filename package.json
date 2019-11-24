@@ -69,7 +69,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-full-screen": "^0.2.2",
-    "react-scrolllock": "^1.0.9",
+    "react-scrolllock": "^4.0.1",
     "react-transition-group": "^2.2.1",
     "react-view-pager": "^0.6.0"
   },
