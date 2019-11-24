@@ -84,7 +84,9 @@ type DialogProps = DialogState &
     innerProps: Object, // TODO
   };
 
-export const dialogCSS = () => ({});
+export const dialogCSS = () => ({
+  width: '100%'
+});
 
 export const Dialog = (props: DialogProps) => {
   const { children, getStyles, innerProps, isFullscreen } = props;

@@ -38,7 +38,7 @@ const View = (props: Props) => {
         css={{
           height: 'auto',
           maxHeight: '100vh',
-          maxWidth: '100%',
+          maxWidth: '100vw',
           userSelect: 'none',
         }}
       />
