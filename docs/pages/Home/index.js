@@ -57,7 +57,7 @@ class Component extends React.Component {
         <CodeBlock>{`import React from 'react';
 import Carousel, { Modal, ModalGateway } from 'react-images';
 
-const images = [{ src: 'path/to/image-1.jpg', src: 'path/to/image-2.jpg' }];
+const images = [{ src: 'path/to/image-1.jpg' }, { src: 'path/to/image-2.jpg' }];
 
 class Component extends React.Component {
   state = { modalIsOpen: false }
