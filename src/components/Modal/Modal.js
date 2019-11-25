@@ -108,7 +108,7 @@ class Modal extends Component<Props, State> {
       !event.target.classList.contains(className('view')) ||
       !closeOnBackdropClick
     )
-      return;
+      {return;}
 
     this.handleClose(event);
   };
