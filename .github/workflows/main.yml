@@ -9,8 +9,8 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '10.x'
-      - run: yarn install # will run `yarn install` command
-      - run: yarn lint # will run `yarn install` command
+      - run: yarn install
+      - run: yarn lint
   build:
     name: 🛠️ Build
     runs-on: ubuntu-latest
@@ -20,9 +20,5 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '10.x'
-      - uses: borales/actions-yarn@v2.0.0
-        with:
-          cmd: install # will run `yarn install` command
-      - uses: borales/actions-yarn@v2.0.0
-        with:
-          cmd: build # will run `yarn build` command
+      - run: yarn install
+      - run: yarn build
