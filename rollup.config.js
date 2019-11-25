@@ -2,8 +2,8 @@
 
 import babel from 'rollup-plugin-babel';
 import resolve from 'rollup-plugin-node-resolve';
-import uglify from 'rollup-plugin-uglify';
-import replace from 'rollup-plugin-replace';
+import { uglify } from 'rollup-plugin-uglify';
+import replace from '@rollup/plugin-replace';
 import { minify } from 'uglify-es';
 
 const name = 'Images';
@@ -29,11 +29,14 @@ const external = Object.keys(globals);
 const babelOptions = prod => {
   let result = {
     babelrc: false,
-    presets: [['env', { modules: false }], 'react'],
+    presets: [
+      ['@babel/env', { modules: false }],
+      '@babel/preset-react',
+      '@babel/preset-flow',
+    ],
     plugins: [
       'transform-class-properties',
-      'transform-object-rest-spread',
-      'external-helpers',
+      '@babel/plugin-proposal-object-rest-spread',
     ],
   };
   if (prod) {

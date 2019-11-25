@@ -1,6 +1,9 @@
 {
-  "plugins": ["transform-class-properties", "transform-object-rest-spread"],
-  "presets": ["env", "react"],
+  "plugins": [
+    "transform-class-properties",
+    "@babel/plugin-proposal-object-rest-spread"
+  ],
+  "presets": ["@babel/env", "@babel/preset-react", "@babel/preset-flow"],
   "ignore": ["node_modules"],
   "env": {
     "test": {
