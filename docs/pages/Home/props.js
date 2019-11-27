@@ -104,6 +104,14 @@ type components = {
     type: 'Number | false',
   },
   {
+    defaultValue: 'true',
+    description:
+      'Whether the navigation should be hidden or visible on touch devices',
+    isRequired: false,
+    name: 'hideNavigationOnTouchDevice',
+    type: 'boolean',
+  },
+  {
     defaultValue: null,
     description:
       'Available when the Carousel is within a Modal. The applicable props are cloned and passed on for use inside Carousel components.',
