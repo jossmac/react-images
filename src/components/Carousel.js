@@ -39,7 +39,7 @@ export type CarouselProps = {
   /* Duration, in milliseconds, to wait before hiding controls when the user is idle */
   hideControlsWhenIdle?: number | false,
   /* Force hide or show controls on touch devices */
-  hideNavigationOnTouchDevice?: boolean,
+  showNavigationOnTouchDevice?: boolean,
   /* When envoked within a modal, props are cloned from the modal */
   modalProps?: ModalProps,
   /* Style modifier methods */
@@ -79,7 +79,7 @@ const defaultProps = {
   currentIndex: 0,
   formatters,
   hideControlsWhenIdle: 3000,
-  hideNavigationOnTouchDevice: true,
+  showNavigationOnTouchDevice: false,
   styles: {},
   trackProps: {
     instant: !isTouch(),
@@ -333,7 +333,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
   };
 
   getCommonProps() {
-    const { frameProps, trackProps, modalProps, views, hideNavigationOnTouchDevice } = this.props;
+    const { frameProps, trackProps, modalProps, views, showNavigationOnTouchDevice } = this.props;
     const isModal = Boolean(modalProps);
     const isFullscreen = Boolean(modalProps && modalProps.isFullscreen);
     const { currentIndex, interactionIsIdle } = this.state;
@@ -346,7 +346,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
       formatters: this.props.formatters,
       frameProps,
       getStyles: this.getStyles,
-      hideNavigationOnTouchDevice,
+      showNavigationOnTouchDevice,
       isFullscreen,
       isModal,
       modalProps,

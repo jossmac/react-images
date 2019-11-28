@@ -29,8 +29,8 @@ export const navigationCSS = ({ interactionIsIdle }: NavState) => ({
 });
 
 export const Navigation = (props: NavProps) => {
-  const { children, getStyles, isFullscreen, isModal, hideNavigationOnTouchDevice } = props;
-  return !isTouch() || !hideNavigationOnTouchDevice ? (
+  const { children, getStyles, isFullscreen, isModal, showNavigationOnTouchDevice } = props;
+  return !isTouch() || (isTouch() && showNavigationOnTouchDevice) ? (
     <Nav
       css={getStyles('navigation', props)}
       className={className('navigation', { isFullscreen, isModal })}

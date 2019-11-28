@@ -126,6 +126,14 @@ type components = {
 }`,
   },
   {
+    defaultValue: 'false',
+    description:
+      'Whether image carousel navigation buttons should be hidden or shown on touch-enabled devices. (Default: hidden)',
+    isRequired: false,
+    name: 'showNavigationOnTouchDevice',
+    type: 'boolean',
+  },
+  {
     defaultValue: null,
     description:
       'React-Images ships each Carousel component with default styles. You can extend or replace these using the styles property.',
