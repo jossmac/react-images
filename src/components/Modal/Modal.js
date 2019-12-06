@@ -105,7 +105,7 @@ class Modal extends Component<Props, State> {
     const { closeOnBackdropClick } = this.props;
 
     if (
-      !event.target.classList.contains(className('view')) ||
+      event.target.classList.contains(className('view')) ||
       !closeOnBackdropClick
     )
       {return;}
