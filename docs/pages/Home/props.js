@@ -114,6 +114,7 @@ type components = {
   allowFullscreen: boolean,
   isFullscreen: boolean,
   onClose: (SyntheticEvent) => void,
+  preventScroll: boolean,
   toggleFullscreen: () => void,
 }`,
   },
@@ -275,5 +276,18 @@ type StyleFn = (StyleObj, State) => StyleObj
   dialog: StyleFn,
   positioner: StyleFn,
 }`,
+  },
+  {
+    defaultValue: 'true',
+    description: (
+      <p>
+        Determines whether scrolling is prevented via{' '}
+        <a href='https://github.com/jossmac/react-scrolllock' target="_blank">
+        react-scrolllock
+        </a>.
+      </p>
+    ),
+    name: 'preventScroll',
+    type: 'Boolean',
   },
 ];

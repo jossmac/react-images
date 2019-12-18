@@ -20,6 +20,7 @@ export type ModalProps = {
   allowFullscreen: boolean,
   isFullscreen: boolean,
   onClose: CloseType,
+  preventScroll: boolean,
   toggleFullscreen: any => void,
 };
 
@@ -41,6 +42,8 @@ export type Props = {
   in: boolean,
   /* Function called to request close of the modal */
   onClose: CloseType,
+  /* Prevent scroll */
+  preventScroll: Boolean,
   /* Style modifier methods */
   styles: ModalStylesConfig,
 };
@@ -49,6 +52,7 @@ const defaultProps = {
   allowFullscreen: !isTouch(),
   closeOnBackdropClick: true,
   closeOnEsc: true,
+  preventScroll: true,
   styles: {},
 };
 class Modal extends Component<Props, State> {
@@ -145,7 +149,7 @@ class Modal extends Component<Props, State> {
   }
   render() {
     const { Blanket, Positioner, Dialog } = this.components;
-    const { allowFullscreen, children } = this.props;
+    const { allowFullscreen, children, preventScroll } = this.props;
     const { isFullscreen } = this.state;
     const commonProps = (this.commonProps = this.getCommonProps());
 
@@ -157,6 +161,7 @@ class Modal extends Component<Props, State> {
       allowFullscreen,
       isFullscreen,
       onClose: this.handleClose,
+      preventScroll: this.preventScroll,
       toggleFullscreen: this.toggleFullscreen,
     };
 
@@ -181,7 +186,7 @@ class Modal extends Component<Props, State> {
           onExited={this.modalWillUnmount}
         >
           <Dialog {...commonProps}>{carouselComponent}</Dialog>
-          <ScrollLock />
+          {this.props.preventScroll && <ScrollLock />}
         </SlideUp>
       </Fullscreen>
     );
