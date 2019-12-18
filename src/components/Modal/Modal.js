@@ -186,7 +186,7 @@ class Modal extends Component<Props, State> {
           onExited={this.modalWillUnmount}
         >
           <Dialog {...commonProps}>{carouselComponent}</Dialog>
-          {this.props.preventScroll && <ScrollLock />}
+          {preventScroll && <ScrollLock />}
         </SlideUp>
       </Fullscreen>
     );
