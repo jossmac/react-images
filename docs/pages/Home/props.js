@@ -282,9 +282,10 @@ type StyleFn = (StyleObj, State) => StyleObj
     description: (
       <p>
         Determines whether scrolling is prevented via{' '}
-        <a href='https://github.com/jossmac/react-scrolllock' target="_blank">
-        react-scrolllock
-        </a>.
+        <a href="https://github.com/jossmac/react-scrolllock" target="_blank">
+          react-scrolllock
+        </a>
+        .
       </p>
     ),
     name: 'preventScroll',
