@@ -114,8 +114,17 @@ type components = {
   allowFullscreen: boolean,
   isFullscreen: boolean,
   onClose: (SyntheticEvent) => void,
+  preventScroll: boolean,
   toggleFullscreen: () => void,
 }`,
+  },
+  {
+    defaultValue: 'false',
+    description:
+      'Whether image carousel navigation buttons should be hidden or shown on touch-enabled devices. (Default: hidden)',
+    isRequired: false,
+    name: 'showNavigationOnTouchDevice',
+    type: 'boolean',
   },
   {
     defaultValue: null,
@@ -267,5 +276,19 @@ type StyleFn = (StyleObj, State) => StyleObj
   dialog: StyleFn,
   positioner: StyleFn,
 }`,
+  },
+  {
+    defaultValue: 'true',
+    description: (
+      <p>
+        Determines whether scrolling is prevented via{' '}
+        <a href="https://github.com/jossmac/react-scrolllock" target="_blank">
+          react-scrolllock
+        </a>
+        .
+      </p>
+    ),
+    name: 'preventScroll',
+    type: 'Boolean',
   },
 ];

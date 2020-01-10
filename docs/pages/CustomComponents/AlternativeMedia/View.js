@@ -26,7 +26,7 @@ type ViewProps = {
 type ViewState = { paused: boolean, progress: number };
 
 function calculateProgress({ currentTime, duration }) {
-  return 100 / duration * currentTime;
+  return (100 / duration) * currentTime;
 }
 
 const Footer = ({ interactionIsIdle, ...props }) => (
@@ -84,8 +84,8 @@ export default class View extends Component<ViewProps, ViewState> {
     this.video.removeEventListener('pause', this.handlePause);
     this.video.removeEventListener('timeupdate', this.handleTimeUpdate);
   }
-  componentWillReceiveProps(nextProps: ViewProps) {
-    if (this.props.currentIndex !== nextProps.currentIndex) {
+  componentDidUpdate(prevProps: ViewProps) {
+    if (this.props.currentIndex !== prevProps.currentIndex) {
       this.playOrPause('pause');
     }
   }
