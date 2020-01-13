@@ -212,11 +212,13 @@ class Carousel extends Component<CarouselProps, CarouselState> {
     }
   };
 
-  prev = () => {
+  prev = (event) => {
+    event.stopPropagation();
     this.track.prev();
     this.focusViewFrame();
   };
-  next = () => {
+  next = (event) => {
+    event.stopPropagation();
     this.track.next();
     this.focusViewFrame();
   };

@@ -77,7 +77,7 @@ function setData(data) {
 export default function withImages(WrappedComponent: ComponentType<*>) {
   return class ImageProvider extends Component<{}, ProviderProps> {
     state = { images: [], isLoading: true };
-    componentWillMount() {
+    componentDidMount() {
       // using local storage to prevent API requests, don't want to exceed
       // the applications Unsplash limit
       const storedData = getData();
