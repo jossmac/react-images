@@ -27,6 +27,8 @@ export type CarouselProps = {
   components?: CarouselComponents,
   /* Take control of the component's view index state */
   currentIndex: number,
+  // Enables zooming and panning of image in Carousel
+  enableGestures: Boolean,
   // See https://github.com/souporserious/react-view-pager#frame-props
   frameProps: {
     accessibility: boolean,
@@ -77,6 +79,7 @@ export type CarouselState = {
 };
 const defaultProps = {
   currentIndex: 0,
+  enableGestures: false,
   formatters,
   hideControlsWhenIdle: 3000,
   showNavigationOnTouchDevice: false,
@@ -212,12 +215,12 @@ class Carousel extends Component<CarouselProps, CarouselState> {
     }
   };
 
-  prev = (event) => {
+  prev = event => {
     event.stopPropagation();
     this.track.prev();
     this.focusViewFrame();
   };
-  next = (event) => {
+  next = event => {
     event.stopPropagation();
     this.track.next();
     this.focusViewFrame();
@@ -335,7 +338,14 @@ class Carousel extends Component<CarouselProps, CarouselState> {
   };
 
   getCommonProps() {
-    const { frameProps, trackProps, modalProps, views, showNavigationOnTouchDevice } = this.props;
+    const {
+      frameProps,
+      trackProps,
+      modalProps,
+      views,
+      showNavigationOnTouchDevice,
+      enableGestures,
+    } = this.props;
     const isModal = Boolean(modalProps);
     const isFullscreen = Boolean(modalProps && modalProps.isFullscreen);
     const { currentIndex, interactionIsIdle } = this.state;
@@ -355,6 +365,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
       interactionIsIdle,
       trackProps,
       views,
+      enableGestures,
     };
   }
   render() {

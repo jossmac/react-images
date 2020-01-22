@@ -5,7 +5,9 @@ import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
 
 import { Title } from '../components';
+
 import RouterGallery from './RouterGallery';
+import GestureImageViewer from './GestureImageViewer';
 
 export default class Patterns extends Component<*> {
   render() {
@@ -25,6 +27,7 @@ export default class Patterns extends Component<*> {
           React-Images.
         </p>
         <RouterGallery {...this.props} />
+        <GestureImageViewer {...this.props} />
       </div>
     );
   }

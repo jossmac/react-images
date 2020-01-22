@@ -122,6 +122,7 @@ export interface CarouselStyles {
 export interface CarouselProps {
   components?: Components;
   currentIndex?: number;
+  enableGestures?: Boolean,
   frameProps?: FrameProps;
   formatters?: Formatters;
   hideControlsWhenIdle?: number | false;

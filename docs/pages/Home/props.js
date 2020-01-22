@@ -51,10 +51,26 @@ type components = {
   {
     defaultValue: '0',
     description:
-      'React-Images manages the index state internally. This property is exposed so you can take control of it, or initiate the carousel from a certain point.',
+      'React-Images manages the index state internally. This property is exposed so you can take control of it (such as auto advancing through the carousel), or initiate the carousel from a certain point.',
     isRequired: false,
     name: 'currentIndex',
     type: 'Number',
+  },
+  {
+    defaultValue: 'false',
+    description: (
+      <p>
+        Enables zoom and pan gestures, via{' '}
+        <a href="https://hammerjs.github.io/" target="_blank">
+          hammer.js
+        </a>
+        . Defaults to false for backwards compatibility with older versions of
+        React-Images.
+      </p>
+    ),
+    isRequired: false,
+    name: 'enableGestures',
+    type: 'Boolean',
   },
   {
     defaultValue: null,

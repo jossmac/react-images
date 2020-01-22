@@ -22,6 +22,7 @@ export type ModalProps = {
   onClose: CloseType,
   preventScroll: boolean,
   toggleFullscreen: any => void,
+  enableGestures: boolean,
 };
 
 export type Props = {
@@ -35,6 +36,7 @@ export type Props = {
   closeOnEsc: boolean,
   /* Replace any of the modal components */
   components?: ModalComponents,
+  enableGestures: boolean,
   /*
     Show the component; triggers the enter or exit states
     NOTE: provided by TransitionGroup, NOT supplied by the user
@@ -49,6 +51,7 @@ export type Props = {
 };
 type State = { isFullscreen: boolean };
 const defaultProps = {
+  enableGestures: false,
   allowFullscreen: !isTouch(),
   closeOnBackdropClick: true,
   closeOnEsc: true,
