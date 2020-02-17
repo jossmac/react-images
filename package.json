@@ -89,7 +89,7 @@
     "dist",
     "lib",
     "src",
-    "./index.d.ts"
+    "index.d.ts"
   ],
   "lint-staged": {
     "*.js": "eslint"

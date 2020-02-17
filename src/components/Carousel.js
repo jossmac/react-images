@@ -132,7 +132,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
     }
 
     if (this.props.currentIndex !== prevProps.currentIndex) {
-      this.setState({ currentIndex: prevProps.currentIndex });
+      this.setState({ currentIndex: this.props.currentIndex });
     }
   }
   componentWillUnmount() {
