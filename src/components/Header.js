@@ -37,7 +37,7 @@ export const headerCSS = ({ interactionIsIdle }: State) => ({
   zIndex: 1,
 });
 
-export const headerBaseClassName = componentBaseClassNames.Header;
+const headerBaseClassName = componentBaseClassNames.Header;
 
 const Header = (props: Props) => {
   const {

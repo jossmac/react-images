@@ -88,7 +88,7 @@ const defaultProps = {
   },
 };
 
-export const trackBaseClassName = componentBaseClassNames.Track;
+const trackBaseClassName = componentBaseClassNames.Track;
 
 class Carousel extends Component<CarouselProps, CarouselState> {
   commonProps: any; // TODO

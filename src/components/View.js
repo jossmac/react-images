@@ -21,7 +21,7 @@ export const viewCSS = () => ({
   textAlign: 'center',
 });
 
-export const viewBaseClassName = componentBaseClassNames.View;
+const viewBaseClassName = componentBaseClassNames.View;
 
 const View = (props: Props) => {
   const { data, formatters, getStyles, index, isFullscreen, isModal } = props;
