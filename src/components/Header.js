@@ -36,6 +36,13 @@ export const headerCSS = ({ interactionIsIdle }: State) => ({
   zIndex: 1,
 });
 
+/**
+ * Used to get the className to select the header in other components.
+ * This className is we call `className()` in utils with to get the full
+ * className.
+ */
+export const headerBaseClassName = 'header';
+
 const Header = (props: Props) => {
   const {
     components,
@@ -61,8 +68,8 @@ const Header = (props: Props) => {
 
   return (
     <Div
-      css={getStyles('header', props)}
-      className={className('header', state)}
+      css={getStyles(headerBaseClassName, props)}
+      className={className(headerBaseClassName, state)}
       // TODO glam prefixer fails on gradients
       // https://github.com/threepointone/glam/issues/35
       style={{

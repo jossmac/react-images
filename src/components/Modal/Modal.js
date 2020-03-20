@@ -10,9 +10,12 @@ import {
   type ModalComponents,
 } from '../defaultComponents';
 import { Fade, SlideUp } from './Animation';
-import { type CarouselType } from '../Carousel';
+import { type CarouselType, trackBaseClassName } from '../Carousel';
 import { defaultModalStyles, type ModalStylesConfig } from '../../styles';
 import { isTouch, className } from '../../utils';
+import { headerBaseClassName } from '../Header';
+import { footerBaseClassName } from '../Footer';
+import { viewBaseClassName } from '../View';
 
 type MouseOrKeyboardEvent = MouseEvent | KeyboardEvent;
 export type CloseType = (event: MouseOrKeyboardEvent) => void;
@@ -55,6 +58,17 @@ const defaultProps = {
   preventScroll: true,
   styles: {},
 };
+
+/** Classes that when clicked on, close the backdrop */
+const backdropClassNames = new Set(
+  [
+    viewBaseClassName,
+    headerBaseClassName,
+    footerBaseClassName,
+    trackBaseClassName,
+  ].map(className),
+);
+
 class Modal extends Component<Props, State> {
   commonProps: any; // TODO
   components: ModalComponents;
@@ -106,10 +120,11 @@ class Modal extends Component<Props, State> {
     if (allowClose) this.handleClose(event);
   };
   handleBackdropClick = (event: MouseEvent) => {
-    if (
-      !event.target.classList.contains(className('view')) ||
-      !this.props.closeOnBackdropClick
-    ) {
+    const hasBackdropClassName = event.target.classList.some(className =>
+      backdropClassNames.has(className),
+    );
+
+    if (!hasBackdropClassName || !this.props.closeOnBackdropClick) {
       return;
     }
 

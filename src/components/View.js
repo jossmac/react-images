@@ -20,6 +20,13 @@ export const viewCSS = () => ({
   textAlign: 'center',
 });
 
+/**
+ * Used to get the className to select the view in other components.
+ * This className is we call `className()` in utils with to get the full
+ * className.
+ */
+export const viewBaseClassName = 'view';
+
 const View = (props: Props) => {
   const { data, formatters, getStyles, index, isFullscreen, isModal } = props;
   const innerProps = {
@@ -29,8 +36,8 @@ const View = (props: Props) => {
 
   return (
     <Div
-      css={getStyles('view', props)}
-      className={className('view', { isFullscreen, isModal })}
+      css={getStyles(viewBaseClassName, props)}
+      className={className(viewBaseClassName, { isFullscreen, isModal })}
     >
       <Img
         {...innerProps}

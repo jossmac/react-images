@@ -42,6 +42,13 @@ export const footerCSS = ({ isModal, interactionIsIdle }: State) => ({
   },
 });
 
+/**
+ * Used to get the className to select the footer in other components.
+ * This className is we call `className()` in utils with to get the full
+ * className.
+ */
+export const footerBaseClassName = 'footer';
+
 const Footer = (props: Props) => {
   const { components, getStyles, innerProps, isFullscreen, isModal } = props;
 
@@ -51,12 +58,12 @@ const Footer = (props: Props) => {
 
   const state = { isFullscreen, isModal };
   const cn = {
-    container: className('footer', state),
+    container: className(footerBaseClassName, state),
     caption: className('footer__caption', state),
     count: className('footer__count', state),
   };
   const css = {
-    container: getStyles('footer', props),
+    container: getStyles(footerBaseClassName, props),
     caption: getStyles('footerCaption', props),
     count: getStyles('footerCount', props),
   };

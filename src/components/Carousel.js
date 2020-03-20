@@ -87,6 +87,15 @@ const defaultProps = {
   },
 };
 
+/**
+ * Used to get the className to select the track (area above and below the
+ * carousel) in other components.
+ * 
+ * This className is we call `className()` in utils with to get the full
+ * className.
+ */
+export const trackBaseClassName = 'track';
+
 class Carousel extends Component<CarouselProps, CarouselState> {
   commonProps: any; // TODO
   components: CarouselComponents;
@@ -381,7 +390,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
               {...this.getTrackProps(this.props)}
               style={{ display: 'flex', alignItems: 'center' }}
               currentView={currentIndex}
-              className={className('track')}
+              className={className(trackBaseClassName)}
               onViewChange={this.handleViewChange}
               ref={this.getTrack}
             >
