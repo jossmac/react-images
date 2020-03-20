@@ -120,9 +120,12 @@ class Modal extends Component<Props, State> {
     if (allowClose) this.handleClose(event);
   };
   handleBackdropClick = (event: MouseEvent) => {
-    const hasBackdropClassName = event.target.classList.some(className =>
-      backdropClassNames.has(className),
-    );
+    let hasBackdropClassName = false;
+    for (const targetClass of event.target.classList) {
+      if (backdropClassNames.has(targetClass)) {
+        hasBackdropClassName = true;
+      }
+    }
 
     if (!hasBackdropClassName || !this.props.closeOnBackdropClick) {
       return;
