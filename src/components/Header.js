@@ -7,6 +7,7 @@ import { Button, Div } from '../primitives';
 import { className } from '../utils';
 import type { PropsWithStyles } from '../types';
 import { Close, FullscreenEnter, FullscreenExit } from './svg';
+import componentBaseClassNames from './componentBaseClassNames';
 
 type State = { interactionIsIdle: boolean };
 type Props = PropsWithStyles &
@@ -36,12 +37,7 @@ export const headerCSS = ({ interactionIsIdle }: State) => ({
   zIndex: 1,
 });
 
-/**
- * Used to get the className to select the header in other components.
- * This className is we call `className()` in utils with to get the full
- * className.
- */
-export const headerBaseClassName = 'header';
+export const headerBaseClassName = componentBaseClassNames.Header;
 
 const Header = (props: Props) => {
   const {

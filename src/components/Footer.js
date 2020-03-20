@@ -7,6 +7,7 @@ import { smallDevice } from './css-helpers';
 import { Div, Span } from '../primitives';
 import type { PropsWithStyles, ViewType } from '../types';
 import { className } from '../utils';
+import componentBaseClassNames from './componentBaseClassNames';
 
 type State = { isModal: boolean, interactionIsIdle: boolean };
 type Props = State &
@@ -42,12 +43,7 @@ export const footerCSS = ({ isModal, interactionIsIdle }: State) => ({
   },
 });
 
-/**
- * Used to get the className to select the footer in other components.
- * This className is we call `className()` in utils with to get the full
- * className.
- */
-export const footerBaseClassName = 'footer';
+const footerBaseClassName = componentBaseClassNames.Footer;
 
 const Footer = (props: Props) => {
   const { components, getStyles, innerProps, isFullscreen, isModal } = props;

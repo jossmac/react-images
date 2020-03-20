@@ -7,6 +7,7 @@ import { Div, Img } from '../primitives';
 import { type PropsWithStyles } from '../types';
 import { className } from '../utils';
 import { getSource } from './component-helpers';
+import componentBaseClassNames from './componentBaseClassNames';
 
 type Props = PropsWithStyles & {
   data: Object,
@@ -20,12 +21,7 @@ export const viewCSS = () => ({
   textAlign: 'center',
 });
 
-/**
- * Used to get the className to select the view in other components.
- * This className is we call `className()` in utils with to get the full
- * className.
- */
-export const viewBaseClassName = 'view';
+export const viewBaseClassName = componentBaseClassNames.View;
 
 const View = (props: Props) => {
   const { data, formatters, getStyles, index, isFullscreen, isModal } = props;

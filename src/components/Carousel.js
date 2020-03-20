@@ -18,6 +18,7 @@ import { type ModalProps } from './Modal/Modal';
 import { className, isTouch } from '../utils';
 import formatters from '../formatters';
 import { type ViewsType } from '../types';
+import componentBaseClassNames from './componentBaseClassNames';
 
 type SpringConfig = { [key: string]: number };
 export type fn = any => void;
@@ -87,14 +88,7 @@ const defaultProps = {
   },
 };
 
-/**
- * Used to get the className to select the track (area above and below the
- * carousel) in other components.
- * 
- * This className is we call `className()` in utils with to get the full
- * className.
- */
-export const trackBaseClassName = 'track';
+export const trackBaseClassName = componentBaseClassNames.Track;
 
 class Carousel extends Component<CarouselProps, CarouselState> {
   commonProps: any; // TODO
