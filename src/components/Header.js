@@ -7,6 +7,7 @@ import { Button, Div } from '../primitives';
 import { className } from '../utils';
 import type { PropsWithStyles } from '../types';
 import { Close, FullscreenEnter, FullscreenExit } from './svg';
+import componentBaseClassNames from './componentBaseClassNames';
 
 type State = { interactionIsIdle: boolean };
 type Props = PropsWithStyles &
@@ -36,6 +37,8 @@ export const headerCSS = ({ interactionIsIdle }: State) => ({
   zIndex: 1,
 });
 
+const headerBaseClassName = componentBaseClassNames.Header;
+
 const Header = (props: Props) => {
   const {
     components,
@@ -61,8 +64,8 @@ const Header = (props: Props) => {
 
   return (
     <Div
-      css={getStyles('header', props)}
-      className={className('header', state)}
+      css={getStyles(headerBaseClassName, props)}
+      className={className(headerBaseClassName, state)}
       // TODO glam prefixer fails on gradients
       // https://github.com/threepointone/glam/issues/35
       style={{

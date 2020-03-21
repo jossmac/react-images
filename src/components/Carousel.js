@@ -18,6 +18,7 @@ import { type ModalProps } from './Modal/Modal';
 import { className, isTouch } from '../utils';
 import formatters from '../formatters';
 import { type ViewsType } from '../types';
+import componentBaseClassNames from './componentBaseClassNames';
 
 type SpringConfig = { [key: string]: number };
 export type fn = any => void;
@@ -86,6 +87,8 @@ const defaultProps = {
     swipe: 'touch',
   },
 };
+
+const trackBaseClassName = componentBaseClassNames.Track;
 
 class Carousel extends Component<CarouselProps, CarouselState> {
   commonProps: any; // TODO
@@ -381,7 +384,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
               {...this.getTrackProps(this.props)}
               style={{ display: 'flex', alignItems: 'center' }}
               currentView={currentIndex}
-              className={className('track')}
+              className={className(trackBaseClassName)}
               onViewChange={this.handleViewChange}
               ref={this.getTrack}
             >
