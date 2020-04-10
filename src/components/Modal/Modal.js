@@ -13,7 +13,6 @@ import { type CarouselType } from '../Carousel';
 import { defaultModalStyles, type ModalStylesConfig } from '../../styles';
 import { isTouch, className } from '../../utils';
 import componentBaseClassNames from '../componentBaseClassNames';
-import { FocusOn } from 'react-focus-on';
 
 type MouseOrKeyboardEvent = MouseEvent | KeyboardEvent;
 export type CloseType = (event: MouseOrKeyboardEvent) => void;
