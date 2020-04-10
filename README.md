@@ -26,7 +26,7 @@ component and then use it in the render function.
 import React from 'react';
 import Carousel from 'react-images';
 
-const images = [{ src: 'path/to/image-1.jpg' }, { src: 'path/to/image-2.jpg' }];
+const images = [{ source: 'path/to/image-1.jpg' }, { source: 'path/to/image-2.jpg' }];
 
 class Component extends React.Component {
   render() {
@@ -48,7 +48,7 @@ end of your `<body />` tag.
 import React from 'react';
 import Carousel, { Modal, ModalGateway } from 'react-images';
 
-const images = [{ src: 'path/to/image-1.jpg' }, { src: 'path/to/image-2.jpg' }];
+const images = [{ source: 'path/to/image-1.jpg' }, { source: 'path/to/image-2.jpg' }];
 
 class Component extends React.Component {
   state = { modalIsOpen: false };
