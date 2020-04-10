@@ -26,10 +26,19 @@ export const navigationCSS = ({ interactionIsIdle }: NavState) => ({
   justifyContent: 'space-between',
   opacity: interactionIsIdle ? 0 : 1,
   transition: 'opacity 300ms',
+  '& *:focus': {
+    outline: '1.5px solid orange',
+  },
 });
 
 export const Navigation = (props: NavProps) => {
-  const { children, getStyles, isFullscreen, isModal, showNavigationOnTouchDevice } = props;
+  const {
+    children,
+    getStyles,
+    isFullscreen,
+    isModal,
+    showNavigationOnTouchDevice,
+  } = props;
   return !isTouch() || (isTouch() && showNavigationOnTouchDevice) ? (
     <Nav
       css={getStyles('navigation', props)}
@@ -51,7 +60,7 @@ type ItemProps = ItemState &
   PropsWithStyles & {
     children: Node,
     innerProps: {
-      onClick: any => void,
+      onClick: (any) => void,
       title: string,
     },
   };

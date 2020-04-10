@@ -5,6 +5,7 @@ import glam from 'glam';
 import { Div } from '../../primitives';
 import { type PropsWithStyles } from '../../types';
 import { className } from '../../utils';
+import { FocusOn } from 'react-focus-on';
 
 // ==============================
 // Blanket
@@ -81,16 +82,24 @@ type DialogState = { isFullscreen: boolean };
 type DialogProps = DialogState &
   PropsWithStyles & {
     children: Node,
-    innerProps: Object, // TODO
+    innerProps: Object,
+    removeFocusOn: Boolean,
   };
 
 export const dialogCSS = () => ({
-  width: '100%'
+  width: '100%',
 });
 
 export const Dialog = (props: DialogProps) => {
-  const { children, getStyles, innerProps, isFullscreen } = props;
-  return (
+  const {
+    children,
+    getStyles,
+    innerProps,
+    isFullscreen,
+    removeFocusOn,
+  } = props;
+
+  return removeFocusOn ? (
     <Div
       css={getStyles('dialog', props)}
       className={className('dialog', { isFullscreen })}
@@ -98,5 +107,15 @@ export const Dialog = (props: DialogProps) => {
     >
       {children}
     </Div>
+  ) : (
+    <FocusOn>
+      <Div
+        css={getStyles('dialog', props)}
+        className={className('dialog', { isFullscreen })}
+        {...innerProps}
+      >
+        {children}
+      </Div>
+    </FocusOn>
   );
 };

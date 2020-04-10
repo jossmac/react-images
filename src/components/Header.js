@@ -35,6 +35,9 @@ export const headerCSS = ({ interactionIsIdle }: State) => ({
   left: 0,
   right: 0,
   zIndex: 1,
+  '& *:focus': {
+    outline: '1.5px solid orange',
+  },
 });
 
 const headerBaseClassName = componentBaseClassNames.Header;

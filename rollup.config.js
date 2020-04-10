@@ -17,9 +17,9 @@ const globals = {
   'raf-schd': 'rafScheduler',
   'react-view-pager': 'PageView',
   'react-full-screen': 'Fullscreen',
-  'react-scrolllock': 'ScrollLock',
   'a11y-focus-store': 'focusStore',
   'react-transition-group': 'Transition',
+  'react-focus-on': 'FocusOn',
   react: 'React',
 };
 import createEnv from 'dotenv';

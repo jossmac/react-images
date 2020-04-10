@@ -1,6 +1,6 @@
 {
   "name": "react-images",
-  "version": "1.1.0-beta.5",
+  "version": "1.1.1",
   "description": "A mobile-friendly, highly customizable, carousel component for displaying media in ReactJS",
   "main": "lib/index.js",
   "jsnext:main": "dist/react-images.es.js",
@@ -41,7 +41,7 @@
     "eslint-plugin-react": "^7.17.0",
     "flow-bin": "^0.63.1",
     "gh-pages": "^2.2.0",
-    "html-webpack-plugin": "^2.30.1",
+    "html-webpack-plugin": "^4.2.0",
     "istanbul": "^0.4.5",
     "lint-staged": "^6.1.1",
     "nps": "^5.9.12",
@@ -58,16 +58,19 @@
     "rollup-plugin-uglify": "^2.0.1",
     "style-loader": "^0.20.3",
     "uglify-es": "^3.3.9",
-    "webpack": "^4.41.5",
-    "webpack-dev-server": "^2.11.5"
+    "webpack": "^4.42.1",
+    "webpack-dev-server": "^3.10.3",
+    "webpack-cli": "^3.3.11",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
   },
   "dependencies": {
     "a11y-focus-store": "^1.0.0",
-    "cross-env": "^6.0.3",
+    "cross-env": "^7.0.2",
     "glam": "^5.0.1",
     "raf-schd": "^2.1.2",
+    "react-focus-on": "^3.3.0",
     "react-full-screen": "^0.2.2",
-    "react-scrolllock": "^4.0.1",
     "react-transition-group": "^2.9.0",
     "react-view-pager": "^0.6.0"
   },

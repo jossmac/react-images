@@ -2,6 +2,10 @@
 
 A mobile-friendly, highly customizable, carousel component for displaying media in ReactJS.
 
+### Browser support
+
+Should work in every major browser... maybe even IE10 and IE11?
+
 ### Getting Started
 
 Start by installing `react-images`

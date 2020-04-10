@@ -6,7 +6,12 @@ import glam from 'glam';
 import rafScheduler from 'raf-schd';
 import { ViewPager, Frame, Track, View as PageView } from 'react-view-pager';
 
-const viewPagerStyles = { flex: '1 1 auto', position: 'relative' };
+const viewPagerStyles = {
+  flex: '1 1 auto',
+  position: 'relative',
+  height: '100vh',
+  width: '100vw',
+};
 const frameStyles = { outline: 0 };
 
 import {
@@ -21,7 +26,7 @@ import { type ViewsType } from '../types';
 import componentBaseClassNames from './componentBaseClassNames';
 
 type SpringConfig = { [key: string]: number };
-export type fn = any => void;
+export type fn = (any) => void;
 export type IndicesType = Array<number>;
 export type CarouselProps = {
   /* Replace any of the carousel components */
@@ -60,7 +65,7 @@ export type CarouselProps = {
     onSwipeEnd: fn,
     onSwipeMove: fn,
     onSwipeStart: fn,
-    onViewChange: number => void,
+    onViewChange: (number) => void,
     springConfig: SpringConfig,
     swipe: true | false | 'mouse' | 'touch',
     swipeThreshold: number,
@@ -338,7 +343,13 @@ class Carousel extends Component<CarouselProps, CarouselState> {
   };
 
   getCommonProps() {
-    const { frameProps, trackProps, modalProps, views, showNavigationOnTouchDevice } = this.props;
+    const {
+      frameProps,
+      trackProps,
+      modalProps,
+      views,
+      showNavigationOnTouchDevice,
+    } = this.props;
     const isModal = Boolean(modalProps);
     const isFullscreen = Boolean(modalProps && modalProps.isFullscreen);
     const { currentIndex, interactionIsIdle } = this.state;
@@ -379,6 +390,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
             ref={this.getFrame}
             className={className('frame')}
             style={frameStyles}
+            tabIndex="-1"
           >
             <Track
               {...this.getTrackProps(this.props)}
