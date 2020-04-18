@@ -9,6 +9,8 @@ import type { PropsWithStyles, ViewType } from '../types';
 import { className } from '../utils';
 import componentBaseClassNames from './componentBaseClassNames';
 
+import ParseHtml from 'html-react-parser';
+
 type State = { isModal: boolean, interactionIsIdle: boolean };
 type Props = State &
   PropsWithStyles & {
@@ -100,7 +102,7 @@ export const FooterCaption = (props: ViewType) => {
       css={getStyles('footerCaption', props)}
       className={className('footer__caption', state)}
     >
-      {caption}
+      {ParseHtml(`<span>${caption}</span>`)}
     </Span>
   );
 };

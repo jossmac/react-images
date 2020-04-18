@@ -21,12 +21,13 @@ const globals = {
   'react-transition-group': 'Transition',
   'react-focus-on': 'FocusOn',
   react: 'React',
+  'html-react-parser': 'ParseHtml',
 };
 import createEnv from 'dotenv';
 
 createEnv.config();
 const external = Object.keys(globals);
-const babelOptions = prod => {
+const babelOptions = (prod) => {
   let result = {
     babelrc: false,
     presets: [['env', { modules: false }], 'react'],
