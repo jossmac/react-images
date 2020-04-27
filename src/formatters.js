@@ -54,6 +54,8 @@ function getFullscreenLabel({ isFullscreen }: FullscreenProps): string {
 
 /* alt text for each image in the carousel */
 function getAltText({ data, index }): string {
+  if (data.alt) return data.alt;
+
   if (data.caption) return data.caption;
 
   return `Image ${index + 1}`;
