@@ -106,7 +106,7 @@ export const FooterCaption = (props: ViewType) => {
        * Render a string caption using ParseHtml in case we were passed a
        * string with HTML. All other types are rendered by JSX by default.
        */}
-      {caption instanceof string
+      {typeof caption === 'string'
         ? ParseHtml(`<span>${caption}</span>`)
         : caption}
     </Span>
