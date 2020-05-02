@@ -40,8 +40,8 @@ const View = (props: Props) => {
         className={className('view-image', { isFullscreen, isModal })}
         css={{
           height: 'auto',
-          maxHeight: '100vh',
-          maxWidth: '100vw',
+          maxHeight: '100%',
+          maxWidth: '100%',
           userSelect: 'none',
         }}
       />
