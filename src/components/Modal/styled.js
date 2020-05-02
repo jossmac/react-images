@@ -6,7 +6,7 @@ import { Div } from '../../primitives';
 import { type PropsWithStyles } from '../../types';
 import { className } from '../../utils';
 import { FocusOn } from 'react-focus-on';
-import BaseClassNames from "../componentBaseClassNames"
+import BaseClassNames from '../componentBaseClassNames';
 
 // ==============================
 // Blanket
