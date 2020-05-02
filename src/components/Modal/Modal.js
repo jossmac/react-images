@@ -3,7 +3,6 @@
 import React, { cloneElement, Component } from 'react';
 import glam from 'glam';
 import Fullscreen from 'react-full-screen';
-import ScrollLock from 'react-scrolllock';
 import focusStore from 'a11y-focus-store';
 import {
   defaultModalComponents,
@@ -13,6 +12,7 @@ import { Fade, SlideUp } from './Animation';
 import { type CarouselType } from '../Carousel';
 import { defaultModalStyles, type ModalStylesConfig } from '../../styles';
 import { isTouch, className } from '../../utils';
+import componentBaseClassNames from '../componentBaseClassNames';
 
 type MouseOrKeyboardEvent = MouseEvent | KeyboardEvent;
 export type CloseType = (event: MouseOrKeyboardEvent) => void;
@@ -21,7 +21,7 @@ export type ModalProps = {
   isFullscreen: boolean,
   onClose: CloseType,
   preventScroll: boolean,
-  toggleFullscreen: any => void,
+  toggleFullscreen: (any) => void,
 };
 
 export type Props = {
@@ -55,6 +55,17 @@ const defaultProps = {
   preventScroll: true,
   styles: {},
 };
+
+/** Classes that when clicked on, close the backdrop */
+const backdropClassNames = new Set(
+  [
+    componentBaseClassNames.View,
+    componentBaseClassNames.Header,
+    componentBaseClassNames.Footer,
+    componentBaseClassNames.Track,
+  ].map(className)
+);
+
 class Modal extends Component<Props, State> {
   commonProps: any; // TODO
   components: ModalComponents;
@@ -66,7 +77,7 @@ class Modal extends Component<Props, State> {
 
     this.cacheComponents(props.components);
 
-    this.state = { isFullscreen: false };
+    this.state = { isFullscreen: false, isClosing: false };
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -84,6 +95,7 @@ class Modal extends Component<Props, State> {
   modalWillUnmount = () => {
     document.removeEventListener('keyup', this.handleKeyUp);
     focusStore.restoreFocus();
+    this.setState({ isClosing: false });
   };
 
   cacheComponents = (comps?: ModalComponents) => {
@@ -106,16 +118,26 @@ class Modal extends Component<Props, State> {
     if (allowClose) this.handleClose(event);
   };
   handleBackdropClick = (event: MouseEvent) => {
-    if ( !this.props.closeOnBackdropClick ) return;
+    let hasBackdropClassName = false;
+    for (const targetClass of event.target.classList) {
+      if (backdropClassNames.has(targetClass)) {
+        hasBackdropClassName = true;
+      }
+    }
 
+    if (!hasBackdropClassName || !this.props.closeOnBackdropClick) {
+      return;
+    }
     this.handleClose(event);
   };
   toggleFullscreen = () => {
-    this.setState(state => ({ isFullscreen: !state.isFullscreen }));
+    this.setState((state) => ({ isFullscreen: !state.isFullscreen }));
   };
   handleClose = (event: MouseOrKeyboardEvent) => {
     const { onClose } = this.props;
     const { isFullscreen } = this.state;
+
+    this.setState({ isClosing: true });
 
     // force exit fullscreen mode on close
     if (isFullscreen) {
@@ -143,7 +165,7 @@ class Modal extends Component<Props, State> {
   }
   render() {
     const { Blanket, Positioner, Dialog } = this.components;
-    const { allowFullscreen, children, preventScroll } = this.props;
+    const { allowFullscreen, children } = this.props;
     const { isFullscreen } = this.state;
     const commonProps = (this.commonProps = this.getCommonProps());
 
@@ -174,13 +196,14 @@ class Modal extends Component<Props, State> {
           component={Positioner}
           in={transitionIn}
           innerProps={{
-            onClick: this.handleBackdropClick,
+            onClick: this.state.isClosing ? null : this.handleBackdropClick,
           }}
           onEntered={this.modalDidMount}
           onExited={this.modalWillUnmount}
         >
-          <Dialog {...commonProps}>{carouselComponent}</Dialog>
-          {preventScroll && <ScrollLock />}
+          <Dialog removeFocusOn={this.state.isClosing} {...commonProps}>
+            {carouselComponent}
+          </Dialog>
         </SlideUp>
       </Fullscreen>
     );

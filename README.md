@@ -2,6 +2,10 @@
 
 A mobile-friendly, highly customizable, carousel component for displaying media in ReactJS.
 
+### Browser support
+
+Should work in every major browser... maybe even IE10 and IE11?
+
 ### Getting Started
 
 Start by installing `react-images`
@@ -17,6 +21,8 @@ yarn add react-images
 **If you were using `0.x` versions:** library was significantly rewritten for `1.x` version and contains several breaking changes.
 The best way to upgrade is to read the docs and follow the examples.
 
+Please note that the default footer parses HTML automatically (such as `<b>I'm bold!</b>`) but it **does not implement any form of XSS or sanitisation**. You should do that yourself before passing it into the caption field of react-images.
+
 ### Using the Carousel
 
 Import the carousel from `react-images` at the top of a
@@ -26,7 +32,7 @@ component and then use it in the render function.
 import React from 'react';
 import Carousel from 'react-images';
 
-const images = [{ src: 'path/to/image-1.jpg' }, { src: 'path/to/image-2.jpg' }];
+const images = [{ source: 'path/to/image-1.jpg' }, { source: 'path/to/image-2.jpg' }];
 
 class Component extends React.Component {
   render() {
@@ -48,7 +54,7 @@ end of your `<body />` tag.
 import React from 'react';
 import Carousel, { Modal, ModalGateway } from 'react-images';
 
-const images = [{ src: 'path/to/image-1.jpg' }, { src: 'path/to/image-2.jpg' }];
+const images = [{ source: 'path/to/image-1.jpg' }, { source: 'path/to/image-2.jpg' }];
 
 class Component extends React.Component {
   state = { modalIsOpen: false };

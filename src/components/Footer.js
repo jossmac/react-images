@@ -7,6 +7,9 @@ import { smallDevice } from './css-helpers';
 import { Div, Span } from '../primitives';
 import type { PropsWithStyles, ViewType } from '../types';
 import { className } from '../utils';
+import componentBaseClassNames from './componentBaseClassNames';
+
+import ParseHtml from 'html-react-parser';
 
 type State = { isModal: boolean, interactionIsIdle: boolean };
 type Props = State &
@@ -37,10 +40,16 @@ export const footerCSS = ({ isModal, interactionIsIdle }: State) => ({
   transition: 'opacity 300ms, transform 300ms',
   zIndex: isModal ? 1 : null,
 
+  '& *:focus': {
+    outline: '1.5px solid orange',
+  },
+
   [smallDevice]: {
     padding: isModal ? '20px 15px 15px' : '5px 0',
   },
 });
+
+const footerBaseClassName = componentBaseClassNames.Footer;
 
 const Footer = (props: Props) => {
   const { components, getStyles, innerProps, isFullscreen, isModal } = props;
@@ -51,12 +60,12 @@ const Footer = (props: Props) => {
 
   const state = { isFullscreen, isModal };
   const cn = {
-    container: className('footer', state),
+    container: className(footerBaseClassName, state),
     caption: className('footer__caption', state),
     count: className('footer__count', state),
   };
   const css = {
-    container: getStyles('footer', props),
+    container: getStyles(footerBaseClassName, props),
     caption: getStyles('footerCaption', props),
     count: getStyles('footerCount', props),
   };
@@ -93,7 +102,7 @@ export const FooterCaption = (props: ViewType) => {
       css={getStyles('footerCaption', props)}
       className={className('footer__caption', state)}
     >
-      {caption}
+      {ParseHtml(`<span>${caption}</span>`)}
     </Span>
   );
 };

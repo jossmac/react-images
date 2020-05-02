@@ -7,6 +7,7 @@ import { Button, Div } from '../primitives';
 import { className } from '../utils';
 import type { PropsWithStyles } from '../types';
 import { Close, FullscreenEnter, FullscreenExit } from './svg';
+import componentBaseClassNames from './componentBaseClassNames';
 
 type State = { interactionIsIdle: boolean };
 type Props = PropsWithStyles &
@@ -34,7 +35,12 @@ export const headerCSS = ({ interactionIsIdle }: State) => ({
   left: 0,
   right: 0,
   zIndex: 1,
+  '& *:focus': {
+    outline: '1.5px solid orange',
+  },
 });
+
+const headerBaseClassName = componentBaseClassNames.Header;
 
 const Header = (props: Props) => {
   const {
@@ -61,8 +67,8 @@ const Header = (props: Props) => {
 
   return (
     <Div
-      css={getStyles('header', props)}
-      className={className('header', state)}
+      css={getStyles(headerBaseClassName, props)}
+      className={className(headerBaseClassName, state)}
       // TODO glam prefixer fails on gradients
       // https://github.com/threepointone/glam/issues/35
       style={{

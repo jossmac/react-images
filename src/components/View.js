@@ -7,6 +7,7 @@ import { Div, Img } from '../primitives';
 import { type PropsWithStyles } from '../types';
 import { className } from '../utils';
 import { getSource } from './component-helpers';
+import componentBaseClassNames from './componentBaseClassNames';
 
 type Props = PropsWithStyles & {
   data: Object,
@@ -20,6 +21,8 @@ export const viewCSS = () => ({
   textAlign: 'center',
 });
 
+const viewBaseClassName = componentBaseClassNames.View;
+
 const View = (props: Props) => {
   const { data, formatters, getStyles, index, isFullscreen, isModal } = props;
   const innerProps = {
@@ -29,8 +32,8 @@ const View = (props: Props) => {
 
   return (
     <Div
-      css={getStyles('view', props)}
-      className={className('view', { isFullscreen, isModal })}
+      css={getStyles(viewBaseClassName, props)}
+      className={className(viewBaseClassName, { isFullscreen, isModal })}
     >
       <Img
         {...innerProps}
