@@ -6,6 +6,7 @@ import { Div } from '../../primitives';
 import { type PropsWithStyles } from '../../types';
 import { className } from '../../utils';
 import { FocusOn } from 'react-focus-on';
+import BaseClassNames from "../componentBaseClassNames"
 
 // ==============================
 // Blanket
@@ -65,8 +66,8 @@ export const Positioner = (props: PositionerProps) => {
   const { children, getStyles, innerProps, isFullscreen } = props;
   return (
     <Div
-      css={getStyles('positioner', props)}
-      className={className('positioner', { isFullscreen })}
+      css={getStyles(BaseClassNames.Positioner, props)}
+      className={className(BaseClassNames.Positioner, { isFullscreen })}
       {...innerProps}
     >
       {children}

@@ -63,6 +63,7 @@ const backdropClassNames = new Set(
     componentBaseClassNames.Header,
     componentBaseClassNames.Footer,
     componentBaseClassNames.Track,
+    componentBaseClassNames.Positioner,
   ].map(className)
 );
 
