@@ -6,19 +6,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - uses: borales/actions-yarn@v2.0.0
         with:
-          node-version: '12.x'
-      - run: npm ci
-      - run: npm run lint
+          cmd: install
+      - uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: run lint
   build:
     name: 🛠️ Build
     runs-on: ubuntu-latest
     needs: lint
     steps:
       - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - uses: borales/actions-yarn@v2.0.0
         with:
-          node-version: '12.x'
-      - run: npm ci
-      - run: npm build
+          cmd: install
+      - uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: build
