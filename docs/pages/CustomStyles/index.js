@@ -100,7 +100,7 @@ function styleFn(base, state) {
     // none of react-images styles are passed to <View />
     height: 400,
     width: 600,
-  })
+  }),
   footer: (base, state) => {
     const opacity = state.interactionIsIdle ? 0 : 1;
     const transition = 'opacity 300ms';
