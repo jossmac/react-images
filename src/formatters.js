@@ -59,7 +59,7 @@ function getAltText({ data, index }): string {
       console.error(
         `Image ${
           index + 1
-        } had a non-string alt property. Instead of a plain string it was `,
+        } had a non-string alt property, which will probably render incorrectly.\nInstead of a plain string it was `,
         data.alt
       );
     }
@@ -67,7 +67,17 @@ function getAltText({ data, index }): string {
     return data.alt;
   }
 
-  if (data.caption) return data.caption;
+  if (data.caption) {
+    if (typeof data.caption !== 'string') {
+      console.warn(
+        `Image ${
+          index + 1
+        } has a non-string caption, but no alt value provided. This will probably make the alt prop unintelligible for screen readers. Is this intentional?`
+      );
+    }
+
+    return data.caption;
+  }
 
   return `Image ${index + 1}`;
 }
