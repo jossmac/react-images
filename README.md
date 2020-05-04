@@ -89,8 +89,8 @@ However, react-images supports several other properties on each image object tha
 
 ```jsx
 const image = {
-  caption: "An image caption, or a rendered HTML string",
-  alt: "A plain string to serve as the images alt tag",
+  caption: "An image caption as a string, React Node, or a rendered HTML string",
+  alt: "A plain string to serve as the image's alt tag",
   source: {
     download: "A URL to serve a perfect quality image download from",
     fullscreen: "A URL to load a very high quality image from",
