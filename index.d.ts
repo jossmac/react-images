@@ -33,7 +33,7 @@ export interface TrackProps {
   onSwipeStart?: () => void;
   onViewChange?: (view: number) => void;
   springConfig?: { [key: string]: number };
-  swipe?: boolean| 'mouse' | 'touch';
+  swipe?: boolean | 'mouse' | 'touch';
   swipeThreshold?: number;
   tag?: any;
   viewsToMove?: number;

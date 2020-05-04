@@ -8,6 +8,7 @@ const componentBaseClassNames = {
   Footer: 'footer',
   View: 'view',
   Track: 'track',
+  Positioner: 'positioner',
 };
 
 export default componentBaseClassNames;

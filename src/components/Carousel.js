@@ -9,7 +9,6 @@ import { ViewPager, Frame, Track, View as PageView } from 'react-view-pager';
 const viewPagerStyles = {
   flex: '1 1 auto',
   position: 'relative',
-  width: '100vw',
 };
 const frameStyles = { outline: 0 };
 
