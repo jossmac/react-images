@@ -54,7 +54,18 @@ function getFullscreenLabel({ isFullscreen }: FullscreenProps): string {
 
 /* alt text for each image in the carousel */
 function getAltText({ data, index }): string {
-  if (data.alt) return data.alt;
+  if (data.alt) {
+    if (typeof data.alt !== 'string') {
+      console.error(
+        `Image ${
+          index + 1
+        } had a non-string alt property. Instead of a plain string it was `,
+        data.alt
+      );
+    }
+
+    return data.alt;
+  }
 
   if (data.caption) return data.caption;
 
