@@ -54,7 +54,30 @@ function getFullscreenLabel({ isFullscreen }: FullscreenProps): string {
 
 /* alt text for each image in the carousel */
 function getAltText({ data, index }): string {
-  if (data.caption) return data.caption;
+  if (data.alt) {
+    if (typeof data.alt !== 'string') {
+      console.error(
+        `Image ${
+          index + 1
+        } had a non-string alt property, which will probably render incorrectly.\nInstead of a plain string it was `,
+        data.alt
+      );
+    }
+
+    return data.alt;
+  }
+
+  if (data.caption) {
+    if (typeof data.caption !== 'string') {
+      console.warn(
+        `Image ${
+          index + 1
+        } has a non-string caption, but no alt value provided. This will probably make the alt prop unintelligible for screen readers. Is this intentional?`
+      );
+    }
+
+    return data.caption;
+  }
 
   return `Image ${index + 1}`;
 }

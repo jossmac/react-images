@@ -42,6 +42,7 @@ export interface TrackProps {
 
 export interface ViewType {
   caption?: React.ReactNode;
+  alt?: string;
   source: string | {
     download?: string;
     fullscreen?: string;

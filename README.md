@@ -76,3 +76,28 @@ class Component extends React.Component {
   }
 }
 ```
+
+### Advanced Image Lists
+
+The simplest way to define a list of images for the carousel looks like:
+
+```jsx
+const images = [{ source: 'path/to/image-1.jpg' }, { source: 'path/to/image-2.jpg' }];
+```
+
+However, react-images supports several other properties on each image object than just `source`. For example:
+
+```jsx
+const image = {
+  caption: "An image caption as a string, React Node, or a rendered HTML string",
+  alt: "A plain string to serve as the image's alt tag",
+  source: {
+    download: "A URL to serve a perfect quality image download from",
+    fullscreen: "A URL to load a very high quality image from",
+    regular: "A URL to load a high quality image from",
+    thumbnail: "A URL to load a low quality image from"
+  };
+}
+```
+
+All these fields are optional except `source`. Additionally, if using an object of URLs (rather than a plain string URL) as your `source`, you must specify the `regular` quality URL.
