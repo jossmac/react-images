@@ -1,5 +1,14 @@
 # React Images
 
+### ⚠️ Warning!
+
+**Don't use this in a new project.** This package hasn't been properly maintained in a long time and there are much better options available.
+
+**Instead, try...**
+- [React Responsive Carousel](http://react-responsive-carousel.js.org/)
+
+---
+
 A mobile-friendly, highly customizable, carousel component for displaying media in ReactJS.
 
 ### Browser support
