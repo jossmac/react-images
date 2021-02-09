@@ -6,7 +6,6 @@
     "node": true
   },
   "plugins": ["react"],
-
   "settings": {
     "react": {
       "createClass": "createReactClass",
@@ -23,7 +22,7 @@
         "argsIgnorePattern": "^event$",
         "ignoreRestSiblings": true,
         "vars": "all",
-        "varsIgnorePattern": "^glam$"
+        "varsIgnorePattern": "^(glam|React)$"
       }
     ],
     "curly": [2, "multi-line"],
