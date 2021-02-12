@@ -2,7 +2,7 @@
 // @jsx glam
 import React, { cloneElement, Component } from 'react';
 import glam from 'glam';
-import Fullscreen from 'react-full-screen';
+import { Fullscreen } from 'react-full-screen';
 import focusStore from 'a11y-focus-store';
 import {
   defaultModalComponents,
