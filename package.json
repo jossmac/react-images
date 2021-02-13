@@ -46,6 +46,7 @@
     "lint-staged": "^10.5.4",
     "nps": "^5.10.0",
     "nps-utils": "^1.7.0",
+    "prettier": "^2.2.1",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-helmet": "^6.1.0",
@@ -87,7 +88,9 @@
     "lint": "eslint .",
     "deploy": "cross-env NODE_ENV=production nps publish",
     "start": "webpack-dev-server --progress",
-    "precommit": "flow check && lint-staged"
+    "precommit": "flow check && lint-staged",
+    "format": "prettier --write \"**/*.{js,ts,jsx,tsx,json,yml,md}\"",
+    "format:check": "prettier --check \"**/*.{js,ts,jsx,tsx,json,yml,md}\""
   },
   "files": [
     "dist",
