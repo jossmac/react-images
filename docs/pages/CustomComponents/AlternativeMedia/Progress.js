@@ -1,12 +1,12 @@
 // @flow
 // @jsx glam
-import glam from 'glam';
-import React from 'react';
-import { colors } from '../../../theme';
+import glam from 'glam'
+import React from 'react'
+import { colors } from '../../../theme'
 
-type Props = { progress: number };
+type Props = { progress: number }
 
-const height = 6;
+const height = 6
 
 const ProgressBar = ({ progress }: Props) => (
   <div
@@ -21,7 +21,7 @@ const ProgressBar = ({ progress }: Props) => (
   >
     <Progress progress={progress} />
   </div>
-);
+)
 
 const Progress = ({ progress }: Props) => (
   <div
@@ -38,6 +38,6 @@ const Progress = ({ progress }: Props) => (
       width: `${progress}%`,
     }}
   />
-);
+)
 
-export default ProgressBar;
+export default ProgressBar

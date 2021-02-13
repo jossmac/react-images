@@ -1,35 +1,19 @@
 // @flow
 
 // Carousel
-import { containerCSS } from './components/Container';
-import {
-  navigationCSS,
-  navigationPrevCSS,
-  navigationNextCSS,
-} from './components/Navigation';
-import { viewCSS } from './components/View';
-import {
-  headerCSS,
-  headerCloseCSS,
-  headerFullscreenCSS,
-} from './components/Header';
-import {
-  footerCSS,
-  footerCaptionCSS,
-  footerCountCSS,
-} from './components/Footer';
+import { containerCSS } from './components/Container'
+import { navigationCSS, navigationPrevCSS, navigationNextCSS } from './components/Navigation'
+import { viewCSS } from './components/View'
+import { headerCSS, headerCloseCSS, headerFullscreenCSS } from './components/Header'
+import { footerCSS, footerCaptionCSS, footerCountCSS } from './components/Footer'
 
 // Modal
-import {
-  blanketCSS,
-  dialogCSS,
-  positionerCSS,
-} from './components/Modal/styled';
+import { blanketCSS, dialogCSS, positionerCSS } from './components/Modal/styled'
 
-type Props = { [key: string]: any };
-type StyleDef = Props => Object;
+type Props = { [key: string]: any }
+type StyleDef = Props => Object
 
-export type GetStyles = (string, Props) => {};
+export type GetStyles = (string, Props) => {}
 
 export type CarouselStyles = {
   container: StyleDef,
@@ -43,14 +27,14 @@ export type CarouselStyles = {
   navigationPrev: StyleDef,
   navigationNext: StyleDef,
   view: StyleDef,
-};
+}
 export type ModalStyles = {
   blanket: StyleDef,
   dialog: StyleDef,
   positioner: StyleDef,
-};
-export type CarouselStylesConfig = $Shape<CarouselStyles>;
-export type ModalStylesConfig = $Shape<ModalStyles>;
+}
+export type CarouselStylesConfig = $Shape<CarouselStyles>
+export type ModalStylesConfig = $Shape<ModalStyles>
 
 export const defaultCarouselStyles: CarouselStyles = {
   container: containerCSS,
@@ -64,30 +48,30 @@ export const defaultCarouselStyles: CarouselStyles = {
   navigationPrev: navigationPrevCSS,
   navigationNext: navigationNextCSS,
   view: viewCSS,
-};
+}
 export const defaultModalStyles: CarouselStyles = {
   blanket: blanketCSS,
   dialog: dialogCSS,
   positioner: positionerCSS,
-};
+}
 
 // Merge Utility
 // Allows consumers to extend a base Carousel or Modal with additional styles
 
 export function mergeStyles(source: Object, target: Object = {}) {
   // initialize with source styles
-  const styles = { ...source };
+  const styles = { ...source }
 
   // massage in target styles
   Object.keys(target).forEach(key => {
     if (source[key]) {
       styles[key] = (rsCss, props) => {
-        return target[key](source[key](rsCss, props), props);
-      };
+        return target[key](source[key](rsCss, props), props)
+      }
     } else {
-      styles[key] = target[key];
+      styles[key] = target[key]
     }
-  });
+  })
 
-  return styles;
+  return styles
 }

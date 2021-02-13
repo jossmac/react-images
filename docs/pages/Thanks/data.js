@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 export const features = [
   {
@@ -28,6 +28,6 @@ export const features = [
       </a>
     ),
   },
-];
+]
 
-export type FeaturesType = typeof features;
+export type FeaturesType = typeof features

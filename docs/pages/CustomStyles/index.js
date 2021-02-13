@@ -1,25 +1,25 @@
 // @flow
 // @jsx glam
-import glam from 'glam';
-import React, { Component } from 'react';
-import { Helmet } from 'react-helmet';
+import glam from 'glam'
+import React, { Component } from 'react'
+import { Helmet } from 'react-helmet'
 
-import type { ProviderProps } from '../../ImageProvider';
-import type { RouterProps } from '../../../src/types';
-import { Code, CodeBlock, Title } from '../components';
-import CarouselExample from './CarouselExample';
-import ModalExample from './ModalExample';
+import type { ProviderProps } from '../../ImageProvider'
+import type { RouterProps } from '../../../src/types'
+import { Code, CodeBlock, Title } from '../components'
+import CarouselExample from './CarouselExample'
+import ModalExample from './ModalExample'
 
-type Props = ProviderProps & RouterProps;
+type Props = ProviderProps & RouterProps
 
 const keyFn = k => {
-  const style = { display: 'inline-block', marginBottom: 4, marginRight: 4 };
+  const style = { display: 'inline-block', marginBottom: 4, marginRight: 4 }
   return (
     <span key={k} style={style}>
       <Code>{k}</Code>
     </span>
-  );
-};
+  )
+}
 const carouselKeys = [
   'container',
   'footer',
@@ -32,8 +32,8 @@ const carouselKeys = [
   'navigationPrev',
   'navigationNext',
   'view',
-];
-const modalKeys = ['blanket', 'dialog', 'positioner'];
+]
+const modalKeys = ['blanket', 'dialog', 'positioner']
 
 export default class CustomStyles extends Component<Props> {
   render() {
@@ -49,11 +49,11 @@ export default class CustomStyles extends Component<Props> {
         </Helmet>
         <Title>Styles</Title>
         <p>
-          React-Images offers a flexible, light-weight styling framework which
-          is a thin abstraction over simple javascript objects using{' '}
+          React-Images offers a flexible, light-weight styling framework which is a thin abstraction over simple javascript objects using{' '}
           <a href="https://github.com/threepointone/glam" target="_blank">
             glam
-          </a>.
+          </a>
+          .
         </p>
         <CodeBlock>
           {`/**
@@ -68,14 +68,12 @@ function styleFn(base, state) {
         </CodeBlock>
         <h3>Style Object</h3>
         <p>
-          Each component is keyed, and ships with default styles. The
-          component's default style object is passed as the first argument to
-          the function when it's resolved.
+          Each component is keyed, and ships with default styles. The component's default style object is passed as the first argument to the function when it's
+          resolved.
         </p>
         <p>
-          The second argument is the current state of the carousel, features
-          like <Code>interactionIsIdle</Code>, <Code>isModal</Code> etc.
-          allowing you to implement dynamic styles for each of the components.
+          The second argument is the current state of the carousel, features like <Code>interactionIsIdle</Code>, <Code>isModal</Code> etc. allowing you to
+          implement dynamic styles for each of the components.
         </p>
         <h6>Carousel Keys</h6>
         <p>{carouselKeys.map(keyFn)}</p>
@@ -83,10 +81,8 @@ function styleFn(base, state) {
         <p>{modalKeys.map(keyFn)}</p>
         <h3>Base and State</h3>
         <p>
-          Spreading the base styles into your returned object let's you extend
-          it however you like while maintaining existing styles. Alternatively,
-          you can omit the base and completely take control of the component's
-          styles.
+          Spreading the base styles into your returned object let's you extend it however you like while maintaining existing styles. Alternatively, you can
+          omit the base and completely take control of the component's styles.
         </p>
         <CodeBlock>
           {`const customStyles = {
@@ -119,6 +115,6 @@ const App = () => (
         <CarouselExample {...this.props} />
         <ModalExample {...this.props} />
       </div>
-    );
+    )
   }
 }

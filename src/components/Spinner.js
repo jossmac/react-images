@@ -1,21 +1,21 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import { css, StyleSheet } from 'aphrodite/no-important';
+import PropTypes from 'prop-types'
+import React from 'react'
+import { css, StyleSheet } from 'aphrodite/no-important'
 
 const Spinner = props => {
-  const classes = StyleSheet.create(styles(props));
+  const classes = StyleSheet.create(styles(props))
 
   return (
     <div className={css(classes.spinner)}>
       <div className={css(classes.ripple)} />
     </div>
-  );
-};
+  )
+}
 
 Spinner.propTypes = {
   color: PropTypes.string,
   size: PropTypes.number,
-};
+}
 
 const rippleKeyframes = {
   '0%': {
@@ -32,7 +32,7 @@ const rippleKeyframes = {
     height: '100%',
     opacity: 0,
   },
-};
+}
 
 const styles = ({ color, size }) => ({
   spinner: {
@@ -51,6 +51,6 @@ const styles = ({ color, size }) => ({
     animationTimingFunction: 'cubic-bezier(0, 0.2, 0.8, 1)',
     animationIterationCount: 'infinite',
   },
-});
+})
 
-export default Spinner;
+export default Spinner

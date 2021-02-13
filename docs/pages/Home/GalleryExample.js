@@ -1,41 +1,38 @@
 // @flow
 // @jsx glam
-import glam from 'glam';
-import React, { Component, Fragment } from 'react';
+import glam from 'glam'
+import React, { Component, Fragment } from 'react'
 
-import { type ProviderProps } from '../../ImageProvider';
-import Carousel, { Modal, ModalGateway } from '../../../src/components';
-import { FooterCaption } from '../components';
-import { getAltText } from '../formatters';
+import { type ProviderProps } from '../../ImageProvider'
+import Carousel, { Modal, ModalGateway } from '../../../src/components'
+import { FooterCaption } from '../components'
+import { getAltText } from '../formatters'
 
 type State = {
   selectedIndex?: number,
   lightboxIsOpen: boolean,
-};
+}
 
 export default class Home extends Component<ProviderProps, State> {
   state = {
     selectedIndex: 0,
     lightboxIsOpen: false,
-  };
+  }
   toggleLightbox = (selectedIndex: number) => {
     this.setState(state => ({
       lightboxIsOpen: !state.lightboxIsOpen,
       selectedIndex,
-    }));
-  };
+    }))
+  }
   render() {
-    const { images, isLoading } = this.props;
-    const { selectedIndex, lightboxIsOpen } = this.state;
+    const { images, isLoading } = this.props
+    const { selectedIndex, lightboxIsOpen } = this.state
     return (
       <Fragment>
         {!isLoading ? (
           <Gallery>
             {images.map(({ caption, source }, j) => (
-              <Image
-                onClick={() => this.toggleLightbox(j)}
-                key={source.thumbnail}
-              >
+              <Image onClick={() => this.toggleLightbox(j)} key={source.thumbnail}>
                 <img
                   alt={caption}
                   src={source.thumbnail}
@@ -53,21 +50,16 @@ export default class Home extends Component<ProviderProps, State> {
         <ModalGateway>
           {lightboxIsOpen && !isLoading ? (
             <Modal onClose={this.toggleLightbox}>
-              <Carousel
-                components={{ FooterCaption }}
-                currentIndex={selectedIndex}
-                formatters={{ getAltText }}
-                views={images}
-              />
+              <Carousel components={{ FooterCaption }} currentIndex={selectedIndex} formatters={{ getAltText }} views={images} />
             </Modal>
           ) : null}
         </ModalGateway>
       </Fragment>
-    );
+    )
   }
 }
 
-const gutter = 2;
+const gutter = 2
 
 const Gallery = (props: any) => (
   <div
@@ -78,7 +70,7 @@ const Gallery = (props: any) => (
     }}
     {...props}
   />
-);
+)
 
 const Image = (props: any) => (
   <div
@@ -98,4 +90,4 @@ const Image = (props: any) => (
     }}
     {...props}
   />
-);
+)

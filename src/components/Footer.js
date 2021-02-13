@@ -1,17 +1,17 @@
 // @flow
 // @jsx glam
-import glam from 'glam';
-import React from 'react';
+import glam from 'glam'
+import React from 'react'
 
-import { smallDevice } from './css-helpers';
-import { Div, Span } from '../primitives';
-import type { PropsWithStyles, ViewType } from '../types';
-import { className } from '../utils';
-import componentBaseClassNames from './componentBaseClassNames';
+import { smallDevice } from './css-helpers'
+import { Div, Span } from '../primitives'
+import type { PropsWithStyles, ViewType } from '../types'
+import { className } from '../utils'
+import componentBaseClassNames from './componentBaseClassNames'
 
-import ParseHtml from 'html-react-parser';
+import ParseHtml from 'html-react-parser'
 
-type State = { isModal: boolean, interactionIsIdle: boolean };
+type State = { isModal: boolean, interactionIsIdle: boolean }
 type Props = State &
   PropsWithStyles & {
     components: Object,
@@ -21,7 +21,7 @@ type Props = State &
     isModal: boolean,
     modalProps: any,
     interactionIsIdle: any,
-  };
+  }
 
 export const footerCSS = ({ isModal, interactionIsIdle }: State) => ({
   alignItems: 'top',
@@ -47,29 +47,27 @@ export const footerCSS = ({ isModal, interactionIsIdle }: State) => ({
   [smallDevice]: {
     padding: isModal ? '20px 15px 15px' : '5px 0',
   },
-});
+})
 
-const footerBaseClassName = componentBaseClassNames.Footer;
+const footerBaseClassName = componentBaseClassNames.Footer
 
 const Footer = (props: Props) => {
-  const { components, getStyles, innerProps, isFullscreen, isModal } = props;
+  const { components, getStyles, innerProps, isFullscreen, isModal } = props
 
-  const style = isModal
-    ? { background: 'linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.33))' }
-    : null;
+  const style = isModal ? { background: 'linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.33))' } : null
 
-  const state = { isFullscreen, isModal };
+  const state = { isFullscreen, isModal }
   const cn = {
     container: className(footerBaseClassName, state),
     caption: className('footer__caption', state),
     count: className('footer__count', state),
-  };
+  }
   const css = {
     container: getStyles(footerBaseClassName, props),
     caption: getStyles('footerCaption', props),
     count: getStyles('footerCount', props),
-  };
-  const { Caption, Count } = components;
+  }
+  const { Caption, Count } = components
 
   return (
     <Div
@@ -83,54 +81,46 @@ const Footer = (props: Props) => {
       <Caption {...props} />
       <Count {...props} />
     </Div>
-  );
-};
+  )
+}
 
 // ==============================
 // Inner Elements
 // ==============================
 
-export const footerCaptionCSS = () => ({});
+export const footerCaptionCSS = () => ({})
 
 export const FooterCaption = (props: ViewType) => {
-  const { currentView, getStyles, isFullscreen, isModal } = props;
-  const { caption } = currentView;
-  const state = { isFullscreen, isModal };
+  const { currentView, getStyles, isFullscreen, isModal } = props
+  const { caption } = currentView
+  const state = { isFullscreen, isModal }
 
   return (
-    <Span
-      css={getStyles('footerCaption', props)}
-      className={className('footer__caption', state)}
-    >
+    <Span css={getStyles('footerCaption', props)} className={className('footer__caption', state)}>
       {/*
        * Render a string caption using ParseHtml in case we were passed a
        * string with HTML. All other types are rendered by JSX by default.
        */}
-      {typeof caption === 'string'
-        ? ParseHtml(`<span>${caption}</span>`)
-        : caption}
+      {typeof caption === 'string' ? ParseHtml(`<span>${caption}</span>`) : caption}
     </Span>
-  );
-};
+  )
+}
 
-export const footerCountCSS = () => ({ flexShrink: 0, marginLeft: '1em' });
+export const footerCountCSS = () => ({ flexShrink: 0, marginLeft: '1em' })
 
 export const FooterCount = (props: ViewType) => {
-  const { currentIndex, getStyles, isFullscreen, isModal, views } = props;
-  const state = { isFullscreen, isModal };
-  const activeView = currentIndex + 1;
-  const totalViews = views.length;
+  const { currentIndex, getStyles, isFullscreen, isModal, views } = props
+  const state = { isFullscreen, isModal }
+  const activeView = currentIndex + 1
+  const totalViews = views.length
 
-  if (!activeView || !totalViews) return null;
+  if (!activeView || !totalViews) return null
 
   return (
-    <Span
-      css={getStyles('footerCount', props)}
-      className={className('footer__count', state)}
-    >
+    <Span css={getStyles('footerCount', props)} className={className('footer__count', state)}>
       {activeView} of {totalViews}
     </Span>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

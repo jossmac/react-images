@@ -1,11 +1,11 @@
 // @flow
 // @jsx glam
-import glam from 'glam';
-import React, { Component } from 'react';
+import glam from 'glam'
+import React, { Component } from 'react'
 
-import { Title } from '../components';
-import { features } from './data';
-import { colors } from '../../theme';
+import { Title } from '../components'
+import { features } from './data'
+import { colors } from '../../theme'
 
 const Hr = () => (
   <hr
@@ -17,7 +17,7 @@ const Hr = () => (
       marginTop: '2em',
     }}
   />
-);
+)
 
 export default class Thanks extends Component<*> {
   render() {
@@ -29,12 +29,11 @@ export default class Thanks extends Component<*> {
           <a href="https://twitter.com/JedWatson" target="_blank">
             @JedWatson
           </a>{' '}
-          exploring component architecture and styling possibilities for version
-          two of{' '}
+          exploring component architecture and styling possibilities for version two of{' '}
           <a href="https://github.com/JedWatson/react-select" target="_blank">
             react-select
-          </a>. This project has directly benefitted from the solutions
-          discovered in that process &mdash; cheers mate!
+          </a>
+          . This project has directly benefitted from the solutions discovered in that process &mdash; cheers mate!
         </p>
         <p>
           A big thank you to{' '}
@@ -44,18 +43,14 @@ export default class Thanks extends Component<*> {
           for embracing open-source and encouraging its employees to give back.
         </p>
         <Hr />
-        <p>
-          Shout out to the following projects that allowed me to build this:
-        </p>
+        <p>Shout out to the following projects that allowed me to build this:</p>
         <List items={features} />
         <p>
-          I&apos;d also like to thank everyone who has contributed to this
-          project over the years, without your support react-images
-          wouldn&apos;t be where it is today. Cheers to the open source
-          community!
+          I&apos;d also like to thank everyone who has contributed to this project over the years, without your support react-images wouldn&apos;t be where it
+          is today. Cheers to the open source community!
         </p>
       </div>
-    );
+    )
   }
 }
 
@@ -68,4 +63,4 @@ const List = ({ items }: FeaturesType) => (
       </li>
     ))}
   </ul>
-);
+)

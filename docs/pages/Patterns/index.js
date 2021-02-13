@@ -1,11 +1,11 @@
 // @flow
 // @jsx glam
-import glam from 'glam';
-import React, { Component } from 'react';
-import { Helmet } from 'react-helmet';
+import glam from 'glam'
+import React, { Component } from 'react'
+import { Helmet } from 'react-helmet'
 
-import { Title } from '../components';
-import RouterGallery from './RouterGallery';
+import { Title } from '../components'
+import RouterGallery from './RouterGallery'
 
 export default class Patterns extends Component<*> {
   render() {
@@ -20,12 +20,9 @@ export default class Patterns extends Component<*> {
           />
         </Helmet>
         <Title>Patterns</Title>
-        <p>
-          A collection of common patterns you may like to implement with
-          React-Images.
-        </p>
+        <p>A collection of common patterns you may like to implement with React-Images.</p>
         <RouterGallery {...this.props} />
       </div>
-    );
+    )
   }
 }

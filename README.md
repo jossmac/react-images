@@ -5,6 +5,7 @@
 **Don't use this in a new project.** This package hasn't been properly maintained in a long time and there are much better options available.
 
 **Instead, try...**
+
 - [React Responsive Carousel](http://react-responsive-carousel.js.org/)
 
 ---
@@ -22,7 +23,9 @@ Start by installing `react-images`
 ```bash
 npm install react-images
 ```
+
 or
+
 ```bash
 yarn add react-images
 ```
@@ -38,14 +41,14 @@ Import the carousel from `react-images` at the top of a
 component and then use it in the render function.
 
 ```jsx
-import React from 'react';
-import Carousel from 'react-images';
+import React from 'react'
+import Carousel from 'react-images'
 
-const images = [{ source: 'path/to/image-1.jpg' }, { source: 'path/to/image-2.jpg' }];
+const images = [{ source: 'path/to/image-1.jpg' }, { source: 'path/to/image-2.jpg' }]
 
 class Component extends React.Component {
   render() {
-    return <Carousel views={images} />;
+    return <Carousel views={images} />
   }
 }
 ```
@@ -60,18 +63,18 @@ The `ModalGateway` will insert the modal just before the
 end of your `<body />` tag.
 
 ```jsx
-import React from 'react';
-import Carousel, { Modal, ModalGateway } from 'react-images';
+import React from 'react'
+import Carousel, { Modal, ModalGateway } from 'react-images'
 
-const images = [{ source: 'path/to/image-1.jpg' }, { source: 'path/to/image-2.jpg' }];
+const images = [{ source: 'path/to/image-1.jpg' }, { source: 'path/to/image-2.jpg' }]
 
 class Component extends React.Component {
-  state = { modalIsOpen: false };
+  state = { modalIsOpen: false }
   toggleModal = () => {
-    this.setState(state => ({ modalIsOpen: !state.modalIsOpen }));
-  };
+    this.setState(state => ({ modalIsOpen: !state.modalIsOpen }))
+  }
   render() {
-    const { modalIsOpen } = this.state;
+    const { modalIsOpen } = this.state
 
     return (
       <ModalGateway>
@@ -81,7 +84,7 @@ class Component extends React.Component {
           </Modal>
         ) : null}
       </ModalGateway>
-    );
+    )
   }
 }
 ```
@@ -91,7 +94,7 @@ class Component extends React.Component {
 The simplest way to define a list of images for the carousel looks like:
 
 ```jsx
-const images = [{ source: 'path/to/image-1.jpg' }, { source: 'path/to/image-2.jpg' }];
+const images = [{ source: 'path/to/image-1.jpg' }, { source: 'path/to/image-2.jpg' }]
 ```
 
 However, react-images supports several other properties on each image object than just `source`. For example:

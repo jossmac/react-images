@@ -1,10 +1,10 @@
 // @flow
 
-const path = require('path');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const webpack = require('webpack');
-require('dotenv').config();
+const path = require('path')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const webpack = require('webpack')
+require('dotenv').config()
 
 module.exports = {
   context: path.resolve(__dirname, 'docs'),
@@ -54,4 +54,4 @@ module.exports = {
     }),
     new CopyWebpackPlugin(['_redirects', 'favicon.ico', 'index.css']),
   ],
-};
+}

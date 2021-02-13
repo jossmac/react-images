@@ -1,17 +1,17 @@
 // @flow
 // @jsx glam
 
-import glam from 'glam';
-import React, { Component, type Node } from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import { colors } from '../theme';
-import { smallDevice, largeDevice } from '../utils';
+import glam from 'glam'
+import React, { Component, type Node } from 'react'
+import { Link, withRouter } from 'react-router-dom'
+import { colors } from '../theme'
+import { smallDevice, largeDevice } from '../utils'
 
-const navWidth = 180;
-const appWidth = 840;
-const appGutter = 15;
-const contentGutter = 20;
-const pagePadding = 120;
+const navWidth = 180
+const appWidth = 840
+const appGutter = 15
+const contentGutter = 20
+const pagePadding = 120
 
 export const AppContainer = (props: any) => (
   <div
@@ -25,7 +25,7 @@ export const AppContainer = (props: any) => (
     }}
     {...props}
   />
-);
+)
 export const PageContent = (props: any) => (
   <div
     css={{
@@ -40,7 +40,7 @@ export const PageContent = (props: any) => (
     }}
     {...props}
   />
-);
+)
 export const AppContent = (props: any) => (
   <div
     css={{
@@ -54,7 +54,7 @@ export const AppContent = (props: any) => (
     }}
     {...props}
   />
-);
+)
 export const Nav = ({ children }: { children: Node }) => (
   <nav
     css={{
@@ -86,16 +86,16 @@ export const Nav = ({ children }: { children: Node }) => (
     {children}
     <Footer />
   </nav>
-);
+)
 
 type ItemProps = {
   children: Node,
   icon: string,
   isSelected: boolean,
   to: string,
-};
+}
 export const NavItem = ({ children, icon, isSelected, to }: ItemProps) => {
-  const attrs = isSelected ? { 'aria-current': 'page' } : {};
+  const attrs = isSelected ? { 'aria-current': 'page' } : {}
   return (
     <Link
       {...attrs}
@@ -128,19 +128,16 @@ export const NavItem = ({ children, icon, isSelected, to }: ItemProps) => {
         },
       }}
     >
-      <span
-        css={{ fontSize: '1.33em', marginRight: '0.5em' }}
-        role="presentation"
-      >
+      <span css={{ fontSize: '1.33em', marginRight: '0.5em' }} role="presentation">
         {icon}
       </span>
       {children}
     </Link>
-  );
-};
+  )
+}
 
 const Footer = () => {
-  const size = window.innerWidth > 769 ? 'large' : null;
+  const size = window.innerWidth > 769 ? 'large' : null
 
   return (
     <div
@@ -178,27 +175,27 @@ const Footer = () => {
         </a>
       </p>
     </div>
-  );
-};
+  )
+}
 
 // Return scroll to top on route change
 class ScrollToTop extends Component<*> {
   componentDidUpdate(prevProps) {
-    const { history, location } = this.props;
+    const { history, location } = this.props
 
     // do not influence scroll on browser back/forward
-    if (history.action === 'POP') return;
+    if (history.action === 'POP') return
 
     // no scroll when extending the current path
-    const pathArr = location.pathname.split('/');
+    const pathArr = location.pathname.split('/')
     if (!prevProps.location.pathname.includes(pathArr[1])) {
-      window.scrollTo(0, 0);
+      window.scrollTo(0, 0)
     }
   }
 
   render() {
-    return this.props.children;
+    return this.props.children
   }
 }
 
-export const ScrollRestoration = withRouter(ScrollToTop);
+export const ScrollRestoration = withRouter(ScrollToTop)

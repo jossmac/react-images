@@ -1,5 +1,6 @@
 name: CI
 on: [push, pull_request]
+
 jobs:
   lint:
     name: ✔️ Lint
@@ -12,10 +13,25 @@ jobs:
       - uses: borales/actions-yarn@v2.0.0
         with:
           cmd: run lint
+
+  check-formatting:
+    name: ✔️ Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: install
+      - uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: run format:check
+
   build:
     name: 🛠️ Build
     runs-on: ubuntu-latest
-    needs: lint
+    needs:
+      - lint
+      - check-formatting
     steps:
       - uses: actions/checkout@v1
       - uses: borales/actions-yarn@v2.0.0

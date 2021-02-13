@@ -1,32 +1,32 @@
 // @flow
 // @jsx glam
-import glam from 'glam';
-import React, { Component, type ElementRef } from 'react';
-import rafScheduler from 'raf-schd';
+import glam from 'glam'
+import React, { Component, type ElementRef } from 'react'
+import rafScheduler from 'raf-schd'
 
-import Icon from './Icon';
-import ProgressBar from './Progress';
-import { colors } from '../../../theme';
+import Icon from './Icon'
+import ProgressBar from './Progress'
+import { colors } from '../../../theme'
 
 type UrlShape = {
   type: 'video/mp4' | 'video/ogg',
   src: string,
-};
+}
 
 export type ViewShape = {
   poster: string,
   urls: Array<UrlShape>,
-};
+}
 
 type ViewProps = {
   currentIndex: number,
   data: ViewShape,
   interactionIsIdle: boolean,
-};
-type ViewState = { paused: boolean, progress: number };
+}
+type ViewState = { paused: boolean, progress: number }
 
 function calculateProgress({ currentTime, duration }) {
-  return (100 / duration) * currentTime;
+  return (100 / duration) * currentTime
 }
 
 const Footer = ({ interactionIsIdle, ...props }) => (
@@ -48,7 +48,7 @@ const Footer = ({ interactionIsIdle, ...props }) => (
     }}
     {...props}
   />
-);
+)
 const Button = props => (
   <button
     type="button"
@@ -69,65 +69,65 @@ const Button = props => (
     }}
     {...props}
   />
-);
+)
 
 export default class View extends Component<ViewProps, ViewState> {
-  video: HTMLVideoElement;
-  state = { paused: true, progress: 0 };
+  video: HTMLVideoElement
+  state = { paused: true, progress: 0 }
   componentDidMount() {
-    this.video.addEventListener('play', this.handlePlay, false);
-    this.video.addEventListener('pause', this.handlePause, false);
-    this.video.addEventListener('timeupdate', this.handleTimeUpdate, false);
+    this.video.addEventListener('play', this.handlePlay, false)
+    this.video.addEventListener('pause', this.handlePause, false)
+    this.video.addEventListener('timeupdate', this.handleTimeUpdate, false)
   }
   componentWillUnmount() {
-    this.video.removeEventListener('play', this.handlePlay);
-    this.video.removeEventListener('pause', this.handlePause);
-    this.video.removeEventListener('timeupdate', this.handleTimeUpdate);
+    this.video.removeEventListener('play', this.handlePlay)
+    this.video.removeEventListener('pause', this.handlePause)
+    this.video.removeEventListener('timeupdate', this.handleTimeUpdate)
   }
   componentDidUpdate(prevProps: ViewProps) {
     if (this.props.currentIndex !== prevProps.currentIndex) {
-      this.playOrPause('pause');
+      this.playOrPause('pause')
     }
   }
   handlePlay = () => {
-    this.setState({ paused: false });
-  };
+    this.setState({ paused: false })
+  }
   handleTimeUpdate = rafScheduler(() => {
     const progress = calculateProgress({
       currentTime: this.video.currentTime,
       duration: this.video.duration,
-    });
+    })
 
-    this.setState({ progress });
-  });
+    this.setState({ progress })
+  })
   handlePause = () => {
-    this.setState({ paused: true });
-  };
+    this.setState({ paused: true })
+  }
   playOrPause = (type: 'play' | 'pause' | 'toggle' = 'toggle') => {
-    const { video } = this;
+    const { video } = this
 
     switch (type) {
       case 'play':
-        video.play();
-        break;
+        video.play()
+        break
       case 'pause':
-        video.pause();
-        break;
+        video.pause()
+        break
       default:
         if (video.paused || video.ended) {
-          video.play();
+          video.play()
         } else {
-          video.pause();
+          video.pause()
         }
     }
-  };
+  }
   getVideo = (ref: ElementRef<*>) => {
-    this.video = ref;
-  };
+    this.video = ref
+  }
   render() {
-    const { data, interactionIsIdle } = this.props;
-    const { progress } = this.state;
-    const width = 854;
+    const { data, interactionIsIdle } = this.props
+    const { progress } = this.state
+    const width = 854
 
     return (
       <div
@@ -141,14 +141,7 @@ export default class View extends Component<ViewProps, ViewState> {
           textAlign: 'center',
         }}
       >
-        <video
-          autoPlay={false}
-          controls={false}
-          onClick={this.playOrPause}
-          poster={data.poster}
-          ref={this.getVideo}
-          style={{ width: '100%', height: 'auto' }}
-        >
+        <video autoPlay={false} controls={false} onClick={this.playOrPause} poster={data.poster} ref={this.getVideo} style={{ width: '100%', height: 'auto' }}>
           {data.sources.map((vid, idx) => (
             <source key={idx} src={vid.url} type={vid.type} />
           ))}
@@ -163,6 +156,6 @@ export default class View extends Component<ViewProps, ViewState> {
           </Footer>
         ) : null}
       </div>
-    );
+    )
   }
 }

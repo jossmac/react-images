@@ -13,19 +13,16 @@ export const videos = [
     ],
   },
   {
-    poster:
-      'https://durian.blender.org/wp-content/uploads/2010/06/02.b_comp_000296.jpg',
+    poster: 'https://durian.blender.org/wp-content/uploads/2010/06/02.b_comp_000296.jpg',
     sources: [
       {
         type: 'video/mp4',
-        url:
-          'https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4',
+        url: 'https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4',
       },
       {
         type: 'video/ogg',
-        url:
-          'https://download.blender.org/durian/trailer/sintel_trailer-480p.ogv',
+        url: 'https://download.blender.org/durian/trailer/sintel_trailer-480p.ogv',
       },
     ],
   },
-];
+]

@@ -1,24 +1,24 @@
 // @flow
 // @jsx glam
-import React, { type Node } from 'react';
-import glam from 'glam';
+import React, { type Node } from 'react'
+import glam from 'glam'
 
-import { Button, Nav } from '../primitives';
-import { type PropsWithStyles } from '../types';
-import { className, isTouch } from '../utils';
-import { ChevronLeft, ChevronRight } from './svg';
+import { Button, Nav } from '../primitives'
+import { type PropsWithStyles } from '../types'
+import { className, isTouch } from '../utils'
+import { ChevronLeft, ChevronRight } from './svg'
 
 // ==============================
 // Navigation
 // ==============================
 
-type NavState = { interactionIsIdle: boolean };
+type NavState = { interactionIsIdle: boolean }
 type NavProps = NavState &
   PropsWithStyles & {
     children: Node,
     isFullscreen: boolean,
     isModal: boolean,
-  };
+  }
 
 export const navigationCSS = ({ interactionIsIdle }: NavState) => ({
   display: 'flex ',
@@ -29,41 +29,32 @@ export const navigationCSS = ({ interactionIsIdle }: NavState) => ({
   '& *:focus': {
     outline: '1.5px solid orange',
   },
-});
+})
 
 export const Navigation = (props: NavProps) => {
-  const {
-    children,
-    getStyles,
-    isFullscreen,
-    isModal,
-    showNavigationOnTouchDevice,
-  } = props;
+  const { children, getStyles, isFullscreen, isModal, showNavigationOnTouchDevice } = props
   return !isTouch() || (isTouch() && showNavigationOnTouchDevice) ? (
-    <Nav
-      css={getStyles('navigation', props)}
-      className={className('navigation', { isFullscreen, isModal })}
-    >
+    <Nav css={getStyles('navigation', props)} className={className('navigation', { isFullscreen, isModal })}>
       {children}
     </Nav>
-  ) : null;
-};
+  ) : null
+}
 
 // ==============================
 // Nav Item
 // ==============================
 
-const BUTTON_SIZE = 50;
+const BUTTON_SIZE = 50
 
-type ItemState = { align: 'left' | 'right' };
+type ItemState = { align: 'left' | 'right' }
 type ItemProps = ItemState &
   PropsWithStyles & {
     children: Node,
     innerProps: {
-      onClick: (any) => void,
+      onClick: any => void,
       title: string,
     },
-  };
+  }
 
 export const navigationItemCSS = ({ align }: ItemState) => ({
   alignItems: 'center',
@@ -90,38 +81,26 @@ export const navigationItemCSS = ({ align }: ItemState) => ({
   '&:active': {
     background: 'rgba(255, 255, 255, 0.2)',
   },
-});
+})
 
-export const navigationPrevCSS = navigationItemCSS;
+export const navigationPrevCSS = navigationItemCSS
 export const NavigationPrev = (props: ItemProps) => {
-  const { children = <ChevronLeft size={48} />, getStyles, innerProps } = props;
+  const { children = <ChevronLeft size={48} />, getStyles, innerProps } = props
 
   return (
-    <Button
-      type="button"
-      css={getStyles('navigationPrev', props)}
-      {...innerProps}
-    >
+    <Button type="button" css={getStyles('navigationPrev', props)} {...innerProps}>
       {children}
     </Button>
-  );
-};
+  )
+}
 
-export const navigationNextCSS = navigationItemCSS;
+export const navigationNextCSS = navigationItemCSS
 export const NavigationNext = (props: ItemProps) => {
-  const {
-    children = <ChevronRight size={48} />,
-    getStyles,
-    innerProps,
-  } = props;
+  const { children = <ChevronRight size={48} />, getStyles, innerProps } = props
 
   return (
-    <Button
-      type="button"
-      css={getStyles('navigationNext', props)}
-      {...innerProps}
-    >
+    <Button type="button" css={getStyles('navigationNext', props)} {...innerProps}>
       {children}
     </Button>
-  );
-};
+  )
+}

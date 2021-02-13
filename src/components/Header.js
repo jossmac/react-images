@@ -1,15 +1,15 @@
 // @flow
 // @jsx glam
-import React, { type Node } from 'react';
-import glam from 'glam';
+import React, { type Node } from 'react'
+import glam from 'glam'
 
-import { Button, Div } from '../primitives';
-import { className } from '../utils';
-import type { PropsWithStyles } from '../types';
-import { Close, FullscreenEnter, FullscreenExit } from './svg';
-import componentBaseClassNames from './componentBaseClassNames';
+import { Button, Div } from '../primitives'
+import { className } from '../utils'
+import type { PropsWithStyles } from '../types'
+import { Close, FullscreenEnter, FullscreenExit } from './svg'
+import componentBaseClassNames from './componentBaseClassNames'
 
-type State = { interactionIsIdle: boolean };
+type State = { interactionIsIdle: boolean }
 type Props = PropsWithStyles &
   State & {
     components: Object,
@@ -18,7 +18,7 @@ type Props = PropsWithStyles &
     innerProps: Object,
     isModal: boolean,
     modalProps: Object,
-  };
+  }
 
 export const headerCSS = ({ interactionIsIdle }: State) => ({
   alignItems: 'center',
@@ -38,32 +38,19 @@ export const headerCSS = ({ interactionIsIdle }: State) => ({
   '& *:focus': {
     outline: '1.5px solid orange',
   },
-});
+})
 
-const headerBaseClassName = componentBaseClassNames.Header;
+const headerBaseClassName = componentBaseClassNames.Header
 
 const Header = (props: Props) => {
-  const {
-    components,
-    getStyles,
-    getCloseLabel,
-    getFullscreenLabel,
-    innerProps,
-    isModal,
-    modalProps,
-  } = props;
+  const { components, getStyles, getCloseLabel, getFullscreenLabel, innerProps, isModal, modalProps } = props
 
-  if (!isModal) return null;
+  if (!isModal) return null
 
-  const {
-    allowFullscreen,
-    isFullscreen,
-    onClose,
-    toggleFullscreen,
-  } = modalProps;
-  const FsIcon = isFullscreen ? FullscreenExit : FullscreenEnter;
-  const { CloseButton, FullscreenButton } = components;
-  const state = { isFullscreen, isModal };
+  const { allowFullscreen, isFullscreen, onClose, toggleFullscreen } = modalProps
+  const FsIcon = isFullscreen ? FullscreenExit : FullscreenEnter
+  const { CloseButton, FullscreenButton } = components
+  const state = { isFullscreen, isModal }
 
   return (
     <Div
@@ -100,14 +87,14 @@ const Header = (props: Props) => {
         </CloseButton>
       </span>
     </Div>
-  );
-};
+  )
+}
 
 // ==============================
 // Header Buttons
 // ==============================
 
-type ButtonProps = Props & { children: Node };
+type ButtonProps = Props & { children: Node }
 
 export const headerButtonCSS = () => ({
   alignItems: 'center',
@@ -126,38 +113,28 @@ export const headerButtonCSS = () => ({
   '&:hover': {
     color: 'white',
   },
-});
+})
 
-export const headerFullscreenCSS = headerButtonCSS;
+export const headerFullscreenCSS = headerButtonCSS
 export const HeaderFullscreen = (props: ButtonProps) => {
-  const { children, getStyles, innerProps } = props;
+  const { children, getStyles, innerProps } = props
 
   return (
-    <Button
-      css={getStyles('headerFullscreen', props)}
-      className={className(['header_button', 'header_button--fullscreen'])}
-      type="button"
-      {...innerProps}
-    >
+    <Button css={getStyles('headerFullscreen', props)} className={className(['header_button', 'header_button--fullscreen'])} type="button" {...innerProps}>
       {children}
     </Button>
-  );
-};
+  )
+}
 
-export const headerCloseCSS = headerButtonCSS;
+export const headerCloseCSS = headerButtonCSS
 export const HeaderClose = (props: ButtonProps) => {
-  const { children, getStyles, innerProps } = props;
+  const { children, getStyles, innerProps } = props
 
   return (
-    <Button
-      css={getStyles('headerClose', props)}
-      className={className(['header_button', 'header_button--close'])}
-      type="button"
-      {...innerProps}
-    >
+    <Button css={getStyles('headerClose', props)} className={className(['header_button', 'header_button--close'])} type="button" {...innerProps}>
       {children}
     </Button>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

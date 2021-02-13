@@ -1,31 +1,28 @@
 // @flow
 // @jsx glam
-import React, { Component, type ElementRef } from 'react';
-import { findDOMNode } from 'react-dom';
-import glam from 'glam';
-import rafScheduler from 'raf-schd';
-import { ViewPager, Frame, Track, View as PageView } from 'react-view-pager';
+import React, { Component, type ElementRef } from 'react'
+import { findDOMNode } from 'react-dom'
+import glam from 'glam'
+import rafScheduler from 'raf-schd'
+import { ViewPager, Frame, Track, View as PageView } from 'react-view-pager'
 
 const viewPagerStyles = {
   flex: '1 1 auto',
   position: 'relative',
-};
-const frameStyles = { outline: 0 };
+}
+const frameStyles = { outline: 0 }
 
-import {
-  defaultCarouselComponents,
-  type CarouselComponents,
-} from './defaultComponents';
-import { defaultCarouselStyles, type CarouselStylesConfig } from '../styles';
-import { type ModalProps } from './Modal/Modal';
-import { className, isTouch } from '../utils';
-import formatters from '../formatters';
-import { type ViewsType } from '../types';
-import componentBaseClassNames from './componentBaseClassNames';
+import { defaultCarouselComponents, type CarouselComponents } from './defaultComponents'
+import { defaultCarouselStyles, type CarouselStylesConfig } from '../styles'
+import { type ModalProps } from './Modal/Modal'
+import { className, isTouch } from '../utils'
+import formatters from '../formatters'
+import { type ViewsType } from '../types'
+import componentBaseClassNames from './componentBaseClassNames'
 
-type SpringConfig = { [key: string]: number };
-export type fn = (any) => void;
-export type IndicesType = Array<number>;
+type SpringConfig = { [key: string]: number }
+export type fn = any => void
+export type IndicesType = Array<number>
 export type CarouselProps = {
   /* Replace any of the carousel components */
   components?: CarouselComponents,
@@ -63,7 +60,7 @@ export type CarouselProps = {
     onSwipeEnd: fn,
     onSwipeMove: fn,
     onSwipeStart: fn,
-    onViewChange: (number) => void,
+    onViewChange: number => void,
     springConfig: SpringConfig,
     swipe: true | false | 'mouse' | 'touch',
     swipeThreshold: number,
@@ -73,12 +70,12 @@ export type CarouselProps = {
   },
   /* The items to render in the carousel */
   views: ViewsType,
-};
+}
 
 export type CarouselState = {
   currentIndex: number,
   interactionIsIdle: boolean,
-};
+}
 const defaultProps = {
   currentIndex: 0,
   formatters,
@@ -89,194 +86,189 @@ const defaultProps = {
     instant: !isTouch(),
     swipe: 'touch',
   },
-};
+}
 
-const trackBaseClassName = componentBaseClassNames.Track;
+const trackBaseClassName = componentBaseClassNames.Track
 
 class Carousel extends Component<CarouselProps, CarouselState> {
-  commonProps: any; // TODO
-  components: CarouselComponents;
-  container: HTMLElement;
-  footer: HTMLElement;
-  frame: ElementRef<Frame>;
-  header: HTMLElement;
-  mounted: boolean = false;
-  track: ElementRef<Track>;
-  timer: number;
+  commonProps: any // TODO
+  components: CarouselComponents
+  container: HTMLElement
+  footer: HTMLElement
+  frame: ElementRef<Frame>
+  header: HTMLElement
+  mounted: boolean = false
+  track: ElementRef<Track>
+  timer: number
 
-  static defaultProps = defaultProps;
+  static defaultProps = defaultProps
 
   constructor(props: CarouselProps) {
-    super(props);
+    super(props)
 
-    this.cacheComponents(props.components);
+    this.cacheComponents(props.components)
 
     this.state = {
       currentIndex: props.currentIndex,
       interactionIsIdle: isTouch(),
-    };
+    }
   }
 
   componentDidMount() {
-    const { hideControlsWhenIdle, modalProps } = this.props;
-    const isModal = Boolean(modalProps);
+    const { hideControlsWhenIdle, modalProps } = this.props
+    const isModal = Boolean(modalProps)
 
-    this.mounted = true;
+    this.mounted = true
 
     if (hideControlsWhenIdle && this.container) {
-      this.container.addEventListener('mousedown', this.handleMouseActivity);
-      this.container.addEventListener('mousemove', this.handleMouseActivity);
-      this.container.addEventListener('touchmove', this.handleMouseActivity);
+      this.container.addEventListener('mousedown', this.handleMouseActivity)
+      this.container.addEventListener('mousemove', this.handleMouseActivity)
+      this.container.addEventListener('touchmove', this.handleMouseActivity)
     }
     if (isModal) {
-      this.focusViewFrame();
+      this.focusViewFrame()
     }
   }
   componentDidUpdate(prevProps: CarouselProps) {
     if (prevProps.components !== this.props.components) {
-      this.cacheComponents(prevProps.components);
+      this.cacheComponents(prevProps.components)
     }
 
     if (this.props.currentIndex !== prevProps.currentIndex) {
-      this.setState({ currentIndex: this.props.currentIndex });
+      this.setState({ currentIndex: this.props.currentIndex })
     }
   }
   componentWillUnmount() {
-    this.mounted = false;
+    this.mounted = false
 
     if (this.props.hideControlsWhenIdle && this.container) {
-      this.container.removeEventListener('mousedown', this.handleMouseActivity);
-      this.container.removeEventListener('mousemove', this.handleMouseActivity);
-      this.container.removeEventListener('touchmove', this.handleMouseActivity);
-      this.handleMouseActivity.cancel();
+      this.container.removeEventListener('mousedown', this.handleMouseActivity)
+      this.container.removeEventListener('mousemove', this.handleMouseActivity)
+      this.container.removeEventListener('touchmove', this.handleMouseActivity)
+      this.handleMouseActivity.cancel()
     }
   }
   cacheComponents = (comps?: CarouselComponents) => {
-    this.components = defaultCarouselComponents(comps);
-  };
+    this.components = defaultCarouselComponents(comps)
+  }
 
   // ==============================
   // Refs
   // ==============================
 
   getContainer = (ref: HTMLElement) => {
-    this.container = ref;
-  };
+    this.container = ref
+  }
   getFooter = (ref: HTMLElement) => {
-    this.footer = ref;
-  };
+    this.footer = ref
+  }
   getFrame = (ref: Frame) => {
-    this.frame = findDOMNode(ref);
-  };
+    this.frame = findDOMNode(ref)
+  }
   getHeader = (ref: HTMLElement) => {
-    this.header = ref;
-  };
+    this.header = ref
+  }
   getTrack = (ref: Track) => {
-    this.track = ref;
-  };
+    this.track = ref
+  }
 
   // ==============================
   // Utilities
   // ==============================
 
   hasPreviousView = (): boolean => {
-    const { trackProps } = this.props;
-    const { currentIndex } = this.state;
+    const { trackProps } = this.props
+    const { currentIndex } = this.state
 
-    return trackProps.infinite || currentIndex !== 0;
-  };
+    return trackProps.infinite || currentIndex !== 0
+  }
   hasNextView = (): boolean => {
-    const { trackProps, views } = this.props;
-    const { currentIndex } = this.state;
+    const { trackProps, views } = this.props
+    const { currentIndex } = this.state
 
-    return trackProps.infinite || currentIndex !== views.length - 1;
-  };
+    return trackProps.infinite || currentIndex !== views.length - 1
+  }
 
   getStyles = (key: string, props: {}): {} => {
-    const base = defaultCarouselStyles[key](props);
-    base.boxSizing = 'border-box';
-    const custom = this.props.styles[key];
-    return custom ? custom(base, props) : base;
-  };
+    const base = defaultCarouselStyles[key](props)
+    base.boxSizing = 'border-box'
+    const custom = this.props.styles[key]
+    return custom ? custom(base, props) : base
+  }
   // combine defaultProps with consumer props to maintain expected behaviour
   getTrackProps = (props: CarouselProps) => {
-    return { ...defaultProps.trackProps, ...props.trackProps };
-  };
+    return { ...defaultProps.trackProps, ...props.trackProps }
+  }
   // combine defaultProps with consumer props to maintain expected behaviour
   getFormatters = () => {
-    return { ...defaultProps.formatters, ...this.props.formatters };
-  };
+    return { ...defaultProps.formatters, ...this.props.formatters }
+  }
   getViewData = () => {
-    const { views } = this.props;
-    const { currentIndex } = this.state;
+    const { views } = this.props
+    const { currentIndex } = this.state
 
-    return views[currentIndex];
-  };
+    return views[currentIndex]
+  }
   focusViewFrame = () => {
     if (this.frame && document.activeElement !== this.frame) {
-      this.frame.focus();
+      this.frame.focus()
     }
-  };
+  }
 
-  prev = (event) => {
-    event.stopPropagation();
-    this.track.prev();
-    this.focusViewFrame();
-  };
-  next = (event) => {
-    event.stopPropagation();
-    this.track.next();
-    this.focusViewFrame();
-  };
+  prev = event => {
+    event.stopPropagation()
+    this.track.prev()
+    this.focusViewFrame()
+  }
+  next = event => {
+    event.stopPropagation()
+    this.track.next()
+    this.focusViewFrame()
+  }
 
   // ==============================
   // Handlers
   // ==============================
 
   handleMouseActivity = rafScheduler(() => {
-    clearTimeout(this.timer);
+    clearTimeout(this.timer)
 
     if (this.state.interactionIsIdle) {
-      this.setState({ interactionIsIdle: false });
+      this.setState({ interactionIsIdle: false })
     }
 
     this.timer = setTimeout(() => {
       if (this.mounted) {
-        this.setState({ interactionIsIdle: true });
+        this.setState({ interactionIsIdle: true })
       }
-    }, this.props.hideControlsWhenIdle);
-  });
+    }, this.props.hideControlsWhenIdle)
+  })
   handleViewChange = (indicies: IndicesType) => {
-    const { trackProps } = this.props;
+    const { trackProps } = this.props
 
     // simplify by enforcing number
-    const currentIndex = indicies[0];
+    const currentIndex = indicies[0]
 
-    this.setState({ currentIndex });
+    this.setState({ currentIndex })
 
     // call the consumer's onViewChange fn
     if (trackProps && trackProps.onViewChange) {
-      trackProps.onViewChange(currentIndex);
+      trackProps.onViewChange(currentIndex)
     }
-  };
+  }
 
   // ==============================
   // Renderers
   // ==============================
 
   renderNavigation = () => {
-    const {
-      getNextLabel,
-      getPrevLabel,
-      getNextTitle,
-      getPrevTitle,
-    } = this.getFormatters();
-    const { Navigation, NavigationPrev, NavigationNext } = this.components;
-    const { commonProps } = this;
+    const { getNextLabel, getPrevLabel, getNextTitle, getPrevTitle } = this.getFormatters()
+    const { Navigation, NavigationPrev, NavigationNext } = this.components
+    const { commonProps } = this
 
-    const showPrev = this.hasPreviousView();
-    const showNext = this.hasNextView();
-    const showNav = (showPrev || showNext) && Navigation;
+    const showPrev = this.hasPreviousView()
+    const showNext = this.hasNextView()
+    const showNav = (showPrev || showNext) && Navigation
 
     return showNav ? (
       <Navigation {...commonProps}>
@@ -303,11 +295,11 @@ class Carousel extends Component<CarouselProps, CarouselState> {
           />
         )}
       </Navigation>
-    ) : null;
-  };
+    ) : null
+  }
   renderFooter = () => {
-    const { Footer, FooterCaption, FooterCount } = this.components;
-    const { commonProps } = this;
+    const { Footer, FooterCaption, FooterCount } = this.components
+    const { commonProps } = this
 
     return Footer ? (
       <Footer
@@ -318,12 +310,12 @@ class Carousel extends Component<CarouselProps, CarouselState> {
         }}
         innerProps={{ innerRef: this.getFooter }}
       />
-    ) : null;
-  };
+    ) : null
+  }
   renderHeader = () => {
-    const { Header, HeaderClose, HeaderFullscreen } = this.components;
-    const { getCloseLabel, getFullscreenLabel } = this.getFormatters();
-    const { commonProps } = this;
+    const { Header, HeaderClose, HeaderFullscreen } = this.components
+    const { getCloseLabel, getFullscreenLabel } = this.getFormatters()
+    const { commonProps } = this
 
     return Header ? (
       <Header
@@ -337,21 +329,15 @@ class Carousel extends Component<CarouselProps, CarouselState> {
         data={this.getViewData()}
         innerProps={{ innerRef: this.getHeader }}
       />
-    ) : null;
-  };
+    ) : null
+  }
 
   getCommonProps() {
-    const {
-      frameProps,
-      trackProps,
-      modalProps,
-      views,
-      showNavigationOnTouchDevice,
-    } = this.props;
-    const isModal = Boolean(modalProps);
-    const isFullscreen = Boolean(modalProps && modalProps.isFullscreen);
-    const { currentIndex, interactionIsIdle } = this.state;
-    const currentView = this.getViewData();
+    const { frameProps, trackProps, modalProps, views, showNavigationOnTouchDevice } = this.props
+    const isModal = Boolean(modalProps)
+    const isFullscreen = Boolean(modalProps && modalProps.isFullscreen)
+    const { currentIndex, interactionIsIdle } = this.state
+    const currentView = this.getViewData()
 
     return {
       carouselProps: this.props,
@@ -367,29 +353,19 @@ class Carousel extends Component<CarouselProps, CarouselState> {
       interactionIsIdle,
       trackProps,
       views,
-    };
+    }
   }
   render() {
-    const { Container, View } = this.components;
-    const { currentIndex } = this.state;
-    const { frameProps, views } = this.props;
-    const commonProps = (this.commonProps = this.getCommonProps());
+    const { Container, View } = this.components
+    const { currentIndex } = this.state
+    const { frameProps, views } = this.props
+    const commonProps = (this.commonProps = this.getCommonProps())
 
     return (
       <Container {...commonProps} innerProps={{ innerRef: this.getContainer }}>
         {this.renderHeader()}
-        <ViewPager
-          tag="main"
-          style={viewPagerStyles}
-          className={className('pager')}
-        >
-          <Frame
-            {...frameProps}
-            ref={this.getFrame}
-            className={className('frame')}
-            style={frameStyles}
-            tabIndex="-1"
-          >
+        <ViewPager tag="main" style={viewPagerStyles} className={className('pager')}>
+          <Frame {...frameProps} ref={this.getFrame} className={className('frame')} style={frameStyles} tabIndex="-1">
             <Track
               {...this.getTrackProps(this.props)}
               style={{ display: 'flex', alignItems: 'center' }}
@@ -404,7 +380,7 @@ class Carousel extends Component<CarouselProps, CarouselState> {
                     <PageView className={className('view-wrapper')} key={index}>
                       <View {...commonProps} data={data} index={index} />
                     </PageView>
-                  );
+                  )
                 })}
             </Track>
           </Frame>
@@ -412,8 +388,8 @@ class Carousel extends Component<CarouselProps, CarouselState> {
         </ViewPager>
         {this.renderFooter()}
       </Container>
-    );
+    )
   }
 }
-export default Carousel;
-export type CarouselType = typeof Carousel;
+export default Carousel
+export type CarouselType = typeof Carousel

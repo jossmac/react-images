@@ -1,16 +1,15 @@
 // @flow
-import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Fragment } from 'react'
+import { Link } from 'react-router-dom'
 
-const viewPagerUrl = 'https://github.com/souporserious/react-view-pager';
+const viewPagerUrl = 'https://github.com/souporserious/react-view-pager'
 
 export const carouselProps = [
   {
     defaultValue: null,
     description: (
       <p>
-        Replace any or all of the carousel components with your own to create
-        the layout and functionality you desire. Detailed documentation on the{' '}
+        Replace any or all of the carousel components with your own to create the layout and functionality you desire. Detailed documentation on the{' '}
         <Link to="/components">Components page</Link>.
       </p>
     ),
@@ -97,16 +96,14 @@ type components = {
   },
   {
     defaultValue: '3000',
-    description:
-      'The duration, in milliseconds, to wait before hiding controls when the user is idle.',
+    description: 'The duration, in milliseconds, to wait before hiding controls when the user is idle.',
     isRequired: false,
     name: 'hideControlsWhenIdle',
     type: 'Number | false',
   },
   {
     defaultValue: null,
-    description:
-      'Available when the Carousel is within a Modal. The applicable props are cloned and passed on for use inside Carousel components.',
+    description: 'Available when the Carousel is within a Modal. The applicable props are cloned and passed on for use inside Carousel components.',
     isRequired: false,
     name: 'modalProps',
     type: 'Object',
@@ -120,16 +117,14 @@ type components = {
   },
   {
     defaultValue: 'false',
-    description:
-      'Whether image carousel navigation buttons should be hidden or shown on touch-enabled devices. (Default: hidden)',
+    description: 'Whether image carousel navigation buttons should be hidden or shown on touch-enabled devices. (Default: hidden)',
     isRequired: false,
     name: 'showNavigationOnTouchDevice',
     type: 'boolean',
   },
   {
     defaultValue: null,
-    description:
-      'React-Images ships each Carousel component with default styles. You can extend or replace these using the styles property.',
+    description: 'React-Images ships each Carousel component with default styles. You can extend or replace these using the styles property.',
     isRequired: false,
     name: 'styles',
     type: 'Object<Function>',
@@ -198,14 +193,9 @@ type StyleFn = (StyleObj, State) => StyleObj
     description: (
       <Fragment>
         <p>
-          The data shape for each view in your carousel. This must be an array
-          of objects, though the key/value pairs in the objects can be whatever
-          you want.
+          The data shape for each view in your carousel. This must be an array of objects, though the key/value pairs in the objects can be whatever you want.
         </p>
-        <p>
-          When using "non-standard" view data you must provide a View component
-          that can interpret and render it.
-        </p>
+        <p>When using "non-standard" view data you must provide a View component that can interpret and render it.</p>
       </Fragment>
     ),
     isRequired: true,
@@ -223,34 +213,30 @@ Array<{
   },
 }>`,
   },
-];
+]
 
 export const modalProps = [
   {
     defaultValue: 'true',
-    description:
-      'Whether the user should be allowed to fullscreen the dialog, either by clicking the Fullscreen button or from an `F` keypress.',
+    description: 'Whether the user should be allowed to fullscreen the dialog, either by clicking the Fullscreen button or from an `F` keypress.',
     name: 'allowFullscreen',
     type: 'Boolean',
   },
   {
-    description:
-      'Modal expects a single Carousel child. It will not behave as expected otherwise.',
+    description: 'Modal expects a single Carousel child. It will not behave as expected otherwise.',
     name: 'children',
     type: 'CarouselType',
     isRequired: true,
   },
   {
     defaultValue: 'true',
-    description:
-      'Whether the `onClose` function should be called when the backdrop is clicked.',
+    description: 'Whether the `onClose` function should be called when the backdrop is clicked.',
     name: 'closeOnBackdropClick',
     type: 'Boolean',
   },
   {
     defaultValue: 'true',
-    description:
-      'Whether the `onClose` function should be called when the `esc` key is pressed',
+    description: 'Whether the `onClose` function should be called when the `esc` key is pressed',
     name: 'closeOnEsc',
     type: 'Boolean',
   },
@@ -262,8 +248,7 @@ export const modalProps = [
     typeDefinition: '(Event) => void',
   },
   {
-    description:
-      'React-Images ships each Modal component with default styles. You can extend or replace these using the styles property.',
+    description: 'React-Images ships each Modal component with default styles. You can extend or replace these using the styles property.',
     name: 'styles',
     type: 'Object<Function>',
     typeDefinition: `type StyleObj = { [key: string]: any }
@@ -291,4 +276,4 @@ type StyleFn = (StyleObj, State) => StyleObj
     name: 'preventScroll',
     type: 'Boolean',
   },
-];
+]

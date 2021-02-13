@@ -9,6 +9,6 @@ const componentBaseClassNames = {
   View: 'view',
   Track: 'track',
   Positioner: 'positioner',
-};
+}
 
-export default componentBaseClassNames;
+export default componentBaseClassNames

@@ -5,9 +5,9 @@
 
 /* eslint-disable no-unused-vars */
 
-import type { ViewsType } from './types';
+import type { ViewsType } from './types'
 
-type LabelProps = { currentIndex: number, views: ViewsType };
+type LabelProps = { currentIndex: number, views: ViewsType }
 
 // ==============================
 // Navigation
@@ -15,37 +15,37 @@ type LabelProps = { currentIndex: number, views: ViewsType };
 
 /* ARIA label for the next button */
 function getNextLabel({ currentIndex, views }: LabelProps): string {
-  return `Show slide ${currentIndex + 2} of ${views.length}`;
+  return `Show slide ${currentIndex + 2} of ${views.length}`
 }
 
 /* ARIA label for the previous button */
 function getPrevLabel({ currentIndex, views }: LabelProps): string {
-  return `Show slide ${currentIndex} of ${views.length}`;
+  return `Show slide ${currentIndex} of ${views.length}`
 }
 
 /* HTML title for the next button */
 function getNextTitle(props: Object): string {
-  return 'Next (right arrow)';
+  return 'Next (right arrow)'
 }
 
 /* HTML title for the previous button */
 function getPrevTitle(props: Object): string {
-  return 'Previous (left arrow)';
+  return 'Previous (left arrow)'
 }
 
 // ==============================
 // Header
 // ==============================
 
-type FullscreenProps = { isFullscreen: boolean };
+type FullscreenProps = { isFullscreen: boolean }
 
 /* ARIA label for the close button */
 function getCloseLabel(props: Object): string {
-  return 'Close (esc)';
+  return 'Close (esc)'
 }
 /* ARIA label for the fullscreen button */
 function getFullscreenLabel({ isFullscreen }: FullscreenProps): string {
-  return isFullscreen ? 'Exit fullscreen (f)' : 'Enter fullscreen (f)';
+  return isFullscreen ? 'Exit fullscreen (f)' : 'Enter fullscreen (f)'
 }
 
 // ==============================
@@ -56,15 +56,10 @@ function getFullscreenLabel({ isFullscreen }: FullscreenProps): string {
 function getAltText({ data, index }): string {
   if (data.alt) {
     if (typeof data.alt !== 'string') {
-      console.error(
-        `Image ${
-          index + 1
-        } had a non-string alt property, which will probably render incorrectly.\nInstead of a plain string it was `,
-        data.alt
-      );
+      console.error(`Image ${index + 1} had a non-string alt property, which will probably render incorrectly.\nInstead of a plain string it was `, data.alt)
     }
 
-    return data.alt;
+    return data.alt
   }
 
   if (data.caption) {
@@ -72,14 +67,14 @@ function getAltText({ data, index }): string {
       console.warn(
         `Image ${
           index + 1
-        } has a non-string caption, but no alt value provided. This will probably make the alt prop unintelligible for screen readers. Is this intentional?`
-      );
+        } has a non-string caption, but no alt value provided. This will probably make the alt prop unintelligible for screen readers. Is this intentional?`,
+      )
     }
 
-    return data.caption;
+    return data.caption
   }
 
-  return `Image ${index + 1}`;
+  return `Image ${index + 1}`
 }
 
 // ==============================
@@ -94,4 +89,4 @@ export default {
   getPrevTitle,
   getCloseLabel,
   getFullscreenLabel,
-};
+}

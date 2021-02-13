@@ -1,15 +1,15 @@
 // @flow
 // @jsx glam
-import glam from 'glam';
-import React from 'react';
+import glam from 'glam'
+import React from 'react'
 
-import Icon from './Icon';
-import type { ViewShape } from './View';
+import Icon from './Icon'
+import type { ViewShape } from './View'
 
-type Props = { data: ViewShape, onClick: any => void };
+type Props = { data: ViewShape, onClick: any => void }
 
-const ratio = `${9 / 16 * 100 / 2}%`;
-const gutter = 2;
+const ratio = `${((9 / 16) * 100) / 2}%`
+const gutter = 2
 
 export const Posters = (props: any) => (
   <div
@@ -20,7 +20,7 @@ export const Posters = (props: any) => (
     }}
     {...props}
   />
-);
+)
 
 export const Poster = ({ data, onClick }: Props) => (
   <div
@@ -66,4 +66,4 @@ export const Poster = ({ data, onClick }: Props) => (
       <Icon type="play" />
     </button>
   </div>
-);
+)
