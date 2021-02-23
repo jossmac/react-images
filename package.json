@@ -89,7 +89,7 @@
     "deploy": "cross-env NODE_ENV=production nps publish",
     "start": "webpack-dev-server --progress",
     "precommit": "flow check && lint-staged",
-    "prepublish": "yarn lint && yarn format && nps build",
+    "prepublishOnly": "yarn lint && yarn format && nps build",
     "format": "prettier --write \"**/*.{js,ts,jsx,tsx,json,yml,md}\"",
     "format:check": "prettier --check \"**/*.{js,ts,jsx,tsx,json,yml,md}\""
   },
