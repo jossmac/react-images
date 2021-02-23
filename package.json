@@ -1,6 +1,6 @@
 {
   "name": "react-images",
-  "version": "1.2.0-beta.5",
+  "version": "1.2.0-beta.6",
   "description": "A mobile-friendly, highly customizable, carousel component for displaying media in ReactJS",
   "main": "lib/index.js",
   "jsnext:main": "dist/react-images.es.js",
@@ -85,13 +85,13 @@
     "build": "nps build",
     "watch": "nps build.watch",
     "delete": "rm -rf node_modules",
-    "lint": "eslint .",
+    "lint": "cross-env eslint .",
     "deploy": "cross-env NODE_ENV=production nps publish",
-    "start": "webpack-dev-server --progress",
-    "precommit": "flow check && lint-staged",
+    "start": "cross-env webpack-dev-server --progress",
+    "precommit": "cross-env flow check && lint-staged",
     "prepublishOnly": "yarn lint && yarn format && nps build",
-    "format": "prettier --write \"**/*.{js,ts,jsx,tsx,json,yml,md}\"",
-    "format:check": "prettier --check \"**/*.{js,ts,jsx,tsx,json,yml,md}\""
+    "format": "cross-env prettier --write \"**/*.{js,ts,jsx,tsx,json,yml,md}\"",
+    "format:check": "cross-env prettier --check \"**/*.{js,ts,jsx,tsx,json,yml,md}\""
   },
   "files": [
     "dist",
