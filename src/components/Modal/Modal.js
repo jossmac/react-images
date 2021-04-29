@@ -190,7 +190,7 @@ class Modal extends Component<Props, State> {
     })
 
     return (
-      <FullScreen enabled={isFullscreen} onChange={this.handleFullscreenChange}>
+      <FullScreen handle={{ active: isFullscreen }} onChange={this.handleFullscreenChange}>
         <Fade {...commonProps} component={Blanket} in={transitionIn} />
         <SlideUp
           {...commonProps}
