@@ -91,7 +91,6 @@ export default function withImages(WrappedComponent: ComponentType<*>) {
       fetch(getApiUrl())
         .then(res => res.json())
         .then(data => {
-          console.log('data.results', data.results)
           const images = setData(transformImageData(data.results))
           this.setState({ images, isLoading: false })
         })
