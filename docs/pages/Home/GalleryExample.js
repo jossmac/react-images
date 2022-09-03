@@ -1,7 +1,8 @@
 // @flow
-// @jsx glam
-import glam from 'glam'
+/** @jsxRuntime classic */
+/** @jsx jsx */
 import React, { Component, Fragment } from 'react'
+import { jsx } from '@emotion/react'
 
 import { type ProviderProps } from '../../ImageProvider'
 import Carousel, { Modal, ModalGateway } from '../../../src/components'

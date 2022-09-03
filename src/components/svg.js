@@ -1,7 +1,8 @@
 // @flow
-// @jsx glam
+/** @jsxRuntime classic */
+/** @jsx jsx */
 import React from 'react'
-import glam from 'glam'
+import { jsx } from '@emotion/react'
 
 type Props = { size: number }
 

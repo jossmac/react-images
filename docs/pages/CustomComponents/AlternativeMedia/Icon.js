@@ -1,7 +1,8 @@
 // @flow
-// @jsx glam
-import glam from 'glam'
+/** @jsxRuntime classic */
+/** @jsx jsx */
 import React from 'react'
+import { jsx } from '@emotion/react'
 
 type IconProps = { size: number, type: 'play' | 'pause' }
 const Icon = ({ size = 64, type }: IconProps) => {

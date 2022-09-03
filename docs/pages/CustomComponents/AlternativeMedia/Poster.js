@@ -1,7 +1,8 @@
 // @flow
-// @jsx glam
-import glam from 'glam'
+/** @jsxRuntime classic */
+/** @jsx jsx */
 import React from 'react'
+import { jsx } from '@emotion/react'
 
 import Icon from './Icon'
 import type { ViewShape } from './View'

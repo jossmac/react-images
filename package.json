@@ -1,6 +1,6 @@
 {
   "name": "react-images",
-  "version": "1.2.0-beta.7",
+  "version": "1.2.0",
   "description": "A mobile-friendly, highly customizable, carousel component for displaying media in ReactJS",
   "main": "lib/index.js",
   "jsnext:main": "dist/react-images.es.js",
@@ -35,6 +35,7 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "copy-webpack-plugin": "^5.1.2",
+    "cross-env": "^7.0.3",
     "css-loader": "^3.6.0",
     "dotenv": "^8.2.0",
     "eslint": "^7.19.0",
@@ -66,9 +67,8 @@
     "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.4",
     "a11y-focus-store": "^1.0.0",
-    "cross-env": "^7.0.3",
-    "glam": "^5.0.1",
     "html-react-parser": "^1.2.4",
     "raf-schd": "^4.0.2",
     "react-focus-on": "^3.5.1",

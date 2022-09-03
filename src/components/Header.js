@@ -1,7 +1,5 @@
 // @flow
-// @jsx glam
 import React, { type Node } from 'react'
-import glam from 'glam'
 
 import { Button, Div } from '../primitives'
 import { className } from '../utils'
@@ -29,6 +27,7 @@ export const headerCSS = ({ interactionIsIdle }: State) => ({
   padding: 10,
   paddingBottom: 20,
   position: 'absolute',
+  background: 'linear-gradient(rgba(0,0,0,0.33), rgba(0,0,0,0))',
   transform: `translateY(${interactionIsIdle ? -10 : 0}px)`,
   transition: 'opacity 300ms, transform 300ms',
   top: 0,
@@ -56,11 +55,6 @@ const Header = (props: Props) => {
     <Div
       css={getStyles(headerBaseClassName, props)}
       className={className(headerBaseClassName, state)}
-      // TODO glam prefixer fails on gradients
-      // https://github.com/threepointone/glam/issues/35
-      style={{
-        background: 'linear-gradient(rgba(0,0,0,0.33), rgba(0,0,0,0))',
-      }}
       {...innerProps}
     >
       <span />

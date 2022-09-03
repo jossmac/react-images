@@ -1,17 +1,16 @@
 // @flow
-// @jsx glam
-
-import glam from 'glam'
+/** @jsxRuntime classic */
+/** @jsx jsx */
 import React, { type Node } from 'react'
-
+import { jsx } from '@emotion/react'
 import SyntaxHighlighter, { registerLanguage } from 'react-syntax-highlighter/prism-light'
-import jsx from 'react-syntax-highlighter/languages/prism/jsx'
+import { jsx as highlighterJsx } from 'react-syntax-highlighter/languages/prism'
 import { tomorrow } from 'react-syntax-highlighter/styles/prism'
 
 import { colors } from '../theme'
 import { smallDevice } from '../utils'
 
-registerLanguage('jsx', jsx)
+registerLanguage('jsx', highlighterJsx)
 
 // ==============================
 // Title
@@ -53,7 +52,6 @@ export const Heading = ({ source, ...props }: { source: string }) => (
         href={headingLink(source)}
         target="_blank"
         css={{
-          color: colors.primary,
           borderBottom: '1px solid rgba(0, 215, 255, 0.25)',
           color: '#00d7ff',
           textDecoration: 'none',

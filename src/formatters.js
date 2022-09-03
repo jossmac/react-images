@@ -67,7 +67,7 @@ function getAltText({ data, index }): string {
       console.warn(
         `Image ${
           index + 1
-        } has a non-string caption, but no alt value provided. This will probably make the alt prop unintelligible for screen readers. Is this intentional?`,
+        } has a non-string caption, but no alt value provided. This will probably make the alt prop unintelligible for screen readers. Is this intentional?`,
       )
     }
 

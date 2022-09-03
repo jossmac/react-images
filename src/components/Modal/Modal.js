@@ -1,7 +1,5 @@
 // @flow
-// @jsx glam
 import React, { cloneElement, Component } from 'react'
-import glam from 'glam'
 import { FullScreen } from 'react-full-screen'
 import focusStore from 'a11y-focus-store'
 import { defaultModalComponents, type ModalComponents } from '../defaultComponents'

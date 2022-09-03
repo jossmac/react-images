@@ -1,7 +1,8 @@
 // @flow
-// @jsx glam
-import glam from 'glam'
+/** @jsxRuntime classic */
+/** @jsx jsx */
 import React, { Component } from 'react'
+import { jsx } from '@emotion/react'
 import { Helmet } from 'react-helmet'
 
 import Carousel, { Modal, ModalGateway } from '../../src/components'

@@ -1,6 +1,4 @@
 // @flow
-// @jsx glam
-import glam from 'glam'
 import React from 'react'
 
 import { smallDevice } from './css-helpers'
@@ -36,6 +34,7 @@ export const footerCSS = ({ isModal, interactionIsIdle }: State) => ({
   padding: isModal ? '30px 20px 20px' : '10px 0',
   position: isModal ? 'absolute' : null,
   right: isModal ? 0 : null,
+  background: isModal ? 'linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.33))' : null,
   transform: isModal ? `translateY(${interactionIsIdle ? 10 : 0}px)` : null,
   transition: 'opacity 300ms, transform 300ms',
   zIndex: isModal ? 1 : null,
@@ -54,8 +53,6 @@ const footerBaseClassName = componentBaseClassNames.Footer
 const Footer = (props: Props) => {
   const { components, getStyles, innerProps, isFullscreen, isModal } = props
 
-  const style = isModal ? { background: 'linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.33))' } : null
-
   const state = { isFullscreen, isModal }
   const cn = {
     container: className(footerBaseClassName, state),
@@ -73,9 +70,6 @@ const Footer = (props: Props) => {
     <Div
       css={css.container}
       className={cn.container}
-      // TODO glam prefixer fails on gradients
-      // https://github.com/threepointone/glam/issues/35
-      style={style}
       {...innerProps}
     >
       <Caption {...props} />
