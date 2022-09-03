@@ -2,6 +2,7 @@
 
 import babel from 'rollup-plugin-babel'
 import resolve from 'rollup-plugin-node-resolve'
+import commonjs from 'rollup-plugin-commonjs'
 import { uglify } from 'rollup-plugin-uglify'
 import replace from 'rollup-plugin-replace'
 import { minify } from 'uglify-es'
@@ -62,7 +63,12 @@ export default [
       globals: globals,
     },
     external: external,
-    plugins: [babel(babelOptions(false)), injectSecret(), resolve()],
+    plugins: [
+      babel(babelOptions(false)),
+      injectSecret(),
+      resolve(),
+      commonjs({ include: /node_modules\/hoist-non-react-statics/ })
+    ],
   },
   {
     input: 'src/index.umd.js',
@@ -73,6 +79,12 @@ export default [
       globals: globals,
     },
     external: external,
-    plugins: [babel(babelOptions(true)), injectSecret(), resolve(), uglify({}, minify)],
+    plugins: [
+      babel(babelOptions(true)),
+      injectSecret(),
+      resolve(),
+      commonjs({ include: /node_modules\/hoist-non-react-statics/ }),
+      uglify({}, minify)
+    ],
   },
 ]
