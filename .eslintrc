@@ -22,7 +22,7 @@
         "argsIgnorePattern": "^event$",
         "ignoreRestSiblings": true,
         "vars": "all",
-        "varsIgnorePattern": "^(glam|React)$"
+        "varsIgnorePattern": "^(React)$"
       }
     ],
     "curly": [2, "multi-line"],

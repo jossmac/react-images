@@ -1,7 +1,7 @@
 // @flow
-// @jsx glam
-import glam from 'glam'
+/** @jsx jsx */
 import React, { Component, type ElementRef } from 'react'
+import { jsx } from '@emotion/react'
 import rafScheduler from 'raf-schd'
 
 import Icon from './Icon'

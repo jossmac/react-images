@@ -1,6 +1,4 @@
 // @flow
-// @jsx glam
-import glam from 'glam'
 import React, { Component } from 'react'
 import { Helmet } from 'react-helmet'
 
@@ -50,8 +48,8 @@ export default class CustomStyles extends Component<Props> {
         <Title>Styles</Title>
         <p>
           React-Images offers a flexible, light-weight styling framework which is a thin abstraction over simple javascript objects using{' '}
-          <a href="https://github.com/threepointone/glam" target="_blank">
-            glam
+          <a href="https://emotion.sh/" target="_blank">
+            Emotion
           </a>
           .
         </p>

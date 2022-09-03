@@ -1,7 +1,7 @@
 // @flow
-// @jsx glam
+/** @jsx jsx */
 import React from 'react'
-import glam from 'glam'
+import { jsx } from '@emotion/react'
 import { Div } from '../../primitives'
 import { type PropsWithStyles } from '../../types'
 import { className } from '../../utils'

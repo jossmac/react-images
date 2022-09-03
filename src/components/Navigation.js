@@ -1,7 +1,5 @@
 // @flow
-// @jsx glam
 import React, { type Node } from 'react'
-import glam from 'glam'
 
 import { Button, Nav } from '../primitives'
 import { type PropsWithStyles } from '../types'

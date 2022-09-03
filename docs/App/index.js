@@ -1,8 +1,7 @@
 // @flow
-// @jsx glam
-
-import glam from 'glam'
+/** @jsx jsx */
 import React, { Component } from 'react'
+import { jsx } from '@emotion/react'
 import { HashRouter, Route, Switch } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 

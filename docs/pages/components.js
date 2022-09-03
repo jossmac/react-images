@@ -1,17 +1,15 @@
 // @flow
-// @jsx glam
-
-import glam from 'glam'
+/** @jsx jsx */
 import React, { type Node } from 'react'
-
+import { jsx } from '@emotion/react'
 import SyntaxHighlighter, { registerLanguage } from 'react-syntax-highlighter/prism-light'
-import jsx from 'react-syntax-highlighter/languages/prism/jsx'
+import { jsx as highlighterJsx } from 'react-syntax-highlighter/languages/prism'
 import { tomorrow } from 'react-syntax-highlighter/styles/prism'
 
 import { colors } from '../theme'
 import { smallDevice } from '../utils'
 
-registerLanguage('jsx', jsx)
+registerLanguage('jsx', highlighterJsx)
 
 // ==============================
 // Title

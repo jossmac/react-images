@@ -10,7 +10,6 @@ const name = 'Images'
 const path = 'dist/react-images'
 const globals = {
   classnames: 'classNames',
-  glam: 'glam',
   'prop-types': 'PropTypes',
   'react-dom': 'ReactDOM',
   'react-input-autosize': 'AutosizeInput',

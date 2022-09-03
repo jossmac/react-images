@@ -1,8 +1,7 @@
 // @flow
-// @jsx glam
-
-import glam from 'glam'
+/** @jsx jsx */
 import React, { type Node } from 'react'
+import { jsx } from '@emotion/react'
 
 import SyntaxHighlighter, { registerLanguage } from 'react-syntax-highlighter/prism-light'
 import typescript from 'react-syntax-highlighter/languages/prism/typescript'

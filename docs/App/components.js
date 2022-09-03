@@ -1,8 +1,7 @@
 // @flow
-// @jsx glam
-
-import glam from 'glam'
+/** @jsx jsx */
 import React, { Component, type Node } from 'react'
+import { jsx } from '@emotion/react'
 import { Link, withRouter } from 'react-router-dom'
 import { colors } from '../theme'
 import { smallDevice, largeDevice } from '../utils'

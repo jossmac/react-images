@@ -1,7 +1,8 @@
 // @flow
-// @jsx glam
-import glam from 'glam'
+/** @jsx jsx */
 import React from 'react'
+import { jsx } from '@emotion/react'
+
 import { colors } from '../../../theme'
 
 type Props = { progress: number }
