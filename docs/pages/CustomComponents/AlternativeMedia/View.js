@@ -1,4 +1,5 @@
 // @flow
+/** @jsxRuntime classic */
 /** @jsx jsx */
 import React, { Component, type ElementRef } from 'react'
 import { jsx } from '@emotion/react'
