@@ -51,7 +51,6 @@ export const Heading = ({ source, ...props }: { source: string }) => (
         href={headingLink(source)}
         target="_blank"
         css={{
-          color: colors.primary,
           borderBottom: '1px solid rgba(0, 215, 255, 0.25)',
           color: '#00d7ff',
           textDecoration: 'none',
